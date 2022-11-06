@@ -9,10 +9,15 @@ class Hike(models.Model):
     start_point = models.CharField(max_length=100)
     end_point = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
-    track_file = models.FileField(on_upload='tracks')
+    track_file = models.FileField(upload_to='tracks')
 
 class HikeReferencePoint(models.Model):
     hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
     reference_point = models.CharField(max_length=100)
+
+    class Meta:
+        constraints=[
+            models.UniqueConstraint(fields=['hike', 'reference_point'], name='hikeref')
+        ]
 
                                                       
