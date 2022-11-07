@@ -2,7 +2,7 @@ import {Navbar, Container, Nav, Button} from 'react-bootstrap';
 
 function MyNavbar2(props){
 
-      return ( props.loggedIn ? <NavLogout logout={props.logout}/> : <NavLogin login={props.login}/>);
+      return ( props.loggedIn ? <NavLogout logout={props.logout} userPower={props.userPower}/> : <NavLogin login={props.login}/>);
 
   function NavLogin(props){
     return(
@@ -10,7 +10,7 @@ function MyNavbar2(props){
         <Container fluid>
              <Nav>
              <> 
-              <Navbar.Brand>Welcome {props.userPower}</Navbar.Brand> 
+              <Navbar.Brand>Welcome Visitor</Navbar.Brand> 
               <Button onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
             </>
             <Button onClick={()=> props.signIn()} as="input" type="button" value="Sign In" variant='dark' size='sm'/>{' '} 

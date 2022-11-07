@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar2 from './components/navbarlogin';
+import Hike from './components/hike';
 
 
 function App(){
@@ -19,7 +20,8 @@ function App(){
 function App2() {
   const [loggedIn,setLoggedIn]=useState(false);
   const [user, setUser] = useState({});
-  //const [flag,setFlag]=useState(false)
+  const [flagSelectedHike,setFlagSelectedHike]=useState(false)
+  const [selectedHike,setSelectHike]=useState({})
   const [message, setMessage] = useState('');
   //const [services,setServices]=useState([1]);
   //const [dirty,setDirty]=useState(true);
@@ -65,8 +67,9 @@ function App2() {
     <Container fluid>
        <Row className="vheight-100">
             <Routes> 
-               <Route path='/Visitor' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor ></Visitor>)}></Route>
+               <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor ></Visitor>)}></Route>
                <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
+              <Route path='/Hike' element={flagSelectedHike ? <Hike></Hike> : <Navigate to='/'userPower />}></Route>
             </Routes>
        </Row>
     </Container>
