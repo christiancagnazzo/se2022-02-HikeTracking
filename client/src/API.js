@@ -1,5 +1,24 @@
 const URL = "http://localhost:3001/"
 
+
+async function pushFile(formData){
+    try {
+      const response = await fetch(URL + 'file', {
+      method: 'POST',
+      body: formData
+    })
+    if (response.ok){
+      console.log("ookk")
+    }
+    else {
+      return false
+    }
+    }
+    catch(e) {
+      throw e
+    }
+}
+
 //USED TO GET INFO ABOUT QUEE FROM SERVER
 async function getAllInfos(){
     const response = await fetch(URL);
@@ -81,5 +100,5 @@ async function postQueue(n) {
     }
   }
 
-const API = {getAllInfos,login,logout, getUserInfo,postQueue,nextClient,update};
+const API = {getAllInfos,login,logout, getUserInfo,postQueue,nextClient,update, pushFile};
 export default API;

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
-
+import LocalGuide from './components/localguide'
 
 function App(){
   return (
@@ -67,9 +67,10 @@ function App2() {
     <Container fluid>
        <Row className="vheight-100">
             <Routes> 
-               <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor ></Visitor>)}></Route>
-               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
+              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor ></Visitor>)}></Route>
+              <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike></Hike> : <Navigate to='/'userPower />}></Route>
+              <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
             </Routes>
        </Row>
     </Container>
