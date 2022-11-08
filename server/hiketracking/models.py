@@ -11,6 +11,8 @@ class Hike(models.Model):
     description = models.CharField(max_length=200)
     track_file = models.FileField(upload_to='tracks')
 
+
+
 class HikeReferencePoint(models.Model):
     hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
     reference_point = models.CharField(max_length=100)
