@@ -21,25 +21,49 @@ const myIconEp = new Icon({
     shadowSize: [41, 41]
 });
 
+const myIconRp = new Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [20, 35],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 function Map(props){
-    
+    const rpList = props.rpList.map((pos) => {
+        
+        return <Marker position={[pos['lat'],pos['lng']]} icon={myIconRp}>
+            <Popup>
+                Reference Point: {pos['address']}
+            </Popup>
+        </Marker>
+    })
+
+    let spMarker = null
+    if(props.sp[0]!=='' && props.sp[1]!=='')
+        spMarker =(<Marker position={props.sp} icon={myIconSp} >
+        <Popup>
+            Start point: {props.spAddress}
+        </Popup>
+        </Marker>)
+    let epMarker = null
+    if(props.ep[0]!=='' && props.ep[1]!=='')
+        epMarker =(<Marker position={props.ep} icon={myIconEp} >
+        <Popup>
+            Start point: {props.epAddress}
+        </Popup>
+        </Marker>)
     return (
-        <MapContainer center={props.sp} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
-            <Click></Click>
+        <MapContainer center={props.sp} zoom={5} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
+            <Click sp={props.sp}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={props.sp} icon={myIconSp} >
-      <Popup>
-          Start point
-      </Popup>
-      </Marker>
-      <Marker position={props.ep} icon={myIconEp} >
-        <Popup>
-            End point
-        </Popup>
-      </Marker>
+            {spMarker}
+            {epMarker}
+            {rpList}
         </MapContainer>
     )
 }
@@ -47,10 +71,9 @@ function Map(props){
 function Click(props){
     const [position, setPosition] = useState([0,0])
    
-
     const map = useMapEvents({
         click: (e) => {
-            map.flyTo([10,10])
+            map.flyTo(props.sp)
         },
         
       })

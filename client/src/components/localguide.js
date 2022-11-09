@@ -13,6 +13,9 @@ function LocalGuide(props){
     const [addressSp, setAddressSp] = useState('')
     const [ep, setEp] = useState(['',''])
     const [addressEp, setAddressEp] = useState('')
+    const [rp, setRp] = useState(['',''])
+    const [addressRp, setAddressRp] = useState('')
+    const [rpList, setRpList] = useState([])
     const [desc, setDesc] = useState('')
     const [file, setFile] = useState()
     
@@ -33,6 +36,29 @@ function LocalGuide(props){
         else
           setEp(point)
       }
+    }
+
+    const setRPoint = (point) => {
+      if(!isNaN(point[0]) && !isNaN(point[1])){
+        setRp(point)
+        
+      }
+    }
+
+    const addRPoint = () => {
+      if(rp[0] === '' || rp[1] === '') return
+      const point = {
+        lat: rp[0],
+        lng: rp[1],
+        address: addressRp
+      }
+      setRPoint(['',''])
+      setAddressRp('')
+      setRpList([...rpList,point])
+    }
+
+    const cleanRPoint = () => {
+      setRpList([])
     }
     return (<Container className="below-nav">
         
@@ -64,11 +90,11 @@ function LocalGuide(props){
             <option value="3">Pro Hiker</option>
         </Form.Select>
       </Form.Group>
-      <PointInput label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp}/>
-      <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp}/>
-      <RefPoint></RefPoint>
+      <PointInput label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp}/>
+      <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp}/>
+      <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint}/>
       <Card>
-          <Map sp={sp} ep={ep}></Map>
+          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList}></Map>
         </Card>
       <Form.Group className="mb-3" controlId="description">
         <Form.Label>Description</Form.Label>
@@ -82,12 +108,7 @@ function LocalGuide(props){
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
-      <Button onClick={() => {
-        const formData = new FormData()
-        formData.append('File', file)
-        console.log(formData)
-        API.pushFile(formData)
-        }}>OKk</Button>
+      
     </Form>
     </Card>
     </Container>)
@@ -106,7 +127,8 @@ function RefPoint(props){
         <Form.Control
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
-         
+          value={props.point[0]}
+          onChange={(e) => props.setPoint([e.target.value, props.point[1]])}
         />
       </InputGroup>
       </Col>
@@ -118,7 +140,8 @@ function RefPoint(props){
         <Form.Control
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
-         
+          value={props.point[1]}
+          onChange={(e) => props.setPoint([props.point[0], e.target.value])}
         />
       </InputGroup>
       </Col>
@@ -130,6 +153,8 @@ function RefPoint(props){
         <Form.Control
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
+          value={props.address}
+          onChange={(e) => props.setAddress(e.target.value)}
         />
       </InputGroup>
       </Col>
@@ -137,10 +162,10 @@ function RefPoint(props){
     </Row>
     <Row>
       <Col>
-        <Button>Add</Button>
+        <Button onClick={() => props.addPoint()}>Add</Button>
       </Col>
       <Col>
-        <Button variant="danger">Remove All</Button>
+        <Button variant="danger" onClick={() => props.removeAll()}>Remove All</Button>
       </Col>
     </Row>
     <br/>
@@ -186,6 +211,8 @@ function PointInput(props){
         <Form.Control
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
+          value={props.address}
+          onChange={(e) => props.setAddress(e.target.value)}
         />
       </InputGroup>
       </Col>
