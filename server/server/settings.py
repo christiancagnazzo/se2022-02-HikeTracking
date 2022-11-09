@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hiketracking.apps.HiketrackingConfig'
+    'hiketracking.apps.HiketrackingConfig',
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
