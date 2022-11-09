@@ -60,7 +60,7 @@ useEffect(()=> {
   const selectedHikefunc = async() => {
     if (flagSelectedHike!==false)  
       navigate("/Hike")
-    else navigate("/"+userPower)
+    //else navigate("/"+userPower)
   };
     selectedHikefunc();
 }, [flagSelectedHike]);
