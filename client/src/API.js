@@ -1,5 +1,22 @@
 const URL = "http://localhost:3001/"
 
+async function pushFile(formData){
+  try {
+    const response = await fetch(URL + 'file', {
+    method: 'POST',
+    body: formData
+  })
+  if (response.ok){
+  }
+  else {
+    return false
+  }
+  }
+  catch(e) {
+    throw e
+  }
+}
+
   async function login(credentials) {
     let response = await fetch(URL+'sessions', {
       method: 'POST',
@@ -46,5 +63,5 @@ const URL = "http://localhost:3001/"
     }
   }
 
-const API = {login,logout, getUserInfo,getHikes};
+const API = {login,logout, getUserInfo,getHikes,pushFile};
 export default API;
