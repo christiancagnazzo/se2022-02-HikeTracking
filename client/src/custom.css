@@ -1,0 +1,78 @@
+/* 
+Global 
+I'll use it to place a navbar without problems
+*/
+.vheight-100 {
+    min-height: 100vh;
+}
+
+.navbar-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.below-nav {
+    padding-top: 5rem;
+}
+
+/* Filters and projects */
+.list-group-item {
+    background-color: transparent;
+}
+
+.list-group-item.active {
+    background-color: #212529f0;
+    border-color: #212529f0;
+}
+
+.list-group-item-action:hover {
+    background-color: #212529f0;
+    color: white;
+}
+
+
+/* Class for services */
+.service1 {
+    color: red;
+}
+
+.service2 {
+    color:initial;
+}
+.service2:hover{
+    color:#0e86d4;
+    cursor: pointer;
+}
+
+/* Add task button */
+/*
+.fixed-right-bottom {
+    background-color: #212529f0;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    margin: 0 1.5rem 1.5rem 0;
+    border-radius: 5%;
+}
+
+.error-border {
+    border: 2px solid #e66666dd;
+    border-radius: 7px;
+}
+
+.margin-button {
+    margin-right:0.25em;
+}
+
+.deleted {
+   background-color: #c9180b71;
+}
+
+.updated{
+    background-color: #be962788;
+}
+
+.added{
+    background-color: #3d9e2586;
+}*/
