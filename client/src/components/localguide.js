@@ -68,6 +68,7 @@ function LocalGuide(props){
       </Form.Group>
       <PointInput label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp}/>
       <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp}/>
+      <RefPoint></RefPoint>
       <Card>
           <Map sp={sp} ep={ep}></Map>
         </Card>
@@ -90,6 +91,60 @@ function LocalGuide(props){
     
 }
 
+function RefPoint(props){
+  return (<>
+  <Row>
+    <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
+      <Col>
+      <InputGroup size="sm" className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default" >
+          Lat
+        </InputGroup.Text>
+        <Form.Control
+          aria-label="Default"
+          aria-describedby="inputGroup-sizing-default"
+         
+        />
+      </InputGroup>
+      </Col>
+      <Col>
+      <InputGroup size="sm" className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          Lng
+        </InputGroup.Text>
+        <Form.Control
+          aria-label="Default"
+          aria-describedby="inputGroup-sizing-default"
+         
+        />
+      </InputGroup>
+      </Col>
+      <Col>
+      <InputGroup  size="sm" className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          Addr
+        </InputGroup.Text>
+        <Form.Control
+          aria-label="Default"
+          aria-describedby="inputGroup-sizing-default"
+        />
+      </InputGroup>
+      </Col>
+      
+    </Row>
+    <Row>
+      <Col>
+        <Button>Add</Button>
+      </Col>
+      <Col>
+        <Button variant="danger">Remove All</Button>
+      </Col>
+    </Row>
+    <br/>
+    </>
+
+  )
+}
 
 function PointInput(props){
   const label = props.label
@@ -97,7 +152,7 @@ function PointInput(props){
   return (<Row>
     <Form.Label htmlFor="basic-url">{label}</Form.Label>
       <Col>
-      <InputGroup className="mb-3">
+      <InputGroup  size="sm"className="mb-3">
         <InputGroup.Text id="inputGroup-sizing-default" >
           Lat
         </InputGroup.Text>
@@ -109,7 +164,7 @@ function PointInput(props){
       </InputGroup>
       </Col>
       <Col>
-      <InputGroup className="mb-3">
+      <InputGroup  size="sm" className="mb-3">
         <InputGroup.Text id="inputGroup-sizing-default">
           Lng
         </InputGroup.Text>
@@ -121,9 +176,9 @@ function PointInput(props){
       </InputGroup>
       </Col>
       <Col>
-      <InputGroup className="mb-3">
+      <InputGroup  size="sm" className="mb-3">
         <InputGroup.Text id="inputGroup-sizing-default">
-          Address
+          Addr
         </InputGroup.Text>
         <Form.Control
           aria-label="Default"
