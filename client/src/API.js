@@ -1,8 +1,35 @@
-const URL = "http://localhost:3001/"
+const URL = "http://localhost:8000/hiketracking/"
 
 async function pushFile(formData){
-  try {
-    const response = await fetch(URL + 'file', {
+    try {
+      const response = await fetch(URL + 'hike/', {
+        method: 'POST',
+        body: formData
+    })
+    if (response.ok){
+      console.log("ookk")
+    }
+    else {
+      return false
+    }
+    }
+    catch(e) {
+      throw e
+    }
+}
+
+//USED TO GET INFO ABOUT QUEE FROM SERVER
+async function getAllInfos(){
+    const response = await fetch(URL);
+    const services = await response.json();
+    if(response.ok){
+        return services.map((c) => ({id:c.id, info1:c.info1, info2:c.info2, info3:c.info1info3}))
+    } else {
+        throw services;
+    }
+}
+async function postQueue(n) {
+  let response = await fetch(URL, {
     method: 'POST',
     body: formData
   })
