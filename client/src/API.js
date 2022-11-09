@@ -1,6 +1,5 @@
 const URL = "http://localhost:8000/hiketracking/"
 
-
 async function pushFile(formData){
     try {
       const response = await fetch(URL + 'hike/', {
@@ -32,18 +31,16 @@ async function getAllInfos(){
 async function postQueue(n) {
   let response = await fetch(URL, {
     method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(n),
-  });
-  if (response.ok) {
-    const queue = await response.json();
-    return queue;
-  } else {
-    const errDetail = await response.json();
-    throw errDetail.message;
+    body: formData
+  })
+  if (response.ok){
+  }
+  else {
+    return false
+  }
+  }
+  catch(e) {
+    throw e
   }
 }
 
@@ -79,19 +76,12 @@ async function postQueue(n) {
     }
   }
 
-  async function nextClient(){
-    const response = await fetch(URL+'officer', {method: 'POST', credential: 'include'});
-    const next = await response.json();
-    if (response.ok){
-      return next;
-    }else
-    {
-      throw next;
-    }
-  }
 
-  async function update(){
-    const response = await fetch(URL+'manager',{method: 'GET', credential: 'include'});
+
+  async function getHikes(filter,userPower){   
+    if (userPower!=="")
+      userPower+='/'
+    const response = await fetch(URL+userPower+'hikes?filter='+filter,{method: 'GET', credential: 'include'})
     const up=await response.json();
     if (response.ok){
       return up;
@@ -100,5 +90,5 @@ async function postQueue(n) {
     }
   }
 
-const API = {getAllInfos,login,logout, getUserInfo,postQueue,nextClient,update, pushFile};
+const API = {login,logout, getUserInfo,getHikes,pushFile};
 export default API;

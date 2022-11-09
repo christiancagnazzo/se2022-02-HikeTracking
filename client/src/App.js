@@ -29,12 +29,50 @@ function App2() {
   const [loggedIn,setLoggedIn]=useState(false);
   const [user, setUser] = useState({});
   const [flagSelectedHike,setFlagSelectedHike]=useState(false)
-  const [selectedHike,setSelectHike]=useState({})
+  const [selectedHike,setSelectedHike]=useState(null)
   const [message, setMessage] = useState('');
   //const [services,setServices]=useState([1]);
-  //const [dirty,setDirty]=useState(true);
+  const [dirty,setDirty]=useState(true);
   //const [ticket,setTicket]=useState('');
-  const [userPower,setUserPower]=useState("Visitor")
+  const [userPower,setUserPower]=useState("")
+  const [filter,setFilter]=useState("all")
+  const [hikes,setHikes]=useState([])
+
+  useEffect(()=> {
+    const checkAuth = async() => {
+      if (dirty && loggedIn)  
+        try {
+          const user = await API.getUserInfo();
+          setUser(user);
+          setDirty(false)
+        } catch(err) {
+          handleError(err);
+        }
+    };
+      checkAuth();
+}, [dirty,loggedIn,user]);
+
+useEffect(()=> {
+  const checkFilters = async() => {
+      try {
+        const hikes = await API.getHikes(filter,userPower);
+        setHikes(hikes)
+      } catch(err) {
+        handleError(err);
+      }
+  };
+    checkFilters();
+}, [filter,userPower]);
+
+useEffect(()=> {
+  const selectedHikefunc = async() => {
+    if (flagSelectedHike!==false)  
+      navigate("/Hike")
+    //else navigate("/"+userPower)
+  };
+    selectedHikefunc();
+}, [flagSelectedHike]);
+
 
   function handleError(err){
     console.log(err);
@@ -46,8 +84,8 @@ function App2() {
       await API.logout();
       setLoggedIn(false);
       setUser({});
-      setUserPower("Visitor")
-      navigate('/Visitor');
+      setUserPower("")
+      navigate('/');
     }
   
     // inserisco come nome l'email della persona e lo userPower sono i privilegi disponibili
@@ -75,9 +113,9 @@ function App2() {
     <Container fluid>
        <Row className="vheight-100">
             <Routes> 
-              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor ></Visitor>)}></Route>
+              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike}></Visitor>)}></Route>
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
-              <Route path='/Hike' element={flagSelectedHike ? <Hike></Hike> : <Navigate to='/'userPower />}></Route>
+              <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
             </Routes>
        </Row>
