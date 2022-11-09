@@ -23,7 +23,7 @@ class HikeReferencePoint(models.Model):
     hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
     reference_point_lan = models.FloatField()
     reference_point_lan = models.FloatField()
-    reference_point_addr = models.CharField(max_length=100)
+    reference_point_address = models.CharField(max_length=100)
     class Meta:
         constraints=[
             models.UniqueConstraint(fields=['hike', 'reference_point'], name='hikeref')
