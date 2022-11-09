@@ -17,7 +17,7 @@ function LocalGuide(props){
     const [addressRp, setAddressRp] = useState('')
     const [rpList, setRpList] = useState([])
     const [desc, setDesc] = useState('')
-    const [file, setFile] = useState()
+    const [file, setFile] = useState('')
     
 
     const handleSubmit = (event) => {
@@ -94,7 +94,7 @@ function LocalGuide(props){
       <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp}/>
       <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint}/>
       <Card>
-          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList}></Map>
+          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={file}></Map>
         </Card>
       <Form.Group className="mb-3" controlId="description">
         <Form.Label>Description</Form.Label>
@@ -102,7 +102,8 @@ function LocalGuide(props){
       </Form.Group>
       <Form.Group className="mb-3" controlId="end-point">
         <label htmlFor="formFile" className="form-label">Track file</label>
-        <input className="form-control" type="file" id="formFile"  accept=".gpx" onChange={e => setFile(e.target.files[0])}/>
+        <input className="form-control" type="file" id="formFile"  accept=".gpx" onChange={e => {setFile(e.target.files[0])
+        console.log(e.target.files[0])}}/>
       </Form.Group>
       {' '}
       <Button variant="primary" type="submit" onClick={handleSubmit}>

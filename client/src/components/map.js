@@ -1,7 +1,9 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
-import { useState } from 'react'
+import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
+import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
-
+import gpxParser from 'gpxparser'
+import GpxParser from 'gpxparser';
+import HelmetExport from 'react-helmet';
 const myIconSp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -31,6 +33,7 @@ const myIconRp = new Icon({
 });
 
 function Map(props){
+    const [positions, setPositions] = useState([])
     const rpList = props.rpList.map((pos) => {
         
         return <Marker position={[pos['lat'],pos['lng']]} icon={myIconRp}>
@@ -54,6 +57,20 @@ function Map(props){
             Start point: {props.epAddress}
         </Popup>
         </Marker>)
+    
+    if (props.gpxFile !== ''){ 
+        const gpx = new GpxParser()
+        const fr = new FileReader()
+        fr.readAsText(props.gpxFile)
+        fr.onload = () => {
+            gpx.parse(fr.result)
+            let pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
+            setPositions(pos)
+        }
+    }
+
+    
+
     return (
         <MapContainer center={props.sp} zoom={5} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
             <Click sp={props.sp}></Click>
@@ -64,6 +81,12 @@ function Map(props){
             {spMarker}
             {epMarker}
             {rpList}
+            <Polyline
+                pathOptions={{ fillColor: 'red', color: 'blue' }}
+                positions={
+                positions
+            }
+            />
         </MapContainer>
     )
 }
