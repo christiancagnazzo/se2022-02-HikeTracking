@@ -11,7 +11,7 @@ class Hike(models.Model):
     end_point = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     track_file = models.FileField(upload_to='tracks')
-    local_guide = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #local_guide = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 
@@ -23,5 +23,3 @@ class HikeReferencePoint(models.Model):
         constraints=[
             models.UniqueConstraint(fields=['hike', 'reference_point'], name='hikeref')
         ]
-
-                                                      
