@@ -15,9 +15,7 @@ function LocalGuide(props){
     const [addressEp, setAddressEp] = useState('')
     const [desc, setDesc] = useState('')
     const [file, setFile] = useState()
-    const formData = new FormData()
     
-    formData.append('File', file)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -77,13 +75,18 @@ function LocalGuide(props){
       </Form.Group>
       <Form.Group className="mb-3" controlId="end-point">
         <label htmlFor="formFile" className="form-label">Track file</label>
-        <input className="form-control" type="file" id="formFile"  accept=".gpx" onChange={e => {if (e.target.file){setFile(e.target.file[0])}}}/>
+        <input className="form-control" type="file" id="formFile"  accept=".gpx" onChange={e => setFile(e.target.files[0])}/>
       </Form.Group>
       {' '}
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
-      <Button onClick={() => API.pushFile(file)}>OKk</Button>
+      <Button onClick={() => {
+        const formData = new FormData()
+        formData.append('File', file)
+        console.log(formData)
+        API.pushFile(formData)
+        }}>OKk</Button>
     </Form>
     </Card>
     </Container>)

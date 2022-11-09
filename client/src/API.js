@@ -1,11 +1,11 @@
-const URL = "http://localhost:3001/"
+const URL = "http://localhost:8000/hiketracking/"
 
 
 async function pushFile(formData){
     try {
-      const response = await fetch(URL + 'file', {
-      method: 'POST',
-      body: formData
+      const response = await fetch(URL + 'hike/', {
+        method: 'POST',
+        body: formData
     })
     if (response.ok){
       console.log("ookk")
