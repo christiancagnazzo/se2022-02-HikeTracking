@@ -1,33 +1,5 @@
 const URL = "http://localhost:3001/"
 
-//USED TO GET INFO ABOUT QUEE FROM SERVER
-async function getAllInfos(){
-    const response = await fetch(URL);
-    const services = await response.json();
-    if(response.ok){
-        return services.map((c) => ({id:c.id, info1:c.info1, info2:c.info2, info3:c.info1info3}))
-    } else {
-        throw services;
-    }
-}
-async function postQueue(n) {
-  let response = await fetch(URL, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(n),
-  });
-  if (response.ok) {
-    const queue = await response.json();
-    return queue;
-  } else {
-    const errDetail = await response.json();
-    throw errDetail.message;
-  }
-}
-
   async function login(credentials) {
     let response = await fetch(URL+'sessions', {
       method: 'POST',
@@ -60,19 +32,12 @@ async function postQueue(n) {
     }
   }
 
-  async function nextClient(){
-    const response = await fetch(URL+'officer', {method: 'POST', credential: 'include'});
-    const next = await response.json();
-    if (response.ok){
-      return next;
-    }else
-    {
-      throw next;
-    }
-  }
 
-  async function update(){
-    const response = await fetch(URL+'manager',{method: 'GET', credential: 'include'});
+
+  async function getHikes(filter,userPower){   
+    if (userPower!=="")
+      userPower+='/'
+    const response = await fetch(URL+userPower+'hikes?filter='+filter,{method: 'GET', credential: 'include'})
     const up=await response.json();
     if (response.ok){
       return up;
@@ -81,5 +46,5 @@ async function postQueue(n) {
     }
   }
 
-const API = {getAllInfos,login,logout, getUserInfo,postQueue,nextClient,update};
+const API = {login,logout, getUserInfo,getHikes};
 export default API;

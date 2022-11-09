@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, Row, ListGroup} from 'react-bootstrap';
+import {Container, ListGroup} from 'react-bootstrap';
+import Sidebar from './sidebar';
 
 
 
@@ -10,12 +11,9 @@ function Visitor(props) {
     return (   
         <>
         <Container className="below-nav">
-          <div className='col-sm'>
-        <NewCards></NewCards>
-        </div>
-        
-    </Container>
-    </>
+            <NewCards filter={props.filter} setFilter={props.setFilter} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}></NewCards>
+        </Container>
+        </>
     );
 }
 
@@ -23,65 +21,66 @@ function Visitor(props) {
 
 
 function NewCards(props) {
-  let x =[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  let x =[{title:"ciao",description:"i'm beatiful"},{title:"ciao1",description:"i'm beatiful"},{title:"ciao2",description:"i'm beatiful"},{title:"ciao3",description:"i'm beatiful"},{title:"ciao4",description:"i'm beatiful"},{title:"ciao5",description:"i'm beatiful"},{title:"ciao6",description:"i'm beatiful"},{title:"ciao7",description:"i'm beatiful"}]
   let e=[];
-  let q=0;
-  for (q=0;q<x.length%7;q++)
-    e.push(q)  
-    
-  
+  let q=x.length/4;
 
-  
-  for (let w=0; w<q;w++)
-    e.push(w)
-
-   
+  let i=0;
+  let y;
+  for (i=0;i<q;i++){
+      e[i]=[];
+      for (y=0;y<4;y++)
+        if (x[i*4+y]!=null)
+          e[i].push(x[i*4+y])
+    }
   return (
-    <>
+      <>
         <h1 className='mb-2'>Hikes: </h1>
-        
-        
-        <ListGroup>
-          <div className='col-sm'>
-        {
-                    x.map((c) =>  <SingleCard x={c} />)
-                }
-          </div>   
-        </ListGroup>
-        
-        
-        </>
+        <Sidebar filter={props.filter} setFilter={props.setFilter}/>
+        <Container >
+          <ListGroup >
+            {
+              e.map((c) =>  <MultiCards x={c} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}/>)
+            } 
+          </ListGroup>
+          </Container>
+       </>
   )}  
     
 
-  /*function MultiCards(props){
+  function MultiCards(props){ 
     return(
-      <div>
-          <ListGroup horizontal >
+          <ListGroup horizontal>
                 {
-                    props.map((c) => <SingleCard x={c}/>)
+                    props.x.map((c) => <SingleCard description={c.description} title={c.title} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}/>)
                 }      
-          </ListGroup>
-      </div>
+          </ListGroup> 
 )  
-}*/
+}
 
 function SingleCard(props){
+  let x=props.title
+    x+=" Button"
+    
   return(
-<Card style={{ width: '18rem' }}>
+<Card style={{ width: '18rem'} } key={props.title} title={props.title}>
       <Card.Img variant="top" src="./logo192.png" />
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{props.title}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content. {props.x}
+          {props.description} 
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button id={x} key={x} variant="primary" onClick={()=>hikeSelected(props.setFlagSelectedHike, props.setSelectedHike, props.title)}>{x}</Button>
       </Card.Body>
     </Card>
     
   );
 }
 
+function hikeSelected(setflag,sethike,hike){
+  setflag(true);
+  sethike(hike);
+
+}
 
 export default Visitor;
