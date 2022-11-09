@@ -28,21 +28,7 @@ async function getAllInfos(){
         throw services;
     }
 }
-async function postQueue(n) {
-  let response = await fetch(URL, {
-    method: 'POST',
-    body: formData
-  })
-  if (response.ok){
-  }
-  else {
-    return false
-  }
-  }
-  catch(e) {
-    throw e
-  }
-}
+
 
   async function login(credentials) {
     let response = await fetch(URL+'sessions', {
