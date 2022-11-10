@@ -1,16 +1,14 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import Hike
+from hiketracking.models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 
 class HikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hike
         fields = '__all__'
-
-from hiketracking.models import CustomUser
-from django.utils.translation import gettext_lazy as _
-
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
