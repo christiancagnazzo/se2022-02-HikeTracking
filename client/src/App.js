@@ -10,6 +10,7 @@ import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
 import LocalGuide from './components/localguide'
 import {Helmet} from "react-helmet";
+import RegistrationForm from './components/registration';
 function App(){
   return (
     <Router>
@@ -106,11 +107,11 @@ useEffect(()=> {
         }
           )
     }
-
+    const signIn = () => {navigate("/registration")}
 
   return (
     <>
-    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} userPower={userPower}/>
+    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} signIn={signIn} userPower={userPower}/>
     <Container fluid>
        <Row className="vheight-100">
             <Routes> 
@@ -118,6 +119,7 @@ useEffect(()=> {
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
+              <Route path='/registration' element={<RegistrationForm/>}></Route>
             </Routes>
        </Row>
     </Container>

@@ -1,4 +1,4 @@
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,6 +33,7 @@ function LoginForm(props) {
 
   return (
       <Container className="below-nav">
+        <Card body>
           <Row className='justify-content-center '>
               <Col>
                   <h2 className='text-center'>Login</h2>
@@ -52,6 +53,7 @@ function LoginForm(props) {
                   </Form>
               </Col>
           </Row>
+        </Card>
       </Container>
     )
 }

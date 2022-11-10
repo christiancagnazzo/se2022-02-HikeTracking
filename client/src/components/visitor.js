@@ -64,15 +64,24 @@ function SingleCard(props){
     
   return(
 <Card style={{ width: '18rem'} } key={props.title} title={props.title}>
-      <Card.Img variant="top" src="./logo192.png" />
       <Card.Body>
-        <Card.Title>{props.title}</Card.Title>
+        <Card.Title>Hike Title</Card.Title>
         <Card.Text>
-          {props.description} 
+          Here we have to put the hike description. Other stuff to make the placeholder longer.
         </Card.Text>
-        <Button id={x} key={x} variant="primary" onClick={()=>hikeSelected(props.setFlagSelectedHike, props.setSelectedHike, props.title)}>{x}</Button>
       </Card.Body>
+      <ListGroup className="list-group-flush">
+        <ListGroup.Item>Length in meters</ListGroup.Item>
+        <ListGroup.Item>Estimated time in minutes</ListGroup.Item>
+        <ListGroup.Item>Ascent in meters</ListGroup.Item>
+        <ListGroup.Item>Difficulty</ListGroup.Item>
+        <ListGroup.Item>Start point</ListGroup.Item>
+        <ListGroup.Item>End point</ListGroup.Item>
+
+      </ListGroup>
     </Card>
+      
+    
     
   );
 }
@@ -80,7 +89,8 @@ function SingleCard(props){
 function hikeSelected(setflag,sethike,hike){
   setflag(true);
   sethike(hike);
-
 }
 
 export default Visitor;
+
+
