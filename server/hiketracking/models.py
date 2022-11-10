@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 # Create your models here.
 class Hike(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -18,6 +19,7 @@ class Hike(models.Model):
     description = models.CharField(max_length=200)
     track_file = models.FileField(upload_to='tracks')
     #local_guide = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
 
 
 
