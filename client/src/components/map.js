@@ -1,9 +1,8 @@
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
-import gpxParser from 'gpxparser'
 import GpxParser from 'gpxparser';
-import HelmetExport from 'react-helmet';
+
 const myIconSp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -35,7 +34,6 @@ const myIconRp = new Icon({
 function Map(props){
     const [positions, setPositions] = useState([])
     const rpList = props.rpList.map((pos) => {
-        
         return <Marker position={[pos['lat'],pos['lng']]} icon={myIconRp}>
             <Popup>
                 Reference Point: {pos['address']}
@@ -69,10 +67,8 @@ function Map(props){
         }
     }
 
-    
-
     return (
-        <MapContainer center={props.sp} zoom={5} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
+        <MapContainer center={props.sp} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
             <Click sp={props.sp}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -93,7 +89,6 @@ function Map(props){
 
 function Click(props){
     const [position, setPosition] = useState([0,0])
-   
     const map = useMapEvents({
         click: (e) => {
             map.flyTo(props.sp)
