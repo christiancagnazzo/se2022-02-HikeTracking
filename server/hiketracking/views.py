@@ -1,8 +1,14 @@
+from django.shortcuts import render
+from django.contrib.auth import login
+from knox.models import AuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, viewsets
-from .serializers import UserSerializer, RegisterSerializer
-from .models import Hike, CustomUser, HikeReferencePoint
+from .serializers import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
+from .models import Hike, CustomUser
+from knox.views import LoginView as KnoxLoginView
+
+
 
 # Create your views here.
 
@@ -61,13 +67,14 @@ class HikeFile(APIView):
             return Response(status = 400, data = {"Error": "Hike not found"})
     
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = CustomUser.objects.all().order_by('-date_joined')
+class UserList(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -79,14 +86,16 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
         })
 
-# class LoginAPI(KnoxLoginView):
-#     permission_classes = (permissions.AllowAny,)
-#
-#     def post(self, request, format=None):
-#         serializer = AuthTokenSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['user']
-#         login(request, user)
-#         return super(LoginAPI, self).post(request, format=None)
+
+class LoginAPI(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenCustomSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginAPI, self).post(request, format=None)

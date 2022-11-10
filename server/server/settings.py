@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'hiketracking.apps.HiketrackingConfig',
     'corsheaders',
     'rest_framework',
-    'corsheaders'
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -47,20 +47,20 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware'
 ]
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.RemoteUserBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    )
 }
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
-
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000'
+]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
 ]
@@ -113,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 AUTH_USER_MODEL = 'hiketracking.CustomUser'
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
