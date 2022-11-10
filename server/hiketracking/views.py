@@ -1,7 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from .models import Hike, HikeReferencePoint
+from rest_framework import generics, permissions, viewsets
+from .serializers import UserSerializer, RegisterSerializer
+from .models import Hike, CustomUser, HikeReferencePoint
 
 # Create your views here.
 
@@ -59,3 +60,33 @@ class HikeFile(APIView):
         except:
             return Response(status = 400, data = {"Error": "Hike not found"})
     
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = CustomUser.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        })
+
+# class LoginAPI(KnoxLoginView):
+#     permission_classes = (permissions.AllowAny,)
+#
+#     def post(self, request, format=None):
+#         serializer = AuthTokenSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         login(request, user)
+#         return super(LoginAPI, self).post(request, format=None)

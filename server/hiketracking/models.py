@@ -1,5 +1,13 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils import timezone
+
 from django.db import models
-from django.conf import settings
+
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
+
+from hiketracking.manger import  CustomUserManager
+from django.utils.translation import gettext_lazy as _
+
 
 
 # Create your models here.
@@ -18,8 +26,7 @@ class Hike(models.Model):
     end_point_address = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     track_file = models.FileField(upload_to='tracks')
-    #local_guide = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
+    # local_guide = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 
@@ -28,7 +35,23 @@ class HikeReferencePoint(models.Model):
     reference_point_lan = models.FloatField()
     reference_point_lng = models.FloatField()
     reference_point_address = models.CharField(max_length=100)
+
     class Meta:
-        constraints=[
+        constraints = [
             models.UniqueConstraint(fields=['hike', 'reference_point_lan', 'reference_point_lng'], name='hikeref')
         ]
+
+
+class CustomUser(AbstractUser):
+    username = None
+    email = models.EmailField('email address',unique=True)
+    role = models.CharField(max_length=200)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['role']
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
