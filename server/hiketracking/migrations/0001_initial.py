@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('length', models.IntegerField()),
                 ('expected_time', models.IntegerField()),
                 ('ascent', models.IntegerField()),
+                ('difficulty', models.CharField(max_length=100)),
                 ('start_point', models.CharField(max_length=100)),
                 ('end_point', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),

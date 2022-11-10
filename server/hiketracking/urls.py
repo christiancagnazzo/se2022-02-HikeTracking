@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import AddHikeFile
+from .views import NewHike, HikeFile
 
 app_name = 'hiketracking'
 urlpatterns = [
-    path('hike/', AddHikeFile.as_view()),
+    path('hike/', NewHike.as_view()),
+    path('hike/file/<str:hike_id>', HikeFile.as_view()),
 ]

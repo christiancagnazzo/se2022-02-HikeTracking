@@ -3,12 +3,14 @@ from django.conf import settings
 
 # Create your models here.
 class Hike(models.Model):
+    id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=30, unique=True)
     length = models.IntegerField()
     expected_time = models.IntegerField()
     ascent = models.IntegerField()
     start_point_lat = models.FloatField()
     start_point_lng = models.FloatField()
+    difficulty = models.CharField(max_length=100)
     start_point_address = models.CharField(max_length=100)
     end_point_lat = models.FloatField()
     end_point_lng = models.FloatField()

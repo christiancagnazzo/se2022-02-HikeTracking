@@ -20,6 +20,7 @@ function App(){
       <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
      integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
      crossorigin=""></script>
+    
       </Helmet>
       <App2/>
     </Router>
