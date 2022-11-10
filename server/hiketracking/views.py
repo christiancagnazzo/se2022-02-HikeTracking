@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, viewsets
 from .serializers import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
-from .models import Hike, CustomUser
+from .models import Hike, CustomUser, HikeReferencePoint
 from knox.views import LoginView as KnoxLoginView
 
 
