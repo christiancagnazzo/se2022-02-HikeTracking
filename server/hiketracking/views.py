@@ -14,9 +14,10 @@ from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
 # Create your views here.
 
 class NewHike(APIView):
-    permission_classes = (permissions.AllowAny,)
+    #permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
+        
         try:
             data = request.data
             hike = Hike.objects.create(
@@ -49,12 +50,12 @@ class NewHike(APIView):
 
             return Response(status = 200, data = {"hike_id": hike.id})
         except Exception as e:
-            Hike.objects.filter(id=hike.id).delete()
-            HikeReferencePoint.objects.filter(hike=hike).delete()
+           # Hike.objects.filter(id=hike.id).delete()
+           # HikeReferencePoint.objects.filter(hike=hike).delete()
             return Response(status = 400, data={"Error": str(e)})
 
 class HikeFile(APIView):
-    permission_classes = (permissions.AllowAny,)
+    #permission_classes = (permissions.AllowAny,)
     
     def put(self, request, hike_id):
         try:
@@ -103,7 +104,8 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
+        result = super(LoginAPI, self).post(request, format=None)
+        return Response(status=200, data = { "user": user.email, "role": user.role, "token": result.data['token']})
         
         
 class Hikes(APIView):
@@ -127,9 +129,5 @@ class Hikes(APIView):
                     
             except:
                 return Response(status=500)
-
-                # sending response 
-                #response = HttpResponse(file_data, content_type='application/vnd.ms-excel')
-                #response['Content-Disposition'] = 'attachment; filename="foo.xls"'
                 
         return Response(hikes)

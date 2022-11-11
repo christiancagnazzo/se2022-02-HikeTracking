@@ -2,7 +2,6 @@ import {Navbar, Container, Nav, Button} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 function MyNavbar2(props){
-console.log(props.loggedIn)
       return ( props.loggedIn ? <NavLogout logout={props.logout} userPower={props.userPower}/> : <NavLogin login={props.login} signIn={props.signIn}/>);
 
   function NavLogin(props){

@@ -1,4 +1,4 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
+import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import { useEffect, useState } from "react";
 import API from '../API';
@@ -19,7 +19,10 @@ function LocalGuide(props) {
   const [desc, setDesc] = useState('')
   const [file, setFile] = useState('')
   const [readFile, setReadFile] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
+  let token = localStorage.getItem("token");
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData()
@@ -39,12 +42,12 @@ function LocalGuide(props) {
       'description' : desc,
       'rp_list': rpList
     }
-    let req = await API.createHike(hikeDescription, formData,"c63d9a50b5089c6997660d683fb234c371859035fb2d8f9a86698770056dd47c")
-    if (req){
-      // messaggio tutto ok
-      window.location.reload(false);
+    let req = await API.createHike(hikeDescription, formData, token)
+    if (req.error){
+      setErrorMessage(req.msg)
     } else {
-      // messaggio errore
+      window.location.reload(false);
+      setErrorMessage(req.msg)
     }
   }
 
@@ -145,9 +148,9 @@ function LocalGuide(props) {
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
-
       </Form>
     </Card>
+    {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
   </Container>)
 
 }

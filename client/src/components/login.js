@@ -27,19 +27,6 @@ function LoginForm(props) {
     }
     else {
       props.login(credentials)
-      /*
-      try {
-        let result = await API.login(credentials)
-        if (result.error) {
-          setErrorMessage(result.msg)
-        } else {
-          console.log(result.msg)
-          navigate('/')
-        }
-      }
-      catch (e) {
-        setErrorMessage(e)
-      }*/
     }
   };
 

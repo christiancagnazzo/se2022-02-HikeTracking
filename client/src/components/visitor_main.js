@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
+import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -8,14 +8,18 @@ import API from '../API';
 
 function VisitorPage(props) {
   let [hikes, setHikes] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('')
+  let token = localStorage.getItem("token");
 
   useEffect(() => {
     const getHikes = async () => {
 
       try {
-        const hikes = await API.getAllHikes();
-        setHikes(hikes.msg);
-        console.log(hikes)
+        const hikes = await API.getAllHikes(token);
+        if (hikes.error)
+          setErrorMessage(hikes.msg)
+        else
+          setHikes(hikes.msg);
       } catch (err) {
         console.log(err)
       }
@@ -27,8 +31,9 @@ function VisitorPage(props) {
 
   return (
     <Container className="below-nav">
+      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
       <Row xs={1} sm={2} md={3}>
-          { hikes.map( (h) => <Col><HikeCard hike={h}></HikeCard></Col> )}
+        {hikes.map((h) => <Col><HikeCard hike={h}></HikeCard></Col>)}
       </Row>
     </Container>
   )
@@ -39,7 +44,7 @@ function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
   const isHiker = true
-  
+
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
       <Card.Body>
@@ -75,8 +80,8 @@ function HikeCard(props) {
       onHide={() => setModalMapShow(false)}
       title={props.hike.title}
       file={props.hike.file}
-      sp={[props.hike.start_point_lat,props.hike.start_point_lng]}
-      ep={[props.hike.end_point_lat,props.hike.end_point_lng]}
+      sp={[props.hike.start_point_lat, props.hike.start_point_lng]}
+      ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
       rpList={props.hike.rp}
     /> : ''}
   </>
@@ -104,9 +109,9 @@ function HikeModalDescription(props) {
         </p>
         <h5>Reference Points</h5>
         <ul>
-        { props.rpList.map ( (rp) => 
-          <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lan} - Lon: {rp.reference_point_lng}</li>
-        )}
+          {props.rpList.map((rp) =>
+            <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lan} - Lon: {rp.reference_point_lng}</li>
+          )}
         </ul>
       </Modal.Body>
       <Modal.Footer>
