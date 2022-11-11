@@ -108,5 +108,20 @@ async function getAllHikes(token) {
   }
 }
 
-const API = { login, logout, getHikes, createHike, signin, getAllHikes };
+async function checkAuth(token){
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'sessions/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare" }
+  }
+}
+
+const API = { login, logout, getHikes, createHike, signin, getAllHikes, checkAuth };
 export default API;

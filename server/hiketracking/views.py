@@ -136,3 +136,10 @@ class Hikes(APIView):
                 return Response(status=500)
                 
         return Response(hikes)
+
+class Sessions(APIView):
+    
+    def get(self, request):
+        user = CustomUser.objects.get(email=request.user)
+        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ","")})
+        
