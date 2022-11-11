@@ -8,7 +8,7 @@ function LoginForm(props) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
+ 
 
   function validateEmail(input) {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -26,6 +26,8 @@ function LoginForm(props) {
       setErrorMessage('Formato email non valido')
     }
     else {
+      props.login(credentials)
+      /*
       try {
         let result = await API.login(credentials)
         if (result.error) {
@@ -37,7 +39,7 @@ function LoginForm(props) {
       }
       catch (e) {
         setErrorMessage(e)
-      }
+      }*/
     }
   };
 

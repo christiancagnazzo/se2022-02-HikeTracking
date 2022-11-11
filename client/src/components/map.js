@@ -53,20 +53,19 @@ function Map(props){
     if(props.ep[0]!=='' && props.ep[1]!=='')
         epMarker =(<Marker position={props.ep} icon={myIconEp} >
         <Popup>
-            Start point: {props.epAddress}
+            End point: {props.epAddress}
         </Popup>
         </Marker>)
-    
-    if (props.gpxFile !== ''){ 
-        const gpx = new GpxParser()
-        const fr = new FileReader()
-        fr.readAsText(props.gpxFile)
-        fr.onload = () => {
-            gpx.parse(fr.result)
+    useEffect(() => {
+        if (props.gpxFile !== ''){ 
+            const gpx = new GpxParser()
+            gpx.parse(props.gpxFile)
             let pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
             setPositions(pos)
         }
-    }
+    },[props.gpxFile])
+    
+    
 
     return (
         <MapContainer center={props.sp} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>

@@ -110,7 +110,7 @@ async function getHikes(filter, userPower) {
 async function getAllHikes(token) {
   let response = await fetch(URL + 'allhikes/', {
     method: 'GET',
-    'Authorization': 'Token '+token
+    'Authorization': 'Token '+ token
   });
 
   if (response.status == '200')

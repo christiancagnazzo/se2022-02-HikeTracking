@@ -1,6 +1,6 @@
 import { Container, Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 function LocalGuide(props) {
@@ -18,7 +18,7 @@ function LocalGuide(props) {
   const [rpList, setRpList] = useState([])
   const [desc, setDesc] = useState('')
   const [file, setFile] = useState('')
-
+  const [readFile, setReadFile] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +39,7 @@ function LocalGuide(props) {
       'description' : desc,
       'rp_list': rpList
     }
-    let req = await API.createHike(hikeDescription, formData)
+    let req = await API.createHike(hikeDescription, formData,"c63d9a50b5089c6997660d683fb234c371859035fb2d8f9a86698770056dd47c")
     if (req){
       // messaggio tutto ok
       window.location.reload(false);
@@ -85,8 +85,17 @@ function LocalGuide(props) {
   const cleanRPoint = () => {
     setRpList([])
   }
-  return (<Container className="below-nav">
 
+  useEffect(() => {
+    if(file!==''){
+      const fr = new FileReader()
+      fr.readAsText(file)
+      fr.onload = () => {
+        setReadFile(fr.result)
+      }
+    }
+  },[file])
+  return (<Container className="below-nav">
     {' '}
     <Card body>
       <Form>
@@ -119,7 +128,7 @@ function LocalGuide(props) {
         <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
-          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={file}></Map>
+          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile}></Map>
         </Card>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
@@ -129,7 +138,7 @@ function LocalGuide(props) {
           <label htmlFor="formFile" className="form-label">Track file</label>
           <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={e => {
             setFile(e.target.files[0])
-            console.log(e.target.files[0])
+            
           }} />
         </Form.Group>
         {' '}
