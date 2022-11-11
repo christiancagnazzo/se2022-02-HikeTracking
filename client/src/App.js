@@ -46,7 +46,7 @@ function App2() {
     try {
       let result = await API.checkAuth(token)
       if (result.error) {
-        setMessage(result.msg)
+        //setMessage(result.msg)
       } else {
         setLoggedIn(true);
         setUser(result.msg.user);
@@ -57,7 +57,7 @@ function App2() {
       }
     }
     catch (e) {
-      setMessage(e)
+      console.log(e)
     }
   }
   checkAuth()
