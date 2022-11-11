@@ -1,7 +1,7 @@
 import './custom.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import API from './API';
-import VisitorPage from './components/visitor_main'
+import Visitor from './components/visitor';
 import { Container, Row } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -9,20 +9,11 @@ import { LoginForm } from './components/login';
 import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
 import LocalGuide from './components/localguide'
-import {Helmet} from "react-helmet";
-import RegistrationForm from './components/registration';
+
+
 function App(){
   return (
     <Router>
-      <Helmet>
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-     integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-     crossorigin=""/>
-      <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-     crossorigin=""></script>
-    
-      </Helmet>
       <App2/>
     </Router>
   )
@@ -118,22 +109,21 @@ useEffect(()=> {
           setMessage(err);
         }
           )
-    }
-    const signIn = () => {navigate("/registration")}
+    }//function for login
+
 
   return (
     <>
-    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} signIn={signIn} userPower={userPower}/>
+    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} userPower={userPower}/>
+    
     <Container fluid>
 
        <Row className="vheight-100">
             <Routes> 
-              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <VisitorPage filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike} setCheckedState={setCheckedState} checkedState={checkedState} getH={getH}></VisitorPage>)}></Route>
+              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor filter={filters}  setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike} setCheckedState={setCheckedState} checkedState={checkedState} getH={getH}></Visitor>)}></Route>
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
-              <Route path='/registration' element={<RegistrationForm/>}></Route>
-              <Route path='/visitor' element={<VisitorPage/>}></Route>
             </Routes>
        </Row>
     </Container>
