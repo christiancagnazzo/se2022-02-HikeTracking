@@ -3,11 +3,17 @@ import Card from 'react-bootstrap/Card';
 import {Container, ListGroup, Row, Col, Modal} from 'react-bootstrap';
 import { useState } from 'react';
 import Map from './map'
-
+import Sidebar from './sidebar';
 
 function VisitorPage(props){
     return(
     <Container className="below-nav">
+        <Row>
+        <Col md={2}>
+        <Sidebar logged={null} setCheckedState={props.setCheckedState} checkedState={props.checkedState} getH={props.getH} filter={props.filter}/>
+        </Col>
+        
+        <Col md={10}>
         <Row xs={1} sm={2} md={3}>
             <Col className="my-2 d-flex justify-content-center"><HikeCard/></Col>
             <Col className="my-2 d-flex justify-content-center"><HikeCard/></Col>
@@ -15,6 +21,9 @@ function VisitorPage(props){
             <Col className="my-2 d-flex justify-content-center"><HikeCard/></Col>
             <Col className="my-2 d-flex justify-content-center"><HikeCard/></Col>
             <Col className="my-2 d-flex justify-content-center"><HikeCard/></Col>
+        </Row>
+        </Col>
+        
         </Row>
     </Container>
     )

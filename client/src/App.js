@@ -9,7 +9,7 @@ import { LoginForm } from './components/login';
 import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
 import LocalGuide from './components/localguide'
-
+import VisitorPage from './components/visitor_main';
 
 function App(){
   return (
@@ -124,6 +124,7 @@ useEffect(()=> {
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
+              <Route path='/visitor' element={<VisitorPage filter={filters}  setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike} setCheckedState={setCheckedState} checkedState={checkedState} getH={getH}/>}></Route>
             </Routes>
        </Row>
     </Container>

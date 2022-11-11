@@ -16,8 +16,8 @@ import { useEffect } from 'react';
 function Sidebar(props){
   const [checkedState, setCheckedState] = useState(props.checkedState);
   const [first,setFirst]=useState(true)
-let x=(props.logged===null);
-let array=checkedState;
+  let x=(props.logged===null);
+  let array=checkedState;
 
     useEffect(()=> {
       const getInfosRequested = async() => {
