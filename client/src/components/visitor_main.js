@@ -33,7 +33,7 @@ function VisitorPage(props) {
     <Container className="below-nav">
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
       <Row xs={1} sm={2} md={3}>
-        {hikes.map((h) => <Col><HikeCard hike={h}></HikeCard></Col>)}
+        {hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>)}
       </Row>
     </Container>
   )
@@ -43,7 +43,7 @@ function VisitorPage(props) {
 function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
-  const isHiker = true
+  const isHiker = props.userPower === 'hiker'
 
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>

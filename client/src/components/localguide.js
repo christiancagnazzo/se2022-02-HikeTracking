@@ -1,8 +1,10 @@
 import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
+
 function LocalGuide(props) {
   const [title, setTitle] = useState('')
   const [length, setLength] = useState('')
@@ -20,6 +22,7 @@ function LocalGuide(props) {
   const [file, setFile] = useState('')
   const [readFile, setReadFile] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
   
@@ -46,8 +49,7 @@ function LocalGuide(props) {
     if (req.error){
       setErrorMessage(req.msg)
     } else {
-      window.location.reload(false);
-      setErrorMessage(req.msg)
+      navigate('/')
     }
   }
 

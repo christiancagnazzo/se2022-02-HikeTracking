@@ -17,7 +17,9 @@ class NewHike(APIView):
     #permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        
+        user_id = CustomUser.objects.get(email=request.user)
+        print(user_id)
+
         try:
             data = request.data
             hike = Hike.objects.create(
@@ -32,7 +34,8 @@ class NewHike(APIView):
                 end_point_lat=data['end_point_lat'],
                 end_point_lng=data['end_point_lng'],
                 end_point_address=data['end_point_address'],
-                description=data['description'])
+                description=data['description'],
+                local_guide=user_id)
             
             
             hike.save()
@@ -105,7 +108,7 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         result = super(LoginAPI, self).post(request, format=None)
-        return Response(status=200, data = { "user": user.email, "role": user.role, "token": result.data['token']})
+        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ",""), "token": result.data['token']})
         
         
 class Hikes(APIView):

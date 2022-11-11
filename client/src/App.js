@@ -63,7 +63,7 @@ function App2() {
         //setDirty(true);
         localStorage.setItem('token', JSON.stringify(result.msg.token));
         setMessage('');
-        navigate('/');
+        navigate('/'+result.msg.role);
       }
     }
     catch (e) {
@@ -78,11 +78,12 @@ function App2() {
       <Container fluid>
         <Row className="vheight-100">
           <Routes>
-            <Route path='/' element={(<VisitorPage filter={filter} setFilter={setFilter} ></VisitorPage>)}></Route>
+            <Route path='/' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}></Route>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
-            <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
+            <Route path='/localguide' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
             <Route path='/registration' element={<RegistrationForm />}></Route>
-            <Route path='/visitor' element={<VisitorPage />}></Route>
+            <Route path='/hiker' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}></Route>
+            
           </Routes>
         </Row>
       </Container>
