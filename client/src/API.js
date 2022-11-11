@@ -1,14 +1,15 @@
 const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  
   try {
-
     let response = await fetch(URL + 'hike/', {
       method: 'POST',
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token '+token
+        'Authorization': valid_token
       },
     })
 
@@ -17,34 +18,24 @@ async function createHike(hike_description, hike_file, token) {
       let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
         method: 'PUT',
         body: hike_file,
-        'Authorization': 'Token '+token
+        headers: {
+          'Authorization': valid_token
+        },
       })
 
       if (second_response.status == '200')
-        return true;
+        return {msg: "Hike Creato"};
 
-      return false;
+        return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
     }
 
-    return false;
+    return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
   }
 
   catch (e) {
     console.log(e) // TODO
   }
 }
-
-//USED TO GET INFO ABOUT QUEE FROM SERVER
-async function getAllInfos() {
-  const response = await fetch(URL);
-  const services = await response.json();
-  if (response.ok) {
-    return services.map((c) => ({ id: c.id, info1: c.info1, info2: c.info2, info3: c.info1info3 }))
-  } else {
-    throw services;
-  }
-}
-
 
 async function login(credentials) {
   let response = await fetch(URL + 'login/', {
@@ -56,9 +47,9 @@ async function login(credentials) {
   });
 
   if (response.status == '200')
-    return { msg: await response.json()}
-  else{
-    return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare"}
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare" }
   }
 }
 
@@ -72,28 +63,22 @@ async function signin(credentials) {
   });
 
   if (response.status == '200')
-    return { msg: await response.json()}
-  else{
-    return { error: 'Error', msg: "Qualcosa è andato storto nella registrazione. Riprovare"}
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Qualcosa è andato storto nella registrazione. Riprovare" }
   }
-    
+
 }
 
-async function logout() {
-  await fetch(URL + 'sessions/current', { method: 'DELETE', credentials: 'include' });
+async function logout(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  await fetch(URL + 'logout/', {
+    method: 'POST',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
 }
-
-async function getUserInfo() {
-  const response = await fetch(URL + 'sessions/current', { credentials: 'include' });
-  const userInfo = await response.json();
-  if (response.ok) {
-    return userInfo;
-  } else {
-    throw userInfo;  // an object with the error coming from the server
-  }
-}
-
-
 
 async function getHikes(filter, userPower) {
   if (userPower !== "")
@@ -107,5 +92,36 @@ async function getHikes(filter, userPower) {
   }
 }
 
-const API = { login, logout, getUserInfo, getHikes, createHike, signin };
+async function getAllHikes(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'allhikes/', {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
+
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare" }
+  }
+}
+
+async function checkAuth(token){
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'sessions/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare" }
+  }
+}
+
+const API = { login, logout, getHikes, createHike, signin, getAllHikes, checkAuth };
 export default API;
