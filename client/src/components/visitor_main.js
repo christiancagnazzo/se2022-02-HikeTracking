@@ -67,6 +67,7 @@ function HikeCard(props){
           onHide={() => setModalDescriptionShow(false)}
           title={title}
           description={description}
+          rpList={rpList}
           />
           {isHiker?<HikeModalTrack
           show={modalMapShow}
@@ -102,6 +103,10 @@ function HikeCard(props){
             <h4>Description</h4>
             <p>
               {props.description}
+            </p>
+            <h5>Reference Points</h5>
+            <p>
+              Questo reference point, quel reference point, quell'altro ancora
             </p>
           </Modal.Body>
           <Modal.Footer>
