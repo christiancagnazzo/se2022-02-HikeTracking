@@ -1,21 +1,22 @@
-from django.shortcuts import render
 from django.contrib.auth import login
+from django.shortcuts import render
 from knox.models import AuthToken
+from knox.views import LoginView as KnoxLoginView
+from rest_framework import generics, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics, permissions, viewsets
-from .serializers import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
-from .models import Hike, CustomUser, HikeReferencePoint
-from knox.views import LoginView as KnoxLoginView
+import json
 
-
+from .models import CustomUser, Hike, HikeReferencePoint
+from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
+                          UserSerializer)
 
 # Create your views here.
 
 class NewHike(APIView):
-    permission_classes = (permissions.AllowAny,) #temp
+    permission_classes = (permissions.AllowAny,)
+
     def post(self, request):
-        
         try:
             data = request.data
             hike = Hike.objects.create(
@@ -53,7 +54,8 @@ class NewHike(APIView):
             return Response(status = 400, data={"Error": str(e)})
 
 class HikeFile(APIView):
-    permission_classes = (permissions.AllowAny,) #temp
+    permission_classes = (permissions.AllowAny,)
+    
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']
@@ -104,3 +106,18 @@ class LoginAPI(KnoxLoginView):
         return super(LoginAPI, self).post(request, format=None)
         
         
+class Hikes(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        result = {}
+        hikes = Hike.objects.values()
+        for h in hikes:
+            result = HikeReferencePoint.objects.filter(hike_id=h['id']).values()
+            list = []
+            for r in result:
+                list.append(r)
+            
+            h['rp'] = list
+                
+        return Response(hikes)

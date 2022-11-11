@@ -33,10 +33,11 @@ const myIconRp = new Icon({
 
 function Map(props){
     const [positions, setPositions] = useState([])
+    
     const rpList = props.rpList.map((pos) => {
-        return <Marker position={[pos['lat'],pos['lng']]} icon={myIconRp}>
+        return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp}>
             <Popup>
-                Reference Point: {pos['address']}
+                Reference Point: {pos['reference_point_address']}
             </Popup>
         </Marker>
     })

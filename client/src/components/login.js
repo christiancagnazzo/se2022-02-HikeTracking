@@ -31,6 +31,7 @@ function LoginForm(props) {
         if (result.error) {
           setErrorMessage(result.msg)
         } else {
+          console.log(result.msg)
           navigate('/')
         }
       }

@@ -107,5 +107,18 @@ async function getHikes(filter, userPower) {
   }
 }
 
-const API = { login, logout, getUserInfo, getHikes, createHike, signin };
+async function getAllHikes(token) {
+  let response = await fetch(URL + 'allhikes/', {
+    method: 'GET',
+    'Authorization': 'Token '+token
+  });
+
+  if (response.status == '200')
+    return { msg: await response.json()}
+  else{
+    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare"}
+  }
+}
+
+const API = { login, logout, getUserInfo, getHikes, createHike, signin, getAllHikes };
 export default API;
