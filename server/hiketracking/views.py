@@ -13,8 +13,9 @@ from knox.views import LoginView as KnoxLoginView
 # Create your views here.
 
 class NewHike(APIView):
+    permission_classes = (permissions.AllowAny,)
     def post(self, request):
-
+        
         try:
             data = request.data
             hike = Hike.objects.create(
@@ -52,6 +53,7 @@ class NewHike(APIView):
             return Response(status = 400, data={"Error": str(e)})
 
 class HikeFile(APIView):
+    permission_classes = (permissions.AllowAny,)
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']
@@ -78,6 +80,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class RegisterAPI(generics.GenericAPIView):
+    permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
@@ -99,3 +102,5 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+        
+        

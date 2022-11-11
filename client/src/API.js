@@ -2,7 +2,7 @@ const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file) {
   try {
-    
+
     let response = await fetch(URL + 'hike/', {
       method: 'POST',
       body: JSON.stringify(hike_description),
@@ -12,8 +12,8 @@ async function createHike(hike_description, hike_file) {
     })
 
     if (response.status == '200') {
-      response = await response.json() 
-      let second_response = await fetch(URL + 'hike/file/'+response['hike_id'], {
+      response = await response.json()
+      let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
         method: 'PUT',
         body: hike_file
       })
@@ -45,21 +45,36 @@ async function getAllInfos() {
 
 
 async function login(credentials) {
-  let response = await fetch(URL + 'sessions', {
+  let response = await fetch(URL + 'login/', {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(credentials),
   });
-  if (response.ok) {
-    const user = await response.json();
-    return user;
-  } else {
-    const errDetail = await response.json();
-    throw errDetail.message;
+
+  if (response.status == '200')
+    return { msg: await response.json()}
+  else{
+    return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare"}
   }
+}
+
+async function signin(credentials) {
+  let response = await fetch(URL + 'register/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  if (response.status == '200')
+    return { msg: await response.json()}
+  else{
+    return { error: 'Error', msg: "Qualcosa è andato storto nella registrazione. Riprovare"}
+  }
+    
 }
 
 async function logout() {
@@ -90,5 +105,5 @@ async function getHikes(filter, userPower) {
   }
 }
 
-const API = { login, logout, getUserInfo, getHikes, createHike };
+const API = { login, logout, getUserInfo, getHikes, createHike, signin };
 export default API;
