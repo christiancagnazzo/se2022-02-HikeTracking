@@ -39,6 +39,29 @@ function App2() {
   }
   const navigate = useNavigate();
 
+  useEffect(() => {
+  const checkAuth = async () => {
+    let token = localStorage.getItem("token");
+    if(token === null) return;
+    try {
+      let result = await API.checkAuth(token)
+      if (result.error) {
+        setMessage(result.msg)
+      } else {
+        setLoggedIn(true);
+        setUser(result.msg.user);
+        setUserPower(result.msg.role)
+        //setDirty(true);
+        setMessage('');
+        navigate('/'+result.msg.role);
+      }
+    }
+    catch (e) {
+      setMessage(e)
+    }
+  }
+  checkAuth()
+  },[])
 
   const doLogout = async () => {
     let token = localStorage.getItem("token");

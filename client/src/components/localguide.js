@@ -6,19 +6,19 @@ import API from '../API';
 import Map from './map'
 
 function LocalGuide(props) {
-  const [title, setTitle] = useState('')
-  const [length, setLength] = useState('')
-  const [time, setTime] = useState('')
-  const [ascent, setAscent] = useState('')
+  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
+  const [length, setLength] = useState(9)
+  const [time, setTime] = useState(240)
+  const [ascent, setAscent] = useState(3538)
   const [difficulty, setDifficulty] = useState(2)
-  const [sp, setSp] = useState(['', ''])
-  const [addressSp, setAddressSp] = useState('')
-  const [ep, setEp] = useState(['', ''])
-  const [addressEp, setAddressEp] = useState('')
+  const [sp, setSp] = useState([45.177786, 7.083372	])
+  const [addressSp, setAddressSp] = useState('Dummy start	')
+  const [ep, setEp] = useState([45.203531, 7.07734	])
+  const [addressEp, setAddressEp] = useState('Dummy ending')
   const [rp, setRp] = useState(['', ''])
   const [addressRp, setAddressRp] = useState('')
   const [rpList, setRpList] = useState([])
-  const [desc, setDesc] = useState('')
+  const [desc, setDesc] = useState('First hike to be uploaded	')
   const [file, setFile] = useState('')
   const [readFile, setReadFile] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -78,9 +78,9 @@ function LocalGuide(props) {
   const addRPoint = () => {
     if (rp[0] === '' || rp[1] === '') return
     const point = {
-      lat: rp[0],
-      lng: rp[1],
-      address: addressRp
+      reference_point_lat: rp[0],
+      reference_point_lng: rp[1],
+      reference_point_address: addressRp
     }
     setRPoint(['', ''])
     setAddressRp('')

@@ -35,6 +35,7 @@ function Map(props){
     const [positions, setPositions] = useState([])
     
     const rpList = props.rpList.map((pos) => {
+        console.log(pos)
         return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp}>
             <Popup>
                 Reference Point: {pos['reference_point_address']}

@@ -18,7 +18,7 @@ class NewHike(APIView):
 
     def post(self, request):
         user_id = CustomUser.objects.get(email=request.user)
-        print(user_id)
+        
 
         try:
             data = request.data
@@ -41,18 +41,20 @@ class NewHike(APIView):
             hike.save()
 
             for rp in data['rp_list']:
-                
+                print(rp)
                 rp_hike = HikeReferencePoint.objects.create(
                     hike = hike,
-                    reference_point_lan=rp['lat'],
-                    reference_point_lng=rp['lng'],
-                    reference_point_address=rp['address']
+                    reference_point_lat=rp['reference_point_lat'],
+                    reference_point_lng=rp['reference_point_lng'],
+                    reference_point_address=rp['reference_point_address']
                 )
                 rp_hike.save()
                 
 
             return Response(status = 200, data = {"hike_id": hike.id})
         except Exception as e:
+            print(e)
+            
            # Hike.objects.filter(id=hike.id).delete()
            # HikeReferencePoint.objects.filter(hike=hike).delete()
             return Response(status = 400, data={"Error": str(e)})

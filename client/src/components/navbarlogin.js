@@ -22,12 +22,15 @@ function MyNavbar2(props){
   }
 
   function NavLogout(props){
+    const navigate = useNavigate();
     return(
       <Navbar fixed="top" bg="dark" variant="dark">
           <Container fluid>
                <Nav>
                <> 
-                <Navbar.Brand>Welcome {props.userPower}</Navbar.Brand> 
+                <Navbar.Brand onClick={() => navigate("/")}>Welcome {props.userPower}</Navbar.Brand>
+                {props.userPower === 'localguide' ? 
+                <Button onClick={() => navigate("/localguide")}  as="input" type="button" value="Add an hike" variant='dark' size='sm'/> : <></>} 
                 <Button onClick={()=> props.logout()} as="input" type="button" value="Logout" variant='dark' size='sm'/>{' '}   
               </>
               </Nav>   
