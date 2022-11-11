@@ -14,10 +14,10 @@ function Visitor(props) {
         <Container className="below-nav">
         <Row >
         <Col xs={1} md={2} lg={2}>
-        <Sidebar logged={null} setCheckedState={props.setCheckedState} checkedState={props.checkedState} getH={props.getH}/>
+        <Sidebar logged={null} setCheckedState={props.setCheckedState} checkedState={props.checkedState} getH={props.getH} filter={props.filter}/>
         </Col>
             <Col xs={4} md={8} lg={10}>
-            <NewCards filter={props.filter} setFilter={props.setFilter} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}></NewCards>
+            <NewCards  setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}></NewCards>
             </Col>
           </Row>
         </Container>

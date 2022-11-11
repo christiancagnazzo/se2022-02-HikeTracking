@@ -97,8 +97,12 @@ async function getUserInfo() {
 
 
 
-  async function getHikes(filter){   
-    const response = await fetch(URL+'hikes?filter='+filter,{method: 'GET', credential: 'include'})
+  async function getHikes(filterarray,filters){
+    let x=URL+"hikes?filters={";
+    for (let i=0;i<14;i++)
+      x+=filters[i]+":"+filterarray[i]+",";
+    x+="}"
+    const response = await fetch(x,{method: 'GET', credential: 'include'})
     const up=await response.json();
     if (response.ok){
       return up;
