@@ -58,8 +58,7 @@ async function login(credentials) {
   });
 
   if (response.status == '200')
-    console.log( await response.json())
-    //return { msg: await response.json()}
+    return { msg: await response.json()}
   else{
     return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare"}
   }
