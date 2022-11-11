@@ -1,7 +1,7 @@
 import './custom.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import API from './API';
-import Visitor from './components/visitor';
+import VisitorPage from './components/visitor_main'
 import { Container, Row } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
 import LocalGuide from './components/localguide'
 import {Helmet} from "react-helmet";
+import RegistrationForm from './components/registration';
 function App(){
   return (
     <Router>
@@ -106,18 +107,20 @@ useEffect(()=> {
         }
           )
     }
-
+    const signIn = () => {navigate("/registration")}
 
   return (
     <>
-    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} userPower={userPower}/>
+    <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} signIn={signIn} userPower={userPower}/>
     <Container fluid>
        <Row className="vheight-100">
             <Routes> 
-              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike}></Visitor>)}></Route>
+              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <VisitorPage filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike}></VisitorPage>)}></Route>
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
+              <Route path='/registration' element={<RegistrationForm/>}></Route>
+              <Route path='/visitor' element={<VisitorPage/>}></Route>
             </Routes>
        </Row>
     </Container>
