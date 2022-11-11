@@ -119,5 +119,17 @@ class Hikes(APIView):
                 list.append(r)
             
             h['rp'] = list
+
+            try:
+                with open(h['track_file'], 'r') as f:
+                    file_data = f.read()
+                    h['file'] = file_data
+                    
+            except:
+                return Response(status=500)
+
+                # sending response 
+                #response = HttpResponse(file_data, content_type='application/vnd.ms-excel')
+                #response['Content-Disposition'] = 'attachment; filename="foo.xls"'
                 
         return Response(hikes)

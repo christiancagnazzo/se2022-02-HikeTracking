@@ -38,7 +38,6 @@ function VisitorPage(props) {
 function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
-  const file = ''
   const isHiker = true
   
   return (<>
@@ -75,7 +74,7 @@ function HikeCard(props) {
       show={modalMapShow}
       onHide={() => setModalMapShow(false)}
       title={props.hike.title}
-      file={file}
+      file={props.hike.file}
       sp={[props.hike.start_point_lat,props.hike.start_point_lng]}
       ep={[props.hike.end_point_lat,props.hike.end_point_lng]}
       rpList={props.hike.rp}
