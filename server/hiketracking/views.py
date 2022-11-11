@@ -13,7 +13,7 @@ from knox.views import LoginView as KnoxLoginView
 # Create your views here.
 
 class NewHike(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,) #temp
     def post(self, request):
         
         try:
@@ -53,7 +53,7 @@ class NewHike(APIView):
             return Response(status = 400, data={"Error": str(e)})
 
 class HikeFile(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,) #temp
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']

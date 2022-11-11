@@ -1,6 +1,6 @@
 const URL = "http://localhost:8000/hiketracking/"
 
-async function createHike(hike_description, hike_file) {
+async function createHike(hike_description, hike_file, token) {
   try {
 
     let response = await fetch(URL + 'hike/', {
@@ -8,6 +8,7 @@ async function createHike(hike_description, hike_file) {
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Token '+token
       },
     })
 
@@ -15,7 +16,8 @@ async function createHike(hike_description, hike_file) {
       response = await response.json()
       let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
         method: 'PUT',
-        body: hike_file
+        body: hike_file,
+        'Authorization': 'Token '+token
       })
 
       if (second_response.status == '200')
