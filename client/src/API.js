@@ -51,10 +51,8 @@ async function pushFile(formData){
 
 
 
-  async function getHikes(filter,userPower){   
-    if (userPower!=="")
-      userPower+='/'
-    const response = await fetch(URL+userPower+'hikes?filter='+filter,{method: 'GET', credential: 'include'})
+  async function getHikes(filter){   
+    const response = await fetch(URL+'hikes?filter='+filter,{method: 'GET', credential: 'include'})
     const up=await response.json();
     if (response.ok){
       return up;

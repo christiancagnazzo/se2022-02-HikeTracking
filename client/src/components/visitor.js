@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {Container, ListGroup} from 'react-bootstrap';
+import {Container, ListGroup,Col,Row} from 'react-bootstrap';
 import Sidebar from './sidebar';
 
 
@@ -10,8 +10,16 @@ function Visitor(props) {
 
     return (   
         <>
+        
         <Container className="below-nav">
+        <Row >
+        <Col xs={1} md={2} lg={2}>
+        <Sidebar logged={null} setCheckedState={props.setCheckedState} checkedState={props.checkedState} getH={props.getH}/>
+        </Col>
+            <Col xs={4} md={8} lg={10}>
             <NewCards filter={props.filter} setFilter={props.setFilter} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}></NewCards>
+            </Col>
+          </Row>
         </Container>
         </>
     );
@@ -36,7 +44,7 @@ function NewCards(props) {
   return (
       <>
         <h1 className='mb-2'>Hikes: </h1>
-        <Sidebar filter={props.filter} setFilter={props.setFilter}/>
+        
         <Container >
           <ListGroup >
             {

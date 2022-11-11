@@ -10,6 +10,7 @@ import MyNavbar2 from './components/navbarlogin';
 import Hike from './components/hike';
 import LocalGuide from './components/localguide'
 
+
 function App(){
   return (
     <Router>
@@ -23,12 +24,25 @@ function App2() {
   const [flagSelectedHike,setFlagSelectedHike]=useState(false)
   const [selectedHike,setSelectedHike]=useState(null)
   const [message, setMessage] = useState('');
-  //const [services,setServices]=useState([1]);
   const [dirty,setDirty]=useState(true);
-  //const [ticket,setTicket]=useState('');
   const [userPower,setUserPower]=useState("")
   const [filter,setFilter]=useState("all")
   const [hikes,setHikes]=useState([])
+  const [checkedState, setCheckedState] = useState(new Array(14).fill(true));
+  const [first,setFirst]=useState(true)
+
+  useEffect(()=>{
+    const firstTimeFilter= async()=>{
+      let y=new Array(14).fill(true)
+      if (first && !loggedIn){
+          y[13]=false
+          setCheckedState(y)
+          setFirst(false)
+      }
+    }
+    firstTimeFilter()
+  },[first])
+
 
   useEffect(()=> {
     const checkAuth = async() => {
@@ -44,17 +58,15 @@ function App2() {
       checkAuth();
 }, [dirty,loggedIn,user]);
 
-useEffect(()=> {
-  const checkFilters = async() => {
-      try {
-        const hikes = await API.getHikes(filter,userPower);
-        setHikes(hikes)
-      } catch(err) {
-        handleError(err);
-      }
-  };
-    checkFilters();
-}, [filter,userPower]);
+const getH= async (filter)=>{
+  try {
+    const hikes = await API.getHikes(filter,userPower);
+    setHikes(hikes)
+  } catch(err) {
+    handleError(err);
+  }
+
+}
 
 useEffect(()=> {
   const selectedHikefunc = async() => {
@@ -88,7 +100,8 @@ useEffect(()=> {
           setLoggedIn(true);
           setUser(user.mail);
           setUserPower(user.power)
-          //setDirty(true);
+
+          setFirst(true);
           setMessage('');
           navigate('/'+user.power);
         })
@@ -102,10 +115,12 @@ useEffect(()=> {
   return (
     <>
     <MyNavbar2 loggedIn={loggedIn} logout={doLogout} login={login} userPower={userPower}/>
+    
     <Container fluid>
+
        <Row className="vheight-100">
             <Routes> 
-              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike}></Visitor>)}></Route>
+              <Route path='/' element={(loggedIn ? <Navigate to='/'userPower /> : <Visitor filter={filter} setFilter={setFilter} setFlagSelectedHike={setFlagSelectedHike} setSelectedHike={setSelectedHike} setCheckedState={setCheckedState} checkedState={checkedState} getH={getH}></Visitor>)}></Route>
               <Route path='/login'  element={loggedIn ? <Navigate to='/'userPower /> : <LoginForm login={doLogin} loginError={message} setLoginError={setMessage} /> }/>
               <Route path='/Hike' element={flagSelectedHike ? <Hike setFlagSelectedHike={setFlagSelectedHike}></Hike> : <Navigate to='/'userPower />}></Route>
               <Route path='/guide' element={<LocalGuide></LocalGuide>}></Route>
