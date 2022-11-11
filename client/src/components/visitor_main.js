@@ -110,7 +110,7 @@ function HikeModalDescription(props) {
         <h5>Reference Points</h5>
         <ul>
           {props.rpList.map((rp) =>
-            <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lan} - Lon: {rp.reference_point_lng}</li>
+            <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
           )}
         </ul>
       </Modal.Body>
