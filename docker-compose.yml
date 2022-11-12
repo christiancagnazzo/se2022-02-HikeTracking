@@ -3,7 +3,9 @@ services:
     build: ./server
     ports:
       - "8000:8000"
-    command: bash -c "python3 manage.py runserver 0.0.0:8000"
+  
+    command: 
+      python3 manage.py runserver 0.0.0.0:8000
     image: christiancagnazzo/sw2demoproject:server
 
   client:
@@ -11,4 +13,7 @@ services:
     image: christiancagnazzo/sw2demoproject:client
     ports:
       - "3000:3000"
-    command: npm start
+    command: 
+      npm start
+      #npm i react-native-slide-charts --legacy-peer-deps \
+      
