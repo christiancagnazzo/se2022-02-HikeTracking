@@ -33,7 +33,21 @@ function VisitorPage(props) {
   const updateCurrSel = (sel) =>{
     setCurrSel(sel)
   }
-
+  const applyFilter = (filter) => {
+    async function  getFilteredikes(){
+      try{
+        const filteredHikes = await API.getAllHikes(token, filter)
+        if (hikes.error)
+            setErrorMessage(filteredHikes.msg)
+          else
+            setHikes(filteredHikes.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getFilteredikes()
+    }
+    
   return (
     <Container fluid className="flex-grow-1">
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
@@ -45,7 +59,7 @@ function VisitorPage(props) {
         <Col sm={10} className="py-1">
           <Row xs={1} sm={2} md={3}>
               {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :<FilterForm changeSel={updateCurrSel} hikes={hikes} setHikes={setHikes} setErrorMessage={setErrorMessage}></FilterForm>}
+              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
           </Row>
         </Col>
         

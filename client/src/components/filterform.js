@@ -138,6 +138,19 @@ function FilterForm(props) {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const filter = {
+        minLength: minLength,
+        maxLength: maxLength,
+        minTime: minTime,
+        maxTime: maxTime,
+        minAscent: minAscent,
+        maxAscent: maxAscent,
+        difficulty: difficulty,
+        province: province
+
+    }
+    props.applyFilter(filter)
+    props.changeSel("hikes")
     
   }
 
