@@ -1,7 +1,8 @@
 # Create your tests here.
+import json
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from rest_framework.test import APITestCase
 from .models import *
 
@@ -93,5 +94,28 @@ class FullListHikeTest(TestCase):
        self.assertEqual(final_test_list[1][8], 'Superga')
        self.assertEqual(final_test_list[0][10], 26.2)
        self.assertEqual(final_test_list[1][11], 'Top')
+
+
+class AddHikeDescriptionTest(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, start_point_lat=69,
+                            start_point_lng=23, difficulty='easy', start_point_address='Cappucini',
+                            end_point_lat=72, end_point_lng=26.2, end_point_address='Cappucini Top',
+                            local_guide=user_id)
+
+    def test_add_hike_description(self):
+        hike_concerned = Hike.objects.get(id=1)
+        self.assertEqual(hike_concerned.description, '')
+        Hike.objects.filter(id=1).update(description = 'A beginner Hike')
+        hike_updated = Hike.objects.get(id=1)
+        self.assertEqual(hike_updated.description, 'A beginner Hike')
+
+
+
+
+
 
 
