@@ -81,7 +81,7 @@ class FullListHikeTest(TestCase):
                             description='A trek', local_guide=user_id)
 
 
-
+#Test to get full list of hikes
     def test_get_full_list_of_hikes(self):
        hike_list = Hike.objects.all()
        self.assertEqual(len(hike_list), 2)
