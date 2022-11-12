@@ -12,7 +12,7 @@
 - [Background](#background) 
 - [Install](#install)
 - [Usage](#usage)
-- [Describe directory](#describedirectort)
+<!--- [Describe directory](#describedirectort)-->
 - [Changelog](#changelog)
 
 ## Background
@@ -31,20 +31,21 @@ or you can directly download the file.
 $ curl -fsSL https://get.docker.com | bash -s docker
 ```
 
+<!--
 ## Describe directory
 
 ### server
 
 ### client
+-->
 ## Usage
-<!--
 In the project directory, you can run:
 ```sh
 $ docker compose up
 ```
 This commamd may cost several minutes. 
   
--->
+<!--  
 Firstly, in /server, you need to run the server:
 ```sh
 $ cd server
@@ -59,7 +60,7 @@ $ cd client
 $ npm install
 $ npm start
 ```
-
+-->
 Then you can user your brower and connect to :
 ```sh
 localhost:3000
