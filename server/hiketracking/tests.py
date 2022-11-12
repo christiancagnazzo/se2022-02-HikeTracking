@@ -61,7 +61,7 @@ class UsersManagersTests(TestCase):
         password = request.POST['johnpassword']
         user = authenticate(request, username=username, password=password)
         self.assertIsNotNone(user)
-        with assertRaises(ValueError):
+        with self.assertRaises(ValueError):
             login(request, user)
 
         username = request.POST['john']
