@@ -1,9 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase,Client
 
 # Create your tests here.
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.test import TestCase
-from django.http import request
+from django.http import HttpRequest
+from hiketracking.views import Hike, HikeFile,NewHike,Hikes
+from hiketracking.models import Hike
 
 
 class UsersManagersTests(TestCase):
@@ -51,46 +53,54 @@ class UsersManagersTests(TestCase):
 # because of this project uses njango default login, it test njango api using in fact
     def test_login(self):
         User = get_user_model()
-        user = User.objects.create_user(username='john',email= 'normal@user.com',password= 'johnpassword')
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
         self.assertEqual(user.email, 'normal@user.com')
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
 
-        username = request.POST['john']
-        password = request.POST['johnpassword']
-        user = authenticate(request, username=username, password=password)
-        self.assertIsNotNone(user)
-        with self.assertRaises(ValueError):
-            login(request, user)
-
-        username = request.POST['john']
-        password = request.POST['normal@user.com']
-        login(request, user)
-        self.assertTrue(request.user.is_authenticated)
+        c = Client()
+        response = c.post('/login/', {'username': 'john', 'password': 'smith'})
+        self.assertEqual(response.status_code,404)
+        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
+        self.assertEqual(response.status_code,200)
+        response = c.get('/customer/details/')
+        response.content
 
 # try to logout and the check result of logout
     def test_logout(self):
         User = get_user_model()
-        user = User.objects.create_user('john', 'normal@user.com', 'johnpassword')
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
         self.assertEqual(user.email, 'normal@user.com')
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
+        c = Client()
+        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
+        self.assertEqual(response.status_code,404)
+        response = c.get('/customer/details/')
+        response = c.logout() 
+        self.assertIsNone(response,"NoneType")
+        
+class ListAvailableHikesTest(TestCase):
+    
+    def test_createNewHike(self):
+        #c = Client()
+        pass
+    def test_createHikeList(self):
+        pass
+    def test_ListAvailableHikes(self):
+        pass
 
-        username = request.POST['john']
-        password = request.POST['normal@user.com']
-        user = authenticate(request, username=username, password=password)
-        self.assertIsNotNone(user)
-        login(request, user)
-        self.assertTrue(request.user.is_authenticated)
-        logout(request)
-        self.assertFalse(request.user.is_authenticated)
+        
+
 
 
 
 
             
+
+
 
 
 
