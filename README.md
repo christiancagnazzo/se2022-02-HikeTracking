@@ -12,8 +12,8 @@
 - [Background](#background) 
 - [Install](#install)
 - [Usage](#usage)
-<!--- [Describe directory](#describedirectort)-->
 - [Changelog](#changelog)
+<!--- [Describe directory](#describedirectort)-->
 
 ## Background
 This project is developed for Software engineering II course. In this course, we developed a list of project using agile software development.
