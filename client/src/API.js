@@ -26,10 +26,10 @@ async function createHike(hike_description, hike_file, token) {
       if (second_response.status == '200')
         return {msg: "Hike Creato"};
 
-        return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
+        return {error: true, msg: "Something went wrong. Please check all fields and try again"};
     }
 
-    return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
+    return {error: true, msg: "Something went wrong. Please check all fields and try again"};
   }
 
   catch (e) {
@@ -49,7 +49,7 @@ async function login(credentials) {
   if (response.status == '200')
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare" }
+    return { error: 'Error', msg: "Something went wrong in the login. Please try again" }
   }
 }
 
@@ -65,7 +65,7 @@ async function signin(credentials) {
   if (response.status == '200')
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Qualcosa è andato storto nella registrazione. Riprovare" }
+    return { error: 'Error', msg: "Something went wrong with the recording.  Please try again" }
   }
 
 }
@@ -104,7 +104,7 @@ async function getAllHikes(token) {
   if (response.status == '200')
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare" }
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
 
@@ -119,7 +119,7 @@ async function checkAuth(token){
   if (response.status == '200')
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Qualcosa è andato storto. Riprovare" }
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
 
