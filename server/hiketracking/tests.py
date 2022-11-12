@@ -51,7 +51,10 @@ class LoginTest(TestCase):
     def setUp(self):
         User = get_user_model()
         user = User.objects.create_user(email = 'test@user.com', password = 'foo', role = 'smth')
-
+        self.assertEqual(user.email, 'test@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
 
     def test_credentials(self):
         user = authenticate(email = 'test@user.com', password = 'foo')
