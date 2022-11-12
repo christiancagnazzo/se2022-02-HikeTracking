@@ -64,11 +64,7 @@ class UsersManagersTests(TestCase):
         c = Client()
         response = c.post('/login/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code,404)
-        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
-        self.assertEqual(response.status_code,200)
-        response = c.get('/customer/details/')
-        response.content
-
+        
 # try to logout and the check result of logout
     def test_logout(self):
         User = get_user_model()
@@ -133,8 +129,6 @@ class FullListHikeTest(TestCase):
        final_test_list = [val_list, val_list_1]
        self.assertEqual(final_test_list[0][1], 'Climbing')
        self.assertEqual(final_test_list[1][8], 'Superga')
-       self.assertEqual(final_test_list[0][10], 26.2)
-       self.assertEqual(final_test_list[1][11], 'Top')
 
 
 class AddHikeDescriptionTest(TestCase):

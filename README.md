@@ -29,11 +29,6 @@ or you can directly download the file.
 $ curl -fsSL https://get.docker.com | bash -s docker
 ```
 
-## Describe directory
-
-### server
-
-### client
 ## Usage
 In the project directory, you can run:
 ```sh
