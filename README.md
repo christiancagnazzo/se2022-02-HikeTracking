@@ -46,7 +46,7 @@ This commamd may cost several minutes.
   
 -->
 Firstly, in /server, you need to run the server:
-``sh
+```sh
 $ cd server
 $ python manage.py migrate  
 $ python manage.py runserver
