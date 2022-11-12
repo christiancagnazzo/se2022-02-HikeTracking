@@ -64,7 +64,7 @@ class LoginTest(TestCase):
         user = authenticate(email='test@user.com', password='doo')
         self.assertFalse(user is not None and user.is_authenticated)
 
-class AvailableHikeTest(TestCase):
+class FullListHikeTest(TestCase):
 
     def setUp(self):
         User = get_user_model()
@@ -82,7 +82,7 @@ class AvailableHikeTest(TestCase):
 
 
 
-    def test_get_available_hikes(self):
+    def test_get_full_list_of_hikes(self):
        hike_list = Hike.objects.all()
        self.assertEqual(len(hike_list), 2)
        h_list = list(hike_list.values())
