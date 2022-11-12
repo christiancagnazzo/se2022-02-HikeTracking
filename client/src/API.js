@@ -113,7 +113,7 @@ async function getAllHikes(token, filters) {
       query += '&maxAscent=' + filters.maxAscent 
     if (filters.difficulty !== 'All')
       query += '&difficulty=' + filters.difficulty 
-    if (filters.province)
+    if (filters.province !== '-')
       query += '&province=' + filters.province 
   }
   

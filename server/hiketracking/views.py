@@ -5,13 +5,14 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import json
+from geopy.geocoders import Nominatim
+from functools import partial
 
 from .models import CustomUser, Hike, HikeReferencePoint
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer)
 
-# Create your views here.
+geolocator = Nominatim(user_agent="hiketracking")
 
 class NewHike(APIView):
     #permission_classes = (permissions.AllowAny,)
@@ -22,6 +23,15 @@ class NewHike(APIView):
 
         try:
             data = request.data
+            province = ""
+
+            try:
+                reverse = partial(geolocator.reverse, language="it")
+                location = reverse(str(data['start_point_lat'])+", "+str(data['start_point_lng']))
+                province = location.raw['address']['county']
+            except:
+                province = ""
+
             hike = Hike.objects.create(
                 title=data['title'], 
                 length=data['length'],
@@ -35,8 +45,8 @@ class NewHike(APIView):
                 end_point_lng=data['end_point_lng'],
                 end_point_address=data['end_point_address'],
                 description=data['description'],
-                local_guide=user_id)
-            
+                local_guide=user_id,
+                province=province)
             
             hike.save()
 
@@ -128,7 +138,7 @@ class Hikes(APIView):
             minAscent = request.GET.get('minAscent', None)
             maxAscent = request.GET.get('maxAscent', None)
             difficulty = request.GET.get('difficulty', None)
-            #province = request.GET.get('province', None)
+            province = request.GET.get('province', None)
 
             hikes = Hike.objects.all()
             
@@ -146,6 +156,8 @@ class Hikes(APIView):
                 hikes = hikes.filter(ascent__lte=maxAscent)
             if difficulty:
                 hikes = hikes.filter(difficulty=difficulty)
+            if province:
+                hikes = hikes.filter(province=province)
 
             hikes = hikes.values()
 

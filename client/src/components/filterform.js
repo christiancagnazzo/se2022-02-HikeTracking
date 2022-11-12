@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 
-const  province_dic = {     
+const  province_dic = { 
+    '-'  : "-",    
     'AG' : 'Agrigento',
     'AL' : 'Alessandria',
     'AN' : 'Ancona',
@@ -129,9 +130,9 @@ function FilterForm(props) {
   const [minAscent, setMinAscent] = useState('')
   const [maxAscent, setMaxAscent] = useState('')
 
-  const [difficulty, setDifficulty] = useState(2)
+  const [difficulty, setDifficulty] = useState("All")
 
-  const[province, setProvince] = useState('')
+  const[province, setProvince] = useState('-')
   const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
