@@ -8,7 +8,7 @@ function MyNavbar2(props){
     const navigate = useNavigate();
 
     return(
-    <Navbar fixed="top" bg="dark" variant="dark">
+    <Navbar  bg="dark" variant="dark">
         <Container fluid>
              <Nav>
              
@@ -24,7 +24,7 @@ function MyNavbar2(props){
   function NavLogout(props){
     const navigate = useNavigate();
     return(
-      <Navbar fixed="top" bg="dark" variant="dark">
+      <Navbar  bg="dark" variant="dark">
           <Container fluid>
                <Nav>
                <> 

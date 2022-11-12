@@ -1,10 +1,14 @@
+from django.test import TestCase,Client
+
 # Create your tests here.
-import json
-from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.test import TestCase, RequestFactory
+from django.http import HttpRequest
+from hiketracking.views import Hike, HikeFile,NewHike,Hikes
+from hiketracking.models import Hike
 from rest_framework.test import APITestCase
 from .models import *
+import json
 
 class UsersManagersTests(TestCase):
 
@@ -45,6 +49,40 @@ class UsersManagersTests(TestCase):
             User.objects.create_superuser(
                 email='super@user.com', password='foo',role="hi" ,is_superuser=False)
 
+     # try to login and the check result of login
+# password is incurrect and login failed
+# currect information and login success
+# because of this project uses njango default login, it test njango api using in fact
+    def test_login(self):
+        User = get_user_model()
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
+        self.assertEqual(user.email, 'normal@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
+        c = Client()
+        response = c.post('/login/', {'username': 'john', 'password': 'smith'})
+        self.assertEqual(response.status_code,404)
+        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
+        self.assertEqual(response.status_code,200)
+        response = c.get('/customer/details/')
+        response.content
+
+# try to logout and the check result of logout
+    def test_logout(self):
+        User = get_user_model()
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
+        self.assertEqual(user.email, 'normal@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+        c = Client()
+        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
+        self.assertEqual(response.status_code,404)
+        response = c.get('/customer/details/')
+        response = c.logout() 
+        self.assertIsNone(response,"NoneType")
 
 class LoginTest(TestCase):
 
@@ -115,10 +153,5 @@ class AddHikeDescriptionTest(TestCase):
         Hike.objects.filter(id=1).update(description = 'A beginner Hike')
         hike_updated = Hike.objects.get(id=1)
         self.assertEqual(hike_updated.description, 'A beginner Hike')
-
-
-
-
-
 
 

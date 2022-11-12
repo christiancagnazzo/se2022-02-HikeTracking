@@ -12,8 +12,6 @@
 - [Background](#background) 
 - [Install](#install)
 - [Usage](#usage)
-- [Describe directory](#describedirectort)
-- [Changelog](#changelog)
 
 ## Background
 
@@ -48,9 +46,3 @@ Then you can user your brower and connect to :
 ```sh
 localhost:3000
 ```
-
-## Changelog
-
-### Demo1
-
-### Create project 

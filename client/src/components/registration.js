@@ -22,10 +22,10 @@ function RegistrationForm(props) {
         const credentials = { email: username, password: password, role: role };
 
         if (username.trim().length === 0 || password.trim().length === 0) {
-            setErrorMessage('Compilare tutti i campi correttamente. ')
+            setErrorMessage('Invalid input, please write in the correct format. ')
         }
         else if (!validateEmail(username)) {
-            setErrorMessage('Formato email non valido')
+            setErrorMessage('invalid e-mail, Please put in correct e-mail ')
         }
         else {
             try {
@@ -37,7 +37,8 @@ function RegistrationForm(props) {
                     setUsername('')
                     setPassword('')
 
-                    setErrorMessage("Utente registrato correttamente")
+                    //This meesage does not mean error,just used this function to transfer message
+                     setErrorMessage("User registered successfully")
                 }
             }
             catch (e) {
