@@ -12,9 +12,11 @@
 - [Background](#background) 
 - [Install](#install)
 - [Usage](#usage)
+- [Describe directory](#describedirectort)
+- [Changelog](#changelog)
 
 ## Background
-
+This project is developed for Software engineering II course. In this course, we developed a list of project using agile software development.
 
 ## Install
 Use following command to download the project:
@@ -29,15 +31,48 @@ or you can directly download the file.
 $ curl -fsSL https://get.docker.com | bash -s docker
 ```
 
+## Describe directory
+
+### server
+
+### client
 ## Usage
+<!--
 In the project directory, you can run:
 ```sh
 $ docker compose up
 ```
 This commamd may cost several minutes. 
   
+-->
+Firstly, in /server, you need to run the server:
+``sh
+$ cd server
+$ python manage.py migrate  
+$ python manage.py runserver
+
+```
+  
+Then you need to open a new terminal and run the client in ./client:
+```sh
+$ cd client
+$ npm install
+$ npm start
+```
 
 Then you can user your brower and connect to :
 ```sh
 localhost:3000
 ```
+
+## Changelog
+
+### Demo1(14/11/2022)
+- add user management
+- add some pages
+- add  some api
+- add docker file
+- add test for api 
+  
+### Create project(04/11/2022)
+
