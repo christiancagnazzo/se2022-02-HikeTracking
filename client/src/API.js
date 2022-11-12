@@ -2,7 +2,7 @@ const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-  
+
   try {
     let response = await fetch(URL + 'hike/', {
       method: 'POST',
@@ -24,12 +24,12 @@ async function createHike(hike_description, hike_file, token) {
       })
 
       if (second_response.status == '200')
-        return {msg: "Hike Creato"};
+        return { msg: "Hike Creato" };
 
-        return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
+      return { error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova" };
     }
 
-    return {error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova"};
+    return { error: true, msg: "Qualcosa è andato storto. Verifica tutti i campi e riprova" };
   }
 
   catch (e) {
@@ -92,9 +92,32 @@ async function getHikes(filter, userPower) {
   }
 }
 
-async function getAllHikes(token) {
+async function getAllHikes(token, filters) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'allhikes/', {
+
+  let query = ''
+
+  if (filters) {
+    query += '?filters=true'
+    if (filters.minLength)
+      query += '&minLength=' + filters.minLength 
+    if (filters.maxLength)
+      query += '&maxLength=' + filters.maxLength 
+    if (filters.minTime)
+      query += '&minTime=' + filters.minTime 
+    if (filters.maxTime)
+      query += '&maxTime=' + filters.maxTime 
+    if (filters.minAscent)
+      query += '&minAscent=' + filters.minAscent 
+    if (filters.maxAscent)
+      query += '&maxAscent=' + filters.maxAscent 
+    if (filters.difficulty !== 'All')
+      query += '&difficulty=' + filters.difficulty 
+    if (filters.province)
+      query += '&province=' + filters.province 
+  }
+  
+  let response = await fetch(URL + 'allhikes/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -108,7 +131,7 @@ async function getAllHikes(token) {
   }
 }
 
-async function checkAuth(token){
+async function checkAuth(token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
   let response = await fetch(URL + 'sessions/', {
     method: 'GET',
@@ -123,5 +146,5 @@ async function checkAuth(token){
   }
 }
 
-const API = { login, logout, getHikes, createHike, signin, getAllHikes, checkAuth };
+const API = { login, logout, createHike, signin, getAllHikes, checkAuth };
 export default API;

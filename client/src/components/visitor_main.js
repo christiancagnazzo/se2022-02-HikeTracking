@@ -45,7 +45,7 @@ function VisitorPage(props) {
         <Col sm={10} className="py-1">
           <Row xs={1} sm={2} md={3}>
               {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :<FilterForm></FilterForm>}
+              :<FilterForm changeSel={updateCurrSel} hikes={hikes} setHikes={setHikes} setErrorMessage={setErrorMessage}></FilterForm>}
           </Row>
         </Col>
         

@@ -10,7 +10,7 @@ function LocalGuide(props) {
   const [length, setLength] = useState(9)
   const [time, setTime] = useState(240)
   const [ascent, setAscent] = useState(3538)
-  const [difficulty, setDifficulty] = useState(2)
+  const [difficulty, setDifficulty] = useState("Tourist")
   const [sp, setSp] = useState([45.177786, 7.083372	])
   const [addressSp, setAddressSp] = useState('Dummy start	')
   const [ep, setEp] = useState([45.203531, 7.07734	])

@@ -117,8 +117,43 @@ class Hikes(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
+
+        filters = request.GET.get('filters', None)
+                
+        if filters:
+            minLength = request.GET.get('minLength', None)
+            maxLength = request.GET.get('maxLength', None)
+            minTime = request.GET.get('minTime', None)
+            maxTime = request.GET.get('maxTime', None)
+            minAscent = request.GET.get('minAscent', None)
+            maxAscent = request.GET.get('maxAscent', None)
+            difficulty = request.GET.get('difficulty', None)
+            #province = request.GET.get('province', None)
+
+            hikes = Hike.objects.all()
+            
+            if minLength:
+                hikes = hikes.filter(length__gte=minLength)
+            if maxLength:
+                hikes = hikes.filter(length__lte=maxLength)
+            if minTime:
+                hikes = hikes.filter(expected_time__gte=minTime)
+            if maxTime:
+                hikes = hikes.filter(expected_time__lte=maxTime)
+            if minAscent:
+                hikes = hikes.filter(ascent__gt=minAscent)
+            if maxAscent:
+                hikes = hikes.filter(ascent__lte=maxAscent)
+            if difficulty:
+                hikes = hikes.filter(difficulty=difficulty)
+
+            hikes = hikes.values()
+
+        else:
+            hikes = Hike.objects.values()
+            
+    
         result = {}
-        hikes = Hike.objects.values()
         for h in hikes:
             result = HikeReferencePoint.objects.filter(hike_id=h['id']).values()
             list = []
@@ -134,7 +169,7 @@ class Hikes(APIView):
                     
             except:
                 return Response(status=500)
-                
+    
         return Response(hikes)
 
 class Sessions(APIView):
