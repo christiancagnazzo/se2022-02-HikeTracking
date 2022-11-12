@@ -4,12 +4,14 @@ import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
-
+import FilterForm from './filterform';
 
 function VisitorPage(props) {
-  let [hikes, setHikes] = useState([]);
+  const [hikes, setHikes] = useState([]);
+  const [currSel, setCurrSel] = useState("hikes")
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
+  
 
   useEffect(() => {
     const getHikes = async () => {
@@ -28,13 +30,27 @@ function VisitorPage(props) {
     getHikes()
   }, []);
 
+  const updateCurrSel = (sel) =>{
+    setCurrSel(sel)
+  }
 
   return (
-    <Container className="below-nav">
-      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
-      <Row xs={1} sm={2} md={3}>
-        {hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>)}
+    <Container fluid className="flex-grow-1">
+      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
+      <Row className="h-100">
+        <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
+          <Menu currSel={currSel} changeSel={updateCurrSel}></Menu>
+        </Col>
+      
+        <Col sm={10} className="py-1">
+          <Row xs={1} sm={2} md={3}>
+              {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
+              :<FilterForm></FilterForm>}
+          </Row>
+        </Col>
+        
       </Row>
+      
     </Container>
   )
 }
@@ -148,6 +164,18 @@ function HikeModalTrack(props) {
     </Modal.Footer>
   </Modal>
 
+  )
+}
+
+function Menu(props){
+
+  const commonClass ="list-group-item list-group-item-action rounded-0 "
+
+  return (
+    <ListGroup>
+      <Button className={commonClass + (props.currSel === "hikes"?"active" :'' )} onClick={() => props.changeSel("hikes")}>Available hikes</Button>
+      <Button className={commonClass+ (props.currSel === "filters"?"active" :'' )} onClick={() => props.changeSel("filters")}>Apply filters</Button>
+    </ListGroup>
   )
 }
 
