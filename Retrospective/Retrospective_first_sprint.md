@@ -26,9 +26,9 @@ RETROSPECTIVE (Team 2)
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
 | _#0_Browse hikes   |    3     |  13     |      10      |          9:30    |
-| _#1_Describe hikes      |   4      |    5    |      14      |       15:30       |
+| _#1_Describe hikes      |   4      |    5    |      14      |       11:30       |
 _#2_Register      |    7     |    13    |     19       |      18:15        |
-_#3_See hike's details     |    3     |     34   |     10       |         7     |
+_#3_See hike's details     |    3     |     34   |     10       |         10:30     |
    
 
 
