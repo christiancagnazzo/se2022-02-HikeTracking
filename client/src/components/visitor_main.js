@@ -83,7 +83,7 @@ function HikeCard(props) {
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Length: {props.hike.length}m</ListGroup.Item>
+        <ListGroup.Item>Length: {props.hike.length}km</ListGroup.Item>
         <ListGroup.Item>Estimated time: {props.hike.expected_time}min</ListGroup.Item>
         <ListGroup.Item>Ascent: {props.hike.ascent}m</ListGroup.Item>
         <ListGroup.Item>Difficulty: {props.hike.difficulty}</ListGroup.Item>
