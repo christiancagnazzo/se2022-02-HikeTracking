@@ -11,7 +11,7 @@ RETROSPECTIVE (Team 2)
 
 - Number of stories committed vs. done:  4 / 4
 - Total points committed vs. done: 65 / 65
-- Nr of hours planned vs. spent (as a team): 72 / 78:45
+- Nr of hours planned vs. spent (as a team): 72 / 75:15
 
 **Remember** a story is done ONLY if it fits the Definition of Done:
  
@@ -25,15 +25,15 @@ RETROSPECTIVE (Team 2)
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_Browse hikes   |    3     |  13     |      10      |          9:30    |
+| _#0_Browse hikes   |    3     |  13     |      10      |          11:30    |
 | _#1_Describe hikes      |   4      |    5    |      14      |       11:30       |
 _#2_Register      |    7     |    13    |     19       |      18:15        |
 _#3_See hike's details     |    3     |     34   |     10       |         10:30     |
    
 
 
-- Hours per task average, standard deviation (estimate and actual): 13.25 - 12.5
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1: 0.32
+- Hours per task average, standard deviation (estimate and actual): 3.10 - 3.09 
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 0.96 
 
   
 ## QUALITY MEASURES 
@@ -49,13 +49,13 @@ _#3_See hike's details     |    3     |     34   |     10       |         10:30 
   - Total hours estimated 2
   - Total hours spent 2
   
-
+x
 
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
 
-We did not consider the time needed for learning the usage of the external API used (for example to upload the map of an hike) or other tecnologies; fixing bugs cost us unexcepted time
+We did not consider the time needed for learning the usage of the external API used (for example to upload the map of an hike) or other tecnologies; fixing bugs cost us unexpected time
 
 
 - What lessons did you learn (both positive and negative) in this sprint?
@@ -65,7 +65,7 @@ Negative: We have to bee more swift in our communication
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
-It is the firs sprint
+It is the first sprint
   
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
