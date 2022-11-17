@@ -55,13 +55,12 @@ x
 
 - What caused your errors in estimation (if any)?
 
-We did not consider the time needed for learning the usage of the external API used (for example to upload the map of an hike) or other tecnologies; fixing bugs cost us unexpected time
-
+We did not consider the time needed to learn external API we used (for example to upload the map of an hike) and other technologies; Also, the time we took to fix the bugs was something which we did not expect
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
 Positive: keep it simple stupid (KISS)
-Negative: We have to bee more swift in our communication
+Negative: We have to be more swift in our communication
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
@@ -70,7 +69,7 @@ It is the first sprint
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-We have to improve the estimation, considering all the details of our tasks; we have to divide the work more efficiently; we have to improve the management of the timesheet
+We have to improve the estimation, considering all the details of our tasks; we have to divide the work more efficiently; Improvement is required in the management of the timesheet
 
 - One thing you are proud of as a Team!!
 
