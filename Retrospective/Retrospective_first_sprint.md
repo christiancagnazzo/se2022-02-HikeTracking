@@ -33,7 +33,7 @@ _#3_See hike's details     |    3     |     34   |     10       |         10:30 
 
 
 - Hours per task average, standard deviation (estimate and actual): 3.10 - 3.09 
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 0.96 
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent 1 - 0.96 
 
   
 ## QUALITY MEASURES 
