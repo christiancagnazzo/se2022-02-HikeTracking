@@ -59,7 +59,7 @@ We did not consider the time needed to learn external API we used (for example t
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-Positive: keep it simple stupid (KISS)
+Positive: keep it simple stupid (KISS)   
 Negative: We have to be more swift in our communication
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
