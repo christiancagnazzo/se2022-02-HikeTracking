@@ -9,88 +9,113 @@ from geopy.geocoders import Nominatim
 from functools import partial
 import geopy.distance
 
-from .models import CustomUser, Hike, HikeReferencePoint
+from .models import CustomUser, Hike, HikeReferencePoint, Point
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer)
 
 geolocator = Nominatim(user_agent="hiketracking")
+
 
 class NewHike(APIView):
     #permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
         user_id = CustomUser.objects.get(email=request.user)
-        
+        data = request.data
 
         try:
-            data = request.data
-            province = ""
-            city = ""
+            sp = get_province_and_village(
+                data['start_point_lat'], data['start_point_lng'])
+            start_point_type = 'none'
+            if 'start_point_type' in data:
+                start_point_type = data['start_point_type']
 
-            try:
-                reverse = partial(geolocator.reverse, language="it")
-                location = reverse(str(data['start_point_lat'])+", "+str(data['start_point_lng']))
-                province = location.raw['address']['county']
-                city = location.raw['address']['village']
-            except:
-                province = ""
-                city = ""
+            start_point = Point.objects.get_or_create(
+                latitude=data['start_point_lat'],
+                longitude=data['start_point_lng'],
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': data['start_point_address'],
+                    'type': start_point_type
+                }
+            )
+
+            ep = get_province_and_village(
+                data['end_point_lat'], data['end_point_lng'])
+            end_point_type = 'none'
+            if 'end_point_type' in data:
+                end_point_type = data['end_point_type']
+            end_point = Point.objects.get_or_create(
+                latitude=data['end_point_lat'],
+                longitude=data['end_point_lng'],
+                defaults={
+                    'province': ep['province'],
+                    'village': ep['village'],
+                    'address': data['end_point_address'],
+                    'type': end_point_type
+                }
+            )
 
             hike = Hike.objects.create(
-                title=data['title'], 
+                title=data['title'],
                 length=data['length'],
                 expected_time=data['expected_time'],
                 ascent=data['ascent'],
                 difficulty=data['difficulty'],
-                start_point_lat=data['start_point_lat'],
-                start_point_lng=data['start_point_lng'],
-                start_point_address=data['start_point_address'],
-                end_point_lat=data['end_point_lat'],
-                end_point_lng=data['end_point_lng'],
-                end_point_address=data['end_point_address'],
                 description=data['description'],
                 local_guide=user_id,
-                province=province,
-                city=city)
-            
+                start_point=start_point[0],
+                end_point=end_point[0])
+
             hike.save()
 
             for rp in data['rp_list']:
-                print(rp)
+                rp_cp = get_province_and_village(
+                    rp['reference_point_lat'], rp['reference_point_lng'])
+                ref_point_type = 'none'
+                if 'ref_point_type' in rp:
+                    ref_point_type = rp['reference_point_type']
+                ref_point = Point.objects.get_or_create(
+                    latitude=rp['reference_point_lat'],
+                    longitude=rp['reference_point_lng'],
+                    defaults={
+                        'province': rp_cp['province'],
+                        'village': rp_cp['village'],
+                        'address': rp['reference_point_address'],
+                        'type': ref_point_type
+                    }
+                )
+
                 rp_hike = HikeReferencePoint.objects.create(
-                    hike = hike,
-                    reference_point_lat=rp['reference_point_lat'],
-                    reference_point_lng=rp['reference_point_lng'],
-                    reference_point_address=rp['reference_point_address']
+                    hike=hike,
+                    point=ref_point[0]
                 )
                 rp_hike.save()
-                
 
-            return Response(status = 200, data = {"hike_id": hike.id})
+            return Response(status=200, data={"hike_id": hike.id})
         except Exception as e:
             print(e)
-            
-           # Hike.objects.filter(id=hike.id).delete()
-           # HikeReferencePoint.objects.filter(hike=hike).delete()
-            return Response(status = 400, data={"Error": str(e)})
+            return Response(status=400, data={"Error": str(e)})
+
 
 class HikeFile(APIView):
     #permission_classes = (permissions.AllowAny,)
-    
+
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']
         except:
-            return Response(status = 400, data = {"Error": "File Requested"})
-        
+            return Response(status=400, data={"Error": "File Requested"})
+
         try:
             hike = Hike.objects.get(id=hike_id)
             hike.track_file = file
             hike.save()
-            return Response(status = 200)
+            return Response(status=200)
         except:
-            return Response(status = 400, data = {"Error": "Hike not found"})
-    
+            return Response(status=400, data={"Error": "Hike not found"})
+
 
 class UserList(generics.ListAPIView):
     queryset = CustomUser.objects.all()
@@ -125,16 +150,16 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         result = super(LoginAPI, self).post(request, format=None)
-        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ",""), "token": result.data['token']})
-        
-        
+        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""), "token": result.data['token']})
+
+
 class Hikes(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
 
         filters = request.GET.get('filters', None)
-                
+
         if filters:
             minLength = request.GET.get('minLength', None)
             maxLength = request.GET.get('maxLength', None)
@@ -144,10 +169,10 @@ class Hikes(APIView):
             maxAscent = request.GET.get('maxAscent', None)
             difficulty = request.GET.get('difficulty', None)
             province = request.GET.get('province', None)
-            city = request.GET.get('city', None)
-            
+            village = request.GET.get('village', None)
+
             hikes = Hike.objects.all()
-            
+
             if minLength:
                 hikes = hikes.filter(length__gte=minLength)
             if maxLength:
@@ -162,56 +187,88 @@ class Hikes(APIView):
                 hikes = hikes.filter(ascent__lte=maxAscent)
             if difficulty:
                 hikes = hikes.filter(difficulty=difficulty)
+
             if province:
-                hikes = hikes.filter(province=province)
-            if city:
-                hikes = hikes.filter(city=city.lower().capitalize())
+                inner_query = Point.objects.filter(province=province)
+                hikes = hikes.filter(start_point__in=inner_query)
+
+            if village:
+                inner_query = Point.objects.filter(village=village)
+                hikes = hikes.filter(start_point__in=inner_query)
 
             hikes = hikes.values()
 
         else:
             hikes = Hike.objects.values()
-            
+
+        
         around = request.GET.get('around', None)
 
         if filters and around:
             filtered_hikes = []
             fields = around.split("-")
-            radius=fields[2]
+            radius = fields[2]
             input_coordinates = (fields[0], fields[1])
+
             for h in hikes:
-                hike_coordinates = (h['start_point_lat'], h['start_point_lng'])
-                distance = geopy.distance.geodesic(input_coordinates, hike_coordinates).km
+                refer_p = Point.objects.get(id=h['start_point_id'])
+                hike_coordinates = (refer_p.latitude, refer_p.longitude)
+                distance = geopy.distance.geodesic(
+                    input_coordinates, hike_coordinates).km
 
                 if (distance <= float(radius)):
                     filtered_hikes.append(h)
-            
+                
             hikes = filtered_hikes
-            
         
-
         result = {}
         for h in hikes:
-            result = HikeReferencePoint.objects.filter(hike_id=h['id']).values()
+            result = HikeReferencePoint.objects.filter(
+                hike_id=h['id']).values()
             list = []
             for r in result:
-                list.append(r)
-            
+                refer_p = Point.objects.get(id=r['point_id'])
+                list.append({
+                    'reference_point_lat': refer_p.latitude,
+                    'reference_point_lng': refer_p.longitude,
+                    'reference_point_address': refer_p.address})
+
             h['rp'] = list
+
+            startP = Point.objects.get(id=h['start_point_id'])
+            endP = Point.objects.get(id=h['end_point_id'])
+
+            h['start_point_lat'] = startP.latitude
+            h['start_point_lng'] = startP.longitude
+            h['start_point_address'] = startP.address
+            h['end_point_lat'] = endP.latitude
+            h['end_point_lng'] = endP.longitude
+            h['end_point_address'] = endP.address
 
             try:
                 with open(h['track_file'], 'r') as f:
                     file_data = f.read()
                     h['file'] = file_data
-                    
+
             except:
                 return Response(status=500)
-    
+
         return Response(hikes)
 
+
 class Sessions(APIView):
-    
+
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
-        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ","")})
-        
+        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", "")})
+
+
+def get_province_and_village(lat, lon):
+    try:
+        reverse = partial(geolocator.reverse, language="it")
+        location = reverse(str(lat)+", "+str(lon))
+        province = location.raw['address']['county']
+        village = location.raw['address']['village']
+        return {'province': province, 'village': village}
+    except:
+        return {'province': "", 'village': ""}
