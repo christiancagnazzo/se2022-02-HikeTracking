@@ -69,7 +69,7 @@ class Hut(models.Model):
     name = models.CharField(max_length=50, unique=True)
     n_beds = models.IntegerField()
     fee = models.FloatField()
-    point = models.ForeignKey(Point, unique=True)
+    point = models.ForeignKey(Point, unique=True,on_delete=models.CASCADE)
 
 class Facility(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -89,4 +89,4 @@ class ParkingLot(models.Model):
     name = models.CharField(max_length=50, unique=True)
     fee = models.FloatField()
     n_cars = models.IntegerField()
-    point = models.ForeignKey(Point, unique=True)
+    point = models.ForeignKey(Point, unique=True,on_delete=models.CASCADE)
