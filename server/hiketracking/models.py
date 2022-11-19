@@ -37,7 +37,7 @@ class Point(models.Model):
     type = models.CharField(max_length=15, choices=Type.choices)
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['latitude','longitude'], name='hikeref')
+            models.UniqueConstraint(fields=['latitude','longitude'], name='point')
         ]
 
 class Hike(models.Model):
