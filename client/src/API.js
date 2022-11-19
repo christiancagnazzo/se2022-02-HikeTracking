@@ -103,17 +103,11 @@ async function getAllHikes(token, filters) {
       query += '&difficulty=' + filters.difficulty 
     if (filters.province !== '-')
       query += '&province=' + filters.province 
-    if (filters.city)
-      query += '&city=' + filters.city 
+    if (filters.village)
+      query += '&village=' + filters.village 
     if (filters.around)
       query += '&around=' + filters.around
   }
-  
-  // FOR THE CLIENT SIDE
-  //AROUND MUST BE A STRING WITH "start_latitude-start-longitude-radius"
-  // ex: filters.around = '40.177786-47.083372-10'
-  // CITY MUST BE A STRING
-  // ex: filters.city = 'mompantero
 
   let response = await fetch(URL + 'allhikes/' + query, {
     method: 'GET',
