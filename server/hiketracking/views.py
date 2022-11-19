@@ -27,9 +27,7 @@ class NewHike(APIView):
             sp = get_province_and_village(
                 data['start_point_lat'], data['start_point_lng'])
             start_point_type = 'none'
-            if 'start_point_type' in data:
-                start_point_type = data['start_point_type']
-
+            
             start_point = Point.objects.get_or_create(
                 latitude=data['start_point_lat'],
                 longitude=data['start_point_lng'],
@@ -44,8 +42,7 @@ class NewHike(APIView):
             ep = get_province_and_village(
                 data['end_point_lat'], data['end_point_lng'])
             end_point_type = 'none'
-            if 'end_point_type' in data:
-                end_point_type = data['end_point_type']
+            
             end_point = Point.objects.get_or_create(
                 latitude=data['end_point_lat'],
                 longitude=data['end_point_lng'],
@@ -74,8 +71,6 @@ class NewHike(APIView):
                 rp_cp = get_province_and_village(
                     rp['reference_point_lat'], rp['reference_point_lng'])
                 ref_point_type = 'none'
-                if 'ref_point_type' in rp:
-                    ref_point_type = rp['reference_point_type']
                 ref_point = Point.objects.get_or_create(
                     latitude=rp['reference_point_lat'],
                     longitude=rp['reference_point_lng'],
