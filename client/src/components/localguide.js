@@ -100,8 +100,7 @@ function LocalGuide(props) {
       }
     }
   },[file])
-  return (<Container className="below-nav">
-    {' '}
+  return (
     <Card body>
       <Form>
         <Form.Group className="mb-3" controlId="title">
@@ -151,9 +150,10 @@ function LocalGuide(props) {
           Submit
         </Button>
       </Form>
+      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>
-    {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
-  </Container>)
+    
+  )
 
 }
 

@@ -4,7 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
+import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline,Circle } from 'react-leaflet'
+import { Icon } from 'leaflet'
 
+const myIconSp = new Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 const  province_dic = { 
     '-'  : "-",    
     'AG' : 'Agrigento',
@@ -133,8 +143,9 @@ function FilterForm(props) {
   const [difficulty, setDifficulty] = useState("All")
 
   const[province, setProvince] = useState('-')
+  const[radius, setRadius] = useState(50)
   const navigate = useNavigate();
-
+  
   let token = localStorage.getItem("token");
   
   const handleSubmit = async (event) => {
@@ -166,8 +177,7 @@ function FilterForm(props) {
   
 
   
-  return (<Container className="below-nav">
-    {' '}
+  return (
     <Card body>
       <Form>
       <Row>
@@ -260,9 +270,9 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
     </Row>
+    
     <Form.Group className="mb-3" controlId="ascent">
         <Form.Label>Difficulty</Form.Label>
-        
         <Form.Select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
         <option value="All">All</option>
         <option value="Tourist">Tourist</option>
@@ -270,13 +280,31 @@ function FilterForm(props) {
         <option value="Pro Hiker">Pro Hiker</option>
         </Form.Select>
     </Form.Group>
-    <Form.Group className="mb-3" controlId="title">
+    <Row>
+      <Col>
+      <Form.Group className="mb-3" controlId="title">
           <Form.Label>Province</Form.Label>
           <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
           {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
           </Form.Select>
           
     </Form.Group>
+      </Col>
+      <Col>
+      <Form.Group className="mb-3" controlId="title">
+          <Form.Label>City/Village</Form.Label>
+          <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
+          {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
+          </Form.Select>
+          
+    </Form.Group>
+      </Col>
+    </Row>
+    
+    <Card><FilterMap radius={radius}></FilterMap>
+    </Card>
+    <Form.Label>Range</Form.Label>
+      <Form.Range value = {radius} onChange={(e) => setRadius(e.target.value)} />
        
 
         
@@ -286,10 +314,46 @@ function FilterForm(props) {
         </Button>
       </Form>
     </Card>
-  </Container>)
+  )
 
 }
 
 
+function MapFunction(props) {
+  const map = useMapEvents({
+    click: (e) => {
+      props.setPosition(e.latlng)
+    },
+    locationfound: (e) => {
+      props.setCenter(e.latlng)
+      map.flyTo(e.latlng)
+    }
+  })
+  useEffect(() => {
+    map.locate()
+    
+  },[]) 
+  return null
+}
+
+function FilterMap(props){
+  const [center, setCenter] = useState([40,10])
+  const [position, setPosition] = useState("")
+  return(
+    <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {position !==""?<Circle center={position}  radius={props.radius * 1000}/>:''}  
+            <MapFunction setCenter={setCenter} setPosition={setPosition}/>
+            {/*position !==""?<Marker position={position} icon={myIconSp}>
+            <Popup>
+                Reference Point: {"ok"}
+            </Popup>
+  </Marker> : ''*/}
+    </MapContainer>
+  )
+}
 
 export default FilterForm

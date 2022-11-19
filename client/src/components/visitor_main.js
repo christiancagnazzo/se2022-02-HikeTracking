@@ -5,6 +5,10 @@ import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
 import FilterForm from './filterform';
+import { ProSidebarProvider } from 'react-pro-sidebar';
+import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { Hiking, HolidayVillage, LocalParking  } from '@mui/icons-material'
+
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
@@ -53,11 +57,14 @@ function VisitorPage(props) {
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
       <Row className="h-100">
         <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
-          <Menu currSel={currSel} changeSel={updateCurrSel}></Menu>
+          <ProSidebarProvider >
+          <MyMenu currSel={currSel} changeSel={updateCurrSel}/>
+          </ProSidebarProvider>
+          
         </Col>
       
         <Col sm={10} className="py-1">
-          <Row xs={1} sm={2} md={3}>
+          <Row >
             {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
               {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
               :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
@@ -67,6 +74,9 @@ function VisitorPage(props) {
       </Row>
       
     </Container>
+        
+     
+      
   )
 }
 
@@ -182,15 +192,23 @@ function HikeModalTrack(props) {
   )
 }
 
-function Menu(props){
+function MyMenu(props){
 
-  const commonClass ="list-group-item list-group-item-action rounded-0 "
-
+  const hikingIcon = <Hiking></Hiking>
+  const parkingLot = <LocalParking></LocalParking>
+  const hutIcon = <HolidayVillage></HolidayVillage>
   return (
-    <ListGroup>
-      <Button className={commonClass + (props.currSel === "hikes"?"active" :'' )} onClick={() => props.changeSel("hikes")}>Available hikes</Button>
-      <Button className={commonClass+ (props.currSel === "filters"?"active" :'' )} onClick={() => props.changeSel("filters")}>Apply filters</Button>
-    </ListGroup>
+  <Sidebar width='auto' className='border-0'>
+    <Menu>
+      <SubMenu label="Hikes" icon={hikingIcon}>
+        <MenuItem onClick={() => props.changeSel("hikes")}>Full list</MenuItem>
+        <MenuItem onClick={() => props.changeSel("filter")}>Filter</MenuItem>
+      </SubMenu>
+      <MenuItem icon ={hutIcon}>Hut</MenuItem>
+
+      <MenuItem icon={parkingLot}>Parking Lot</MenuItem>
+    </Menu>
+  </Sidebar>
   )
 }
 

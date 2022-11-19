@@ -2,6 +2,10 @@
 Global 
 I'll use it to place a navbar without problems
 */
+html, body, #root {
+    height: 100%;
+    
+}
 .vheight-100 {
     min-height: 100vh;
 }
