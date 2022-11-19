@@ -35,6 +35,7 @@ class Hike(models.Model):
     difficulty = models.CharField(max_length=100)
     start_point_address = models.CharField(max_length=100)
     province = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
     end_point_lat = models.FloatField()
     end_point_lng = models.FloatField()
     end_point_address = models.CharField(max_length=100)

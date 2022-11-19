@@ -80,18 +80,6 @@ async function logout(token) {
   });
 }
 
-async function getHikes(filter, userPower) {
-  if (userPower !== "")
-    userPower += '/'
-  const response = await fetch(URL + userPower + 'hikes?filter=' + filter, { method: 'GET', credential: 'include' })
-  const up = await response.json();
-  if (response.ok) {
-    return up;
-  } else {
-    throw up;
-  }
-}
-
 async function getAllHikes(token, filters) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
@@ -115,8 +103,18 @@ async function getAllHikes(token, filters) {
       query += '&difficulty=' + filters.difficulty 
     if (filters.province !== '-')
       query += '&province=' + filters.province 
+    if (filters.city)
+      query += '&city=' + filters.city 
+    if (filters.around)
+      query += '&around=' + filters.around
   }
   
+  // FOR THE CLIENT SIDE
+  //AROUND MUST BE A STRING WITH "start_latitude-start-longitude-radius"
+  // ex: filters.around = '40.177786-47.083372-10'
+  // CITY MUST BE A STRING
+  // ex: filters.city = 'mompantero
+
   let response = await fetch(URL + 'allhikes/' + query, {
     method: 'GET',
     headers: {

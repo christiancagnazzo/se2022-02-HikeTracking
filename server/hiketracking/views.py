@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from geopy.geocoders import Nominatim
 from functools import partial
+import geopy.distance
 
 from .models import CustomUser, Hike, HikeReferencePoint
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
@@ -24,13 +25,16 @@ class NewHike(APIView):
         try:
             data = request.data
             province = ""
+            city = ""
 
             try:
                 reverse = partial(geolocator.reverse, language="it")
                 location = reverse(str(data['start_point_lat'])+", "+str(data['start_point_lng']))
                 province = location.raw['address']['county']
+                city = location.raw['address']['village']
             except:
                 province = ""
+                city = ""
 
             hike = Hike.objects.create(
                 title=data['title'], 
@@ -46,7 +50,8 @@ class NewHike(APIView):
                 end_point_address=data['end_point_address'],
                 description=data['description'],
                 local_guide=user_id,
-                province=province)
+                province=province,
+                city=city)
             
             hike.save()
 
@@ -139,7 +144,8 @@ class Hikes(APIView):
             maxAscent = request.GET.get('maxAscent', None)
             difficulty = request.GET.get('difficulty', None)
             province = request.GET.get('province', None)
-
+            city = request.GET.get('city', None)
+            
             hikes = Hike.objects.all()
             
             if minLength:
@@ -158,13 +164,32 @@ class Hikes(APIView):
                 hikes = hikes.filter(difficulty=difficulty)
             if province:
                 hikes = hikes.filter(province=province)
+            if city:
+                hikes = hikes.filter(city=city.lower().capitalize())
 
             hikes = hikes.values()
 
         else:
             hikes = Hike.objects.values()
             
-    
+        around = request.GET.get('around', None)
+
+        if filters and around:
+            filtered_hikes = []
+            fields = around.split("-")
+            radius=fields[2]
+            input_coordinates = (fields[0], fields[1])
+            for h in hikes:
+                hike_coordinates = (h['start_point_lat'], h['start_point_lng'])
+                distance = geopy.distance.geodesic(input_coordinates, hike_coordinates).km
+
+                if (distance <= float(radius)):
+                    filtered_hikes.append(h)
+            
+            hikes = filtered_hikes
+            
+        
+
         result = {}
         for h in hikes:
             result = HikeReferencePoint.objects.filter(hike_id=h['id']).values()
