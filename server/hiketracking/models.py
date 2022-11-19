@@ -49,8 +49,8 @@ class Hike(models.Model):
     difficulty = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     track_file = models.FileField(upload_to='tracks')
-    start_point = models.ForeignKey(Point, on_delete=models.CASCADE)
-    end_point = models.ForeignKey(Point, on_delete=models.CASCADE)
+    start_point = models.ForeignKey(Point, on_delete=models.CASCADE,related_name="start_point")
+    end_point = models.ForeignKey(Point, on_delete=models.CASCADE,related_name="end_point")
     local_guide = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 
