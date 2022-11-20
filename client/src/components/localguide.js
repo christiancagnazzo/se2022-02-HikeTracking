@@ -61,26 +61,31 @@ function LocalGuide(props) {
     let gpxParser = require('gpxparser');
     let gpx = new gpxParser(); //Create gpxParser Object
     //setErrorMessage('test node2')
-    
+
     console.log(e.target.className);
     var objFile = document.getElementById("formFile").files[0];
     if (objFile.length == 0) {
     } else {
-      var reader = new FileReader();  
+      var reader = new FileReader();
       reader.onload = function (evt) {
         var fileString = this.result;
         //setErrorMessage(fileString)
         gpx.parse(fileString);
         let track1 = gpx.tracks[0];
         let point1 = track1.points[0];
-        let endPoint = track1.points[1];
-        setSp([point1.lat,point1.lon]);
-        setEp([endPoint.lat,endPoint.lon]);
-        
+        setSp([point1.lat, point1.lon]);
+        for (var i = 1; i < track1.points.length - 1; i++) {
+          let rp = [];
+          rp[i - 1] = [track1.points[i].lat, track1.points[i].lon];
+        }
+        let endPoint = track1.points[track1.points.length - 1];
+
+        setEp([endPoint.lat, endPoint.lon]);
+
+      }
+      reader.readAsText(objFile, "UTF-8");
     }
-    reader.readAsText(objFile, "UTF-8");
   }
-}
 
 
   const checkNum = (num) => {
