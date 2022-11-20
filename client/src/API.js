@@ -123,18 +123,6 @@ async function logout(token) {
   });
 }
 
-async function getHikes(filter, userPower) {
-  if (userPower !== "")
-    userPower += '/'
-  const response = await fetch(URL + userPower + 'hikes?filter=' + filter, { method: 'GET', credential: 'include' })
-  const up = await response.json();
-  if (response.ok) {
-    return up;
-  } else {
-    throw up;
-  }
-}
-
 async function getAllHikes(token, filters) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
@@ -173,6 +161,53 @@ async function getAllHikes(token, filters) {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
+async function getAllHuts(token, filters) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  let query = ''
+//to implements filters!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  if (filters) {
+    query += '?filters=true'
+    if (filters.minLength)
+      query += '&minLength=' + filters.minLength 
+    if (filters.maxLength)
+      query += '&maxLength=' + filters.maxLength 
+    if (filters.minTime)
+      query += '&minTime=' + filters.minTime 
+    if (filters.maxTime)
+      query += '&maxTime=' + filters.maxTime 
+    if (filters.minAscent)
+      query += '&minAscent=' + filters.minAscent 
+    if (filters.maxAscent)
+      query += '&maxAscent=' + filters.maxAscent 
+    if (filters.difficulty !== 'All')
+      query += '&difficulty=' + filters.difficulty 
+    if (filters.province !== '-')
+      query += '&province=' + filters.province 
+  }
+  
+  let response = await fetch(URL + 'allhuts/' + query, {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
+
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+
+
+
 
 async function checkAuth(token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
@@ -189,5 +224,5 @@ async function checkAuth(token) {
   }
 }
 
-const API = { login, logout, createHike, signin, getAllHikes, checkAuth,createHut };
+const API = { login, logout, createHike, signin, getAllHikes,getAllHuts, checkAuth,createHut };
 export default API;

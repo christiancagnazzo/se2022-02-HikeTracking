@@ -1,124 +1,41 @@
-/*
-secondo me conviene creare un altro file visitors solamente per i visitatori per splittare ancora di piu' le divisioni
-eviterei di passare le api a tutti e 3 i file e le inserire solo qui, nel caso un visitor non sia loggato dobbiamo restituire huts=null o quello che preferite.
-penso sia meglio splittare perche' piu' andremo avanti e piu' il codice diventera' giga chad
-
-
-*/
-
-
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
-import API from '../API';
 import FilterForm from './filterform';
-import Hikes from './hikes';
-import Huts from './huts';
 
-function VisitorPage(props) {
-  const [hikes, setHikes] = useState([]);
+function Hikes(props) {
+  const hikes = props.hikes;
   const [currSel, setCurrSel] = useState("hikes")
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
-  const [huts, setHuts]=useState([]);
-  const [selectedPage,setSelectedPage]=useState("hikes")
+
   
-
-  useEffect(() => {
-    const getHikes = async () => {
-
-      try {
-        const hikes = await API.getAllHikes(token);
-        if (hikes.error)
-          setErrorMessage(hikes.msg)
-        else
-          setHikes(hikes.msg);
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    getHikes()
-  }, []);
-
-  useEffect(() => {
-    const getHuts = async () => {
-      try {
-        const huts = await API.getAllHuts(token);
-        if (huts.error)
-          setErrorMessage(hikes.msg)
-        else
-          setHuts(huts.msg);
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getHuts()
-  }, []);
-
   const updateCurrSel = (sel) =>{
     setCurrSel(sel)
   }
-  const applyFilter = (filter) => {
-    async function  getFilteredikes(){
-      try{
-        const filteredHikes = await API.getAllHikes(token, filter)
-        if (hikes.error)
-            setErrorMessage(filteredHikes.msg)
-          else
-            setHikes(filteredHikes.msg);
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      async function  getFilteredHuts(){
-        try{
-          const filteredHuts = await API.getAllHuts(token, filter)
-          if (huts.error)
-              setErrorMessage(filteredHuts.msg)
-            else
-              setHuts(filteredHuts.msg);
-          } catch (err) {
-            console.log(err)
-          }
-        }
-  if (selectedPage==="hikes") 
-      getFilteredikes()
-  else
-      getFilteredHuts()
-    }
-  return(
-    <>
-    { props.userPower==="hiker" ?
-      <>
-      <Row>
-      <Button onClick={()=>{setSelectedPage("hikes")}}>select hikes</Button>
-      <Button onClick={()=>{setSelectedPage("huts")}}>select huts</Button>
-      </Row>
-      {selectedPage==="hikes"? <Hikes hikes={hikes} huts={huts} userPower={props.userPower} applyFilter={applyFilter}/> : <Huts/>}
-      </>
-      : 
-      <Container fluid className="flex-grow-1">
+  
+    
+  return (
+    <Container fluid className="flex-grow-1">
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
       <Row className="h-100">
         <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
           <Menu currSel={currSel} changeSel={updateCurrSel}></Menu>
         </Col>
+      
         <Col sm={10} className="py-1">
           <Row xs={1} sm={2} md={3}>
             {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
-              {currSel === "hikes" ? 
-                hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :
-                <FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
+              {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
+              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={props.applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
           </Row>
         </Col>
+        
       </Row>
+      
     </Container>
-    }
-  </>
   )
 }
 
@@ -244,6 +161,6 @@ function Menu(props){
 }
 
 
-export default VisitorPage
+export default Hikes;
 
 
