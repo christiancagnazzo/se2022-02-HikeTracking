@@ -7,6 +7,7 @@ services:
     image: christiancagnazzo/sw2demoproject:server
 
   client:
+    stdin_open: true
     build: ./client
     image: christiancagnazzo/sw2demoproject:client
     ports:

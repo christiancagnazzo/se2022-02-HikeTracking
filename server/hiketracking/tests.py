@@ -1,9 +1,14 @@
-from django.test import TestCase
+from django.test import TestCase,Client
 
 # Create your tests here.
-from django.contrib.auth import get_user_model
-from django.test import TestCase
-
+from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.test import TestCase, RequestFactory
+from django.http import HttpRequest
+from hiketracking.views import Hike, HikeFile,NewHike,Hikes
+from hiketracking.models import Hike
+from rest_framework.test import APITestCase
+from .models import *
+import json
 
 class UsersManagersTests(TestCase):
 
@@ -43,3 +48,104 @@ class UsersManagersTests(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_superuser(
                 email='super@user.com', password='foo',role="hi" ,is_superuser=False)
+
+     # try to login and the check result of login
+# password is incurrect and login failed
+# currect information and login success
+# because of this project uses njango default login, it test njango api using in fact
+    def test_login(self):
+        User = get_user_model()
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
+        self.assertEqual(user.email, 'normal@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
+        c = Client()
+        response = c.post('/login/', {'username': 'john', 'password': 'smith'})
+        self.assertEqual(response.status_code,404)
+        
+# try to logout and the check result of logout
+    def test_logout(self):
+        User = get_user_model()
+        user = User.objects.create_user(email= 'normal@user.com',password= 'johnpassword',role='hi')
+        self.assertEqual(user.email, 'normal@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+        c = Client()
+        response = c.post('/login/', {'username': 'normal@user.com', 'password': 'johnpassword'})
+        self.assertEqual(response.status_code,404)
+        response = c.get('/customer/details/')
+        response = c.logout() 
+        self.assertIsNone(response,"NoneType")
+
+class LoginTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        user = User.objects.create_user(email = 'test@user.com', password = 'foo', role = 'smth')
+        self.assertEqual(user.email, 'test@user.com')
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
+    def test_credentials(self):
+        user = authenticate(email = 'test@user.com', password = 'foo')
+        self.assertTrue((user is not None ) and user.is_authenticated)
+
+    def test_invalid_email(self):
+        user = authenticate(email='invlaid', password='foo')
+        self.assertFalse(user is not None and user.is_authenticated)
+
+    def test_invalid_password(self):
+        user = authenticate(email='test@user.com', password='doo')
+        self.assertFalse(user is not None and user.is_authenticated)
+
+class FullListHikeTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email = 'test@user.com')
+        Hike.objects.create(title = 'Climbing', length = 2, expected_time = 1, ascent = 1, start_point_lat = 69,
+                            start_point_lng = 23, difficulty = 'easy', start_point_address = 'Cappucini',
+                            end_point_lat = 72, end_point_lng = 26.2, end_point_address = 'Cappucini Top',
+                            description = 'A beginner Hike', local_guide = user_id)
+
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0, start_point_lat=75,
+                            start_point_lng=25, difficulty='medium', start_point_address='Superga',
+                            end_point_lat=78, end_point_lng=28, end_point_address='Top',
+                            description='A trek', local_guide=user_id)
+
+
+#Test to get full list of hikes
+    def test_get_full_list_of_hikes(self):
+       hike_list = Hike.objects.all()
+       self.assertEqual(len(hike_list), 2)
+       h_list = list(hike_list.values())
+       val_list = list(h_list[0].values())
+       val_list_1 = list(h_list[1].values())
+       final_test_list = [val_list, val_list_1]
+       self.assertEqual(final_test_list[0][1], 'Climbing')
+       self.assertEqual(final_test_list[1][8], 'Superga')
+
+
+class AddHikeDescriptionTest(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, start_point_lat=69,
+                            start_point_lng=23, difficulty='easy', start_point_address='Cappucini',
+                            end_point_lat=72, end_point_lng=26.2, end_point_address='Cappucini Top',
+                            local_guide=user_id)
+
+    def test_add_hike_description(self):
+        hike_concerned = Hike.objects.get(id=1)
+        self.assertEqual(hike_concerned.description, '')
+        Hike.objects.filter(id=1).update(description = 'A beginner Hike')
+        hike_updated = Hike.objects.get(id=1)
+        self.assertEqual(hike_updated.description, 'A beginner Hike')
+
+

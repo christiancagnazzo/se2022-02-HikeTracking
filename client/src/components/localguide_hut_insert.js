@@ -5,20 +5,24 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 
-function LocalGuide(props) {
-  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
-  const [length, setLength] = useState(9)
-  const [time, setTime] = useState(240)
-  const [ascent, setAscent] = useState(3538)
-  const [difficulty, setDifficulty] = useState("Tourist")
-  const [sp, setSp] = useState([45.177786, 7.083372	])
-  const [addressSp, setAddressSp] = useState('Dummy start	')
+
+function Localguide_hut_insert(){
+
+
+
+  const [title, setTitle] = useState("")
+  const [length, setLength] = useState(1)
+  const [time, setTime] = useState(1)
+  const [ascent, setAscent] = useState(1)
+  const [difficulty, setDifficulty] = useState("")
+  const [sp, setSp] = useState([1, 1	])
+  const [addressSp, setAddressSp] = useState('')
   const [ep, setEp] = useState([45.203531, 7.07734	])
-  const [addressEp, setAddressEp] = useState('Dummy ending')
+  const [addressEp, setAddressEp] = useState('')
   const [rp, setRp] = useState(['', ''])
   const [addressRp, setAddressRp] = useState('')
   const [rpList, setRpList] = useState([])
-  const [desc, setDesc] = useState('First hike to be uploaded	')
+  const [desc, setDesc] = useState('')
   const [file, setFile] = useState('')
   const [readFile, setReadFile] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -262,4 +266,5 @@ function PointInput(props) {
 
   )
 }
-export default LocalGuide
+export default Localguide_hut_insert
+

@@ -1,14 +1,15 @@
 const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token) {
-  try {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
+  try {
     let response = await fetch(URL + 'hike/', {
       method: 'POST',
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token '+token
+        'Authorization': valid_token
       },
     })
 
@@ -18,17 +19,17 @@ async function createHike(hike_description, hike_file, token) {
         method: 'PUT',
         body: hike_file,
         headers: {
-          'Authorization': 'Token '+token
+          'Authorization': valid_token
         },
       })
 
       if (second_response.status == '200')
-        return true;
+        return { msg: "Hike Creato" };
 
-      return false;
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
     }
 
-    return false;
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
   }
 
   catch (e) {
@@ -36,16 +37,47 @@ async function createHike(hike_description, hike_file, token) {
   }
 }
 
-//USED TO GET INFO ABOUT QUEE FROM SERVER
-async function getAllInfos() {
-  const response = await fetch(URL);
-  const services = await response.json();
-  if (response.ok) {
-    return services.map((c) => ({ id: c.id, info1: c.info1, info2: c.info2, info3: c.info1info3 }))
-  } else {
-    throw services;
+async function createHut(hut_description, hike_file, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'hut/', {
+      method: 'POST',
+      body: JSON.stringify(hut_description),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+
+    if (response.status == '200') {
+      response = await response.json()
+      let second_response = await fetch(URL + 'hut/file/' + response['hut_id'], {
+        method: 'PUT',
+        body: hut_file,
+        headers: {
+          'Authorization': valid_token
+        },
+      })
+
+      if (second_response.status == '200')
+        return { msg: "Hut Creato" };
+
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    }
+
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+
+  catch (e) {
+    console.log(e) // TODO
   }
 }
+
+
+
+
+
 
 
 async function login(credentials) {
@@ -58,9 +90,9 @@ async function login(credentials) {
   });
 
   if (response.status == '200')
-    return { msg: await response.json()}
-  else{
-    return { error: 'Error', msg: "Qualcosa è andato storto nel login. Riprovare"}
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong in the login. Please try again" }
   }
 }
 
@@ -74,43 +106,88 @@ async function signin(credentials) {
   });
 
   if (response.status == '200')
-    return { msg: await response.json()}
-  else{
-    return { error: 'Error', msg: "Qualcosa è andato storto nella registrazione. Riprovare"}
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong with the recording.  Please try again" }
   }
-    
+
 }
 
-async function logout() {
-  await fetch(URL + 'sessions/current', { method: 'DELETE', credentials: 'include' });
+async function logout(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  await fetch(URL + 'logout/', {
+    method: 'POST',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
 }
 
-async function getUserInfo() {
-  const response = await fetch(URL + 'sessions/current', { credentials: 'include' });
-  const userInfo = await response.json();
+async function getHikes(filter, userPower) {
+  if (userPower !== "")
+    userPower += '/'
+  const response = await fetch(URL + userPower + 'hikes?filter=' + filter, { method: 'GET', credential: 'include' })
+  const up = await response.json();
   if (response.ok) {
-    return userInfo;
+    return up;
   } else {
-    throw userInfo;  // an object with the error coming from the server
+    throw up;
   }
 }
 
+async function getAllHikes(token, filters) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
+  let query = ''
 
-  async function getHikes(filterarray,filters){
-    let x=URL+"hikes?filters={";
-    for (let i=0;i<14;i++)
-      x+=filters[i]+":"+filterarray[i]+",";
-    x+="}"
-    const response = await fetch(x,{method: 'GET', credential: 'include'})
-    const up=await response.json();
-    if (response.ok){
-      return up;
-    }else{
-      throw up;
-    }
+  if (filters) {
+    query += '?filters=true'
+    if (filters.minLength)
+      query += '&minLength=' + filters.minLength 
+    if (filters.maxLength)
+      query += '&maxLength=' + filters.maxLength 
+    if (filters.minTime)
+      query += '&minTime=' + filters.minTime 
+    if (filters.maxTime)
+      query += '&maxTime=' + filters.maxTime 
+    if (filters.minAscent)
+      query += '&minAscent=' + filters.minAscent 
+    if (filters.maxAscent)
+      query += '&maxAscent=' + filters.maxAscent 
+    if (filters.difficulty !== 'All')
+      query += '&difficulty=' + filters.difficulty 
+    if (filters.province !== '-')
+      query += '&province=' + filters.province 
   }
+  
+  let response = await fetch(URL + 'allhikes/' + query, {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
 
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
 
-const API = { login, logout, getUserInfo, getHikes, createHike, signin };
+async function checkAuth(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'sessions/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+const API = { login, logout, createHike, signin, getAllHikes, checkAuth,createHut };
 export default API;

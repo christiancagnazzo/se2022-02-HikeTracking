@@ -1,22 +1,37 @@
-from django.shortcuts import render
 from django.contrib.auth import login
+from django.shortcuts import render
 from knox.models import AuthToken
+from knox.views import LoginView as KnoxLoginView
+from rest_framework import generics, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics, permissions, viewsets
-from .serializers import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
-from .models import Hike, CustomUser, HikeReferencePoint
-from knox.views import LoginView as KnoxLoginView
+from geopy.geocoders import Nominatim
+from functools import partial
 
+from .models import CustomUser, Hike, HikeReferencePoint
+from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
+                          UserSerializer)
 
-
-# Create your views here.
+geolocator = Nominatim(user_agent="hiketracking")
 
 class NewHike(APIView):
+    #permission_classes = (permissions.AllowAny,)
+
     def post(self, request):
-    
+        user_id = CustomUser.objects.get(email=request.user)
+        
+
         try:
             data = request.data
+            province = ""
+
+            try:
+                reverse = partial(geolocator.reverse, language="it")
+                location = reverse(str(data['start_point_lat'])+", "+str(data['start_point_lng']))
+                province = location.raw['address']['county']
+            except:
+                province = ""
+
             hike = Hike.objects.create(
                 title=data['title'], 
                 length=data['length'],
@@ -29,29 +44,34 @@ class NewHike(APIView):
                 end_point_lat=data['end_point_lat'],
                 end_point_lng=data['end_point_lng'],
                 end_point_address=data['end_point_address'],
-                description=data['description'])
-            
+                description=data['description'],
+                local_guide=user_id,
+                province=province)
             
             hike.save()
 
             for rp in data['rp_list']:
-                
+                print(rp)
                 rp_hike = HikeReferencePoint.objects.create(
                     hike = hike,
-                    reference_point_lan=rp['lat'],
-                    reference_point_lng=rp['lng'],
-                    reference_point_address=rp['address']
+                    reference_point_lat=rp['reference_point_lat'],
+                    reference_point_lng=rp['reference_point_lng'],
+                    reference_point_address=rp['reference_point_address']
                 )
                 rp_hike.save()
                 
 
             return Response(status = 200, data = {"hike_id": hike.id})
         except Exception as e:
-            Hike.objects.filter(id=hike.id).delete()
-            HikeReferencePoint.objects.filter(hike=hike).delete()
+            print(e)
+            
+           # Hike.objects.filter(id=hike.id).delete()
+           # HikeReferencePoint.objects.filter(hike=hike).delete()
             return Response(status = 400, data={"Error": str(e)})
 
 class HikeFile(APIView):
+    #permission_classes = (permissions.AllowAny,)
+    
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']
@@ -99,6 +119,74 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
+        result = super(LoginAPI, self).post(request, format=None)
+        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ",""), "token": result.data['token']})
         
+        
+class Hikes(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+
+        filters = request.GET.get('filters', None)
+                
+        if filters:
+            minLength = request.GET.get('minLength', None)
+            maxLength = request.GET.get('maxLength', None)
+            minTime = request.GET.get('minTime', None)
+            maxTime = request.GET.get('maxTime', None)
+            minAscent = request.GET.get('minAscent', None)
+            maxAscent = request.GET.get('maxAscent', None)
+            difficulty = request.GET.get('difficulty', None)
+            province = request.GET.get('province', None)
+
+            hikes = Hike.objects.all()
+            
+            if minLength:
+                hikes = hikes.filter(length__gte=minLength)
+            if maxLength:
+                hikes = hikes.filter(length__lte=maxLength)
+            if minTime:
+                hikes = hikes.filter(expected_time__gte=minTime)
+            if maxTime:
+                hikes = hikes.filter(expected_time__lte=maxTime)
+            if minAscent:
+                hikes = hikes.filter(ascent__gt=minAscent)
+            if maxAscent:
+                hikes = hikes.filter(ascent__lte=maxAscent)
+            if difficulty:
+                hikes = hikes.filter(difficulty=difficulty)
+            if province:
+                hikes = hikes.filter(province=province)
+
+            hikes = hikes.values()
+
+        else:
+            hikes = Hike.objects.values()
+            
+    
+        result = {}
+        for h in hikes:
+            result = HikeReferencePoint.objects.filter(hike_id=h['id']).values()
+            list = []
+            for r in result:
+                list.append(r)
+            
+            h['rp'] = list
+
+            try:
+                with open(h['track_file'], 'r') as f:
+                    file_data = f.read()
+                    h['file'] = file_data
+                    
+            except:
+                return Response(status=500)
+    
+        return Response(hikes)
+
+class Sessions(APIView):
+    
+    def get(self, request):
+        user = CustomUser.objects.get(email=request.user)
+        return Response(status=200, data = { "user": user.email, "role": user.role.lower().replace(" ","")})
         
