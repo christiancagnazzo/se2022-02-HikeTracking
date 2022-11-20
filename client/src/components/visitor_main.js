@@ -56,7 +56,7 @@ function VisitorPage(props) {
     <Container fluid className="flex-grow-1">
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
       <Row className="h-100">
-        <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
+        <Col  sm={2} className="px-0  bg-success">
           <ProSidebarProvider >
           <MyMenu currSel={currSel} changeSel={updateCurrSel}/>
           </ProSidebarProvider>
@@ -64,10 +64,10 @@ function VisitorPage(props) {
         </Col>
       
         <Col sm={10} className="py-1">
-          <Row >
+          <Row className="p-4">
             {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
               {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
+              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}/>}
           </Row>
         </Col>
         
@@ -201,12 +201,18 @@ function MyMenu(props){
   <Sidebar width='auto' className='border-0'>
     <Menu>
       <SubMenu label="Hikes" icon={hikingIcon}>
-        <MenuItem onClick={() => props.changeSel("hikes")}>Full list</MenuItem>
+        <MenuItem onClick={() => props.changeSel("hikes")}>Browse</MenuItem>
         <MenuItem onClick={() => props.changeSel("filter")}>Filter</MenuItem>
       </SubMenu>
-      <MenuItem icon ={hutIcon}>Hut</MenuItem>
+      <SubMenu icon ={hutIcon} label='Hut'>
+        <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
+        <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
+      </SubMenu>
 
-      <MenuItem icon={parkingLot}>Parking Lot</MenuItem>
+      <SubMenu icon={parkingLot} label='Parking Lot'>
+        <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
+        <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
+      </SubMenu>
     </Menu>
   </Sidebar>
   )

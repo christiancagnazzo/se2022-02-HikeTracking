@@ -107,7 +107,7 @@ function App2() {
   return (
     <>
      <Container fluid className ="d-flex flex-column h-100"
-      style={{ paddingLeft: 0, paddingRight: 0 , backgroundImage:  `url(${background})`}}>
+      style={{ paddingLeft: 0, paddingRight: 0 }}>
       <MyNavbar loggedIn={loggedIn} logout={doLogout} login={login} signIn={signIn} userPower={userPower} />
       <Container fluid className="flex-grow-1">
         <Row className = "h-100">
