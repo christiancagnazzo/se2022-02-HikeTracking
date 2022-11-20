@@ -1,5 +1,7 @@
+import { SvgIcon } from '@mui/material';
+import { Landscape  } from '@mui/icons-material'
 import {Navbar, Container, Nav, Button} from 'react-bootstrap';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function MyNavbar2(props){
       return ( props.loggedIn ? <NavLogout logout={props.logout} userPower={props.userPower}/> : <NavLogin login={props.login} signIn={props.signIn}/>);
@@ -8,13 +10,17 @@ function MyNavbar2(props){
     const navigate = useNavigate();
 
     return(
-    <Navbar  bg="dark" variant="dark">
+    <Navbar  bg="success" variant="dark">
         <Container fluid>
-             <Nav>
-             
-              <Navbar.Brand onClick={() => navigate("/")}>Welcome</Navbar.Brand> 
-              <Button onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
-              <Button onClick={()=> props.signIn()} as="input" type="button" value="Sign In" variant='dark' size='sm'/>{' '}
+             <Nav   className="d-flex justify-content-between w-100">
+              <Navbar.Brand onClick={() => navigate("/")}>
+                <SvgIcon sx={{ fontSize: 30 }}component={Landscape}/>
+                Hike Adventures
+              </Navbar.Brand> 
+              <Nav.Item className="navbar-brand">
+                <Button onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
+                <Button onClick={()=> props.signIn()} as="input" type="button" value="Sign Up" variant='dark' size='sm'/>{' '}
+              </Nav.Item>
             </Nav>   
         </Container>
       </Navbar>

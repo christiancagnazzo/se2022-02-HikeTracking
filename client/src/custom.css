@@ -2,6 +2,14 @@
 Global 
 I'll use it to place a navbar without problems
 */
+html, body, #root {
+    height: 100%;
+    
+}
+
+body{
+    background-image: url('./img/hike.jpg');
+}
 .vheight-100 {
     min-height: 100vh;
 }

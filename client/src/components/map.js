@@ -92,6 +92,7 @@ function Click(props){
     const [position, setPosition] = useState([0,0])
     const map = useMapEvents({
         click: (e) => {
+            
             map.flyTo(props.sp)
         },
         
