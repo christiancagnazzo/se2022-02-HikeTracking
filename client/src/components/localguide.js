@@ -1,57 +1,92 @@
 import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 
+
 function LocalGuide(props) {
-  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
-  const [length, setLength] = useState(9)
-  const [time, setTime] = useState(240)
-  const [ascent, setAscent] = useState(3538)
-  const [difficulty, setDifficulty] = useState("Tourist")
-  const [sp, setSp] = useState([45.177786, 7.083372	])
-  const [addressSp, setAddressSp] = useState('Dummy start	')
-  const [ep, setEp] = useState([45.203531, 7.07734	])
-  const [addressEp, setAddressEp] = useState('Dummy ending')
-  const [rp, setRp] = useState(['', ''])
-  const [addressRp, setAddressRp] = useState('')
-  const [rpList, setRpList] = useState([])
-  const [desc, setDesc] = useState('First hike to be uploaded	')
-  const [file, setFile] = useState('')
-  const [readFile, setReadFile] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate();
+  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
+  let [length, setLength] = useState(9)
+  let [time, setTime] = useState(240)
+  let [ascent, setAscent] = useState(3538)
+  let [difficulty, setDifficulty] = useState("Tourist")
+  let [sp, setSp] = useState([45.177786, 7.083372])
+  let [addressSp, setAddressSp] = useState('Dummy start	')
+  let [ep, setEp] = useState([45.203531, 7.07734])
+  let [addressEp, setAddressEp] = useState('Dummy ending')
+  let [rp, setRp] = useState(['', ''])
+  let [addressRp, setAddressRp] = useState('')
+  let [rpList, setRpList] = useState([])
+  let [desc, setDesc] = useState('First hike to be uploaded	')
+  let [file, setFile] = useState('')
+  let [readFile, setReadFile] = useState('')
+  let [errorMessage, setErrorMessage] = useState('')
+  let navigate = useNavigate();
 
   let token = localStorage.getItem("token");
-  
+
   const handleSubmit = async (event) => {
+    console.log("submit");
     event.preventDefault();
-    const formData = new FormData()
+    let formData = new FormData()
     formData.append('File', file)
-    const hikeDescription = {
-      'title' : title,
-      'length' : length,
+    let hikeDescription = {
+      'title': title,
+      'length': length,
       'expected_time': time,
-      'ascent' : ascent,
+      'ascent': ascent,
       'difficulty': difficulty,
-      'start_point_lat' : sp[0],
-      'start_point_lng' : sp[1],
-      'start_point_address' : addressSp,
-      'end_point_lat' : ep[0],
-      'end_point_lng' : ep[1],
-      'end_point_address' : addressEp,
-      'description' : desc,
+      'start_point_lat': sp[0],
+      'start_point_lng': sp[1],
+      'start_point_address': addressSp,
+      'end_point_lat': ep[0],
+      'end_point_lng': ep[1],
+      'end_point_address': addressEp,
+      'description': desc,
       'rp_list': rpList
     }
     let req = await API.createHike(hikeDescription, formData, token)
-    if (req.error){
+    if (req.error) {
       setErrorMessage(req.msg)
     } else {
       navigate('/')
     }
+
   }
+
+  const handleInputFile = async (e) => {
+    //gpx analyses and input
+    let gpxParser = require('gpxparser');
+    let gpx = new gpxParser(); //Create gpxParser Object
+    //setErrorMessage('test node2')
+
+    console.log(e.target.className);
+    var objFile = document.getElementById("formFile").files[0];
+    if (objFile.length == 0) {
+    } else {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        var fileString = this.result;
+        //setErrorMessage(fileString)
+        gpx.parse(fileString);
+        let track1 = gpx.tracks[0];
+        let point1 = track1.points[0];
+        setSp([point1.lat, point1.lon]);
+        for (var i = 1; i < track1.points.length - 1; i++) {
+          let rp = [];
+          rp[i - 1] = [track1.points[i].lat, track1.points[i].lon];
+        }
+        let endPoint = track1.points[track1.points.length - 1];
+
+        setEp([endPoint.lat, endPoint.lon]);
+
+      }
+      reader.readAsText(objFile, "UTF-8");
+    }
+  }
+
 
   const checkNum = (num) => {
     if (!isNaN(num)) {
@@ -92,14 +127,14 @@ function LocalGuide(props) {
   }
 
   useEffect(() => {
-    if(file!==''){
+    if (file !== '') {
       const fr = new FileReader()
       fr.readAsText(file)
       fr.onload = () => {
         setReadFile(fr.result)
       }
     }
-  },[file])
+  }, [file])
   return (
     <Card body>
       <Form>
@@ -128,8 +163,8 @@ function LocalGuide(props) {
             <option value="Pro Hiker">Pro Hiker</option>
           </Form.Select>
         </Form.Group>
-        <PointInput label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
-        <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
+        <PointInput id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
+        <PointInput id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
           <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile}></Map>
@@ -140,10 +175,8 @@ function LocalGuide(props) {
         </Form.Group>
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
-          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={e => {
-            setFile(e.target.files[0])
-            
-          }} />
+          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={handleInputFile}></input>
+
         </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
@@ -152,7 +185,7 @@ function LocalGuide(props) {
       </Form>
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>
-    
+
   )
 
 }
@@ -262,4 +295,5 @@ function PointInput(props) {
 
   )
 }
+
 export default LocalGuide
