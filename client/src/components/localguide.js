@@ -7,32 +7,32 @@ import Map from './map'
 
 
 function LocalGuide(props) {
-  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
-  const [length, setLength] = useState(9)
-  const [time, setTime] = useState(240)
-  const [ascent, setAscent] = useState(3538)
-  const [difficulty, setDifficulty] = useState("Tourist")
-  const [sp, setSp] = useState([45.177786, 7.083372	])
-  const [addressSp, setAddressSp] = useState('Dummy start	')
-  const [ep, setEp] = useState([45.203531, 7.07734	])
-  const [addressEp, setAddressEp] = useState('Dummy ending')
-  const [rp, setRp] = useState(['', ''])
-  const [addressRp, setAddressRp] = useState('')
-  const [rpList, setRpList] = useState([])
-  const [desc, setDesc] = useState('First hike to be uploaded	')
-  const [file, setFile] = useState('')
-  const [readFile, setReadFile] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate();
+  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
+  let [length, setLength] = useState(9)
+  let [time, setTime] = useState(240)
+  let [ascent, setAscent] = useState(3538)
+  let [difficulty, setDifficulty] = useState("Tourist")
+  let [sp, setSp] = useState([45.177786, 7.083372	])
+  let [addressSp, setAddressSp] = useState('Dummy start	')
+  let [ep, setEp] = useState([45.203531, 7.07734	])
+  let [addressEp, setAddressEp] = useState('Dummy ending')
+  let [rp, setRp] = useState(['', ''])
+  let [addressRp, setAddressRp] = useState('')
+  let [rpList, setRpList] = useState([])
+  let [desc, setDesc] = useState('First hike to be uploaded	')
+  let [file, setFile] = useState('')
+  let [readFile, setReadFile] = useState('')
+  let [errorMessage, setErrorMessage] = useState('')
+  let navigate = useNavigate();
 
   let token = localStorage.getItem("token");
   
   const handleSubmit = async (event) => {
     console.log("submit");
     event.preventDefault();
-    const formData = new FormData()
+    let formData = new FormData()
     formData.append('File', file)
-    const hikeDescription = {
+    let hikeDescription = {
       'title' : title,
       'length' : length,
       'expected_time': time,
