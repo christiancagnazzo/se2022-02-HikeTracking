@@ -51,7 +51,7 @@ function RegistrationForm(props) {
     };
 
     return (
-        <Container className="below-nav">
+        <Container className="below-nav-reg">
             <Card body className = "body-interface">
                 <div className = "card-border-primary-mb-3">
                 <h2 className='text-center'>Register Yourself: Let's Get Started!</h2>
