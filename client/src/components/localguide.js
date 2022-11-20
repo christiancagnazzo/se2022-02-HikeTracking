@@ -56,38 +56,32 @@ function LocalGuide(props) {
     
   }
   const handleInputFile = (e) =>{
-    //setErrorMessage('test node1')
             //gpx analyses and input
             let gpxParser = require('gpxparser');
             let gpx = new gpxParser(); //Create gpxParser Object
             //setErrorMessage('test node2')
-        var objFile = document.getElementById("formFile");
-        //setErrorMessage('test node3')
-        if(objFile.value == "") {
-            alert("")
-        }
-        //setErrorMessage(toString(objFile.files[0].size));
-        var inp = document.getElementById("formFile");
-        setErrorMessage(toString(inp.json));
+        var objFile = e.target.files[0];
+        //setErrorMessage(e.innerHTML);
         //var files = inp.prop('files');
-        setErrorMessage('test node4')
         if(objFile.length == 0){
         }else{
-            var reader = new FileReader();//新建一个FileReader
-            reader.readAsText(objFile[0], "UTF-8");//读取文件 
-            reader.onload = function(evt){ //读取完文件之后会回来这里
-                var fileString = evt.target.result; // 读取文件内容
+            var reader = new FileReader();
+            reader.readAsText(objFile, "UTF-8");
+            reader.onload = function(evt){
+                var fileString = evt.target.result; 
                 console.log(fileString);
                 gpx.parse(fileString);
                 var totalDistance = gpx.tracks[0].distance.total;
-                setErrorMessage('44')
-                let start_point_lat = 44.3333;
+                //setErrorMessage('44')
+                let start_point_lat = totalDistance.lat;
                 let start_point_lng = totalDistance.lng;
                 let start_point_address = totalDistance.address;
-
-        }
-
-            
+                totalDistance = gpx.tracks[0].distance.total;
+                //setErrorMessage('44')
+                let end_point_lat = totalDistance.lat;
+                let end_point_lng = totalDistance.lng;
+                let end_point_address = totalDistance.address;
+        }     
           } 
   }
   
