@@ -76,8 +76,9 @@ function LocalGuide(props) {
         gpx.parse(fileString);
         let track1 = gpx.tracks[0];
         let point1 = track1.points[0];
+        let endPoint = track1.points[-1];
         setSp([point1.lat,point1.lon]);
-        setEp([44,44]);
+        setEp([endPoint.lat,endPoint.lon]);
     }
     reader.readAsText(objFile, "UTF-8");
   }
