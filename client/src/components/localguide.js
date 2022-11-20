@@ -12,9 +12,9 @@ function LocalGuide(props) {
   let [time, setTime] = useState(240)
   let [ascent, setAscent] = useState(3538)
   let [difficulty, setDifficulty] = useState("Tourist")
-  let [sp, setSp] = useState([45.177786, 7.083372	])
+  let [sp, setSp] = useState([45.177786, 7.083372])
   let [addressSp, setAddressSp] = useState('Dummy start	')
-  let [ep, setEp] = useState([45.203531, 7.07734	])
+  let [ep, setEp] = useState([45.203531, 7.07734])
   let [addressEp, setAddressEp] = useState('Dummy ending')
   let [rp, setRp] = useState(['', ''])
   let [addressRp, setAddressRp] = useState('')
@@ -26,65 +26,62 @@ function LocalGuide(props) {
   let navigate = useNavigate();
 
   let token = localStorage.getItem("token");
-  
+
   const handleSubmit = async (event) => {
     console.log("submit");
     event.preventDefault();
     let formData = new FormData()
     formData.append('File', file)
     let hikeDescription = {
-      'title' : title,
-      'length' : length,
+      'title': title,
+      'length': length,
       'expected_time': time,
-      'ascent' : ascent,
+      'ascent': ascent,
       'difficulty': difficulty,
-      'start_point_lat' : sp[0],
-      'start_point_lng' : sp[1],
-      'start_point_address' : addressSp,
-      'end_point_lat' : ep[0],
-      'end_point_lng' : ep[1],
-      'end_point_address' : addressEp,
-      'description' : desc,
+      'start_point_lat': sp[0],
+      'start_point_lng': sp[1],
+      'start_point_address': addressSp,
+      'end_point_lat': ep[0],
+      'end_point_lng': ep[1],
+      'end_point_address': addressEp,
+      'description': desc,
       'rp_list': rpList
     }
     let req = await API.createHike(hikeDescription, formData, token)
-    if (req.error){
+    if (req.error) {
       setErrorMessage(req.msg)
     } else {
       navigate('/')
     }
-    
+
   }
-  const handleInputFile = (e) =>{
-            //gpx analyses and input
-            let gpxParser = require('gpxparser');
-            let gpx = new gpxParser(); //Create gpxParser Object
-            //setErrorMessage('test node2')
-        var objFile = e.target.files[0];
-        //setErrorMessage(e.innerHTML);
-        //var files = inp.prop('files');
-        if(objFile.length == 0){
-        }else{
-            var reader = new FileReader();
-            reader.readAsText(objFile, "UTF-8");
-            reader.onload = function(evt){
-                var fileString = evt.target.result; 
-                console.log(fileString);
-                gpx.parse(fileString);
-                var totalDistance = gpx.tracks[0].distance.total;
-                //setErrorMessage('44')
-                let start_point_lat = totalDistance.lat;
-                let start_point_lng = totalDistance.lng;
-                let start_point_address = totalDistance.address;
-                totalDistance = gpx.tracks[0].distance.total;
-                //setErrorMessage('44')
-                let end_point_lat = totalDistance.lat;
-                let end_point_lng = totalDistance.lng;
-                let end_point_address = totalDistance.address;
-        }     
-          } 
+
+  const handleInputFile = async (e) => {
+    //gpx analyses and input
+    let gpxParser = require('gpxparser');
+    let gpx = new gpxParser(); //Create gpxParser Object
+    //setErrorMessage('test node2')
+    var objFile = e.target.files[0];
+    //setErrorMessage(e.innerHTML);
+    //var files = inp.prop('files');
+    if (objFile.length == 0) {
+    } else {
+      var reader = new FileReader();
+      reader.readAsText(objFile, "UTF-8");
+      reader.onload = function (evt) {
+        var fileString = evt.target.result;
+        console.log(fileString);
+        gpx.parse(fileString);
+        var totalDistance = gpx.tracks[0].distance.total;
+        //setErrorMessage('44')
+        let startPointLat = document.getElementById("inputGroup-sizing-default");
+        let startPointLng = document.getElementById("inputGroup-sizing-default");
+        let startPointAddr = document.getElementById("inputGroup-sizing-default");
+        let endPointLat = document.getElementById("inputGroup-sizing-default");
+      }
+    }
   }
-  
+
 
   const checkNum = (num) => {
     if (!isNaN(num)) {
@@ -125,14 +122,14 @@ function LocalGuide(props) {
   }
 
   useEffect(() => {
-    if(file!==''){
+    if (file !== '') {
       const fr = new FileReader()
       fr.readAsText(file)
       fr.onload = () => {
         setReadFile(fr.result)
       }
     }
-  },[file])
+  }, [file])
   return (
     <Card body>
       <Form>
@@ -161,8 +158,8 @@ function LocalGuide(props) {
             <option value="Pro Hiker">Pro Hiker</option>
           </Form.Select>
         </Form.Group>
-        <PointInput label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
-        <PointInput label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
+        <PointInput id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
+        <PointInput id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
           <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile}></Map>
@@ -183,7 +180,7 @@ function LocalGuide(props) {
       </Form>
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>
-    
+
   )
 
 }
