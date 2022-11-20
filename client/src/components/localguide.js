@@ -61,26 +61,27 @@ function LocalGuide(props) {
     let gpxParser = require('gpxparser');
     let gpx = new gpxParser(); //Create gpxParser Object
     //setErrorMessage('test node2')
-    var objFile = e.target.files[0];
-    //setErrorMessage(e.innerHTML);
+    
+    console.log(e.target.className);
+    var objFile = document.getElementById("formFile").files[0];
+
+    setErrorMessage(objFile);
     //var files = inp.prop('files');
     if (objFile.length == 0) {
     } else {
-      var reader = new FileReader();
-      reader.readAsText(objFile, "UTF-8");
+      var reader = new FileReader();  
       reader.onload = function (evt) {
-        var fileString = evt.target.result;
-        console.log(fileString);
+        var fileString = this.result;
+        setErrorMessage(fileString)
         gpx.parse(fileString);
-        var totalDistance = gpx.tracks[0].distance.total;
-        //setErrorMessage('44')
-        let startPointLat = document.getElementById("inputGroup-sizing-default");
-        let startPointLng = document.getElementById("inputGroup-sizing-default");
-        let startPointAddr = document.getElementById("inputGroup-sizing-default");
-        let endPointLat = document.getElementById("inputGroup-sizing-default");
-      }
+        let track1 = gpx.tracks[0];
+        let point1 = track1.points[0];
+        setSp([point1.lat,point1.lon]);
+        setEp([44,44]);
     }
+    reader.readAsText(objFile, "UTF-8");
   }
+}
 
 
   const checkNum = (num) => {
@@ -290,4 +291,5 @@ function PointInput(props) {
 
   )
 }
+
 export default LocalGuide
