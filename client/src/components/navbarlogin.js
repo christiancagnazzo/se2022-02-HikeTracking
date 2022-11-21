@@ -15,7 +15,7 @@ function MyNavbar2(props){
              <Nav   className="d-flex justify-content-between w-100">
               <Navbar.Brand onClick={() => navigate("/")}>
                 <SvgIcon sx={{ fontSize: 30 }}component={Landscape}/>
-                Hike Adventures
+                {' '}Hike Adventures
               </Navbar.Brand> 
               <Nav.Item className="navbar-brand">
                 <Button onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
