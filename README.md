@@ -83,6 +83,10 @@ To insert data to test the application run:
 python3 manage.py loaddata db_population/data.json
 ```
 
+HARD CODED USER
+Email "h@mail.com" - Password "1234" as hiker
+Email "g@mail.com" - Password "1234" as local guide
+
 
 ## Changelog
 
