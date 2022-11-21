@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import API from "../API";
 
 function LoginForm(props) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('h@mail.com');
+  const [password, setPassword] = useState('1234');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
  
@@ -31,8 +31,8 @@ function LoginForm(props) {
   };
 
   return (
-    <Container className="below-nav">
-      <Card body>
+    <Container className="">
+      <Card body className = "body-interface">
         <Row className='justify-content-center '>
           <Col>
             <h2 className='text-center'>Login</h2>
@@ -47,8 +47,8 @@ function LoginForm(props) {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} />
               </Form.Group>
-              <div align="center"> <Button className="mt-3" type="submit" variant="dark" onClick={handleSubmit}>Login</Button></div>
-              <div align="center"><Button className="mt-3" variant="dark" onClick={() => navigate(`/`)}>Go back</Button></div>
+              <div align="center"> <Button className="mt-3" type="submit" variant="success" onClick={handleSubmit}>Login</Button>&nbsp; &nbsp;
+              <Button className="mt-3" variant="danger" onClick={() => navigate(`/`)}>Go back</Button></div>
             </Form>
           </Col>
         </Row>

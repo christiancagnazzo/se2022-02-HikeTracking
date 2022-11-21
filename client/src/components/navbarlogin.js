@@ -29,20 +29,23 @@ function MyNavbar2(props){
 
   function NavLogout(props){
     const navigate = useNavigate();
+
     return(
-      <Navbar  bg="dark" variant="dark">
-          <Container fluid>
-               <Nav>
-               <> 
-                <Navbar.Brand onClick={() => navigate("/")}>Welcome {props.userPower}</Navbar.Brand>
-                {props.userPower === 'localguide' ? 
-                <Button onClick={() => navigate("/localguide")}  as="input" type="button" value="Add an hike" variant='dark' size='sm'/> : <></>} 
-                <Button onClick={()=> props.logout()} as="input" type="button" value="Logout" variant='dark' size='sm'/>{' '}   
-              </>
-              </Nav>   
-          </Container>
-        </Navbar>
-      )
+    <Navbar  bg="success" variant="dark">
+        <Container fluid>
+             <Nav   className="d-flex justify-content-between w-100">
+              <Navbar.Brand onClick={() => navigate("/")}>
+                <SvgIcon sx={{ fontSize: 30 }}component={Landscape}/>
+                {' '}Hike Adventures
+              </Navbar.Brand> 
+              <Nav.Item className="navbar-brand">
+                <Button onClick={()=> props.logout()} as="input" type="button" value="Logout" variant='danger' size='sm'/>{' '}   
+                
+              </Nav.Item>
+            </Nav>   
+        </Container>
+      </Navbar>
+    )
   }
   
 }

@@ -180,10 +180,10 @@ function FilterForm(props) {
   return (
     <Card body>
       <Form>
-      <Row>
+      <Row className="mb-3"> 
       <Form.Label htmlFor="basic-url">Length (in kms)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -196,7 +196,7 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -210,10 +210,10 @@ function FilterForm(props) {
       </Col>
     </Row>
         
-    <Row>
+    <Row className="mb-3">
       <Form.Label htmlFor="basic-url">Expected time (in min)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -227,7 +227,7 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -243,7 +243,7 @@ function FilterForm(props) {
     <Row>
       <Form.Label htmlFor="basic-url">Ascent (in meters)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -256,8 +256,8 @@ function FilterForm(props) {
           />
         </InputGroup>
       </Col>
-      <Col>
-        <InputGroup size="sm" className="mb-3">
+      <Col >
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -282,7 +282,7 @@ function FilterForm(props) {
     </Form.Group>
     <Row>
       <Col>
-      <Form.Group className="mb-3" controlId="title">
+      <Form.Group className="" controlId="title">
           <Form.Label>Province</Form.Label>
           <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
           {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
