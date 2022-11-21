@@ -2,6 +2,7 @@ import { Card, Form, Container, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import API from "../API";
+import "../custom.css"
 
 function RegistrationForm(props) {
     const [username, setUsername] = useState('')
@@ -50,30 +51,35 @@ function RegistrationForm(props) {
     };
 
     return (
-        <Container className="below-nav">
-            <Card body>
-                <h2 className='text-center'>Registration</h2>
-                <Form>
+        <Container className="below-nav-reg">
+            <Card body className = "body-interface">
+                <div className = "card-border-primary-mb-3">
+                <h2 className='text-center'>Register Yourself: Let's Get Started!</h2>
+                <Form className="form-alignment">
                     {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
 
                     <Form.Group className="mb-3" controlId="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="text" placeholder="Email" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control type="text" placeholder="Enter Your Email Here (name@example.com)" value={username} onChange={(e) => setUsername(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <Form.Control type="password" placeholder="Choose Your Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ascent">
-                        <Form.Label>Role</Form.Label>
+                        <Form.Label>Choose Your Role</Form.Label>
                         <Form.Select value={role} onChange={e => setRole(e.target.value)}>
                             <option value="Hiker">Hiker</option>
                             <option value="Local Guide">Local Guide</option>
                         </Form.Select>
                     </Form.Group>
-                    <div align="center"> <Button className="mt-3" type="submit" variant="dark" onClick={handleSubmit}>Signin</Button></div>
-                    <div align="center"><Button className="mt-3" variant="dark" onClick={() => navigate(`/`)}>Go back</Button></div>
+                    <div align = "center"> 
+                        <Button id="btnReg" type="submit" variant="success" onClick={handleSubmit}>Register</Button>
+                        &nbsp; &nbsp;
+                        <Button id="btnBack" variant="danger" onClick={() => navigate(`/`)}>Go back</Button>
+                    </div>
                 </Form>
+                </div>
             </Card>
 
         </Container>
