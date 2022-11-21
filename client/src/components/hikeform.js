@@ -252,13 +252,13 @@ function RefPoint(props) {
 
 function PointInput(props) {
   const label = props.label
-  const [selected, setSelected] = useState('Coordinates')
+  const [selected, setSelected] = useState('GPS')
 
   let form = ""
   let variant1 = "dark"
   let variant2 = "outline-dark"
   let variant3 = "outline-dark"
-  if(selected === "Coordinates"){
+  if(selected === "GPS"){
     variant1 = "dark"
     variant2 = "outline-dark"
     variant3 = "outline-dark"
@@ -325,16 +325,26 @@ function PointInput(props) {
     </Col>
     
   }
-  return (<Row className="mb-3">
-    <Form.Label htmlFor="basic-url">{label}</Form.Label>
-    <Col>
-        <InputGroup size="sm">
-          <Button variant={variant1} className="border-right-0"onClick={() => setSelected('Coordinates')}>Coordinates</Button>
+  return (
+  <Row className="mb-3">
+    <Row className="mb-3">
+      
+        <Form.Label htmlFor="basic-url">{label}</Form.Label>
+        
+      
+       
+      <InputGroup size="sm">
+          <Button variant={variant1} className="border-right-0"onClick={() => setSelected('GPS')}>GPS</Button>
           <Button variant={variant2} onClick={() => setSelected('Hut')}>Hut</Button>
-          <Button variant={variant3} onClick={() => setSelected('Parking Lot')}>Parking Lot</Button>
-        </InputGroup>
-
-    </Col>
+          <Button variant={variant3} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
+        </InputGroup> 
+      
+    
+    </Row>
+    
+    
+        
+    
     {form}
   </Row>
 
