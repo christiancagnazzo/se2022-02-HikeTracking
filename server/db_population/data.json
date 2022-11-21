@@ -1,0 +1,61 @@
+[
+    {
+        "model": "hiketracking.customuser",
+        "pk": 1,
+        "fields": {
+            "email": "g@mail.com",
+            "role": "localguide",
+            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo="
+        }
+    },
+    {
+        "model": "hiketracking.customuser",
+        "pk": 2,
+        "fields": {
+            "email": "h@mail.com",
+            "role": "hiker",
+            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo="
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk": 1,
+        "fields": {
+            "latitude": 45.177786,
+            "longitude": 7.083372,
+            "province": "Torino",
+            "village": "Mompantero",
+            "address": "Rifugio La Riposa"
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk": 2,
+        "fields": {
+            "latitude": 45.203531,
+            "longitude": 7.077340,
+            "province": "Torino",
+            "village": "Mompantero",
+            "address": "Rocciamelone"
+        }
+    },
+
+    {
+        "model": "hiketracking.hike",
+        "pk": 1,
+        "fields": {
+            "title": "Sentiero per il ROCCIAMELONE",
+            "length": 9,
+            "expected_time": 4,
+            "ascent": 3538,
+            "difficulty": "Pro Hiker",
+            "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)",
+            "track_file": "tracks/rocciamelone.gpx",
+            "start_point": 1,
+            "end_point": 2,
+            "local_guide": 1
+        }
+    }
+]

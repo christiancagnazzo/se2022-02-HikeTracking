@@ -3,7 +3,6 @@
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
@@ -68,8 +67,8 @@ Clone the project and run:
 ```sh
 $ cd server
 $ python3 manage.py makemigrations hiketracking
-$ python manage.py migrate  
-$ python manage.py runserver
+$ python3 manage.py migrate  
+$ python3 manage.py runserver
 ```
   
 Then you need to open a new terminal and run the client:
@@ -77,6 +76,11 @@ Then you need to open a new terminal and run the client:
 $ cd client
 $ npm install
 $ npm start
+```
+
+To insert data to test the application run:
+```sh
+python3 manage.py loaddata db_population/data.json
 ```
 
 
