@@ -9,7 +9,7 @@ from geopy.geocoders import Nominatim
 from functools import partial
 import geopy.distance
 
-from .models import CustomUser, Hike, HikeReferencePoint, Point
+from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer)
 
@@ -101,6 +101,7 @@ class HikeFile(APIView):
         try:
             file = request.FILES['File']
         except:
+            Hike.objects.filter(id=hike_id).delete()
             return Response(status=400, data={"Error": "File Requested"})
 
         try:
@@ -109,6 +110,7 @@ class HikeFile(APIView):
             hike.save()
             return Response(status=200)
         except:
+            Hike.objects.filter(id=hike_id).delete()
             return Response(status=400, data={"Error": "Hike not found"})
 
 
@@ -267,3 +269,19 @@ def get_province_and_village(lat, lon):
         return {'province': province, 'village': village}
     except:
         return {'province': "", 'village': ""}
+
+class Huts(APIView):
+    
+    def get(self, request):
+        result = []
+
+        huts = Hut.objects.all().values()
+
+        for h in huts:
+            point = Point.objects.get(id=h['point_id'])
+            h['lat'] = point.latitude
+            h['lon'] = point.longitude
+            result.append(h)
+
+        return Response(result)
+        

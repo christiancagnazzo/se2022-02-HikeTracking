@@ -88,23 +88,23 @@ async function getAllHikes(token, filters) {
   if (filters) {
     query += '?filters=true'
     if (filters.minLength)
-      query += '&minLength=' + filters.minLength 
+      query += '&minLength=' + filters.minLength
     if (filters.maxLength)
-      query += '&maxLength=' + filters.maxLength 
+      query += '&maxLength=' + filters.maxLength
     if (filters.minTime)
-      query += '&minTime=' + filters.minTime 
+      query += '&minTime=' + filters.minTime
     if (filters.maxTime)
-      query += '&maxTime=' + filters.maxTime 
+      query += '&maxTime=' + filters.maxTime
     if (filters.minAscent)
-      query += '&minAscent=' + filters.minAscent 
+      query += '&minAscent=' + filters.minAscent
     if (filters.maxAscent)
-      query += '&maxAscent=' + filters.maxAscent 
+      query += '&maxAscent=' + filters.maxAscent
     if (filters.difficulty !== 'All')
-      query += '&difficulty=' + filters.difficulty 
+      query += '&difficulty=' + filters.difficulty
     if (filters.province !== '-')
-      query += '&province=' + filters.province 
+      query += '&province=' + filters.province
     if (filters.village)
-      query += '&village=' + filters.village 
+      query += '&village=' + filters.village
     if (filters.around)
       query += '&around=' + filters.around
   }
@@ -138,5 +138,26 @@ async function checkAuth(token) {
   }
 }
 
-const API = { login, logout, createHike, signin, getAllHikes, checkAuth };
+async function getAllHuts(token, filters) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  let response = await fetch(URL + 'allhuts/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+async function getAllParkingLots(token, filters) {
+  // todo
+  return { 'msg': [] }
+}
+
+const API = { login, logout, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots };
 export default API;
