@@ -4,8 +4,8 @@ import { json, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
-import Hike from "./hike";
-
+import Hike from "./hikes";
+import GpxParser from 'gpxparser';
 
 function HikeForm(props) {
   let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
@@ -61,8 +61,8 @@ function HikeForm(props) {
 
   const handleInputFile = async (e) => {
     //gpx analyses and input
-    let gpxParser = require('gpxparser');
-    let gpx = new gpxParser(); //Create gpxParser Object
+    
+    let gpx = new GpxParser(); //Create gpxParser Object
     //setErrorMessage('test node2')
 
     var objFile = document.getElementById("formFile").files[0];

@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar from './components/navbarlogin';
-import Hike from './components/hike';
+import Hike from './components/hikes';
 import LocalGuide from './components/localguide'
 import { Helmet } from "react-helmet";
 import RegistrationForm from './components/registration';

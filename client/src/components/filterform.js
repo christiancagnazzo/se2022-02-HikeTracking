@@ -159,7 +159,6 @@ function FilterForm(props) {
         maxAscent: maxAscent,
         difficulty: difficulty,
         province: province
-
     }
     props.applyFilter(filter)
     props.changeSel("hikes")
@@ -174,9 +173,6 @@ function FilterForm(props) {
   }
   
 
-  
-
-  
   return (
     <Card body>
       <Form>
@@ -305,13 +301,10 @@ function FilterForm(props) {
     </Card>
     <Form.Label>Range</Form.Label>
       <Form.Range value = {radius} onChange={(e) => setRadius(e.target.value)} />
-       
-
-        
         {' '}
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Apply
-        </Button>
+      <Button variant="primary" type="submit" onClick={handleSubmit}>
+        Apply
+      </Button>
       </Form>
     </Card>
   )
@@ -337,7 +330,7 @@ function MapFunction(props) {
 }
 
 function FilterMap(props){
-  const [center, setCenter] = useState([40,10])
+  const [center, setCenter] = useState([45.07104275068942, 7.677664908245942])
   const [position, setPosition] = useState("")
   return(
     <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>

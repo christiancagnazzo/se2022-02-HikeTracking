@@ -246,7 +246,8 @@ class Hikes(APIView):
                     file_data = f.read()
                     h['file'] = file_data
 
-            except:
+            except Exception as e:
+                print(e)
                 return Response(status=500)
 
         return Response(hikes)
