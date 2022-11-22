@@ -66,6 +66,7 @@ $ docker compose up
 Clone the project and run:
 ```sh
 $ cd server
+$ pip install -r requirements.txt
 $ python3 manage.py makemigrations hiketracking
 $ python3 manage.py migrate  
 $ python3 manage.py runserver
