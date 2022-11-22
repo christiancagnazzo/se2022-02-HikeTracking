@@ -10,6 +10,7 @@ class HikeSerializer(serializers.ModelSerializer):
         model = Hike
         fields = '__all__'
 
+
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,7 +43,6 @@ class AuthTokenCustomSerializer(serializers.Serializer):
         trim_whitespace=False,
         write_only=True
     )
-    
 
     def validate(self, attrs):
         email = attrs.get('email')
