@@ -1,24 +1,19 @@
 import './custom.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import API from './API';
-import VisitorPage from './components/visitor_main'
+import VisitorPage from './components/visitor'
 import { Container, Row } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar from './components/navbarlogin';
-import Hike from './components/hike';
+import Hike from './components/hikes';
 import LocalGuide from './components/localguide'
 import { Helmet } from "react-helmet";
 import RegistrationForm from './components/registration';
-import { createTheme,ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
-import background from "./img/hike.jpg";
-const theme = createTheme({
-  palette: {
-    primary: green,
-  },
-});
+
 
 function App() {
   return (
@@ -40,7 +35,7 @@ function App2() {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const [dirty, setDirty] = useState(true);
-  const [userPower, setUserPower] = useState("localguide")
+  const [userPower, setUserPower] = useState("hiker")
   const [filter, setFilter] = useState("all")
 
   function handleError(err) {
@@ -112,9 +107,9 @@ function App2() {
       <Container fluid className="flex-grow-1">
         <Row className = "h-100">
           <Routes>
-            <Route path='/' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}></Route>
+            <Route path='/' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
-            <Route path='/localguide' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
+            <Route path='/localguide/*' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
             <Route path='/registration' element={<RegistrationForm />}></Route>
             <Route path='/hiker' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}></Route>
           </Routes>
