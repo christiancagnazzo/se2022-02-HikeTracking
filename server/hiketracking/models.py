@@ -71,6 +71,7 @@ class Hut(models.Model):
     n_beds = models.IntegerField()
     fee = models.FloatField()
     point = models.ForeignKey(Point, unique=True,on_delete=models.CASCADE)
+    description = models.CharField(max_length=200)
 
 class Facility(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -91,3 +92,5 @@ class ParkingLot(models.Model):
     fee = models.FloatField()
     n_cars = models.IntegerField()
     point = models.ForeignKey(Point, unique=True,on_delete=models.CASCADE)
+    description = models.CharField(max_length=200)
+

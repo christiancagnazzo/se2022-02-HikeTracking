@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import Hike from "./hikes";
-import GpxParser from 'gpxparser';
 
 function HikeForm(props) {
   let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
@@ -58,7 +57,7 @@ function HikeForm(props) {
     }
 
   }
-
+/*
   const handleInputFile = async (e) => {
     //gpx analyses and input
     
@@ -75,7 +74,6 @@ function HikeForm(props) {
         gpx.parse(fileString);
         let track1 = gpx.tracks[0];
         let point1 = track1.points[0];
-        setSp([point1.lat, point1.lon]);
         for (var i = 1; i < track1.points.length - 1; i++) {
           let rp = [];
           rp[i - 1] = [track1.points[i].lat, track1.points[i].lon];
@@ -88,7 +86,7 @@ function HikeForm(props) {
       reader.readAsText(objFile, "UTF-8");
     }
   }
-
+*/
 
   const checkNum = (num) => {
     if (!isNaN(num)) {
@@ -201,7 +199,7 @@ function HikeForm(props) {
           <label htmlFor="formFile" className="form-label">Track file</label>
           <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e)=> {
             setFile(e.target.files[0]);
-            handleInputFile()
+            
           }}></input>
 
         </Form.Group>
@@ -214,6 +212,11 @@ function HikeForm(props) {
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
           <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="end-point">
+          <label htmlFor="formFile" className="form-label">Track file</label>
+          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e) => setFile(e.target.files[0])}></input>
+
         </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>

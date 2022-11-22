@@ -66,12 +66,12 @@ function LocalGuideMenu(props){
                 Add</MenuItem>
             </SubMenu>
             <SubMenu icon ={hutIcon} label='Hut'>
-              <MenuItem /*onClick={() => props.changeSel("/localguide/addhut")}*/>Add</MenuItem>
+              <MenuItem onClick={() => navigate("/localguide/addhut")}>Add</MenuItem>
               
             </SubMenu>
       
             <SubMenu icon={parkingLot} label='Parking Lot'>
-              <MenuItem /*onClick={() => props.changeSel("/localguide/addparkinglot")}*/>Add</MenuItem>
+              <MenuItem onClick={() => navigate("/localguide/addparkinglot")}>Add</MenuItem>
               
             </SubMenu>
           </Menu>

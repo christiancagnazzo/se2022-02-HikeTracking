@@ -11,14 +11,9 @@ import Hike from './components/hikes';
 import LocalGuide from './components/localguide'
 import { Helmet } from "react-helmet";
 import RegistrationForm from './components/registration';
-import { createTheme,ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
-import background from "./img/hike.jpg";
-const theme = createTheme({
-  palette: {
-    primary: green,
-  },
-});
+
 
 function App() {
   return (

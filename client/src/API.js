@@ -37,7 +37,7 @@ async function createHike(hike_description, hike_file, token) {
   }
 }
 
-async function createHut(hut_description, hut_file, token) {
+async function createHut(hut_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
@@ -49,23 +49,9 @@ async function createHut(hut_description, hut_file, token) {
         'Authorization': valid_token
       },
     })
-
-    if (response.status == '200') {
-      response = await response.json()
-      let second_response = await fetch(URL + 'hut/file/' + response['hut_id'], {
-        method: 'PUT',
-        body: hut_file,
-        headers: {
-          'Authorization': valid_token
-        },
-      })
-
-      if (second_response.status == '200')
-        return { msg: "Hut Creato" };
-
-      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
-    }
-
+    if (response.status == '200')
+      return { msg: "Hut created" };
+    
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
   }
 
@@ -162,6 +148,7 @@ async function getAllHikes(token, filters) {
   }
 }
 async function getAllHuts(token, filters) {
+  
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
@@ -225,6 +212,6 @@ async function getAllParkingLots(token, filters) {
   return { 'msg': [] }
 }
 
-const API = { login, logout, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots };
+const API = { login, logout, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;
