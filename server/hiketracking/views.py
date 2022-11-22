@@ -330,15 +330,10 @@ class Huts(APIView):
       
 class listParkingLotAPI(APIView):
     permission_classes = (permissions.AllowAny,) 
-
     def get(self,request):
-        listParkingLot = []
         try:
             listParkigLot = ParkingLot.objects.all()
-            return Response(data = list,status=200)
+            return Response(data = listParkigLot,status=200)
         except:
             return Response(status=400, data={"Error": "ParkingLot not found"})
-        
-    
-      
-        
+       
