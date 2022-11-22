@@ -151,3 +151,22 @@ class AddHikeDescriptionTest(TestCase):
         Hike.objects.filter(id=1).update(description='A beginner Hike')
         hike_updated = Hike.objects.get(id=1)
         self.assertEqual(hike_updated.description, 'A beginner Hike')
+        
+class listParkingPotTest(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude = 0.01,longitude = 0.01,province = "test province",village= "test village",address= "test address")
+        park1 = ParkingLot(name = "test parking pot name 1",fee = 0.01,n_cars = 1,description = "test park pot",point_id = 1)
+        print(park1)
+        p1.save()
+        park1.Point = p1
+        park1.save()
+        return super().setUp()
+    def testListParkingPot(self):
+        list=ParkingLot.objects.all()
+        self.assertEqual(list,[ParkingLot(name = "test parking pot name 1",fee = 0.01,n_cars = 1,description = "test park pot",point_id = 1)])
+
+
+
