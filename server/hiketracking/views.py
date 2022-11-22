@@ -17,7 +17,7 @@ from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 
-from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut
+from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer)
 
@@ -327,4 +327,18 @@ class Huts(APIView):
             result.append(h)
 
         return Response(result)
+      
+ class listParkingLotAPI(APIView):
+    permission_classes = (permissions.AllowAny,) 
+
+    def get(self,request):
+        listParkingLot = []
+        try:
+            listParkigLot = ParkingLot.objects.all()
+            return Response(data = list,status=200)
+        except:
+            return Response(status=400, data={"Error": "ParkingLot not found"})
+        
+    
+      
         
