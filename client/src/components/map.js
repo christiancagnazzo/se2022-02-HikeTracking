@@ -63,13 +63,14 @@ function Map(props){
             gpx.parse(props.gpxFile)
             let pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
             setPositions(pos)
+            
         }
     },[props.gpxFile])
     
-    
+    const center = props.sp ? props.sp : [45.07104275068942, 7.677664908245942]
 
     return (
-        <MapContainer center={props.sp} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
+        <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
             <Click sp={props.sp}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

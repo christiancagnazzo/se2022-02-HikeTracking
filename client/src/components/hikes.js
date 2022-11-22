@@ -3,80 +3,39 @@ import Card from 'react-bootstrap/Card';
 import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
-import API from '../API';
 import FilterForm from './filterform';
-import { ProSidebarProvider } from 'react-pro-sidebar';
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, HolidayVillage, LocalParking  } from '@mui/icons-material'
 
-
-function VisitorPage(props) {
-  const [hikes, setHikes] = useState([]);
+function Hikes(props) {
+  const hikes = props.hikes;
   const [currSel, setCurrSel] = useState("hikes")
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
+
   
-
-  useEffect(() => {
-    const getHikes = async () => {
-
-      try {
-        const hikes = await API.getAllHikes(token);
-        if (hikes.error)
-          setErrorMessage(hikes.msg)
-        else
-          setHikes(hikes.msg);
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    getHikes()
-  }, []);
-
   const updateCurrSel = (sel) =>{
     setCurrSel(sel)
   }
-  const applyFilter = (filter) => {
-    async function  getFilteredikes(){
-      try{
-        const filteredHikes = await API.getAllHikes(token, filter)
-        if (hikes.error)
-            setErrorMessage(filteredHikes.msg)
-          else
-            setHikes(filteredHikes.msg);
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      getFilteredikes()
-    }
+  
     
   return (
     <Container fluid className="flex-grow-1">
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
       <Row className="h-100">
-        <Col  sm={2} className="px-0  bg-success">
-          <ProSidebarProvider >
-          <MyMenu currSel={currSel} changeSel={updateCurrSel}/>
-          </ProSidebarProvider>
-          
+        <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
+          <Menu currSel={currSel} changeSel={updateCurrSel}></Menu>
         </Col>
       
         <Col sm={10} className="py-1">
-          <Row className="p-4">
+          <Row xs={1} sm={2} md={3}>
             {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
               {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}/>}
+              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={props.applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
           </Row>
         </Col>
         
       </Row>
       
     </Container>
-        
-     
-      
   )
 }
 
@@ -166,9 +125,6 @@ function HikeModalDescription(props) {
 
 
 function HikeModalTrack(props) {
-
-
-
   return (<Modal
     {...props}
     size="lg"
@@ -192,33 +148,19 @@ function HikeModalTrack(props) {
   )
 }
 
-function MyMenu(props){
+function Menu(props){
 
-  const hikingIcon = <Hiking></Hiking>
-  const parkingLot = <LocalParking></LocalParking>
-  const hutIcon = <HolidayVillage></HolidayVillage>
+  const commonClass ="list-group-item list-group-item-action rounded-0 "
+
   return (
-  <Sidebar width='auto' className='border-0'>
-    <Menu>
-      <SubMenu label="Hikes" icon={hikingIcon}>
-        <MenuItem onClick={() => props.changeSel("hikes")}>Browse</MenuItem>
-        <MenuItem onClick={() => props.changeSel("filter")}>Filter</MenuItem>
-      </SubMenu>
-      <SubMenu icon ={hutIcon} label='Hut'>
-        <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
-        <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
-      </SubMenu>
-
-      <SubMenu icon={parkingLot} label='Parking Lot'>
-        <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
-        <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
-      </SubMenu>
-    </Menu>
-  </Sidebar>
+    <ListGroup>
+      <Button className={commonClass + (props.currSel === "hikes"?"active" :'' )} onClick={() => props.changeSel("hikes")}>Available hikes</Button>
+      <Button className={commonClass+ (props.currSel === "filters"?"active" :'' )} onClick={() => props.changeSel("filters")}>Apply filters</Button>
+    </ListGroup>
   )
 }
 
 
-export default VisitorPage
+export default Hikes;
 
 

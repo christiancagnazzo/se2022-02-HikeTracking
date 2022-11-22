@@ -1,96 +1,183 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {Container, ListGroup} from 'react-bootstrap';
+import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import Map from './map'
+import API from '../API';
+import FilterForm from './filterform';
 import Sidebar from './sidebar';
 
+function VisitorPage(props) {
+  const [hikes, setHikes] = useState([]);
+  const [currSel, setCurrSel] = useState("hikes")
+  const [errorMessage, setErrorMessage] = useState('')
+  let token = localStorage.getItem("token");
+  
 
+  useEffect(() => {
+    const getHikes = async () => {
 
-function Visitor(props) {
-//<h1 className="col-12 below-nav">Hey! non riceviamo alcuna risposta dal server! Prova a riaggiornare la pagina!</h1>
-
-    return (   
-        <>
-        <Container className="below-nav">
-            <NewCards filter={props.filter} setFilter={props.setFilter} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}></NewCards>
-        </Container>
-        </>
-    );
-}
-
-
-
-
-function NewCards(props) {
-  let x =[{title:"ciao",description:"i'm beatiful"},{title:"ciao1",description:"i'm beatiful"},{title:"ciao2",description:"i'm beatiful"},{title:"ciao3",description:"i'm beatiful"},{title:"ciao4",description:"i'm beatiful"},{title:"ciao5",description:"i'm beatiful"},{title:"ciao6",description:"i'm beatiful"},{title:"ciao7",description:"i'm beatiful"}]
-  let e=[];
-  let q=x.length/4;
-
-  let i=0;
-  let y;
-  for (i=0;i<q;i++){
-      e[i]=[];
-      for (y=0;y<4;y++)
-        if (x[i*4+y]!=null)
-          e[i].push(x[i*4+y])
+      try {
+        const hikes = await API.getAllHikes(token);
+        if (hikes.error)
+          setErrorMessage(hikes.msg)
+        else
+          setHikes(hikes.msg);
+      } catch (err) {
+        console.log(err)
+      }
     }
-  return (
-      <>
-        <h1 className='mb-2'>Hikes: </h1>
-        <Sidebar filter={props.filter} setFilter={props.setFilter}/>
-        <Container >
-          <ListGroup >
-            {
-              e.map((c) =>  <MultiCards x={c} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}/>)
-            } 
-          </ListGroup>
-          </Container>
-       </>
-  )}  
-    
 
-  function MultiCards(props){ 
-    return(
-          <ListGroup horizontal>
-                {
-                    props.x.map((c) => <SingleCard description={c.description} title={c.title} setFlagSelectedHike={props.setFlagSelectedHike} setSelectedHike={props.setSelectedHike}/>)
-                }      
-          </ListGroup> 
-)  
+    getHikes()
+  }, []);
+
+  const updateCurrSel = (sel) =>{
+    setCurrSel(sel)
+  }
+  const applyFilter = (filter) => {
+    async function  getFilteredikes(){
+      try{
+        const filteredHikes = await API.getAllHikes(token, filter)
+        if (hikes.error)
+            setErrorMessage(filteredHikes.msg)
+          else
+            setHikes(filteredHikes.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getFilteredikes()
+    }
+    
+  return (
+    <>
+      <Sidebar currSel={currSel} updateCurrSel={updateCurrSel}/>
+      <Col sm={10} className="py-1">
+        <Row className="p-4">
+          {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
+            {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
+            :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={applyFilter} setErrorMessage={setErrorMessage}/>}
+        </Row>
+      </Col>
+    </>  
+  )
 }
 
-function SingleCard(props){
-  let x=props.title
-    x+=" Button"
-    
-  return(
-<Card style={{ width: '18rem'} } key={props.title} title={props.title}>
+
+function HikeCard(props) {
+  const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
+  const [modalMapShow, setModalMapShow] = useState(false);
+  const isHiker = props.userPower === 'hiker'
+
+  return (<>
+    <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
       <Card.Body>
-        <Card.Title>Hike Title</Card.Title>
-        <Card.Text>
-          Here we have to put the hike description. Other stuff to make the placeholder longer.
-        </Card.Text>
+        <Card.Title>{props.hike.title}</Card.Title>
+
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Length in meters</ListGroup.Item>
-        <ListGroup.Item>Estimated time in minutes</ListGroup.Item>
-        <ListGroup.Item>Ascent in meters</ListGroup.Item>
-        <ListGroup.Item>Difficulty</ListGroup.Item>
-        <ListGroup.Item>Start point</ListGroup.Item>
-        <ListGroup.Item>End point</ListGroup.Item>
-
+        <ListGroup.Item>Length: {props.hike.length}km</ListGroup.Item>
+        <ListGroup.Item>Estimated time: {props.hike.expected_time}min</ListGroup.Item>
+        <ListGroup.Item>Ascent: {props.hike.ascent}m</ListGroup.Item>
+        <ListGroup.Item>Difficulty: {props.hike.difficulty}</ListGroup.Item>
+        <ListGroup.Item>Start point: {props.hike.start_point_address}</ListGroup.Item>
+        <ListGroup.Item>End point: {props.hike.end_point_address}</ListGroup.Item>
       </ListGroup>
+      <Card.Body>
+        <Card.Text>
+          <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
+          {' '}
+          {isHiker ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : ''}
+        </Card.Text>
+      </Card.Body>
+
     </Card>
-      
-    
-    
+    <HikeModalDescription
+      show={modalDescriptionShow}
+      onHide={() => setModalDescriptionShow(false)}
+      title={props.hike.title}
+      description={props.hike.description}
+      rpList={props.hike.rp}
+    />
+    {isHiker ? <HikeModalTrack
+      show={modalMapShow}
+      onHide={() => setModalMapShow(false)}
+      title={props.hike.title}
+      file={props.hike.file}
+      sp={[props.hike.start_point_lat, props.hike.start_point_lng]}
+      ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
+      rpList={props.hike.rp}
+    /> : ''}
+  </>
   );
 }
 
-function hikeSelected(setflag,sethike,hike){
-  setflag(true);
-  sethike(hike);
+
+function HikeModalDescription(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {props.title}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Description</h4>
+        <p>
+          {props.description}
+        </p>
+        {props.rpList.length ?<h5>Reference Points</h5> :''}
+        <ul>
+          {props.rpList.map((rp) =>
+            <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
+          )}
+        </ul>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 }
 
-export default Visitor;
+
+
+
+function HikeModalTrack(props) {
+
+
+
+  return (<Modal
+    {...props}
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+  >
+    <Modal.Header closeButton>
+      <Modal.Title id="contained-modal-title-vcenter">
+        {props.title}
+      </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <h4>Track</h4>
+      <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={props.file} />
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={props.onHide}>Close</Button>
+    </Modal.Footer>
+  </Modal>
+
+  )
+}
+
+
+
+
+export default VisitorPage
 
 

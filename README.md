@@ -3,6 +3,10 @@
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+<<<<<<< HEAD
+=======
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+>>>>>>> gio2
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
@@ -68,8 +72,13 @@ Clone the project and run:
 $ cd server
 $ pip install -r requirements.txt
 $ python3 manage.py makemigrations hiketracking
+<<<<<<< HEAD
 $ python3 manage.py migrate  
 $ python3 manage.py runserver
+=======
+$ python manage.py migrate  
+$ python manage.py runserver
+>>>>>>> gio2
 ```
   
 Then you need to open a new terminal and run the client:
@@ -79,6 +88,7 @@ $ npm install
 $ npm start
 ```
 
+<<<<<<< HEAD
 To insert data to test the application run:
 ```sh
 python3 manage.py loaddata db_population/data.json
@@ -90,6 +100,8 @@ HARD CODED USER
 | "h@mail.com" | "1234"   | Hiker       |
 | "g@mail.com" | "1234"   | Local Guide |
 
+=======
+>>>>>>> gio2
 
 ## Changelog
 

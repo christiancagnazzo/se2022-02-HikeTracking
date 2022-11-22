@@ -159,7 +159,6 @@ function FilterForm(props) {
         maxAscent: maxAscent,
         difficulty: difficulty,
         province: province
-
     }
     props.applyFilter(filter)
     props.changeSel("hikes")
@@ -174,16 +173,13 @@ function FilterForm(props) {
   }
   
 
-  
-
-  
   return (
     <Card body>
       <Form>
-      <Row>
+      <Row className="mb-2"> 
       <Form.Label htmlFor="basic-url">Length (in kms)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -196,7 +192,7 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -210,10 +206,10 @@ function FilterForm(props) {
       </Col>
     </Row>
         
-    <Row>
+    <Row className="mb-2">
       <Form.Label htmlFor="basic-url">Expected time (in min)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -227,7 +223,7 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -240,10 +236,10 @@ function FilterForm(props) {
         </InputGroup>
       </Col>
     </Row>
-    <Row>
+    <Row className="mb-2">
       <Form.Label htmlFor="basic-url">Ascent (in meters)</Form.Label>
       <Col>
-        <InputGroup size="sm" className="mb-3">
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default" >
             Min
           </InputGroup.Text>
@@ -256,8 +252,8 @@ function FilterForm(props) {
           />
         </InputGroup>
       </Col>
-      <Col>
-        <InputGroup size="sm" className="mb-3">
+      <Col >
+        <InputGroup size="sm" className="">
           <InputGroup.Text id="inputGroup-sizing-default">
             Max
           </InputGroup.Text>
@@ -271,7 +267,7 @@ function FilterForm(props) {
       </Col>
     </Row>
     
-    <Form.Group className="mb-3" controlId="ascent">
+    <Form.Group className="mb-2" controlId="ascent">
         <Form.Label>Difficulty</Form.Label>
         <Form.Select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
         <option value="All">All</option>
@@ -280,9 +276,9 @@ function FilterForm(props) {
         <option value="Pro Hiker">Pro Hiker</option>
         </Form.Select>
     </Form.Group>
-    <Row>
+    <Row className="mb-2">
       <Col>
-      <Form.Group className="mb-3" controlId="title">
+      <Form.Group className="" controlId="title">
           <Form.Label>Province</Form.Label>
           <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
           {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
@@ -291,7 +287,7 @@ function FilterForm(props) {
     </Form.Group>
       </Col>
       <Col>
-      <Form.Group className="mb-3" controlId="title">
+      <Form.Group className="" controlId="title">
           <Form.Label>City/Village</Form.Label>
           <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
           {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
@@ -305,13 +301,10 @@ function FilterForm(props) {
     </Card>
     <Form.Label>Range</Form.Label>
       <Form.Range value = {radius} onChange={(e) => setRadius(e.target.value)} />
-       
-
-        
         {' '}
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Apply
-        </Button>
+      <Button variant="primary" type="submit" onClick={handleSubmit}>
+        Apply
+      </Button>
       </Form>
     </Card>
   )
@@ -337,7 +330,7 @@ function MapFunction(props) {
 }
 
 function FilterMap(props){
-  const [center, setCenter] = useState([40,10])
+  const [center, setCenter] = useState([45.07104275068942, 7.677664908245942])
   const [position, setPosition] = useState("")
   return(
     <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
