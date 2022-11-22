@@ -15,7 +15,6 @@ from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
 
 geolocator = Nominatim(user_agent="hiketracking")
 
-
 class NewHike(APIView):
     #permission_classes = (permissions.AllowAny,)
 

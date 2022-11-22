@@ -8,6 +8,7 @@ from hiketracking.manger import  CustomUserManager
 
 
 
+
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField('email address',unique=True)
