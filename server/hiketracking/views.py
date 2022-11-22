@@ -328,7 +328,7 @@ class Huts(APIView):
 
         return Response(result)
       
- class listParkingLotAPI(APIView):
+class listParkingLotAPI(APIView):
     permission_classes = (permissions.AllowAny,) 
 
     def get(self,request):
