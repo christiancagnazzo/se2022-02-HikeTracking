@@ -48,10 +48,7 @@ $ docker compose up
 ```
 This commamd may cost several minutes. 
   
-Then you can connect to :
-```sh
-localhost:3000
-```
+Then you will be automatically connected to the home page. Defaultly it is localhost:3000.
 
 ### Docker without clone the project
 Copy the "docker-compose.yml" file in a folder and run:
@@ -67,10 +64,10 @@ $ docker compose up
 Clone the project and run:
 ```sh
 $ cd server
-$ pip3 install -r requirements.txt
-$ python3 manage.py makemigrations hiketracking
-$ python3 manage.py migrate  
-$ python3 manage.py runserver
+$ pip install -r requirements.txt
+$ python manage.py makemigrations hiketracking
+$ python manage.py migrate  
+$ python manage.py runserver
 ```
   
 Then you need to open a new terminal and run the client:
@@ -82,7 +79,7 @@ $ npm start
 
 To insert data to test the application run:
 ```sh
-python3 manage.py loaddata db_population/data.json
+python manage.py loaddata db_population/data.json
 ```
 
 HARD CODED USER
@@ -93,6 +90,7 @@ HARD CODED USER
 
 ## Changelog
 
+### Demo2(28/11/2022)
 ### Demo1(14/11/2022)
 - add user management
 - add some pages
