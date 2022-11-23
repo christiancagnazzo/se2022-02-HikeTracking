@@ -317,9 +317,29 @@ class Huts(APIView):
     
     def get(self, request):
         try:
-            result = []
 
-            huts = Hut.objects.all().values()
+            filters = request.GET.get('filters', None)
+
+            if filters:
+                name = request.GET.get('name', None)
+                nbeds = request.GET.get('nbeds', None)
+                fee = request.GET.get('fee', None)
+                
+                huts = Hut.objects.all()
+
+                if name:
+                    huts = huts.filter(name=name)
+                if nbeds:
+                    huts = huts.filter(n_beds=nbeds)
+                if fee:
+                    huts = huts.filter(fee=fee)
+
+                huts = huts.values()
+
+            else:
+                huts = Hut.objects.values()
+            
+            result = []
 
             for h in huts:
                 point = Point.objects.get(id=h['point_id'])
@@ -332,7 +352,7 @@ class Huts(APIView):
             return Response(status=500)
       
 class listParkingLotAPI(APIView):
-    permission_classes = (permissions.AllowAny,) 
+    #permission_classes = (permissions.AllowAny,) 
     def get(self,request):
         try:
             result = []

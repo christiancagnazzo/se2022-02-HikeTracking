@@ -149,7 +149,19 @@ async function getAllHikes(token, filters) {
 async function getAllHuts(token, filters) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-  let response = await fetch(URL + 'allhuts/', {
+  let query = ''
+
+  if (filters) {
+    query += '?filters=true'
+    if (filters.name)
+      query += '&name=' + filters.name
+    if (filters.nbeds)
+      query += '&nbeds=' + filters.nbeds
+    if (filters.fee)
+      query += '&fee=' + filters.fee
+  }
+
+  let response = await fetch(URL + 'allhuts/' + query, {
     method: 'GET',
     headers: {
       'Authorization': valid_token
