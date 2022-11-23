@@ -51,7 +51,7 @@ async function createHut(hut_description, token) {
     })
     if (response.status == '200')
       return { msg: "Hut created" };
-    
+
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
   }
 
@@ -59,12 +59,6 @@ async function createHut(hut_description, token) {
     console.log(e) // TODO
   }
 }
-
-
-
-
-
-
 
 async function login(credentials) {
   let response = await fetch(URL + 'login/', {
@@ -117,23 +111,27 @@ async function getAllHikes(token, filters) {
   if (filters) {
     query += '?filters=true'
     if (filters.minLength)
-      query += '&minLength=' + filters.minLength 
+      query += '&minLength=' + filters.minLength
     if (filters.maxLength)
-      query += '&maxLength=' + filters.maxLength 
+      query += '&maxLength=' + filters.maxLength
     if (filters.minTime)
-      query += '&minTime=' + filters.minTime 
+      query += '&minTime=' + filters.minTime
     if (filters.maxTime)
-      query += '&maxTime=' + filters.maxTime 
+      query += '&maxTime=' + filters.maxTime
     if (filters.minAscent)
-      query += '&minAscent=' + filters.minAscent 
+      query += '&minAscent=' + filters.minAscent
     if (filters.maxAscent)
-      query += '&maxAscent=' + filters.maxAscent 
+      query += '&maxAscent=' + filters.maxAscent
     if (filters.difficulty !== 'All')
-      query += '&difficulty=' + filters.difficulty 
+      query += '&difficulty=' + filters.difficulty
     if (filters.province !== '-')
-      query += '&province=' + filters.province 
+      query += '&province=' + filters.province
+    if (filters.village !== "")
+      query += '&village=' + filters.village
+    if (filters.position !== '')
+      query += '&around=' + filters.position.lat + "-" + filters.position.lng + "-" + filters.radius
   }
-  
+
   let response = await fetch(URL + 'allhikes/' + query, {
     method: 'GET',
     headers: {
@@ -147,46 +145,22 @@ async function getAllHikes(token, filters) {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
+
 async function getAllHuts(token, filters) {
-  
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-  let query = ''
-//to implements filters!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  if (filters) {
-    query += '?filters=true'
-    if (filters.minLength)
-      query += '&minLength=' + filters.minLength 
-    if (filters.maxLength)
-      query += '&maxLength=' + filters.maxLength 
-    if (filters.minTime)
-      query += '&minTime=' + filters.minTime 
-    if (filters.maxTime)
-      query += '&maxTime=' + filters.maxTime 
-    if (filters.minAscent)
-      query += '&minAscent=' + filters.minAscent 
-    if (filters.maxAscent)
-      query += '&maxAscent=' + filters.maxAscent 
-    if (filters.difficulty !== 'All')
-      query += '&difficulty=' + filters.difficulty 
-    if (filters.province !== '-')
-      query += '&province=' + filters.province 
-  }
-  
-  let response = await fetch(URL + 'allhuts/' + query, {
+  let response = await fetch(URL + 'allhuts/', {
     method: 'GET',
     headers: {
-      //'Authorization': valid_token
+      'Authorization': valid_token
     },
   });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
 }
-
-
 
 async function checkAuth(token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
@@ -203,13 +177,20 @@ async function checkAuth(token) {
   }
 }
 
+async function getAllParkingLots(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-
-
-
-async function getAllParkingLots(token, filters) {
-  // todo
-  return { 'msg': [] }
+  let response = await fetch(URL + 'parkingLots/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
 }
 
 const API = { login, logout, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };

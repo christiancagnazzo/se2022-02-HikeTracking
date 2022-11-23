@@ -143,7 +143,9 @@ function FilterForm(props) {
   const [difficulty, setDifficulty] = useState("All")
 
   const[province, setProvince] = useState('-')
+  const[village, setVillage] = useState("")
   const[radius, setRadius] = useState(50)
+  const [position, setPosition] = useState("")
   const navigate = useNavigate();
   
   let token = localStorage.getItem("token");
@@ -158,7 +160,10 @@ function FilterForm(props) {
         minAscent: minAscent,
         maxAscent: maxAscent,
         difficulty: difficulty,
-        province: province
+        province: province,
+        village: village,
+        position: position,
+        radius: radius
     }
     props.applyFilter(filter)
     props.changeSel("hikes")
@@ -289,19 +294,25 @@ function FilterForm(props) {
       <Col>
       <Form.Group className="" controlId="title">
           <Form.Label>City/Village</Form.Label>
-          <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
-          {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
-          </Form.Select>
-          
+          <Form.Control onChange={e => setVillage(e.target.value)}></Form.Control>
     </Form.Group>
       </Col>
     </Row>
     
-    <Card><FilterMap radius={radius}></FilterMap>
+    <Card><FilterMap position={position} setPosition={setPosition} radius={radius}></FilterMap>
     </Card>
-    <Form.Label>Range</Form.Label>
+  
+    <Form.Group>
+    <Form.Label>Range - {radius} km</Form.Label>
+    {position !== '' ? <Button variant="outline-secondary" size="sm" onClick={() => setPosition('')}>Remove Range</Button> : ''}
+    
       <Form.Range value = {radius} onChange={(e) => setRadius(e.target.value)} />
+      
         {' '}
+        
+    </Form.Group>
+    
+    
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Apply
       </Button>
@@ -331,15 +342,15 @@ function MapFunction(props) {
 
 function FilterMap(props){
   const [center, setCenter] = useState([45.07104275068942, 7.677664908245942])
-  const [position, setPosition] = useState("")
+  
   return(
     <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {position !==""?<Circle center={position}  radius={props.radius * 1000}/>:''}  
-            <MapFunction setCenter={setCenter} setPosition={setPosition}/>
+            {props.position !==""?<Circle center={props.position}  radius={props.radius * 1000}/>:''}  
+            <MapFunction setCenter={setCenter} setPosition={props.setPosition}/>
             {/*position !==""?<Marker position={position} icon={myIconSp}>
             <Popup>
                 Reference Point: {"ok"}

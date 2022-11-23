@@ -233,7 +233,7 @@ class Hikes(APIView):
                 hikes = hikes.filter(start_point__in=inner_query)
 
             if village:
-                inner_query = Point.objects.filter(village=village)
+                inner_query = Point.objects.filter(village=village.lower().capitalize())
                 hikes = hikes.filter(start_point__in=inner_query)
 
             hikes = hikes.values()
@@ -316,24 +316,35 @@ def get_province_and_village(lat, lon):
 class Huts(APIView):
     
     def get(self, request):
-        result = []
+        try:
+            result = []
 
-        huts = Hut.objects.all().values()
+            huts = Hut.objects.all().values()
 
-        for h in huts:
-            point = Point.objects.get(id=h['point_id'])
-            h['lat'] = point.latitude
-            h['lon'] = point.longitude
-            result.append(h)
+            for h in huts:
+                point = Point.objects.get(id=h['point_id'])
+                h['lat'] = point.latitude
+                h['lon'] = point.longitude
+                result.append(h)
 
-        return Response(result)
+            return Response(result)
+        except:
+            return Response(status=500)
       
 class listParkingLotAPI(APIView):
     permission_classes = (permissions.AllowAny,) 
     def get(self,request):
         try:
-            listParkigLot = ParkingLot.objects.all()
-            return Response(data = listParkigLot,status=200)
+            result = []
+            listParkigLot = ParkingLot.objects.all().values()
+            
+            for p in listParkigLot:
+                point = Point.objects.get(id=p['point_id'])
+                p['lat'] = point.latitude
+                p['lon'] = point.longitude
+                result.append(p)
+
+            return Response(result)
         except:
-            return Response(status=400, data={"Error": "ParkingLot not found"})
+            return Response(status=500)
        
