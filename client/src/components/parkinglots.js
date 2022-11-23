@@ -6,17 +6,17 @@ import Map from './map'
 import API from '../API';
 import FilterForm from './filterformhikes';
 
-function displayHutsUtil(huts, userPower){
-  let hutscard =  huts.map((h) => 
+function displayParkingLotsUtil(parkinglots, userPower){
+  let parkinglotscards =  parkinglots.map((h) => 
       <Col className="pb-4 px-0">
-        <HutCard userPower={userPower} hike={h}/>
+        <ParkingLotCard userPower={userPower} hike={h}/>
       </Col>)
     let rows = []
-    for(let i = 0; i < Math.ceil(huts.length/3);i++){
+    for(let i = 0; i < Math.ceil(parkinglots.length/3);i++){
       let cols = []
       let j
-      for(j = 0; j < 3 && hutscard.length; j++){
-        cols.push(hutscard.pop())
+      for(j = 0; j < 3 && parkinglotscards.length; j++){
+        cols.push(parkinglotscards.pop())
       }
       for(;j<3;j++){
         cols.push(<Col className="pb-4 px-0"></Col>)
@@ -26,54 +26,54 @@ function displayHutsUtil(huts, userPower){
     return <>{rows}</>
 }
 
-function Huts(props){
-  if(props.huts.length === 0) {
-    return  <h1>No available huts</h1>
+function ParkingLots(props){
+  if(props.parkinglots.length === 0) {
+    return  <h1>No available parking lots</h1>
   }
   else {
-    return displayHutsUtil(props.huts, props.userPower)
+    return displayParkingLotsUtil(props.parkinglots, props.userPower)
   }
 }
 
 
-function HutCard(props) {
+function ParkingLotCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
 
   return (<>
-    <Card style={{ width: '22rem' }} key={0} title={props.hut.title}>
+    <Card style={{ width: '22rem' }} key={0} title={props.parkinglot.title}>
       <Card.Body>
-        <Card.Title>{props.hut.title}</Card.Title>
+        <Card.Title>{props.parkinglot.title}</Card.Title>
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Length: {props.hut.length}km</ListGroup.Item>
-        <ListGroup.Item>Estimated time: {props.hut.expected_time}min</ListGroup.Item>
-        <ListGroup.Item>Ascent: {props.hut.ascent}m</ListGroup.Item>
-        <ListGroup.Item>Difficulty: {props.hut.difficulty}</ListGroup.Item>
-        <ListGroup.Item>Start point: {props.hut.start_point_address}</ListGroup.Item>
-        <ListGroup.Item>End point: {props.hut.end_point_address}</ListGroup.Item>
+        <ListGroup.Item>Length: {props.parkinglot.length}km</ListGroup.Item>
+        <ListGroup.Item>Estimated time: {props.parkinglot.expected_time}min</ListGroup.Item>
+        <ListGroup.Item>Ascent: {props.parkinglot.ascent}m</ListGroup.Item>
+        <ListGroup.Item>Difficulty: {props.parkinglot.difficulty}</ListGroup.Item>
+        <ListGroup.Item>Start point: {props.parkinglot.start_point_address}</ListGroup.Item>
+        <ListGroup.Item>End point: {props.parkinglot.end_point_address}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          
+         
         </Card.Text>
       </Card.Body>
 
     </Card>
-    <HutModalDescription
+    <ParkinglotModalDescription
       show={modalDescriptionShow}
       onHide={() => setModalDescriptionShow(false)}
-      title={props.hut.title}
-      description={props.hut.description}
-      rpList={props.hut.rp}
+      title={props.parkinglot.title}
+      description={props.parkinglot.description}
+      rpList={props.parkinglot.rp}
     />
     
   </>
   );
 }
-function HutModalDescription(props) {
+function ParkinglotModalDescription(props) {
   return (
     <Modal
       {...props}
@@ -107,6 +107,9 @@ function HutModalDescription(props) {
 
 
 
-export default Huts;
+
+
+
+export default ParkingLots;
 
 

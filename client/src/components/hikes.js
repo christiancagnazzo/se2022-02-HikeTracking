@@ -1,43 +1,45 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
+import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
-import FilterForm from './filterform';
+import API from '../API';
+import FilterForm from './filterformhikes';
+import Sidebar from './sidebar';
+import { useNavigate } from 'react-router-dom';
 
-function Hikes(props) {
-  const hikes = props.hikes;
-  const [currSel, setCurrSel] = useState("hikes")
-  const [errorMessage, setErrorMessage] = useState('')
-  let token = localStorage.getItem("token");
 
-  
-  const updateCurrSel = (sel) =>{
-    setCurrSel(sel)
-  }
-  
-    
-  return (
-    <Container fluid className="flex-grow-1">
-      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
-      <Row className="h-100">
-        <Col  sm={2} className="px-0 border-right border-bottom border border-dark bg-dark">
-          <Menu currSel={currSel} changeSel={updateCurrSel}></Menu>
-        </Col>
-      
-        <Col sm={10} className="py-1">
-          <Row xs={1} sm={2} md={3}>
-            {currSel === "hikes" && hikes.length === 0 ? <h1>No available hikes</h1> : ''}
-              {currSel === "hikes" ? hikes.map((h) => <Col><HikeCard userPower={props.userPower} hike={h}></HikeCard></Col>) 
-              :<FilterForm changeSel={updateCurrSel} hikes={hikes} applyFilter={props.applyFilter} setErrorMessage={setErrorMessage}></FilterForm>}
-          </Row>
-        </Col>
-        
-      </Row>
-      
-    </Container>
-  )
+function displayHikesUtil(hikes, userPower){
+  let hikescard =  hikes.map((h) => 
+      <Col className="pb-4 px-0">
+        <HikeCard userPower={userPower} hike={h}/>
+      </Col>)
+    let rows = []
+    for(let i = 0; i < Math.ceil(hikes.length/3);i++){
+      let cols = []
+      let j
+      for(j = 0; j < 3 && hikescard.length; j++){
+        cols.push(hikescard.pop())
+      }
+      for(;j<3;j++){
+        cols.push(<Col className="pb-4 px-0"></Col>)
+      }
+      rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
+    }
+    return <>{rows}</>
 }
+
+
+function Hikes(props){
+  if(props.hikes.length === 0) {
+    return  <h1>No available hikes</h1>
+  }
+  else {
+    return displayHikesUtil(props.hikes, props.userPower)
+  }
+
+}
+
 
 
 function HikeCard(props) {
@@ -107,7 +109,7 @@ function HikeModalDescription(props) {
         <p>
           {props.description}
         </p>
-        <h5>Reference Points</h5>
+        {props.rpList.length ?<h5>Reference Points</h5> :''}
         <ul>
           {props.rpList.map((rp) =>
             <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
@@ -125,6 +127,9 @@ function HikeModalDescription(props) {
 
 
 function HikeModalTrack(props) {
+
+
+
   return (<Modal
     {...props}
     size="lg"
@@ -148,19 +153,9 @@ function HikeModalTrack(props) {
   )
 }
 
-function Menu(props){
-
-  const commonClass ="list-group-item list-group-item-action rounded-0 "
-
-  return (
-    <ListGroup>
-      <Button className={commonClass + (props.currSel === "hikes"?"active" :'' )} onClick={() => props.changeSel("hikes")}>Available hikes</Button>
-      <Button className={commonClass+ (props.currSel === "filters"?"active" :'' )} onClick={() => props.changeSel("filters")}>Apply filters</Button>
-    </ListGroup>
-  )
-}
 
 
-export default Hikes;
+
+export default Hikes
 
 

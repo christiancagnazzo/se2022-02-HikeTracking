@@ -146,7 +146,6 @@ function FilterForm(props) {
   const[village, setVillage] = useState("")
   const[radius, setRadius] = useState(50)
   const [position, setPosition] = useState("")
-  const navigate = useNavigate();
   
   let token = localStorage.getItem("token");
   
@@ -166,7 +165,7 @@ function FilterForm(props) {
         radius: radius
     }
     props.applyFilter(filter)
-    props.changeSel("hikes")
+    
     
   }
 

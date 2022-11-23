@@ -4,17 +4,18 @@ import { Hiking, HolidayVillage, LocalParking } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add';
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 
-
+const colorBackgroundMenu = "#566400"
 
 function MySidebar(props){
     let menu;    
     if(!props.usertype) {
-        menu = <HikerMenu currSel={props.currSel} changeSel={props.updateCurrSel}/>
+        menu = <HikerMenu />
     }
     else if (props.usertype === "localguide"){
-        menu = <LocalGuideMenu currSel={props.currSel} changeSel={props.updateCurrSel}/>
+        menu = <LocalGuideMenu />
     }
     return (
         <Col  sm={2} className="px-0  bg-success">
@@ -26,51 +27,91 @@ function MySidebar(props){
 }
 
 
-function HikerMenu(props){
+function initFlagArray(length){
+  let arr = []
+  for(let i = 0; i < length; i++){
+    arr.push(false)
+  }
+  return arr
+}
 
+function HikerMenu(props){
+    const [active, setActive] = useState(initFlagArray(5))
+    const navigate = useNavigate()
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
+
+    const updateActive = (idx, relocation) => {
+      let active = []
+      for(let i = 0; i < 5; i++){
+        if(i === idx){
+          active.push(true)
+        }
+        else {
+          active.push(false)
+        }
+      }
+      setActive(active)
+      navigate(relocation)
+    }
     return (
-    <Sidebar width='auto' className='border-0'>
+    <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
       <Menu>
         <SubMenu label="Hikes" icon={hikingIcon}>
-          <MenuItem onClick={() => props.changeSel("hikes")}>Browse</MenuItem>
-          <MenuItem onClick={() => props.changeSel("filter")}>Filter</MenuItem>
+          <MenuItem onClick={() => updateActive(0,"hikes")} active={active[0]}>Browse</MenuItem>
+          <MenuItem onClick={() => updateActive(1,"filterhikes")} active={active[1]}>Filter</MenuItem>
         </SubMenu>
         <SubMenu icon ={hutIcon} label='Hut'>
-          <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
-          <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
+          <MenuItem onClick={() => updateActive(2,"huts")}active={active[2]}>Browse</MenuItem>
+          <MenuItem onClick={() => updateActive(3,"filterhuts")}active={active[3]}>Filter</MenuItem>
         </SubMenu>
   
         <SubMenu icon={parkingLot} label='Parking Lot'>
-          <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
+          <MenuItem onClick={() => updateActive(4,"parkinglots")}active={active[4]}>Browse</MenuItem>
         </SubMenu>
       </Menu>
     </Sidebar>
     )
 }
 
+
+
+
 function LocalGuideMenu(props){
-    const navigate = useNavigate()
+    const lengthOption = 3
+    const [active, setActive] = useState(initFlagArray(lengthOption))
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
-
+    const navigate = useNavigate()
+    const updateActive = (idx, relocation) => {
+      let active = []
+      for(let i = 0; i < lengthOption; i++){
+        if(i === idx){
+          active.push(true)
+        }
+        else {
+          active.push(false)
+        }
+      }
+      setActive(active)
+      navigate(relocation)
+    }
     return (
-        <Sidebar width='auto' className='border-0'>
+        <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
           <Menu>
             <SubMenu label="Hikes" icon={hikingIcon}>
-              <MenuItem onClick={() => {navigate('/localguide/addhike')}}>
+              <MenuItem onClick={() => {updateActive(0,'/localguide/addhike')} } active={active[0]}>
                 Add</MenuItem>
             </SubMenu>
             <SubMenu icon ={hutIcon} label='Hut'>
-              <MenuItem onClick={() => navigate("/localguide/addhut")}>Add</MenuItem>
+              <MenuItem onClick={() => updateActive(1,"/localguide/addhut")} active={active[1]}>Add</MenuItem>
               
             </SubMenu>
       
             <SubMenu icon={parkingLot} label='Parking Lot'>
-              <MenuItem onClick={() => navigate("/localguide/addparkinglot")}>Add</MenuItem>
+              <MenuItem onClick={() => updateActive(2,"/localguide/addparkinglot")} active={active[2]}>Add</MenuItem>
               
             </SubMenu>
           </Menu>
