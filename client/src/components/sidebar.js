@@ -79,7 +79,7 @@ function HikerMenu(props){
 
 
 function LocalGuideMenu(props){
-    const lengthOption = 3
+    const lengthOption = 6
     const [active, setActive] = useState(initFlagArray(lengthOption))
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
@@ -102,17 +102,18 @@ function LocalGuideMenu(props){
         <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
           <Menu>
             <SubMenu label="Hikes" icon={hikingIcon}>
-              <MenuItem onClick={() => {updateActive(0,'/localguide/addhike')} } active={active[0]}>
+              <MenuItem onClick={() => {updateActive(0,'/localguide/addhike')}} active={active[0]}>
                 Add</MenuItem>
+                <MenuItem onClick={() => updateActive(1,"hikes")} active={active[1]}>Browse</MenuItem>
             </SubMenu>
             <SubMenu icon ={hutIcon} label='Hut'>
-              <MenuItem onClick={() => updateActive(1,"/localguide/addhut")} active={active[1]}>Add</MenuItem>
-              
+              <MenuItem onClick={() => updateActive(2,"/localguide/addhut")} active={active[2]}>Add</MenuItem>
+              <MenuItem onClick={() => updateActive(3,"huts")}active={active[3]}>Browse</MenuItem>
             </SubMenu>
       
             <SubMenu icon={parkingLot} label='Parking Lot'>
-              <MenuItem onClick={() => updateActive(2,"/localguide/addparkinglot")} active={active[2]}>Add</MenuItem>
-              
+              <MenuItem onClick={() => updateActive(4,"/localguide/addparkinglot")} active={active[4]}>Add</MenuItem>
+              <MenuItem onClick={() => updateActive(5,"parkinglots")}active={active[5]}>Browse</MenuItem>
             </SubMenu>
           </Menu>
         </Sidebar>
