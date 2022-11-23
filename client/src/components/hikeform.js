@@ -213,11 +213,6 @@ function HikeForm(props) {
           <Form.Label>Description</Form.Label>
           <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="end-point">
-          <label htmlFor="formFile" className="form-label">Track file</label>
-          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e) => setFile(e.target.files[0])}></input>
-
-        </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
