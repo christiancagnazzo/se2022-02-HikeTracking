@@ -42,13 +42,15 @@
         }
     },
 
+    
+
     {
         "model": "hiketracking.hike",
         "pk": 1,
         "fields": {
             "title": "Sentiero per il ROCCIAMELONE",
             "length": 9,
-            "expected_time": 4,
+            "expected_time": 240,
             "ascent": 3538,
             "difficulty": "Pro Hiker",
             "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)",
@@ -57,5 +59,430 @@
             "end_point": 2,
             "local_guide": 1
         }
+    },
+
+
+    
+    {
+        "model": "hiketracking.point",
+        "pk" : 3,
+        "fields":{
+            "latitude": 44.886040,
+            "longitude": 6.847677,
+            "province": "Torino",
+            "village": "Cesana torinese", 
+            "address": "10054 Cesana torinese TO"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 4,
+        "fields":{
+            "latitude": 44.886133,
+            "longitude": 6.847552,
+            "province": "Torino",
+            "village": "Cesana torinese", 
+            "address": "10054 Cesana torinese TO"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 2,
+        "fields": {
+            "title": "Sentiero per il ROC DEL BOUCHER",
+            "length": 12.6,
+            "expected_time": 180,
+            "ascent": 3285,
+            "difficulty": "Pro Hiker",
+            "description": "Questa escursione non è consigliata per i neofiti della montagna, per i principianti e per chi non ha un buon livello di allenamento: infatti oltre ad un dislivello abbastanza marcato anche la mancanza di una traccia ben segnalata ed evidente complica non di poco la progressione. È inoltre richiesta una certa abitudine e tranquillità a percorrere tratti esposti.",
+            "track_file": "tracks/Roc del Boucher.gpx",
+            "start_point": 3,
+            "end_point": 4,
+            "local_guide": 1
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk" : 5,
+        "fields":{
+            "latitude": 45.190189,
+            "longitude": 6.979433,
+            "province": "Torino",
+            "village": "Moncenisio", 
+            "address": "Bar Cenisio – Venaus (TO)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 6,
+        "fields":{
+            "latitude": 45.198388,
+            "longitude": 6.967454,
+            "province": "Torino",
+            "village": "Moncenisio", 
+            "address": "Lago Arpone"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk":3,
+        "fields": {
+            "title": "Sentiero per il LAGO ARPONE",
+            "length": 7.16,
+            "expected_time": 165,
+            "ascent": 1800,
+            "difficulty": "Hiker",
+            "description": "Un facile itinerario che si sviluppa interamente su strada sterrata, totalmente ricoperta di neve in inverno. Non troverai difficoltà perché la traccia è ben visibile. Il percorso si sviluppa quasi interamente nel bosco, fino a raggiungere i pressi del lago, dove il bosco si apre e lascia spazio a una splendida vista sulle montagne circostanti.",
+            "track_file": "tracks/lago d’arpone.gpx",
+            "start_point": 5,
+            "end_point": 6,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 7,
+        "fields":{
+            "latitude": 45.089292,
+            "longitude": 6.675187,
+            "province": "Torino",
+            "village": "Bardonecchia", 
+            "address": "Grange della Rho"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 8,
+        "fields":{
+            "latitude": 45.089308,
+            "longitude": 6.675215,
+            "province": "Torino",
+            "village": "Bardonecchia", 
+            "address": "Punta Nera"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 4,
+        "fields": {
+            "title": "Sentiero per PUNTA NERA",
+            "length": 18.3,
+            "expected_time": 150,
+            "ascent": 3047,
+            "difficulty": "Pro Hiker",
+            "description": "Percorso circolare che va a toccare il cuore del Gruppo Sorapiss. Tutto il settore sud est rimane purtroppo sconosciuto, poiché coperto dalle muraglie possenti del Fopà di Mattia e della Punta di Sorapiss, ma si ha modo di memorizzare tutta la fetta di territorio che va dal Passo Tre Croci alle pendici della Punta Nera. Nel complesso lungo e faticoso, consigliato a chi ha le gambe buone e sa trovare gli stimoli necessari. Sarà compensato da un ambiente sempre vario e comunque attraente. Dolce quando si rimontano le gobbe prative che avvicinano Forcella Faloria, severo lo scavalcamento della Sella di Punta Nera, impressionante la discesa sotto gli strapiombi (nel vero senso della parola) della Torre Pupa, lunare tra le pietraie che accompagnano al delizioso Lago di Sorapiss e sereno il rientro al Passo, sopra la Val Ansiei. L’ascesa alla Punta Nera, facoltativa, è la ciliegina sulla torta. Si domina la conca di Cortina, si ammirano le sue montagne tranne i tormentati e continui smantellamenti sul Faloria.",
+            "track_file": "tracks/Punta Nera e Colle della Rho.gpx",
+            "start_point": 7,
+            "end_point": 8,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 7,
+        "fields":{
+            "latitude": 45.089292,
+            "longitude": 6.675187,
+            "province": "Torino",
+            "village": "Bardonecchia", 
+            "address": "Grange della Rho"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 8,
+        "fields":{
+            "latitude": 45.089308,
+            "longitude": 6.675215,
+            "province": "Torino",
+            "village": "Bardonecchia", 
+            "address": "Punta Nera"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 4,
+        "fields": {
+            "title": "Sentiero per PUNTA NERA",
+            "length": 18.3,
+            "expected_time": 150,
+            "ascent": 3047,
+            "difficulty": "Pro Hiker",
+            "description": "Percorso circolare che va a toccare il cuore del Gruppo Sorapiss. Tutto il settore sud est rimane purtroppo sconosciuto, poiché coperto dalle muraglie possenti del Fopà di Mattia e della Punta di Sorapiss, ma si ha modo di memorizzare tutta la fetta di territorio che va dal Passo Tre Croci alle pendici della Punta Nera. Nel complesso lungo e faticoso, consigliato a chi ha le gambe buone e sa trovare gli stimoli necessari. Sarà compensato da un ambiente sempre vario e comunque attraente. Dolce quando si rimontano le gobbe prative che avvicinano Forcella Faloria, severo lo scavalcamento della Sella di Punta Nera, impressionante la discesa sotto gli strapiombi (nel vero senso della parola) della Torre Pupa, lunare tra le pietraie che accompagnano al delizioso Lago di Sorapiss e sereno il rientro al Passo, sopra la Val Ansiei. L’ascesa alla Punta Nera, facoltativa, è la ciliegina sulla torta. Si domina la conca di Cortina, si ammirano le sue montagne tranne i tormentati e continui smantellamenti sul Faloria.",
+            "track_file": "tracks/Punta Nera e Colle della Rho.gpx",
+            "start_point": 7,
+            "end_point": 8,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 9,
+        "fields":{
+            "latitude": 44.938467,
+            "longitude": 6.749585,
+            "province": "Torino",
+            "village": "Claviere", 
+            "address": "Claviere (Torino)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 10,
+        "fields":{
+            "latitude": 44.9000,
+            "longitude": 6.76687,
+            "province": "Torino",
+            "village": "Claviere", 
+            "address": "Lago dei Sette Colori (Lago Gignoux)"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 5,
+        "fields": {
+            "title": "Sentiero per il LAGO DEI SETTE COLORI",
+            "length": 21,
+            "expected_time": 180,
+            "ascent": 2329,
+            "difficulty": "Tourist",
+            "description": "La passeggiata proposta è semplice. Il percorso è caratterizzato da un primo tratto in salita e successivamente da saliscendi che si distendono su ampi tratti prativi. Risulta comunque indicato a famiglie con bambini in età scolare. La partenza dal rifugio Capanna Mautino consente di avere un punto di ristoro e l’arrivo al Lago è indicato per pic-nic.",
+            "track_file": "tracks/Lago dei 7 colori (lago gignoux).gpx",
+            "start_point": 7,
+            "end_point": 8,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 11,
+        "fields":{
+            "latitude": 44.9941, 
+            "longitude": 7.455977,
+            "province": "Torino",
+            "village": "Piossasco", 
+            "address": "Ca’ Dorina – Piossasco (TO) "
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 12,
+        "fields":{
+            "latitude": 45.021651, 
+            "longitude": 7.42173,
+            "province": "Torino",
+            "village": "Trana", 
+            "address": "Monte Pietraborga"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 6,
+        "fields": {
+            "title": "Sentiero per il MONTE PIETRABORGA da PIOSSASCO",
+            "length": 15,
+            "expected_time": 120,
+            "ascent": 926,
+            "difficulty": "Tourist",
+            "description": "Il sentiero è molto facile e frequentato, ma occorre una sufficiente capacità di orientamento, in quanto presenta diverse diramazioni.",
+            "track_file": "tracks/pietraborga da piossasco.gpx",
+            "start_point": 11,
+            "end_point": 12,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 13,
+        "fields":{
+            "latitude": 44.597277296707034, 
+            "longitude": 7.202730746939778,
+            "province": "Cuneo",
+            "village": "Becetto", 
+            "address": "Borgata Ruà – Becetto (CN)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 14,
+        "fields":{
+            "latitude": 44.597145952284336, 
+            "longitude": 7.202682048082352,
+            "province": "Cuneo",
+            "village": "Paesana", 
+            "address": "Testa di Garitta Nuova"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 7,
+        "fields": {
+            "title": "Sentiero per TESTA DI GARITTA NUOVA da BORGATA RUÀ",
+            "length": 18,
+            "expected_time": 240,
+            "ascent": 2385,
+            "difficulty": "Hiker",
+            "description": "Dalla vetta, nelle giornate con il cielo terso, la vista sul Monviso è una delle più suggestive di tutta la Valle Varaita essendo proprio sul confine con la Valle Po.",
+            "track_file": "tracks/Testa di Garitta Nuova da Borgata Ruà.gpx",
+            "start_point": 13,
+            "end_point": 14,
+            "local_guide": 1
+        }
+    },
+    
+    {
+        "model": "hiketracking.point",
+        "pk" : 15,
+        "fields":{
+            "latitude": 44.596613,  
+            "longitude": 7.201825,
+            "province": "Cuneo",
+            "village": "Becetto", 
+            "address": "Borgata Ruà – Becetto (CN)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 16,
+        "fields":{
+            "latitude": 44.615185, 
+            "longitude": 7.177367,
+            "province": "Cuneo",
+            "village": "Sampeyre", 
+            "address": "Cima di Crosa"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 8,
+        "fields": {
+            "title": "Sentiero per la CIMA DI CROSA",
+            "length": 11,
+            "expected_time": 240,
+            "ascent": 2536,
+            "difficulty": "Hiker",
+            "description": "– Come accennato, io ho trovato alcuni pezzi con la neve, che rendevano un po’ difficoltoso individuare il    sentiero, con tratti anche scivolosi. Non ho avuto la necessità di ricorrere a nessun tipo di sostegno, anche nel traverso verticale sulla neve. In assenza di neve, il sentiero, come già detto, è visibilissimo. ",
+            "track_file": "tracks/Borgata Ruà-Cima di Crosa.gpx",
+            "start_point": 15,
+            "end_point": 16,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 17,
+        "fields":{
+            "latitude": 44.59706758148968,  
+            "longitude": 7.202494293451309, 
+            "province": "Cuneo",
+            "village": "Becetto", 
+            "address": "Becetto (CN)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 18,
+        "fields":{
+            "latitude": 44.6216659527272, 
+            "longitude": 7.200692351907492, 
+            "province": "Cuneo",
+            "village": "Paesana", 
+            "address": "Monte Riba del Gias"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 9,
+        "fields": {
+            "title": "Sentiero per MONTE RIBA DEL GIAS",
+            "length": 8,
+            "expected_time": 300,
+            "ascent": 2381,
+            "difficulty": "Tourist",
+            "description": "Dall’ometto di pietra possiamo vedere chiaramente tutta la cresta che separa Valle Varaita dalla Valle Po e spostando lo sguardo a desta del colle Cervetto vediamo chiaramente Riba del Gias, riconoscibile come la punta più elevata della cresta.",
+            "track_file": "tracks/Monte Riba del Gias da Becetto(Ruà).gpx",
+            "start_point": 17,
+            "end_point": 18,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 19,
+        "fields":{
+            "latitude": 44.57619898952544,   
+            "longitude":7.180788516998291, 
+            "province": "Cuneo",
+            "village": "Sampeyre", 
+            "address": "Sampeyre (CN)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 20,
+        "fields":{
+            "latitude": 44.55683704465628, 
+            "longitude": 7.155619841068983, 
+            "province": "Cuneo",
+            "village": "Sampeyre", 
+            "address": "Rifugio Meira Garneri"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 10,
+        "fields": {
+            "title": "Sentiero per il RIFUGIO MEIRA GARNERI da SAMPEYRE",
+            "length": 8.5,
+            "expected_time": 120,
+            "ascent": 1850,
+            "difficulty": "Hiker",
+            "description": "Questo itinerario è molto molto suggestivo da percorrere nelle notti di luna piena dove, previa prenotazione, è possibile cenare al rifugio.",
+            "track_file": "tracks/Rifugio Meira Garneri da Sampeyre.gpx",
+            "start_point": 19,
+            "end_point": 20,
+            "local_guide": 1
+        }
     }
+    ,
+    {
+        "model": "hiketracking.point",
+        "pk" : 20,
+        "fields":{
+            "latitude": 44.700645,    
+            "longitude":7.117767, 
+            "province": "Cuneo",
+            "village": "Crissolo", 
+            "address": "Pian della Regina – Crissolo (CN)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 21,
+        "fields":{
+            "latitude": 44.700759,  
+            "longitude": 7.117535, 
+            "province": "Cuneo",
+            "village": "Crissolo", 
+            "address": "Laghi del Monviso"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 11,
+        "fields": {
+            "title": "Sentiero per i LAGHI DEL MONVISO",
+            "length": 10,
+            "expected_time": 150,
+            "ascent": 2200,
+            "difficulty": "Hiker",
+            "description": "Il terreno è un poco scosceso in alcuni tratti e si presenta pietroso.",
+            "track_file": "tracks/Pian della Regina - Laghi del Monviso.gpx",
+            "start_point": 20,
+            "end_point": 21,
+            "local_guide": 1
+        }
+    }
+
 ]
