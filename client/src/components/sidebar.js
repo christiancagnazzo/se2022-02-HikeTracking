@@ -45,7 +45,6 @@ function HikerMenu(props){
   
         <SubMenu icon={parkingLot} label='Parking Lot'>
           <MenuItem /*onClick={() => props.changeSel("hikes")}*/>Browse</MenuItem>
-          <MenuItem /*onClick={/*() => props.changeSel("filter")}*/>Filter</MenuItem>
         </SubMenu>
       </Menu>
     </Sidebar>

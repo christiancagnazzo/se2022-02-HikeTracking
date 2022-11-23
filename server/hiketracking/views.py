@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render
 from knox.models import AuthToken
 from knox.views import LoginView as KnoxLoginView
@@ -8,15 +8,23 @@ from rest_framework.views import APIView
 from geopy.geocoders import Nominatim
 from functools import partial
 import geopy.distance
+from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import render, redirect
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
 
-from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut
+from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer)
 
 geolocator = Nominatim(user_agent="hiketracking")
 
 class NewHike(APIView):
-    #permission_classes = (permissions.AllowAny,)
+    # permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
         user_id = CustomUser.objects.get(email=request.user)
@@ -26,7 +34,7 @@ class NewHike(APIView):
             sp = get_province_and_village(
                 data['start_point_lat'], data['start_point_lng'])
             start_point_type = 'none'
-            
+
             start_point = Point.objects.get_or_create(
                 latitude=data['start_point_lat'],
                 longitude=data['start_point_lng'],
@@ -41,7 +49,7 @@ class NewHike(APIView):
             ep = get_province_and_village(
                 data['end_point_lat'], data['end_point_lng'])
             end_point_type = 'none'
-            
+
             end_point = Point.objects.get_or_create(
                 latitude=data['end_point_lat'],
                 longitude=data['end_point_lng'],
@@ -94,7 +102,7 @@ class NewHike(APIView):
 
 
 class HikeFile(APIView):
-    #permission_classes = (permissions.AllowAny,)
+    # permission_classes = (permissions.AllowAny,)
 
     def put(self, request, hike_id):
         try:
@@ -130,11 +138,46 @@ class RegisterAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.is_active = False
         user = serializer.save()
-        return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+        current_site = get_current_site(request)
+        mail_subject = 'Activation link has been sent to your email id'
+        message = render_to_string('./acc_active_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user),
         })
+        to_email = user.email
+        email = EmailMessage(
+            mail_subject, message, to=[to_email]
+        )
+        email.send()
+        return Response(status=200, data={
+            "message": 'Please confirm your email address to complete the registration'})
+
+
+class ActivateAccount(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, uidb64, token, *args, **kwargs):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = CustomUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            result = super(ActivateAccount, self).post(request, format=None)
+
+            return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""),
+                                              "token": result.data['token'],
+                                              "massage": 'Your account have been confirmed.'})
+        else:
+            return Response(status=200, data={
+                "massage": 'The confirmation link was invalid, possibly because it has already been used.'})
 
 
 class LoginAPI(KnoxLoginView):
@@ -146,7 +189,8 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         result = super(LoginAPI, self).post(request, format=None)
-        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""), "token": result.data['token']})
+        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""),
+                                          "token": result.data['token']})
 
 
 class Hikes(APIView):
@@ -189,7 +233,7 @@ class Hikes(APIView):
                 hikes = hikes.filter(start_point__in=inner_query)
 
             if village:
-                inner_query = Point.objects.filter(village=village)
+                inner_query = Point.objects.filter(village=village.lower().capitalize())
                 hikes = hikes.filter(start_point__in=inner_query)
 
             hikes = hikes.values()
@@ -197,7 +241,6 @@ class Hikes(APIView):
         else:
             hikes = Hike.objects.values()
 
-        
         around = request.GET.get('around', None)
 
         if filters and around:
@@ -214,9 +257,9 @@ class Hikes(APIView):
 
                 if (distance <= float(radius)):
                     filtered_hikes.append(h)
-                
+
             hikes = filtered_hikes
-        
+
         result = {}
         for h in hikes:
             result = HikeReferencePoint.objects.filter(
@@ -265,7 +308,7 @@ class Sessions(APIView):
 def get_province_and_village(lat, lon):
     try:
         reverse = partial(geolocator.reverse, language="it")
-        location = reverse(str(lat)+", "+str(lon))
+        location = reverse(str(lat) + ", " + str(lon))
         province = location.raw['address']['county']
         village = location.raw['address']['village']
         return {'province': province, 'village': village}
@@ -275,15 +318,55 @@ def get_province_and_village(lat, lon):
 class Huts(APIView):
     
     def get(self, request):
-        result = []
+        try:
 
-        huts = Hut.objects.all().values()
+            filters = request.GET.get('filters', None)
 
-        for h in huts:
-            point = Point.objects.get(id=h['point_id'])
-            h['lat'] = point.latitude
-            h['lon'] = point.longitude
-            result.append(h)
+            if filters:
+                name = request.GET.get('name', None)
+                nbeds = request.GET.get('nbeds', None)
+                fee = request.GET.get('fee', None)
+                
+                huts = Hut.objects.all()
 
-        return Response(result)
-        
+                if name:
+                    huts = huts.filter(name=name)
+                if nbeds:
+                    huts = huts.filter(n_beds=nbeds)
+                if fee:
+                    huts = huts.filter(fee=fee)
+
+                huts = huts.values()
+
+            else:
+                huts = Hut.objects.values()
+            
+            result = []
+
+            for h in huts:
+                point = Point.objects.get(id=h['point_id'])
+                h['lat'] = point.latitude
+                h['lon'] = point.longitude
+                result.append(h)
+
+            return Response(result)
+        except:
+            return Response(status=500)
+      
+class listParkingLotAPI(APIView):
+    #permission_classes = (permissions.AllowAny,) 
+    def get(self,request):
+        try:
+            result = []
+            listParkigLot = ParkingLot.objects.all().values()
+            
+            for p in listParkigLot:
+                point = Point.objects.get(id=p['point_id'])
+                p['lat'] = point.latitude
+                p['lon'] = point.longitude
+                result.append(p)
+
+            return Response(result)
+        except:
+            return Response(status=500)
+       

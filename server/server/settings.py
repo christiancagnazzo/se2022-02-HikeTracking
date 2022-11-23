@@ -6,7 +6,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -70,7 +70,9 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'template'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,3 +142,9 @@ APPEND_SLASH = False
 CORS_ALLOW_ALL_ORIGINS = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_ROOT = BASE_DIR
+# add email registration Configuration
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'hiketrackPolito2022@gmail.com'
+EMAIL_HOST_PASSWORD = 'ytyxfarqbthgvvjr'
+EMAIL_PORT = 587
