@@ -60,9 +60,14 @@ function Map(props){
     useEffect(() => {
         if (props.gpxFile !== ''){ 
             const gpx = new GpxParser()
+            
             gpx.parse(props.gpxFile)
+            console.log(props.gpxFile)
             let pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
             setPositions(pos)
+            console.log(pos[0])
+            console.log(pos[pos.length -1 ])
+
             
         }
     },[props.gpxFile])

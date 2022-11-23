@@ -285,9 +285,11 @@ class Hikes(APIView):
             h['end_point_address'] = endP.address
 
             try:
-                with open(h['track_file'], 'r') as f:
+                with open(h['track_file'], 'r',encoding="utf-8") as f:
                     file_data = f.read()
                     h['file'] = file_data
+                    if h['track_file'] == "tracks/Rifugio Meira Garneri da Sampeyre.gpx":
+                        print(file_data[0:5]) 
 
             except Exception as e:
                 print(e)

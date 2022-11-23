@@ -126,3 +126,12 @@ body{
 .added{
     background-color: #3d9e2586;
 }*/
+
+.gmgIpm{
+    background-color: #8C8C8C;
+}
+
+.gmgIpm:hover{
+    background-color: #4D754D;
+}
+
