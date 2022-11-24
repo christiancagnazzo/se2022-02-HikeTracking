@@ -64,7 +64,7 @@ $ docker compose up
 Clone the project and run:
 ```sh
 $ cd server
-$ pip install -r requirements.txt
+$ pip install -r requirements.txt --no-dependencies
 $ python manage.py makemigrations hiketracking
 $ python manage.py migrate  
 $ python manage.py runserver
