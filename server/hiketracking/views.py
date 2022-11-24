@@ -12,12 +12,12 @@ from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 
-from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot
+from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot, Facility, HutFacility
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
-                          UserSerializer, PorkingLotSerializer, PointSerializer)
+                          UserSerializer, PorkingLotSerializer, PointSerializer, HuntsSerializer)
 from rest_framework import status
 
-from .utility import get_province_and_village
+from .utility import get_province_and_village, InsertPoint
 
 
 class NewHike(APIView):
@@ -311,6 +311,8 @@ class Sessions(APIView):
 
 
 class Huts(APIView):
+    # permission_classes = (permissions.AllowAny,)
+    serializer_class = HuntsSerializer
 
     def get(self, request):
         try:
@@ -348,9 +350,30 @@ class Huts(APIView):
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def post(self, request, format=None):
+        pointSerializer = PointSerializer(data=request.data['position'])
+        if pointSerializer.is_valid():
+            point = InsertPoint(pointSerializer, 'hut')
+            serializer = self.serializer_class(data={**request.data, 'point': point.id})
+            if serializer.is_valid():
+                hut = serializer.save()
+                for service in request.data['services']:
+                    try:
+                        obj, created = Facility.objects.get_or_create(name=service)
+                        HutFacility.objects.get_or_create(hut=hut, facility=obj)
+                        return Response(serializer.data, status=status.HTTP_200_OK)
+                    except Exception as exc:
+                        return Response(data={'message': 'error in crating the services', 'exception': exc},
+                                        status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ListParkingLotAPI(APIView):
-    permission_classes = (permissions.AllowAny,)
+    # permission_classes = (permissions.AllowAny,)
     serializer_class = PorkingLotSerializer
 
     def get(self, request):
@@ -368,24 +391,9 @@ class ListParkingLotAPI(APIView):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
-        print(request.data['position'])
         pointSerializer = PointSerializer(data=request.data['position'])
         if pointSerializer.is_valid():
-
-            sp = get_province_and_village(
-                pointSerializer.data.get('latitude'), pointSerializer.data.get('longitude'))
-
-            point, created = Point.objects.get_or_create(
-                latitude=pointSerializer.data.get('latitude'),
-                longitude=pointSerializer.data.get('longitude'),
-                defaults={
-                    'province': sp['province'],
-                    'village': sp['village'],
-                    'address': pointSerializer.data.get('address'),
-                    'type': 'parking_lot'
-                }
-            )
-
+            point = InsertPoint(pointSerializer, 'parking_lot')
             serializer = self.serializer_class(data={**request.data, 'point': point.id})
             if serializer.is_valid():
                 serializer.save()

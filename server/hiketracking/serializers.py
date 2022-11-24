@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Hike, ParkingLot, Point
+from .models import Hike, ParkingLot, Point, Hut
 from hiketracking.models import CustomUser
 from django.utils.translation import gettext_lazy as _
-from .utility import get_province_and_village
 
 
 class HikeSerializer(serializers.ModelSerializer):
@@ -71,6 +70,12 @@ class PointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Point
         fields = ['latitude', 'longitude', 'address']
+
+
+class HuntsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hut
+        fields = ['name', 'n_beds', 'fee', 'desc', 'point']
 
 
 class PorkingLotSerializer(serializers.ModelSerializer):

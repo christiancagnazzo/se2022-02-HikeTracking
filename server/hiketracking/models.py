@@ -43,6 +43,9 @@ class Point(models.Model):
             models.UniqueConstraint(fields=['latitude', 'longitude'], name='point')
         ]
 
+    def __str__(self):
+        return self.id.__str__()+'_'+self.type
+
 
 class Hike(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -57,10 +60,16 @@ class Hike(models.Model):
     end_point = models.ForeignKey(Point, on_delete=models.CASCADE, related_name="end_point")
     local_guide = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
 
 class HikeReferencePoint(models.Model):
     hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
     point = models.ForeignKey(Point, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.hike.title + " " + self.point.type
 
     class Meta:
         constraints = [
@@ -72,16 +81,26 @@ class Hut(models.Model):
     name = models.CharField(max_length=50, unique=True)
     n_beds = models.IntegerField()
     fee = models.FloatField()
+    desc = models.TextField(blank=True, default=" ")
     point = models.ForeignKey(Point, unique=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class Facility(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class HutFacility(models.Model):
     hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.hut.name + " " + self.facility.name
 
     class Meta:
         constraints = [
@@ -93,4 +112,8 @@ class ParkingLot(models.Model):
     name = models.CharField(max_length=50, unique=True)
     fee = models.FloatField()
     n_cars = models.IntegerField()
+    desc = models.TextField(blank=True, default=" ")
     point = models.ForeignKey(Point, unique=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
