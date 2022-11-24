@@ -1,15 +1,10 @@
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render
-from knox.models import AuthToken
+from django.contrib.auth import login
 from knox.views import LoginView as KnoxLoginView
-from rest_framework import generics, permissions, viewsets
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from geopy.geocoders import Nominatim
-from functools import partial
 import geopy.distance
 from django.contrib.sites.shortcuts import get_current_site
-from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -19,9 +14,11 @@ from django.core.mail import EmailMessage
 
 from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
-                          UserSerializer)
+                          UserSerializer, PorkingLotSerializer, PointSerializer)
+from rest_framework import status
 
-geolocator = Nominatim(user_agent="hiketracking")
+from .utility import get_province_and_village
+
 
 class NewHike(APIView):
     # permission_classes = (permissions.AllowAny,)
@@ -95,10 +92,10 @@ class NewHike(APIView):
                 )
                 rp_hike.save()
 
-            return Response(status=200, data={"hike_id": hike.id})
+            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
         except Exception as e:
             print(e)
-            return Response(status=400, data={"Error": str(e)})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
 
 
 class HikeFile(APIView):
@@ -109,16 +106,16 @@ class HikeFile(APIView):
             file = request.FILES['File']
         except:
             Hike.objects.filter(id=hike_id).delete()
-            return Response(status=400, data={"Error": "File Requested"})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": "File Requested"})
 
         try:
             hike = Hike.objects.get(id=hike_id)
             hike.track_file = file
             hike.save()
-            return Response(status=200)
+            return Response(status=status.HTTP_200_OK)
         except:
             Hike.objects.filter(id=hike_id).delete()
-            return Response(status=400, data={"Error": "Hike not found"})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"})
 
 
 class UserList(generics.ListAPIView):
@@ -152,13 +149,20 @@ class RegisterAPI(generics.GenericAPIView):
         email = EmailMessage(
             mail_subject, message, to=[to_email]
         )
-        email.send()
-        return Response(status=200, data={
-            "message": 'Please confirm your email address to complete the registration'})
+        try:
+            email.send()
+            return Response(status=status.HTTP_200_OK, data={
+                "message": 'Please confirm your email address to complete the registration'})
+        except:
+            user = CustomUser.objects.get(user.id)
+            user.delete()
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={
+                "message": 'Server error'})
 
 
 class ActivateAccount(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
+
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -172,11 +176,12 @@ class ActivateAccount(KnoxLoginView):
             login(request, user)
             result = super(ActivateAccount, self).post(request, format=None)
 
-            return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""),
-                                              "token": result.data['token'],
-                                              "massage": 'Your account have been confirmed.'})
+            return Response(status=status.HTTP_200_OK,
+                            data={"user": user.email, "role": user.role.lower().replace(" ", ""),
+                                  "token": result.data['token'],
+                                  "massage": 'Your account have been confirmed.'})
         else:
-            return Response(status=200, data={
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={
                 "massage": 'The confirmation link was invalid, possibly because it has already been used.'})
 
 
@@ -189,8 +194,8 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         result = super(LoginAPI, self).post(request, format=None)
-        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", ""),
-                                          "token": result.data['token']})
+        return Response(status=status.HTTP_200_OK, data={"user": user.email, "role": user.role.lower().replace(" ", ""),
+                                                         "token": result.data['token']})
 
 
 class Hikes(APIView):
@@ -285,17 +290,17 @@ class Hikes(APIView):
             h['end_point_address'] = endP.address
 
             try:
-                with open(h['track_file'], 'r',encoding="utf-8") as f:
+                with open(h['track_file'], 'r', encoding="utf-8") as f:
                     file_data = f.read()
                     h['file'] = file_data
                     if h['track_file'] == "tracks/Rifugio Meira Garneri da Sampeyre.gpx":
-                        print(file_data[0:5]) 
+                        print(file_data[0:5])
 
             except Exception as e:
                 print(e)
-                return Response(status=500)
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(hikes)
+        return Response(hikes, status=status.HTTP_200_OK)
 
 
 class Sessions(APIView):
@@ -305,18 +310,8 @@ class Sessions(APIView):
         return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", "")})
 
 
-def get_province_and_village(lat, lon):
-    try:
-        reverse = partial(geolocator.reverse, language="it")
-        location = reverse(str(lat) + ", " + str(lon))
-        province = location.raw['address']['county']
-        village = location.raw['address']['village']
-        return {'province': province, 'village': village}
-    except:
-        return {'province': "", 'village': ""}
-
 class Huts(APIView):
-    
+
     def get(self, request):
         try:
 
@@ -326,7 +321,7 @@ class Huts(APIView):
                 name = request.GET.get('name', None)
                 nbeds = request.GET.get('nbeds', None)
                 fee = request.GET.get('fee', None)
-                
+
                 huts = Hut.objects.all()
 
                 if name:
@@ -340,7 +335,7 @@ class Huts(APIView):
 
             else:
                 huts = Hut.objects.values()
-            
+
             result = []
 
             for h in huts:
@@ -349,17 +344,19 @@ class Huts(APIView):
                 h['lon'] = point.longitude
                 result.append(h)
 
-            return Response(result)
+            return Response(result, status=status.HTTP_200_OK)
         except:
-            return Response(status=500)
-      
-class listParkingLotAPI(APIView):
-    #permission_classes = (permissions.AllowAny,) 
-    def get(self,request):
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListParkingLotAPI(APIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = PorkingLotSerializer
+
+    def get(self, request):
         try:
             result = []
             listParkigLot = ParkingLot.objects.all().values()
-            
             for p in listParkigLot:
                 point = Point.objects.get(id=p['point_id'])
                 p['lat'] = point.latitude
@@ -368,5 +365,31 @@ class listParkingLotAPI(APIView):
 
             return Response(result)
         except:
-            return Response(status=500)
-       
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def post(self, request, format=None):
+        print(request.data['position'])
+        pointSerializer = PointSerializer(data=request.data['position'])
+        if pointSerializer.is_valid():
+
+            sp = get_province_and_village(
+                pointSerializer.data.get('latitude'), pointSerializer.data.get('longitude'))
+
+            point, created = Point.objects.get_or_create(
+                latitude=pointSerializer.data.get('latitude'),
+                longitude=pointSerializer.data.get('longitude'),
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': pointSerializer.data.get('address'),
+                    'type': 'parking_lot'
+                }
+            )
+
+            serializer = self.serializer_class(data={**request.data, 'point': point.id})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
