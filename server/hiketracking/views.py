@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.http import FileResponse
+from django.shortcuts import render
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -185,10 +186,7 @@ class ActivateAccount(KnoxLoginView):
             login(request, user)
             result = super(ActivateAccount, self).post(request, format=None)
 
-            return Response(status=status.HTTP_200_OK,
-                            data={"user": user.email, "role": user.role.lower().replace(" ", ""),
-                                  "token": result.data['token'],
-                                  "massage": 'Your account have been confirmed.'})
+            return render(request, "emailConfirmed.html")
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={
                 "massage": 'The confirmation link was invalid, possibly because it has already been used.'})
