@@ -5,7 +5,8 @@
         "fields": {
             "email": "g@mail.com",
             "role": "localguide",
-            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo="
+            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+            "is_active": 1
         }
     },
     {
@@ -14,7 +15,8 @@
         "fields": {
             "email": "h@mail.com",
             "role": "hiker",
-            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo="
+            "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+            "is_active": 1
         }
     },
 
@@ -482,6 +484,13 @@
             "start_point": 20,
             "end_point": 21,
             "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.facility",
+        "pk": 1,
+        "fields": {
+            "name": "Parking"
         }
     }
 

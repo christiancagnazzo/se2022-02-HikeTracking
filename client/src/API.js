@@ -60,6 +60,29 @@ async function createHut(hut_description, token) {
   }
 }
 
+async function createParkingLot(parking_lot_description, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'parkingLots/', {
+      method: 'POST',
+      body: JSON.stringify(parking_lot_description),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status == '201')
+      return { msg: "Parking Lot created" };
+    else
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+
+  catch (e) {
+    console.log(e) // TODO
+  }
+}
+
 async function login(credentials) {
   let response = await fetch(URL + 'login/', {
     method: 'POST',
@@ -220,6 +243,23 @@ async function getAllParkingLots(token) {
   }
 }
 
-const API = { login, logout, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+async function getFacilities(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  let response = await fetch(URL + 'facilities/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+    
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+const API = { login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;

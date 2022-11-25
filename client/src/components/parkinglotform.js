@@ -13,7 +13,7 @@ import Multiselect from 'multiselect-react-dropdown';
 
 function ParkingLotForm(props) {
   const [name, setName] = useState('Parcheggio bello')
-  const [position, setPosition] = useState([45.178562524475275, 7.081797367594325])
+  const [position, setPosition] = useState([45.178522524475275, 7.081797367594325])
   const [address, setAddress] = useState('Frazione Il Parcheggio 10059 Mompantero, Susa TO')
   const [desc, setDesc] = useState('First Parking lot to be uploaded')
   const [fee, setFee] = useState(10)
@@ -27,23 +27,19 @@ function ParkingLotForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let hutDescription = {
+    let parkingLotDescription = {
       'name': name,
       'fee': fee,
       'desc': desc,
-      'address': address,
-      'latitude': position[0],
-      'longitude': position[1],
+      'position': {'latitude': position[0], 'longitude':position[1], 'address': address },
       'n_cars': n_cars
     }
-    let req = await API.createHut(hutDescription, token)
-    console.log(req)
+    let req = await API.createParkingLot(parkingLotDescription, token)  
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
-      navigate('/')
+      navigate('/localguide/parkinglots')
     }
-
   }
 
 
@@ -60,44 +56,6 @@ function ParkingLotForm(props) {
 
     }
   }
-
-  
-
-  
-
-  
-
-
-  useEffect(() => {
-    const getHuts = async function () {
-      let req = await API.getAllHuts(token)
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        let all_huts = []
-        req.msg.forEach((el) => all_huts.push({ "hutId": el.id, "hutName": el.name, "lat": el.lat, "lon": el.lon }))
-        setHuts(all_huts)
-      }
-    }
-
-    getHuts()
-  }, [])
-
-  /*useEffect(() => {
-    const getParkingLots = async function () {
-      let req = await API.getAllParkingLots(token)
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        let all_plot = []
-        req.msg.forEach((el) => all_plot.push({ "parkingLotId": el.id, "parkingLotName": el.name, "lat": el.lat, "lon": el.lon }))
-        setParkingLots(all_plot)
-      }
-    }
-
-    getParkingLots()
-  }, [])*/
-
 
   return (
     <Card body>

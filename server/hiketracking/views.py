@@ -345,7 +345,8 @@ class Huts(APIView):
                 result.append(h)
 
             return Response(result, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            print(e)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
@@ -357,13 +358,12 @@ class Huts(APIView):
                 hut = serializer.save()
                 for service in request.data['services']:
                     try:
-                        obj, created = Facility.objects.get_or_create(name=service)
+                        obj = Facility.objects.get(name=service)
                         HutFacility.objects.get_or_create(hut=hut, facility=obj)
-                        return Response(serializer.data, status=status.HTTP_200_OK)
                     except Exception as exc:
                         return Response(data={'message': 'error in crating the services', 'exception': exc},
                                         status=status.HTTP_400_BAD_REQUEST)
-
+                return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -399,3 +399,8 @@ class ListParkingLotAPI(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Facilities(APIView):
+    def get(self, request):
+        fac = Facility.objects.all().values()
+        return Response(fac, status=status.HTTP_200_OK)

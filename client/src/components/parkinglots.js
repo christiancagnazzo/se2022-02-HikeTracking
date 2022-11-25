@@ -6,6 +6,21 @@ import Map from './map'
 import API from '../API';
 import FilterForm from './filterformhikes';
 
+/*useEffect(() => {
+    const getParkingLots = async function () {
+      let req = await API.getAllParkingLots(token)
+      if (req.error) {
+        setErrorMessage(req.msg)
+      } else {
+        let all_plot = []
+        req.msg.forEach((el) => all_plot.push({ "parkingLotId": el.id, "parkingLotName": el.name, "lat": el.lat, "lon": el.lon }))
+        setParkingLots(all_plot)
+      }
+    }
+
+    getParkingLots()
+  }, [])*/
+  
 function displayParkingLotsUtil(parkinglots, userPower){
   let parkinglotscards =  parkinglots.map((h) => 
       <Col className="pb-4 px-0">
