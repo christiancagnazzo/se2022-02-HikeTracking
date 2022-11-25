@@ -139,8 +139,23 @@ async function getAllHikes(token, filters) {
     },
   });
 
-  if (response.status == '200')
-    return { msg: await response.json() }
+  if (response.status == '200') {
+    let hikes = await response.json();
+    hikes.forEach(async h => {
+      let response = await fetch(URL + 'hike/file/' + h["id"], {
+        method: 'GET',
+        headers: {
+          'Authorization': valid_token
+        },
+      });
+      if (response.status === 200) {
+        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+        h['file'] = text;
+      }
+    });
+
+    return { msg: hikes }
+  }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
