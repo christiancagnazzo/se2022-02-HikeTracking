@@ -5,21 +5,6 @@ import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
 import FilterForm from './filterformhikes';
-
-/*useEffect(() => {
-    const getParkingLots = async function () {
-      let req = await API.getAllParkingLots(token)
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        let all_plot = []
-        req.msg.forEach((el) => all_plot.push({ "parkingLotId": el.id, "parkingLotName": el.name, "lat": el.lat, "lon": el.lon }))
-        setParkingLots(all_plot)
-      }
-    }
-
-    getParkingLots()
-  }, [])*/
   
 function displayParkingLotsUtil(parkinglots, userPower){
   let parkinglotscards =  parkinglots.map((h) => 
@@ -61,12 +46,11 @@ function ParkingLotCard(props) {
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Length: {props.parkinglot.length}km</ListGroup.Item>
-        <ListGroup.Item>Estimated time: {props.parkinglot.expected_time}min</ListGroup.Item>
-        <ListGroup.Item>Ascent: {props.parkinglot.ascent}m</ListGroup.Item>
-        <ListGroup.Item>Difficulty: {props.parkinglot.difficulty}</ListGroup.Item>
-        <ListGroup.Item>Start point: {props.parkinglot.start_point_address}</ListGroup.Item>
-        <ListGroup.Item>End point: {props.parkinglot.end_point_address}</ListGroup.Item>
+        <ListGroup.Item>Address: {props.parkinglot.address}km</ListGroup.Item>
+        <ListGroup.Item>Latitude: {props.parkinglot.latitude}km</ListGroup.Item>
+        <ListGroup.Item>Longitude: {props.parkinglot.longitude}km</ListGroup.Item>
+        <ListGroup.Item>Fee: {props.parkinglot.fee}m</ListGroup.Item>
+        <ListGroup.Item>Cars: {props.parkinglot.cars}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
@@ -82,7 +66,7 @@ function ParkingLotCard(props) {
       onHide={() => setModalDescriptionShow(false)}
       title={props.parkinglot.title}
       description={props.parkinglot.description}
-      rpList={props.parkinglot.rp}
+      
     />
     
   </>
@@ -106,12 +90,6 @@ function ParkinglotModalDescription(props) {
         <p>
           {props.description}
         </p>
-        <h5>Reference Points</h5>
-        <ul>
-          {props.rpList.map((rp) =>
-            <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
-          )}
-        </ul>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
