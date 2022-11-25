@@ -8,19 +8,9 @@ import Hike from "./hikes";
 import Multiselect from 'multiselect-react-dropdown';
 
 
-const services_list = ["Showers","Mobile phone reception","Seminar room", "Water supply", "Mattresses", "Heating (with fuel)"]
-
-const services_list_mapped = services_list.map((s,idx) => {
-  return {
-    'name' : s,
-    'id': idx
-  }
-})
-
-
 function HikeForm(props) {
   const [name, setName] = useState('Rifugio La Riposa')
-  const [position, setPosition] = useState([45.178562524475275, 7.081797367594325])
+  const [position, setPosition] = useState([45.078562524475275, 7.181797367594325])
   const [address, setAddress] = useState('Frazione La Riposa 10059 Mompantero, Susa TO')
   const [desc, setDesc] = useState('First Hut to be uploaded')
   const [fee, setFee] = useState(10)
@@ -30,6 +20,7 @@ function HikeForm(props) {
   let navigate = useNavigate();
   let [huts, setHuts] = useState([])
   let [parkingLots, setParkingLots] = useState([])
+  const [servicesList, setServicesList] = useState([])
 
   let token = localStorage.getItem("token");
 
@@ -38,11 +29,9 @@ function HikeForm(props) {
     let hutDescription = {
       'name': name,
       'fee': fee,
-      'services': services,
+      'services': services.map(s => s['name']),
       'desc': desc,
-      'address': address,
-      'latitude': position[0],
-      'longitude': position[1],
+      'position': {'latitude': position[0], 'longitude':position[1], 'address': address },
       'n_beds': n_beds
     }
     let req = await API.createHut(hutDescription, token)
@@ -50,7 +39,7 @@ function HikeForm(props) {
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
-      navigate('/')
+      navigate('/localguide/huts')
     }
 
   }
@@ -70,13 +59,6 @@ function HikeForm(props) {
     }
   }
 
-  
-
-  
-
-  
-
-
   useEffect(() => {
     const getHuts = async function () {
       let req = await API.getAllHuts(token)
@@ -90,6 +72,19 @@ function HikeForm(props) {
     }
 
     getHuts()
+  }, [])
+
+  useEffect(() => {
+    const getFacilities = async function () {
+      let req = await API.getFacilities(token)
+      if (req.error) {
+        setErrorMessage(req.msg)
+      } else {
+        setServicesList(req.msg)
+      }
+    }
+
+    getFacilities()
   }, [])
 
   /*useEffect(() => {
@@ -126,7 +121,7 @@ function HikeForm(props) {
         
         <Form.Label>Services</Form.Label>
         <Multiselect className="mb-2"
-        options={services_list_mapped} // Options to display in the dropdown
+        options={servicesList} // Options to display in the dropdown
         selectedValues={services} // Preselected value to persist in dropdown
         onSelect={(e) => {setServices(e)}} // Function will trigger on select event
         onRemove={(e) => {setServices(e)}} // Function will trigger on remove event

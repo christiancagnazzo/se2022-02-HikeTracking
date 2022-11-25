@@ -6,6 +6,21 @@ import Map from './map'
 import API from '../API';
 import FilterForm from './filterformhikes';
 
+/*useEffect(() => {
+  const getHuts = async function () {
+    let req = await API.getAllHuts(token)
+    if (req.error) {
+      setErrorMessage(req.msg)
+    } else {
+      let all_huts = []
+      req.msg.forEach((el) => all_huts.push({ "hutId": el.id, "hutName": el.name, "lat": el.lat, "lon": el.lon }))
+      setHuts(all_huts)
+    }
+  }
+
+  getHuts()
+}, [])*/
+
 function displayHutsUtil(huts, userPower){
   let hutscard =  huts.map((h) => 
       <Col className="pb-4 px-0">
