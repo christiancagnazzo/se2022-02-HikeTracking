@@ -48,6 +48,7 @@ function HutCard(props) {
         <ListGroup.Item>Address: {props.hut.position.address}</ListGroup.Item>
         <ListGroup.Item>Beds: {props.hut.beds}</ListGroup.Item>
         <ListGroup.Item>services: {props.hut.services}</ListGroup.Item>
+        <ListGroup.Item>fee: {props.hut.fee}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>

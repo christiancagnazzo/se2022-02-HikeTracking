@@ -9,7 +9,7 @@ import FilterForm from './filterformhikes';
 function displayParkingLotsUtil(parkinglots, userPower){
   let parkinglotscards =  parkinglots.map((h) => 
       <Col className="pb-4 px-0">
-        <ParkingLotCard userPower={userPower} hike={h}/>
+        <ParkingLotCard userPower={userPower} parkinglot={h}/>
       </Col>)
     let rows = []
     for(let i = 0; i < Math.ceil(parkinglots.length/3);i++){
@@ -46,11 +46,11 @@ function ParkingLotCard(props) {
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Address: {props.parkinglot.address}km</ListGroup.Item>
-        <ListGroup.Item>Latitude: {props.parkinglot.latitude}km</ListGroup.Item>
-        <ListGroup.Item>Longitude: {props.parkinglot.longitude}km</ListGroup.Item>
+        <ListGroup.Item>Address: {props.parkinglot.position.address}</ListGroup.Item>
+        <ListGroup.Item>Latitude: {props.parkinglot.position.latitude}</ListGroup.Item>
+        <ListGroup.Item>Longitude: {props.parkinglot.position.longitude}</ListGroup.Item>
         <ListGroup.Item>Fee: {props.parkinglot.fee}m</ListGroup.Item>
-        <ListGroup.Item>Cars: {props.parkinglot.cars}</ListGroup.Item>
+        <ListGroup.Item>Cars: {props.parkinglot.n_cars}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
@@ -65,7 +65,7 @@ function ParkingLotCard(props) {
       show={modalDescriptionShow}
       onHide={() => setModalDescriptionShow(false)}
       title={props.parkinglot.title}
-      description={props.parkinglot.description}
+      description={props.parkinglot.desc}
       
     />
     
