@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.http import FileResponse
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -100,6 +101,14 @@ class NewHike(APIView):
 
 class HikeFile(APIView):
     # permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, hike_id):
+        try: 
+            track = Hike.objects.get(id=hike_id).track_file
+            return FileResponse(open(str(track), 'rb'))
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, hike_id):
         try:
@@ -288,17 +297,6 @@ class Hikes(APIView):
             h['end_point_lat'] = endP.latitude
             h['end_point_lng'] = endP.longitude
             h['end_point_address'] = endP.address
-
-            try:
-                with open(h['track_file'], 'r', encoding="utf-8") as f:
-                    file_data = f.read()
-                    h['file'] = file_data
-                    if h['track_file'] == "tracks/Rifugio Meira Garneri da Sampeyre.gpx":
-                        print(file_data[0:5])
-
-            except Exception as e:
-                print(e)
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(hikes, status=status.HTTP_200_OK)
 
