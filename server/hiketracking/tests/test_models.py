@@ -5,11 +5,10 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.test import TestCase, RequestFactory
 from django.http import HttpRequest
 from hiketracking.views import Hike, HikeFile, NewHike, Hikes
-from hiketracking.models import Hike
+from hiketracking.models import Hike, Point, Hut, ParkingLot
 from rest_framework.test import APITestCase
-from .models import *
+from ..models import *
 import json
-
 
 
 class UsersManagersTests(TestCase):
@@ -152,27 +151,77 @@ class AddHikeDescriptionTest(TestCase):
         Hike.objects.filter(id=1).update(description='A beginner Hike')
         hike_updated = Hike.objects.get(id=1)
         self.assertEqual(hike_updated.description, 'A beginner Hike')
-        
+
+
 class listParkingPotTest(TestCase):
     def setUp(self):
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
         user_id = User.objects.get(email='test@user.com')
-        p1 = Point(latitude = 0.01,longitude = 0.01,province = "test province",village= "test village",address= "test address")
-        park1 = ParkingLot(name = "test parking pot name 1",fee = 0.01,n_cars = 1,point_id = 1)
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                   address="test address")
+        park1 = ParkingLot(name="test parking pot name 1", fee=0.01, n_cars=1, point_id=1)
         print(park1)
         p1.save()
         park1.Point = p1
         park1.save()
         return super().setUp()
+
     def testListParkingPot(self):
-        list=ParkingLot.objects.all()
-        self.assertEqual(list[0].fee,0.01)
-        self.assertEqual(list[0].name,"test parking pot name 1")
-        self.assertEqual(list[0].n_cars,1)
-        self.assertEqual(list[0].point_id,1)
-        
+        list = ParkingLot.objects.all()
+        self.assertEqual(list[0].fee, 0.01)
+        self.assertEqual(list[0].name, "test parking pot name 1")
+        self.assertEqual(list[0].n_cars, 1)
+        self.assertEqual(list[0].point_id, 1)
 
 
+class AddHutTest(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        self.user_id = User.objects.get(email='test@user.com')
+        return super().setUp()
 
+    def testHut(self):
+        p1 = Point(latitude=0.01, longitude=10.01, province="test province", village="test village",
+                   address="test address")
+        hunt = Hut(name="test parking pot name 1", fee=10.01, n_beds=2, desc="testHunt", point_id=1)
+        service = ["serve1", "serve2"]
+        p1.save()
+        hunt.Point = p1
+        hunt.save()
 
+        list = Hut.objects.all()
+        self.assertEqual(list[0].fee, 10.01)
+        self.assertEqual(list[0].name, "test parking pot name 1")
+        self.assertEqual(list[0].n_beds, 2)
+        self.assertEqual(list[0].point_id, 1)
+        for service_ in service:
+            obj, isNew = Facility.objects.get_or_create(name=service_)
+            self.assertTrue(isNew)
+            HutFacility.objects.get_or_create(hut=hunt, facility=obj)
+        services = Facility.objects.all()
+        self.assertEqual(len(services), 2)
+        self.assertEqual(len(HutFacility.objects.filter(hut=hunt).all()), 2)
+
+    def testHutTextFee(self):
+        p1 = Point(latitude=0.01, longitude=10.01, province="test province", village="test village",
+                   address="")
+        hunt = Hut(name="test parking pot name 1", fee="dieci", n_beds=2, desc="testHunt", point_id=1)
+        service = ["serve1", "serve2"]
+        p1.save()
+        hunt.Point = p1
+        hunt.save()
+
+        list = Hut.objects.all()
+        self.assertEqual(list[0].fee, 10.01)
+        self.assertEqual(list[0].name, "test parking pot name 1")
+        self.assertEqual(list[0].n_beds, 2)
+        self.assertEqual(list[0].point_id, 1)
+        for service_ in service:
+            obj, isNew = Facility.objects.get_or_create(name=service_)
+            self.assertTrue(isNew)
+            HutFacility.objects.get_or_create(hut=hunt, facility=obj)
+        services = Facility.objects.all()
+        self.assertEqual(len(services), 2)
+        self.assertEqual(len(HutFacility.objects.filter(hut=hunt).all()), 2)

@@ -104,7 +104,7 @@ class HikeFile(APIView):
     # permission_classes = (permissions.AllowAny,)
 
     def get(self, request, hike_id):
-        try: 
+        try:
             track = Hike.objects.get(id=hike_id).track_file
             return FileResponse(open(str(track), 'rb'))
         except Exception as e:
@@ -349,6 +349,7 @@ class Huts(APIView):
 
     def post(self, request, format=None):
         pointSerializer = PointSerializer(data=request.data['position'])
+
         if pointSerializer.is_valid():
             point = InsertPoint(pointSerializer, 'hut')
             serializer = self.serializer_class(data={**request.data, 'point': point.id})
@@ -356,7 +357,7 @@ class Huts(APIView):
                 hut = serializer.save()
                 for service in request.data['services']:
                     try:
-                        obj = Facility.objects.get(name=service)
+                        obj, created = Facility.objects.get_or_create(name=service)
                         HutFacility.objects.get_or_create(hut=hut, facility=obj)
                     except Exception as exc:
                         return Response(data={'message': 'error in crating the services', 'exception': exc},
@@ -398,6 +399,7 @@ class ListParkingLotAPI(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class Facilities(APIView):
     def get(self, request):
