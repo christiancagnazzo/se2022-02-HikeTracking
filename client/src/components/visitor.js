@@ -22,7 +22,6 @@ function VisitorPage(props) {
 
   useEffect(() => {
     const getHikes = async () => {
-      console.log("ooo")
       try {
         const hikes = await API.getAllHikes(token, null, props.userPower);
         if (hikes.error)
@@ -56,7 +55,6 @@ function VisitorPage(props) {
       const getHuts = async () => {
         try {
           const huts = await API.getAllHuts(token);
-          console.log(huts)
           if (huts.error)
             setErrorMessage(huts.msg)
           else
@@ -100,7 +98,7 @@ function VisitorPage(props) {
   
   return (
     <>
-      <Sidebar  />
+      <Sidebar userPower={props.userPower} />
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>

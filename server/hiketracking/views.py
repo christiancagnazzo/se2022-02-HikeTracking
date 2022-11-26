@@ -400,6 +400,7 @@ class ListParkingLotAPI(APIView):
             return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Facilities(APIView):
+    permission_classes = (permissions.AllowAny,)
     def get(self, request):
         fac = Facility.objects.all().values()
         return Response(fac, status=status.HTTP_200_OK)

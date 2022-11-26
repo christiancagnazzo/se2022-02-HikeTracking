@@ -99,7 +99,7 @@ function LocalGuide(props){
 
     return(
     <>
-    <Sidebar usertype={"localguide"}/>
+    <Sidebar userPower={"localguide"}/>
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>

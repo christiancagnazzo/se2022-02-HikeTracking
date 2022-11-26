@@ -7,8 +7,8 @@ import API from '../API';
 import FilterForm from './filterformhikes';
 
 function displayHutsUtil(huts){
-  let hutscard =  huts.map((h) => 
-      <Col className="pb-4 px-0">
+  let hutscard =  huts.map((h,idx) => 
+      <Col className="pb-4 px-0" key={idx}>
         <HutCard hut={h}/>
       </Col>)
     let rows = []
@@ -19,7 +19,7 @@ function displayHutsUtil(huts){
         cols.push(hutscard.pop())
       }
       for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0"></Col>)
+        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
       }
       rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
     }
@@ -46,7 +46,7 @@ function HutCard(props) {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Address: {props.hut.address}</ListGroup.Item>
-        <ListGroup.Item>Beds: {props.hut.beds}</ListGroup.Item>
+        <ListGroup.Item>#Beds: {props.hut.beds}</ListGroup.Item>
         <ListGroup.Item>Services: {props.hut.services}</ListGroup.Item>
         <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>
       </ListGroup>

@@ -245,14 +245,12 @@ async function getAllParkingLots(token) {
   }
 }
 
-async function getFacilities(token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+async function getFacilities() {
+  
 
   let response = await fetch(URL + 'facilities/', {
     method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
+    
   });
   if (response.status == '200')
     return { msg: await response.json() }
