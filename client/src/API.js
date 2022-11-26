@@ -155,7 +155,7 @@ async function getAllHikes(token, filters, userPower) {
       query += '&around=' + filters.position.lat + "-" + filters.position.lng + "-" + filters.radius
   }
 
-  let response = await fetch(URL + 'allhikes/' + query, {
+  let response = await fetch(URL + 'hikes/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -201,7 +201,7 @@ async function getAllHuts(token, filters) {
       query += '&fee=' + filters.fee
   }
 
-  let response = await fetch(URL + 'allhuts/' + query, {
+  let response = await fetch(URL + 'hut/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token

@@ -148,7 +148,7 @@ function FilterForm(props) {
   const [position, setPosition] = useState("")
   
   let token = localStorage.getItem("token");
-  
+  const navigate = useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const filter = {
@@ -165,7 +165,7 @@ function FilterForm(props) {
         radius: radius
     }
     props.applyFilter(filter)
-    
+    navigate("hikes")
     
   }
 

@@ -38,17 +38,17 @@ function Huts(props){
 
 function HutCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
-
+  console.log(props.hut)
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hut.name}>
       <Card.Body>
         <Card.Title>{props.hut.name}</Card.Title>
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Address: {props.hut.position.address}</ListGroup.Item>
+        <ListGroup.Item>Address: {props.hut.address}</ListGroup.Item>
         <ListGroup.Item>Beds: {props.hut.beds}</ListGroup.Item>
-        <ListGroup.Item>services: {props.hut.services}</ListGroup.Item>
-        <ListGroup.Item>fee: {props.hut.fee}</ListGroup.Item>
+        <ListGroup.Item>Services: {props.hut.services}</ListGroup.Item>
+        <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>

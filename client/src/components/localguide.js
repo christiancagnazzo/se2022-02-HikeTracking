@@ -15,7 +15,7 @@ function LocalGuide(props){
     const [huts, setHuts] = useState([]);
     const [parkinglots, setParkingLots] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
-  let token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
   
 
   useEffect(() => {
