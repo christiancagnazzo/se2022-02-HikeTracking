@@ -33,7 +33,7 @@ function VisitorPage(props) {
       }
     }
     getHikes()
-  }, []);
+  }, [props.userPower]);
 
   
   const applyFilterHikes = (filter) => {
@@ -51,7 +51,7 @@ function VisitorPage(props) {
       getFilteredHikes()
     }
 
-    /*useEffect(() => {
+    useEffect(() => {
       const getHuts = async () => {
         try {
           const huts = await API.getAllHuts(token);
@@ -66,7 +66,7 @@ function VisitorPage(props) {
         
       }
       getHuts()
-    }, []);*/
+    }, [props.userPower]);
 
     useEffect(() => {
       const getParkingLots = async function () {
@@ -79,7 +79,7 @@ function VisitorPage(props) {
       }
 
       getParkingLots()
-    }, [])
+    }, [props.userPower])
   
     
     const applyFilterHuts = (filter) => {
