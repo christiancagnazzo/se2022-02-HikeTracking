@@ -181,6 +181,7 @@ const  province_dic = {
         <Col>
         <InputGroup>
         <InputGroup.Text>Range - {radius} km</InputGroup.Text>
+        <Button  variant="danger" onClick={() => setPosition('')}>Reset</Button>
         </InputGroup>
         
         </Col>

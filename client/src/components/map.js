@@ -63,17 +63,16 @@ function Map(props){
             gpx.parse(props.gpxFile)
             console.log(gpx)
             const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
-            console.log(gpx.tracks)
 
-            const elevation = gpx.tracks[0].elevation.max
-            const distance = gpx.tracks[0].distance.total
-            console.log(distance)
-            setPositions(pos)
-            props.setSp(pos[0])
-            props.setEp(pos[pos.length-1])
-
-            props.setLength(parseInt(distance))
-            props.setAscent(parseInt(elevation))
+            if(props.setLength){
+                const elevation = gpx.tracks[0].elevation.max
+                const distance = gpx.tracks[0].distance.total
+                console.log(distance)
+                props.setSp(pos[0])
+                props.setEp(pos[pos.length-1])
+                props.setLength(parseInt(distance))
+                props.setAscent(parseInt(elevation))
+            }
         }
     },[props.gpxFile])
     
