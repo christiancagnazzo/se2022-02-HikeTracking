@@ -260,6 +260,23 @@ async function getFacilities(token) {
   }
 }
 
-const API = { login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+async function getCitiesByProvince(token, type,province) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  let response = await fetch(URL + 'province?prov='+province & "type?t="+type, {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200')
+    return { msg: await response.json() }
+    
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+const API = { getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;
