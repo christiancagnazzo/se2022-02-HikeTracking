@@ -307,7 +307,7 @@ class Sessions(APIView):
 
 
 class Huts(APIView):
-    # permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     serializer_class = HuntsSerializer
 
     def get(self, request):
@@ -369,7 +369,7 @@ class Huts(APIView):
 
 
 class ListParkingLotAPI(APIView):
-    # permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     serializer_class = PorkingLotSerializer
 
     def get(self, request):
@@ -380,6 +380,7 @@ class ListParkingLotAPI(APIView):
                 point = Point.objects.get(id=p['point_id'])
                 p['lat'] = point.latitude
                 p['lon'] = point.longitude
+                p['address'] = point.address
                 result.append(p)
 
             return Response(result)

@@ -202,7 +202,7 @@ async function getAllHuts(token, filters) {
   let response = await fetch(URL + 'allhuts/' + query, {
     method: 'GET',
     headers: {
-      'Authorization': valid_token
+      //'Authorization': valid_token
     },
   });
   if (response.status == '200')
@@ -233,7 +233,7 @@ async function getAllParkingLots(token) {
   let response = await fetch(URL + 'parkingLots/', {
     method: 'GET',
     headers: {
-      'Authorization': valid_token
+      //'Authorization': valid_token
     },
   });
   if (response.status == '200')

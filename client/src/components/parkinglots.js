@@ -40,31 +40,29 @@ function ParkingLotCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
 
   return (<>
-    <Card style={{ width: '22rem' }} key={0} title={props.parkinglot.title}>
+    <Card style={{ width: '22rem' }} key={0} title={props.parkinglot.name}>
       <Card.Body>
-        <Card.Title>{props.parkinglot.title}</Card.Title>
+        <Card.Title>{props.parkinglot.name}</Card.Title>
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Address: {props.parkinglot.position.address}</ListGroup.Item>
-        <ListGroup.Item>Latitude: {props.parkinglot.position.latitude}</ListGroup.Item>
-        <ListGroup.Item>Longitude: {props.parkinglot.position.longitude}</ListGroup.Item>
+        <ListGroup.Item>Address: {props.parkinglot.address}</ListGroup.Item>
         <ListGroup.Item>Fee: {props.parkinglot.fee}m</ListGroup.Item>
         <ListGroup.Item>Cars: {props.parkinglot.n_cars}</ListGroup.Item>
       </ListGroup>
-      <Card.Body>
+      {/*<Card.Body>
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
          
         </Card.Text>
-      </Card.Body>
+  </Card.Body>*/}
 
     </Card>
     <ParkinglotModalDescription
       show={modalDescriptionShow}
       onHide={() => setModalDescriptionShow(false)}
-      title={props.parkinglot.title}
+      title={props.parkinglot.name}
       description={props.parkinglot.desc}
       
     />
