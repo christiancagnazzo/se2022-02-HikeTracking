@@ -126,7 +126,7 @@ async function logout(token) {
   });
 }
 
-async function getAllHikes(token, filters) {
+async function getAllHikes(token, filters, userPower) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
@@ -164,6 +164,7 @@ async function getAllHikes(token, filters) {
 
   if (response.status == '200') {
     let hikes = await response.json();
+    if(userPower === "hiker"){
     hikes.forEach(async h => {
       let response = await fetch(URL + 'hike/file/' + h["id"], {
         method: 'GET',
@@ -176,6 +177,7 @@ async function getAllHikes(token, filters) {
         h['file'] = text;
       }
     });
+  }
 
     return { msg: hikes }
   }

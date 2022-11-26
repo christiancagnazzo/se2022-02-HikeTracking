@@ -23,7 +23,7 @@ function VisitorPage(props) {
   useEffect(() => {
     const getHikes = async () => {
       try {
-        const hikes = await API.getAllHikes(token);
+        const hikes = await API.getAllHikes(token, props.userPower);
         if (hikes.error)
           setErrorMessage(hikes.msg)
         else
