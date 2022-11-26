@@ -62,6 +62,7 @@
             "local_guide": 1
         }
     },
+    
 
 
     
@@ -491,6 +492,44 @@
         "pk": 1,
         "fields": {
             "name": "Parking"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 100,
+        "fields": {
+            "title": "Riserva dello zingaro",
+            "length": 6,
+            "expected_time": 81,
+            "ascent": 148,
+            "difficulty": "Hiker",
+            "description": "Una stupenda escursione tra mare e vegetazione, l'unica difficoltà nell'affrontarla è la temperatura estiva",
+            "track_file": "tracks/Riserva dello zingaro.gpx",
+            "start_point": 101,
+            "end_point": 102,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 101,
+        "fields": {
+            "latitude": 38.1244982,
+            "longitude": 12.7880075,
+            "province": "Trapani",
+            "village": "San Vito Lo Capo",
+            "address": "Riserva dello zingaro ingresso nord"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 102,
+        "fields": {
+            "latitude": 38.0817236,
+            "longitude": 12.8084234,
+            "province": "Trapani",
+            "village": "Castellammare del golfo",
+            "address": "Riserva dello zingaro"
         }
     }
 
