@@ -80,7 +80,7 @@ function HikeForm(props) {
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
-        setServicesList(req.msg)
+        setServices(req.msg)
       }
     }
 
@@ -128,7 +128,10 @@ function HikeForm(props) {
         displayValue="name" // Property name to display in the dropdown options
         />
         <PointInput point={position} setPoint = {setPosition} address={address} setAddress={setAddress} />
-       
+        <Form.Group className="mb-3" controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
+        </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit

@@ -126,7 +126,7 @@ async function logout(token) {
   });
 }
 
-async function getAllHikes(token, filters) {
+async function getAllHikes(token, filters, userPower) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
@@ -155,7 +155,7 @@ async function getAllHikes(token, filters) {
       query += '&around=' + filters.position.lat + "-" + filters.position.lng + "-" + filters.radius
   }
 
-  let response = await fetch(URL + 'allhikes/' + query, {
+  let response = await fetch(URL + 'hikes/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -164,6 +164,7 @@ async function getAllHikes(token, filters) {
 
   if (response.status == '200') {
     let hikes = await response.json();
+    if(userPower === "hiker"){
     hikes.forEach(async h => {
       let response = await fetch(URL + 'hike/file/' + h["id"], {
         method: 'GET',
@@ -176,6 +177,7 @@ async function getAllHikes(token, filters) {
         h['file'] = text;
       }
     });
+  }
 
     return { msg: hikes }
   }
@@ -199,7 +201,7 @@ async function getAllHuts(token, filters) {
       query += '&fee=' + filters.fee
   }
 
-  let response = await fetch(URL + 'allhuts/' + query, {
+  let response = await fetch(URL + 'hut/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -243,14 +245,12 @@ async function getAllParkingLots(token) {
   }
 }
 
-async function getFacilities(token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+async function getFacilities() {
+  
 
   let response = await fetch(URL + 'facilities/', {
     method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
+    
   });
   if (response.status == '200')
     return { msg: await response.json() }

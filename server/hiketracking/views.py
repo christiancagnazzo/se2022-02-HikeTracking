@@ -22,83 +22,7 @@ from rest_framework import status
 from .utility import get_province_and_village, InsertPoint
 
 
-class NewHike(APIView):
-    # permission_classes = (permissions.AllowAny,)
-
-    def post(self, request):
-        user_id = CustomUser.objects.get(email=request.user)
-        data = request.data
-
-        try:
-            sp = get_province_and_village(
-                data['start_point_lat'], data['start_point_lng'])
-            start_point_type = 'none'
-
-            start_point = Point.objects.get_or_create(
-                latitude=data['start_point_lat'],
-                longitude=data['start_point_lng'],
-                defaults={
-                    'province': sp['province'],
-                    'village': sp['village'],
-                    'address': data['start_point_address'],
-                    'type': start_point_type
-                }
-            )
-
-            ep = get_province_and_village(
-                data['end_point_lat'], data['end_point_lng'])
-            end_point_type = 'none'
-
-            end_point = Point.objects.get_or_create(
-                latitude=data['end_point_lat'],
-                longitude=data['end_point_lng'],
-                defaults={
-                    'province': ep['province'],
-                    'village': ep['village'],
-                    'address': data['end_point_address'],
-                    'type': end_point_type
-                }
-            )
-
-            hike = Hike.objects.create(
-                title=data['title'],
-                length=data['length'],
-                expected_time=data['expected_time'],
-                ascent=data['ascent'],
-                difficulty=data['difficulty'],
-                description=data['description'],
-                local_guide=user_id,
-                start_point=start_point[0],
-                end_point=end_point[0])
-
-            hike.save()
-
-            for rp in data['rp_list']:
-                rp_cp = get_province_and_village(
-                    rp['reference_point_lat'], rp['reference_point_lng'])
-                ref_point_type = 'none'
-                ref_point = Point.objects.get_or_create(
-                    latitude=rp['reference_point_lat'],
-                    longitude=rp['reference_point_lng'],
-                    defaults={
-                        'province': rp_cp['province'],
-                        'village': rp_cp['village'],
-                        'address': rp['reference_point_address'],
-                        'type': ref_point_type
-                    }
-                )
-
-                rp_hike = HikeReferencePoint.objects.create(
-                    hike=hike,
-                    point=ref_point[0]
-                )
-                rp_hike.save()
-
-            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
-        except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
-
+    
 
 class HikeFile(APIView):
     # permission_classes = (permissions.AllowAny,)
@@ -298,6 +222,80 @@ class Hikes(APIView):
 
         return Response(hikes, status=status.HTTP_200_OK)
 
+    def post(self, request):
+        user_id = CustomUser.objects.get(email=request.user)
+        data = request.data
+
+        try:
+            sp = get_province_and_village(
+                data['start_point_lat'], data['start_point_lng'])
+            start_point_type = 'none'
+
+            start_point = Point.objects.get_or_create(
+                latitude=data['start_point_lat'],
+                longitude=data['start_point_lng'],
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': data['start_point_address'],
+                    'type': start_point_type
+                }
+            )
+
+            ep = get_province_and_village(
+                data['end_point_lat'], data['end_point_lng'])
+            end_point_type = 'none'
+
+            end_point = Point.objects.get_or_create(
+                latitude=data['end_point_lat'],
+                longitude=data['end_point_lng'],
+                defaults={
+                    'province': ep['province'],
+                    'village': ep['village'],
+                    'address': data['end_point_address'],
+                    'type': end_point_type
+                }
+            )
+
+            hike = Hike.objects.create(
+                title=data['title'],
+                length=data['length'],
+                expected_time=data['expected_time'],
+                ascent=data['ascent'],
+                difficulty=data['difficulty'],
+                description=data['description'],
+                local_guide=user_id,
+                start_point=start_point[0],
+                end_point=end_point[0])
+
+            hike.save()
+
+            for rp in data['rp_list']:
+                rp_cp = get_province_and_village(
+                    rp['reference_point_lat'], rp['reference_point_lng'])
+                ref_point_type = 'none'
+                ref_point = Point.objects.get_or_create(
+                    latitude=rp['reference_point_lat'],
+                    longitude=rp['reference_point_lng'],
+                    defaults={
+                        'province': rp_cp['province'],
+                        'village': rp_cp['village'],
+                        'address': rp['reference_point_address'],
+                        'type': ref_point_type
+                    }
+                )
+
+                rp_hike = HikeReferencePoint.objects.create(
+                    hike=hike,
+                    point=ref_point[0]
+                )
+                rp_hike.save()
+
+            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
+
 
 class Sessions(APIView):
 
@@ -340,6 +338,8 @@ class Huts(APIView):
                 point = Point.objects.get(id=h['point_id'])
                 h['lat'] = point.latitude
                 h['lon'] = point.longitude
+                h['address'] = point.address
+                
                 result.append(h)
 
             return Response(result, status=status.HTTP_200_OK)
@@ -402,6 +402,7 @@ class ListParkingLotAPI(APIView):
 
 
 class Facilities(APIView):
+    permission_classes = (permissions.AllowAny,)
     def get(self, request):
         fac = Facility.objects.all().values()
         return Response(fac, status=status.HTTP_200_OK)

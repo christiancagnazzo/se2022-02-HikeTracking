@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 function displayHikesUtil(hikes, userPower){
-  let hikescard =  hikes.map((h) => 
-      <Col className="pb-4 px-0">
+  let hikescard =  hikes.map((h,idx) => 
+      <Col className="pb-4 px-0" key={idx}>
         <HikeCard userPower={userPower} hike={h}/>
       </Col>)
     let rows = []
@@ -22,7 +22,7 @@ function displayHikesUtil(hikes, userPower){
         cols.push(hikescard.pop())
       }
       for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0"></Col>)
+        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
       }
       rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
     }

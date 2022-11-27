@@ -68,6 +68,7 @@ function ParkingLotForm(props) {
           <Form.Label>Fee per hour (in €)</Form.Label>
           <Form.Control type="text" placeholder="Fee" value={fee} onChange={(e) => { if (checkNum(e.target.value)) { setFee(e.target.value) } }} />
         </Form.Group>
+        
         <Form.Group className="mb-2" controlId="n_cars">
           <Form.Label>Number of parking spaces</Form.Label>
           <Form.Control type="text" placeholder="n_car" value={n_cars} onChange={(e) => { if (checkNum(e.target.value)) { setNCars(e.target.value) } }} />
@@ -75,7 +76,10 @@ function ParkingLotForm(props) {
         
         
         <PointInput point={position} setPoint = {setPosition} address={address} setAddress={setAddress} />
-       
+        <Form.Group className="mb-3" controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
+        </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
@@ -133,6 +137,8 @@ function PointInput(props) {
           />
         </InputGroup>
       </Col>
+      
+      
     </Row>
 
   )
