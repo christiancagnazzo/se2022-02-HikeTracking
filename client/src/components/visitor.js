@@ -39,7 +39,7 @@ function VisitorPage(props) {
   const applyFilterHikes = (filter) => {
     async function  getFilteredHikes(){
       try{
-        const filteredHikes = await API.getAllHikes(token, filter)
+        const filteredHikes = await API.getAllHikes(token, filter, props.userPower)
         if (hikes.error)
             setErrorMessage(filteredHikes.msg)
           else
