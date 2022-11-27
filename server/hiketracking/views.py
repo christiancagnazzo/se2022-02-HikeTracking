@@ -354,7 +354,7 @@ class Huts(APIView):
                     fac_name = Facility.objects.get(id=f.facility_id).name
                     facilities_list.append(fac_name)
         
-                h['services'] = str(facilities_list).replace("[", "").replace("]", "")
+                h['services'] = facilities_list
 
                 result.append(h)
 
