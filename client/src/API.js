@@ -165,7 +165,8 @@ async function getAllHikes(token, filters, userPower) {
   if (response.status == '200') {
     let hikes = await response.json();
     if(userPower === "hiker"){
-    hikes.forEach(async h => {
+    for(let i = 0; i < hikes.length; i++){
+      const h = hikes[i]
       let response = await fetch(URL + 'hike/file/' + h["id"], {
         method: 'GET',
         headers: {
@@ -178,7 +179,7 @@ async function getAllHikes(token, filters, userPower) {
       } else {
         h['file'] = "NTF"
       }
-    });
+    };
   }
 
     return { msg: hikes }

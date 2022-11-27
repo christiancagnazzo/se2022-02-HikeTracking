@@ -65,7 +65,7 @@ function HikeCard(props) {
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : <Badge bg="secondary">No Track Available</Badge>}
+          { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker)?<Badge bg="secondary">No Track Available</Badge>:''}
         </Card.Text>
       </Card.Body>
 
