@@ -376,6 +376,7 @@ class Huts(APIView):
                         obj, created = Facility.objects.get_or_create(name=service)
                         HutFacility.objects.get_or_create(hut=hut, facility=obj)
                     except Exception as exc:
+                        print(exc)
                         return Response(data={'message': 'error in crating the services', 'exception': exc},
                                         status=status.HTTP_400_BAD_REQUEST)
                 return Response(serializer.data, status=status.HTTP_200_OK)

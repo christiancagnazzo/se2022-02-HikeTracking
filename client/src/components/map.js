@@ -63,7 +63,7 @@ function Map(props){
             gpx.parse(props.gpxFile)
             console.log(gpx)
             const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
-
+            setPositions(pos)
             if(props.setLength){
                 const elevation = gpx.tracks[0].elevation.max
                 const distance = gpx.tracks[0].distance.total

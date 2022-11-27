@@ -40,6 +40,8 @@ function HikeForm(props) {
       setErrorMessage(req.msg)
     } else {
       navigate('/localguide/huts')
+      console.log("okk")
+      props.updateDirty()
     }
 
   }
@@ -51,28 +53,9 @@ function HikeForm(props) {
     }
     return false
   }
-  const setPoint = (point) => {
-    if (!isNaN(point[0]) && !isNaN(point[1])) {
-    
-        setPosition(point)
+  
 
-    }
-  }
-
-  useEffect(() => {
-    const getHuts = async function () {
-      let req = await API.getAllHuts(token)
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        let all_huts = []
-        req.msg.forEach((el) => all_huts.push({ "hutId": el.id, "hutName": el.name, "lat": el.lat, "lon": el.lon }))
-        setHuts(all_huts)
-      }
-    }
-
-    getHuts()
-  }, [])
+  
 
   useEffect(() => {
     const getFacilities = async function () {

@@ -17,7 +17,6 @@ function MySidebar(props){
         menu = <HikerMenu hiker={props.userPower === "hiker"}/>
     }
     else if (props.userPower === "localguide"){
-        console.log("okk")
         menu = <LocalGuideMenu />
     }
     return (
