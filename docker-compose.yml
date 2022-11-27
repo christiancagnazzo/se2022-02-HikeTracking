@@ -1,13 +1,17 @@
 services:
   server:
-    build: ./server
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
     image: christiancagnazzo/hiketracking_sw2022_2:server
 
   client:
-    build: ./client
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
     image: christiancagnazzo/hiketracking_sw2022_2:client
     ports:
       - "3000:3000"
