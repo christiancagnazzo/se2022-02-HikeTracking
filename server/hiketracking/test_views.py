@@ -112,3 +112,21 @@ class AddParkingLotAPI(TestCase):
     def test_add_parking_lot(self):
         response = self.client.post('/hiketracking/parkingLots/', json.dumps(self.data), content_type="application/json")
         self.assertEqual(response.status_code, HTTPStatus.CREATED)
+        self.assertEqual(response.data.get("name"), "test@gmail.com")
+        self.assertEqual(response.data.get("desc"), "life")
+        self.assertEqual(response.data.get("fee"), 10)
+        self.assertEqual(response.data.get("n_cars"), 10)
+
+    def test_Wrong_Position(self):
+        self.data['position']['longitude'] = 'two'
+        response = self.client.post('/hiketracking/parkingLots/', json.dumps(self.data),
+                                    content_type="application/json")
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_Wrong_Fee(self):
+        self.data['fee'] = 'sixty-nine'
+        response = self.client.post('/hiketracking/parkingLots/', json.dumps(self.data),
+                                    content_type="application/json")
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+
