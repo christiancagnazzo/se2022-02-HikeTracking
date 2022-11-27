@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-
+from django.db.models import Q
 from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot, Facility, HutFacility
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer, PorkingLotSerializer, PointSerializer, HuntsSerializer)
@@ -317,15 +317,23 @@ class Huts(APIView):
                 name = request.GET.get('name', None)
                 nbeds = request.GET.get('nbeds', None)
                 fee = request.GET.get('fee', None)
+                services = request.GET.get('services', None)
 
                 huts = Hut.objects.all()
 
                 if name:
                     huts = huts.filter(name=name)
                 if nbeds:
-                    huts = huts.filter(n_beds=nbeds)
+                    huts = huts.filter(n_beds__gte=nbeds)
                 if fee:
-                    huts = huts.filter(fee=fee)
+                    huts = huts.filter(fee__lte=fee)
+                if services:
+                    services_list = services.split("-")
+                    hl = HutFacility.objects.filter(facility_id__in=services_list).values('hut_id')
+                    huts_list = []
+                    for h in hl:
+                        huts_list.append(h['hut_id'])
+                    huts = Hut.objects.filter(id__in=huts_list)
 
                 huts = huts.values()
 
@@ -339,7 +347,15 @@ class Huts(APIView):
                 h['lat'] = point.latitude
                 h['lon'] = point.longitude
                 h['address'] = point.address
-                
+
+                facilities_list = []
+                all_facilities = HutFacility.objects.filter(hut_id=h['id'])
+                for f in all_facilities:
+                    fac_name = Facility.objects.get(id=f.facility_id).name
+                    facilities_list.append(fac_name)
+        
+                h['services'] = str(facilities_list).replace("[", "").replace("]", "")
+
                 result.append(h)
 
             return Response(result, status=status.HTTP_200_OK)

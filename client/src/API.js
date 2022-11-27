@@ -62,7 +62,7 @@ async function createHut(hut_description, token) {
 
 async function createParkingLot(parking_lot_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-
+  
   try {
     let response = await fetch(URL + 'parkingLots/', {
       method: 'POST',
@@ -199,8 +199,12 @@ async function getAllHuts(token, filters) {
       query += '&nbeds=' + filters.nbeds
     if (filters.fee)
       query += '&fee=' + filters.fee
+    if (filters.services.length > 0){
+      let res = filters.services.map((s)=> s.id).toString().replace(",","-")
+      query += '&services=' + res
+    }
   }
-
+  
   let response = await fetch(URL + 'hut/' + query, {
     method: 'GET',
     headers: {

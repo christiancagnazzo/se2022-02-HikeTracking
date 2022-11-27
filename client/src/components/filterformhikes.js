@@ -287,6 +287,8 @@ function FilterForm(props) {
     setRadius={setRadius}
     province={province}
     setProvince={setProvince}
+    village={village}
+    setVillage={setVillage}
      />
   
     <Button variant="primary" type="submit" onClick={handleSubmit}>

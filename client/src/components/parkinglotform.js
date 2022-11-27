@@ -20,9 +20,7 @@ function ParkingLotForm(props) {
   const [n_cars,setNCars] = useState(10)
   let [errorMessage, setErrorMessage] = useState('')
   let navigate = useNavigate();
-  let [huts, setHuts] = useState([])
-  let [parkingLots, setParkingLots] = useState([])
-
+  
   let token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
