@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {  ListGroup, Row, Col, Modal, Alert, Badge} from 'react-bootstrap';
+import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 function displayHikesUtil(hikes, userPower){
-  let hikescard =  hikes.map((h,idx) => 
-      <Col className="pb-4 px-0" key={idx}>
+  let hikescard =  hikes.map((h) => 
+      <Col className="pb-4 px-0">
         <HikeCard userPower={userPower} hike={h}/>
       </Col>)
     let rows = []
@@ -22,7 +22,7 @@ function displayHikesUtil(hikes, userPower){
         cols.push(hikescard.pop())
       }
       for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
+        cols.push(<Col className="pb-4 px-0"></Col>)
       }
       rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
     }
@@ -65,7 +65,7 @@ function HikeCard(props) {
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : <Badge bg="secondary">No Track Available</Badge>}
+          {isHiker ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : ''}
         </Card.Text>
       </Card.Body>
 
@@ -130,8 +130,7 @@ function HikeModalTrack(props) {
 
 
 
-  return (
-  <Modal
+  return (<Modal
     {...props}
     size="lg"
     aria-labelledby="contained-modal-title-vcenter"

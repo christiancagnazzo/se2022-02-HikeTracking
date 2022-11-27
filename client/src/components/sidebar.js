@@ -11,12 +11,10 @@ const colorBackgroundMenu = "#566400"
 
 function MySidebar(props){
     let menu;    
-
-    console.log(props.userPower)
-    if(props.userPower === "hiker" || !props.userPower) {
-        menu = <HikerMenu hiker={props.userPower === "hiker"}/>
+    if(!props.usertype) {
+        menu = <HikerMenu />
     }
-    else if (props.userPower === "localguide"){
+    else if (props.usertype === "localguide"){
         menu = <LocalGuideMenu />
     }
     return (
@@ -66,7 +64,7 @@ function HikerMenu(props){
         </SubMenu>
         <SubMenu icon ={hutIcon} label='Hut'>
           <MenuItem onClick={() => updateActive(2,"huts")}active={active[2]}>Browse</MenuItem>
-          {props.hiker ? <MenuItem onClick={() => updateActive(3,"filterhuts")}active={active[3]}>Filter</MenuItem> : ''}
+          <MenuItem onClick={() => updateActive(3,"filterhuts")}active={active[3]}>Filter</MenuItem>
         </SubMenu>
   
         <SubMenu icon={parkingLot} label='Parking Lot'>

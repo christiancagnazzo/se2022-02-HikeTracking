@@ -7,9 +7,9 @@ import API from '../API';
 import FilterForm from './filterformhikes';
   
 function displayParkingLotsUtil(parkinglots, userPower){
-  let parkinglotscards =  parkinglots.map((h,idx) => 
-      <Col className="pb-4 px-0" key={idx}>
-        <ParkingLotCard userPower={userPower} parkinglot={h} key={idx}/>
+  let parkinglotscards =  parkinglots.map((h) => 
+      <Col className="pb-4 px-0">
+        <ParkingLotCard userPower={userPower} parkinglot={h}/>
       </Col>)
     let rows = []
     for(let i = 0; i < Math.ceil(parkinglots.length/3);i++){
@@ -19,7 +19,7 @@ function displayParkingLotsUtil(parkinglots, userPower){
         cols.push(parkinglotscards.pop())
       }
       for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
+        cols.push(<Col className="pb-4 px-0"></Col>)
       }
       rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
     }
@@ -47,16 +47,16 @@ function ParkingLotCard(props) {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Address: {props.parkinglot.address}</ListGroup.Item>
-        <ListGroup.Item>Fee per hour: {props.parkinglot.fee}€</ListGroup.Item>
-        <ListGroup.Item>#Parking spaces: {props.parkinglot.n_cars}</ListGroup.Item>
+        <ListGroup.Item>Fee: {props.parkinglot.fee}m</ListGroup.Item>
+        <ListGroup.Item>Cars: {props.parkinglot.n_cars}</ListGroup.Item>
       </ListGroup>
-      <Card.Body>
+      {/*<Card.Body>
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
          
         </Card.Text>
-  </Card.Body>
+  </Card.Body>*/}
 
     </Card>
     <ParkinglotModalDescription
