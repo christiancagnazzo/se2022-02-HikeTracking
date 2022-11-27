@@ -4,7 +4,7 @@ async function createHike(hike_description, hike_file, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
-    let response = await fetch(URL + 'hike/', {
+    let response = await fetch(URL + 'hikes/', {
       method: 'POST',
       body: JSON.stringify(hike_description),
       headers: {
