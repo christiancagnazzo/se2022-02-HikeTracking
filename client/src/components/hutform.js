@@ -63,7 +63,7 @@ function HikeForm(props) {
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
-        setServices(req.msg)
+        setServicesList(req.msg)
       }
     }
 

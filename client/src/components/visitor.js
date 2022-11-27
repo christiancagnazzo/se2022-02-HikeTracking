@@ -88,7 +88,7 @@ function VisitorPage(props) {
           if (filteredHuts.error)
               setErrorMessage(filteredHuts.msg)
             else
-              setHikes(filteredHuts.msg);
+              setHuts(filteredHuts.msg);
           } catch (err) {
             console.log(err)
           }
