@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import Hike from "./hikes";
+import GpxParser from 'gpxparser';
+
 
 function HikeForm(props) {
   let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
@@ -31,7 +33,7 @@ function HikeForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     let formData = new FormData()
     formData.append('File', file)
     let hikeDescription = {
@@ -57,10 +59,10 @@ function HikeForm(props) {
     }
 
   }
-/*
+
   const handleInputFile = async (e) => {
     //gpx analyses and input
-    
+
     let gpx = new GpxParser(); //Create gpxParser Object
     //setErrorMessage('test node2')
 
@@ -86,7 +88,7 @@ function HikeForm(props) {
       reader.readAsText(objFile, "UTF-8");
     }
   }
-*/
+
 
   const checkNum = (num) => {
     if (!isNaN(num)) {
@@ -197,9 +199,9 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
-          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e)=> {
+          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e) => {
             setFile(e.target.files[0]);
-            
+
           }}></input>
 
         </Form.Group>
@@ -226,10 +228,12 @@ function HikeForm(props) {
 }
 
 function RefPoint(props) {
-  return (<>
+  let listRefPointTitle = <Row className="mb-3">
+    <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
+  </Row>
+    ;
+  let listRefPoint =
     <Row className="mb-3">
-      <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
-
       <Col>
         <InputGroup size="sm" >
           <InputGroup.Text id="inputGroup-sizing-default" >
@@ -269,18 +273,22 @@ function RefPoint(props) {
           />
         </InputGroup>
       </Col>
+    </Row>
+    ;
+  let addAndRemoveAll = <Row>
+    <div align="center">
+      <Button onClick={() => props.addPoint()}>Add</Button>
+      &nbsp; &nbsp;
+      <Button variant="danger" onClick={() => props.removeAll()}>Remove All</Button>
+    </div>
+  </Row>;
 
-    </Row>
-    <Row>
-      <div align="center">
-        <Button onClick={() => props.addPoint()}>Add</Button>
-        &nbsp; &nbsp;
-        <Button variant="danger" onClick={() => props.removeAll()}>Remove All</Button>
-      </div>
-    </Row>
+  return (<>
+    {listRefPointTitle}
+    {listRefPoint}
+    {addAndRemoveAll}
     <br />
   </>
-
   )
 }
 
@@ -386,21 +394,12 @@ function PointInput(props) {
       <Row className="mb-3">
 
         <Form.Label htmlFor="basic-url">{label}</Form.Label>
-
-
-
         <InputGroup size="sm">
           <Button variant={variant1} className="border-right-0" onClick={() => setSelected('GPS')}>GPS</Button>
           <Button variant={variant2} onClick={() => setSelected('Hut')}>Hut</Button>
           <Button variant={variant3} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
         </InputGroup>
-
-
       </Row>
-
-
-
-
       {form}
     </Row>
 
