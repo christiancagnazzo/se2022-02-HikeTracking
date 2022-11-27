@@ -12,7 +12,6 @@ const colorBackgroundMenu = "#566400"
 function MySidebar(props){
     let menu;    
 
-    console.log(props.userPower)
     if(props.userPower === "hiker" || !props.userPower) {
         menu = <HikerMenu hiker={props.userPower === "hiker"}/>
     }

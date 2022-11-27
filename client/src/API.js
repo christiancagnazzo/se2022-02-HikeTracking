@@ -176,8 +176,6 @@ async function getAllHikes(token, filters, userPower) {
       if (response.status === 200) {
         const text = new TextDecoder().decode((await response.body.getReader().read()).value);
         h['file'] = text;
-      } else {
-        h['file'] = "NTF"
       }
     };
   }

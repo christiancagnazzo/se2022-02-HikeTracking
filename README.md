@@ -44,6 +44,7 @@ $ curl -fsSL https://get.docker.com | bash -s docker
 
 In the project directory, you can run:
 ```sh
+$ docker compose build
 $ docker compose up
 ```
 This commamd may cost several minutes. 
@@ -64,7 +65,7 @@ $ docker compose up
 Clone the project and run:
 ```sh
 $ cd server
-$ pip install -r requirements.txt --no-dependencies
+$ pip install -r requirements.txt
 $ python manage.py makemigrations hiketracking
 $ python manage.py migrate  
 $ python manage.py runserver
