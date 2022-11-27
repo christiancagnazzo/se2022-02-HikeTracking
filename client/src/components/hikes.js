@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {  ListGroup, Row, Col, Modal, Alert, Badge} from 'react-bootstrap';
+import { ListGroup, Row, Col, Modal, Alert, Badge } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -9,30 +9,30 @@ import Sidebar from './sidebar';
 import { useNavigate } from 'react-router-dom';
 
 
-function displayHikesUtil(hikes, userPower){
-  let hikescard =  hikes.map((h,idx) => 
-      <Col className="pb-4 px-0" key={idx}>
-        <HikeCard userPower={userPower} hike={h}/>
-      </Col>)
-    let rows = []
-    for(let i = 0; i < Math.ceil(hikes.length/3);i++){
-      let cols = []
-      let j
-      for(j = 0; j < 3 && hikescard.length; j++){
-        cols.push(hikescard.pop())
-      }
-      for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-      }
-      rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
+function displayHikesUtil(hikes, userPower) {
+  let hikescard = hikes.map((h, idx) =>
+    <Col className="pb-4 px-0" key={idx}>
+      <HikeCard userPower={userPower} hike={h} />
+    </Col>)
+  let rows = []
+  for (let i = 0; i < Math.ceil(hikes.length / 3); i++) {
+    let cols = []
+    let j
+    for (j = 0; j < 3 && hikescard.length; j++) {
+      cols.push(hikescard.pop())
     }
-    return <>{rows}</>
+    for (; j < 3; j++) {
+      cols.push(<Col className="pb-4 px-0" key={j}></Col>)
+    }
+    rows.push(<Row className='px-0' key={i}>{cols}</Row>)
+  }
+  return <>{rows}</>
 }
 
 
-function Hikes(props){
-  if(props.hikes.length === 0) {
-    return  <h1>No available hikes</h1>
+function Hikes(props) {
+  if (props.hikes.length === 0) {
+    return <h1>No available hikes</h1>
   }
   else {
     return displayHikesUtil(props.hikes, props.userPower)
@@ -65,7 +65,7 @@ function HikeCard(props) {
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : <Badge bg="secondary">No Track Available</Badge>}
+          {isHiker ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : ''}
         </Card.Text>
       </Card.Body>
 
@@ -109,7 +109,7 @@ function HikeModalDescription(props) {
         <p>
           {props.description}
         </p>
-        {props.rpList.length ?<h5>Reference Points</h5> :''}
+        {props.rpList.length ? <h5>Reference Points</h5> : ''}
         <ul>
           {props.rpList.map((rp) =>
             <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
@@ -131,26 +131,47 @@ function HikeModalTrack(props) {
 
 
   return (
-  <Modal
-    {...props}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-  >
-    <Modal.Header closeButton>
-      <Modal.Title id="contained-modal-title-vcenter">
-        {props.title}
-      </Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <h4>Track</h4>
-      <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={props.file} />
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={props.onHide}>Close</Button>
-    </Modal.Footer>
-  </Modal>
+    props.file ?
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {props.title}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Track</h4>
+          <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={props.file} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+      :
 
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {props.title}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>No track available</h4>
+         
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
   )
 }
 
