@@ -57,7 +57,6 @@ function HikeForm(props) {
     } else {
       navigate('/')
     }
-
   }
 
   const handleInputFile = async (e) => {
@@ -72,13 +71,11 @@ function HikeForm(props) {
         var fileString = this.result;
         gpx.parse(fileString);
         let track1 = gpx.tracks[0];
+        let rp = [];
         for (var i = 1; i < track1.points.length - 1; i++) {
-          let rp = [];
           rp[i - 1] = [track1.points[i].lat, track1.points[i].lon];
-          if(i == track1.points.length - 2){
-            setRp(rp);
-          }
         }
+        setRp(rp);
         let startPoint = track1.points[0];
         //setSp(startPoint.lat,startPoint.lon)
         let endPoint = track1.points[track1.points.length - 1];
@@ -103,7 +100,7 @@ function HikeForm(props) {
         setEp(point)
     }
   }
-  
+
   const setRPoint = (point) => {
     if (!isNaN(point[[0]]) && !isNaN(point[[1]])) {
       setRp(point)
@@ -166,8 +163,6 @@ function HikeForm(props) {
 
     getParkingLots()
   }, [])
-
-
   return (
     <Card body>
       <Form>
@@ -199,12 +194,13 @@ function HikeForm(props) {
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
           <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={handleInputFile}></input>
+
         </Form.Group>
         <PointInput parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
         <PointInput parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
-          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength}/>
+          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile}></Map>
         </Card>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
@@ -221,14 +217,13 @@ function HikeForm(props) {
   )
 
 }
-
 function RefPoint(props) {
   let listRefPointTitle = <Row className="mb-3">
     <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
   </Row>
     ;
-const listRefPoint = props.point.map((point) =>
-  <Row className="mb-3">
+  const listRefPoint = props.point.map((point) =>
+    <Row className="mb-3">
       <Col>
         <InputGroup size="sm" >
           <InputGroup.Text id="inputGroup-sizing-default" >
@@ -269,10 +264,8 @@ const listRefPoint = props.point.map((point) =>
         </InputGroup>
       </Col>
     </Row>
-);
+  );
 
-
-  
   let addAndRemoveAll = <Row>
     <div align="center">
       <Button onClick={() => props.addPoint()}>Add</Button>
@@ -293,7 +286,6 @@ const listRefPoint = props.point.map((point) =>
 function PointInput(props) {
   const label = props.label
   const [selected, setSelected] = useState('GPS')
-
   let form = ""
   let variant1 = "dark"
   let variant2 = "outline-dark"
@@ -340,7 +332,6 @@ function PointInput(props) {
         </InputGroup>
       </Col></>
   }
-
   if (selected === 'Hut') {
     variant1 = "outline-dark"
     variant2 = "dark"
@@ -363,7 +354,6 @@ function PointInput(props) {
       </Form.Select>
     </Col>
   }
-
   if (selected === 'Parking Lot') {
     variant1 = "outline-dark"
     variant2 = "outline-dark"
@@ -403,6 +393,4 @@ function PointInput(props) {
 
   )
 }
-
 export default HikeForm
-
