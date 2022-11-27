@@ -104,46 +104,7 @@
             "local_guide": 1
         }
     },
-
-    {
-        "model": "hiketracking.point",
-        "pk" : 5,
-        "fields":{
-            "latitude": 45.190189,
-            "longitude": 6.979433,
-            "province": "Torino",
-            "village": "Moncenisio", 
-            "address": "Bar Cenisio – Venaus (TO)"
-        }
-    },
-    {
-        "model": "hiketracking.point",
-        "pk" : 6,
-        "fields":{
-            "latitude": 45.198388,
-            "longitude": 6.967454,
-            "province": "Torino",
-            "village": "Moncenisio", 
-            "address": "Lago Arpone"
-        }
-    },
-    {
-        "model": "hiketracking.hike",
-        "pk":3,
-        "fields": {
-            "title": "Sentiero per il LAGO ARPONE",
-            "length": 7.16,
-            "expected_time": 165,
-            "ascent": 1800,
-            "difficulty": "Hiker",
-            "description": "Un facile itinerario che si sviluppa interamente su strada sterrata, totalmente ricoperta di neve in inverno. Non troverai difficoltà perché la traccia è ben visibile. Il percorso si sviluppa quasi interamente nel bosco, fino a raggiungere i pressi del lago, dove il bosco si apre e lascia spazio a una splendida vista sulle montagne circostanti.",
-            "track_file": "tracks/lago d’arpone.gpx",
-            "start_point": 5,
-            "end_point": 6,
-            "local_guide": 1
-        }
-    },
-    {
+     {
         "model": "hiketracking.point",
         "pk" : 7,
         "fields":{
