@@ -81,4 +81,4 @@ class HuntsSerializer(serializers.ModelSerializer):
 class PorkingLotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParkingLot
-        fields = ['name', 'fee', 'n_cars', 'desc', 'point']
+        fields = ['name', 'fee', 'n_cars', 'point']

@@ -183,10 +183,10 @@
     },
     {
         "model": "hiketracking.point",
-        "pk" : 22,
+        "pk" : 7,
         "fields":{
-            "latitude": 45.189292,
-            "longitude": 6.775187,
+            "latitude": 45.089292,
+            "longitude": 6.675187,
             "province": "Torino",
             "village": "Bardonecchia", 
             "address": "Grange della Rho"
@@ -194,10 +194,10 @@
     },
     {
         "model": "hiketracking.point",
-        "pk" : 23,
+        "pk" : 8,
         "fields":{
-            "latitude": 45.189308,
-            "longitude": 6.625215,
+            "latitude": 45.089308,
+            "longitude": 6.675215,
             "province": "Torino",
             "village": "Bardonecchia", 
             "address": "Punta Nera"
@@ -214,8 +214,8 @@
             "difficulty": "Pro Hiker",
             "description": "Percorso circolare che va a toccare il cuore del Gruppo Sorapiss. Tutto il settore sud est rimane purtroppo sconosciuto, poiché coperto dalle muraglie possenti del Fopà di Mattia e della Punta di Sorapiss, ma si ha modo di memorizzare tutta la fetta di territorio che va dal Passo Tre Croci alle pendici della Punta Nera. Nel complesso lungo e faticoso, consigliato a chi ha le gambe buone e sa trovare gli stimoli necessari. Sarà compensato da un ambiente sempre vario e comunque attraente. Dolce quando si rimontano le gobbe prative che avvicinano Forcella Faloria, severo lo scavalcamento della Sella di Punta Nera, impressionante la discesa sotto gli strapiombi (nel vero senso della parola) della Torre Pupa, lunare tra le pietraie che accompagnano al delizioso Lago di Sorapiss e sereno il rientro al Passo, sopra la Val Ansiei. L’ascesa alla Punta Nera, facoltativa, è la ciliegina sulla torta. Si domina la conca di Cortina, si ammirano le sue montagne tranne i tormentati e continui smantellamenti sul Faloria.",
             "track_file": "tracks/Punta Nera e Colle della Rho.gpx",
-            "start_point": 22,
-            "end_point": 23,
+            "start_point": 7,
+            "end_point": 8,
             "local_guide": 1
         }
     },
@@ -495,13 +495,6 @@
         }
     },
     {
-        "model": "hiketracking.facility",
-        "pk": 2,
-        "fields": {
-            "name": "Wifi"
-        }
-    },
-    {
         "model": "hiketracking.hike",
         "pk": 100,
         "fields": {
@@ -540,284 +533,346 @@
         }
     },
     {
-        "model": "hiketracking.point",
+        "model": "hiketracking.hike",
         "pk": 103,
         "fields": {
-            "latitude": 46.030789,
-            "longitude": 10.000777,
-            "province": "Bergamo",
-            "village": "Bergamo",
-            "address": "Via Casa Corti 3"
-        }
-    },
-    {
-        "model": "hiketracking.parkingLot",
-        "pk": 1,
-        "fields": {
-            "name": "Campeggi Valbondione",
-            "fee": 15,
-            "n_cars": 271,
-            "desc": "Il Campeggio Valbondione dispone di 271 piazzole, tutte fornite di corrente elettrica, ideali per roulotte, camper o tende. È situato a Valbondione (BG), in alta Val Seriana, alla base delle più alte vette delle Alpi Orobie e alla confluenza dei fiumi Serio e Bondione",
-            "point": 103
+            "title": "Passeggiata per il bosco scorace",
+            "length": 4.6,
+            "expected_time": 80,
+            "ascent": 320,
+            "difficulty": "Hiker",
+            "description": "Alla scoperta dei bosci e della campagna che circonda la natura incontaminata",
+            "track_file": "tracks/Passeggiata per il bosco scorace.gpx",
+            "start_point": 104,
+            "end_point": 105,
+            "local_guide": 1
         }
     },
     {
         "model": "hiketracking.point",
         "pk": 104,
         "fields": {
-            "latitude": 46.55419,
-            "longitude": 11.96996,
-            "province": "Bolzano",
-            "village": "Badia",
-            "address": "Strada Sciarè 11, fraz. San Cassiano"
-        }
-    },
-    {
-        "model": "hiketracking.parkingLot",
-        "pk": 2,
-        "fields": {
-            "name": "CAMPING SASS DLACIA",
-            "fee": 30,
-            "n_cars": 156,
-            "desc": "Il Camping Sass Dlacia si trova nel  paesino di San Cassiano (BZ) in Alta Badia, alle porte del Parco Naturale Fanes-Senes-Braies. Circondato da boschi e pascoli alle pendici delle Dolomiti, è il punto di partenza perfetto per passeggiate, escursioni e pedalate.",
-            "point": 104
+            "latitude": 37.987578,
+            "longitude": 12.750318,
+            "province": "Trapani",
+            "village": "Buseto palizzolo",
+            "address": "Ingresso Bosco Scorace"
         }
     },
     {
         "model": "hiketracking.point",
         "pk": 105,
         "fields": {
-            "latitude": 46.3499021,
-            "longitude": 11.1110516,
-            "province": "Torino",
-            "village": "Predaia",
-            "address": "Via Merlonga 48/a, frazione Smarano"
+            "latitude": 37.988726,
+            "longitude": 12.781462,
+            "province": "Trapani",
+            "village": "Buseto palizzolo",
+            "address": "Punta del monte Scorace"
         }
     },
     {
-        "model": "hiketracking.parkingLot",
-        "pk": 3,
-        "fields": {
-            "name": "La sosta Smarano",
-            "fee": 50,
-            "n_cars": 98,
-            "desc": "Una posizione privilegiata per raggiungere facilmente i laghi di Coredo e Tavon e il grande bacino di Santa Giustina, ma anche i centri abitati.",
-            "point": 105
-        }
-    },
-    {
-        "model": "hiketracking.point",
+        "model": "hiketracking.hike",
         "pk": 106,
         "fields": {
-            "latitude": 45.85661,
-            "longitude": 7.81332,
-            "province": "Aosta",
-            "village": "Gressoney",
-            "address": "Loc. Tschaval"
+            "title": "Monte Sparagio",
+            "length": 7,
+            "expected_time": 170,
+            "ascent": 1090,
+            "difficulty": "Hiker",
+            "description": "Una scalata per ammirare al meglio il sole al tramonto che si spegne sul mare",
+            "track_file": "tracks/Monte sparagio.gpx",
+            "start_point": 107,
+            "end_point": 108,
+            "local_guide": 1
         }
-    },
-    {
-        "model": "hiketracking.parkingLot",
-        "pk": 4,
-        "fields": {
-            "name": "AREA CAMPER TSCHAVAL",
-            "fee": 28,
-            "n_cars": 256,
-            "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
-            "point": 106
-        }   
     },
     {
         "model": "hiketracking.point",
         "pk": 107,
         "fields": {
-            "latitude": 45.876402615607724, 
-            "longitude": 6.929474337212479,
-            "province": "Aosta",
-            "village": "Courmayeur",
-            "address": "11013 Courmayeur AO",
-            "type": "hut"
+            "latitude": 38.07196,
+            "longitude": 12.754372,
+            "province": "Trapani",
+            "village": "Custonaci",
+            "address": "Purgatorio"
         }
     },
-    {
-        "model": "hiketracking.hut",
-        "pk": 1,
-        "fields": {
-            "name": "The hut Rifugio Torino",
-            "fee": 65,
-            "n_beds": 97,
-            "desc": "Il rifugio Torino è un rifugio alpino, situato de facto in Italia nel territorio del comune di Courmayeur, nell'alta Valdigne, in Valle d'Aosta, sul massiccio del Monte Bianco",
-            "point": 107
-        }
-    },
-    {
-        "model": "hiketracking.hutFacility",
-        "pk": 1,
-        "fields": {
-            "hut": 1,
-            "facility": 1
-        }
-    },
-    {
-        "model": "hiketracking.hutFacility",
-        "pk": 2,
-        "fields": {
-            "hut": 1,
-            "facility": 2
-        }
-    },
-
     {
         "model": "hiketracking.point",
         "pk": 108,
         "fields": {
-            "latitude": 45.19003353370554,  
-            "longitude": 7.383432854943505,
-            "province": "Torino",
-            "village": "Viù",
-            "address": "Loocalità Colle del Lys",
-            "type": "hut"
+            "latitude": 38.055408,
+            "longitude": 12.775705,
+            "province": "Trapani",
+            "village": "Custonaci",
+            "address": "Punta del monte Sparagio"
         }
     },
-    {
-        "model": "hiketracking.hut",
-        "pk": 2,
-        "fields": {
-            "name": "Rifugio Colle del Lys",
-            "fee": 40,
-            "n_beds": 112,
-            "desc": "Lo Yeti Village è un nuovo complesso sciistico circondato dalla splendida natura del Colle del Lys",
-            "point": 108
-        }
-    },
-    {
-        "model": "hiketracking.hutFacility",
-        "pk": 3,
-        "fields": {
-            "hut": 2,
-            "facility": 1
-        }
-    },
-    {
-        "model": "hiketracking.point",
-        "pk" : 22,
-        "fields":{
-            "latitude": 45.95614,
-            "longitude": 9.15020,
-            "province": "Como",
-            "village": "Colonno",
-            "address": "Via Luigi Civetta"
-        }
-    },
-
-    {
-        "model": "hiketracking.point",
-        "pk" : 23,
-        "fields":{
-            "latitude": 45.99601,
-            "longitude": 9.23868,
-            "province": "Como",
-            "village": "Griante",
-            "address": "Villa Margherita Ricordi"
-        }
-    },
-
-
-
     {
         "model": "hiketracking.hike",
-        "pk": 12,
+        "pk": 109,
         "fields": {
-            "title": "Greenway Del Lago Di Como",
-            "length": 11.4,
-            "expected_time": 210,
-            "ascent": 276,
-            "difficulty": "Tourist",
-            "description": "Il terreno è pianeggiante. C'è una piccola salita e la pista non è molto sassosa.",
-            "track_file": "tracks/GreenWay.gpx",
-            "start_point": 22,
-            "end_point": 23,
-            "local_guide": 1
-        }
-    },
-
-    {
-        "model": "hiketracking.point",
-        "pk":25,
-        "fields": {
-            "latitude": 40.62984,
-            "longitude": 14.50302,
-            "province": "Salerno",
-            "village": "Nocelle",
-            "address": "Nocelle (SA)"
-        }
-    },
-    {
-        "model": "hiketracking.point",
-        "pk":24,
-        "fields": {
-            "latitude": 40.63111,
-            "longitude": 14.53658,
-            "province": "Napoli",
-            "village": "Bomerano",
-            "address": "Bomerano Pianillo (NA)"
-        }
-    },
-
-      {
-        "model": "hiketracking.hike",
-        "pk": 13,
-        "fields": {
-            "title": "Il Sentiero Degli Dei",
-            "length": 7.8,
-            "expected_time": 180,
-            "ascent": -500,
+            "title": "Monte Erice e Torretta Pepoli",
+            "length": 5.3,
+            "expected_time": 130,
+            "ascent": 1090,
             "difficulty": "Hiker",
-            "description": "Il sentiero è roccioso e non è asfaltato. Presenta alcune salite, ma nel complesso è un'escursione in discesa. Non c'è una ringhiera protettiva, quindi non è consigliabile farlo con i bambini. Anche le persone con vertigini dovrebbero evitarlo.",
-            "track_file": "tracks/Il-Sentiero-Degli-Dei.gpx",
-            "start_point": 24,
-            "end_point": 25,
+            "description": "Una passeggiata alla scoperta del monte Erice e della torretta Pepoli",
+            "track_file": "tracks/Monte erice e torretta pepoli.gpx",
+            "start_point": 110,
+            "end_point": 111,
             "local_guide": 1
         }
     },
     {
         "model": "hiketracking.point",
-        "pk": 26,
+        "pk": 110,
         "fields": {
-            "latitude": 44.14562,
-            "longitude": 9.65342,
-            "province": "La Spezia",
-            "village": "Monteresso",
-            "address": "Monteresso (SP)"
+            "latitude": 38.028741,
+            "longitude": 12.601088,
+            "province": "Trapani",
+            "village": "Erice",
+            "address": "Casa Santa Erice"
         }
     },
-
     {
         "model": "hiketracking.point",
-        "pk": 27,
+        "pk": 111,
         "fields": {
-            "latitude": 44.13863,
-            "longitude": 9.67826,
-            "province": "La Spezia",
-            "village": "Vernazza",
-            "address": "Vernazza (SP)"
+            "latitude": 38.035817,
+            "longitude": 12.591268,
+            "province": "Trapani",
+            "village": "Erice",
+            "address": "Torretta Pepoli"
         }
     },
-
-      {
+    {
         "model": "hiketracking.hike",
-        "pk": 14,
+        "pk": 112,
         "fields": {
-            "title": "Sentiero Monterosso - Vernazza",
-            "length": 3.1,
-            "expected_time": 80,
-            "ascent": 175,
-            "difficulty": "Tourist",
-            "description": "Il sentiero dal lato di Monterosso guadagna bruscamente quota, quindi dovrai salire 500 gradini, lastricati sull'antico sentiero.",
-            "track_file": "tracks/SentieroMonterosso.gpx",
-            "start_point": 26,
-            "end_point": 27,
+            "title": "Monte Cofano",
+            "length": 6.3,
+            "expected_time": 155,
+            "ascent": 610,
+            "difficulty": "Hiker",
+            "description": "Escursione sul monte Cofano guardando il mare",
+            "track_file": "tracks/Monte cofano.gpx",
+            "start_point": 113,
+            "end_point": 114,
             "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 113,
+        "fields": {
+            "latitude": 38.096874,
+            "longitude": 12.66306,
+            "province": "Trapani",
+            "village": "Custonaci",
+            "address": "Cornino"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 114,
+        "fields": {
+            "latitude": 38.105637,
+            "longitude": 12.669372,
+            "province": "Trapani",
+            "village": "Custonaci",
+            "address": "Punta Cofano"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 115,
+        "fields": {
+            "title": "Lago di Garda",
+            "length": 5.5,
+            "expected_time": 90,
+            "ascent": 88,
+            "difficulty": "Hiker",
+            "description": "Escursione sul lago di Garda",
+            "track_file": "tracks/Lago di garda.gpx",
+            "start_point": 116,
+            "end_point": 117,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 116,
+        "fields": {
+            "latitude": 45.740927,
+            "longitude": 10.795999,
+            "province": "Verona",
+            "village": "Cassone",
+            "address": "Via Gardesana"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 117,
+        "fields": {
+            "latitude": 45.779783,
+            "longitude": 10.81679,
+            "province": "Verona",
+            "village": "Malcesine",
+            "address": "Via Gardesana orientale"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 118,
+        "fields": {
+            "title": "Lago Poma",
+            "length": 5.2,
+            "expected_time": 80,
+            "ascent": 205,
+            "difficulty": "Hiker",
+            "description": "Escursione sul lago Poma",
+            "track_file": "tracks/Lago poma.gpx",
+            "start_point": 119,
+            "end_point": 120,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 119,
+        "fields": {
+            "latitude": 38.001995,
+            "longitude": 13.089526,
+            "province": "Palermo",
+            "village": "Partinico",
+            "address": "Lago Poma Nord"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 120,
+        "fields": {
+            "latitude": 37.973715,
+            "longitude": 13.120139,
+            "province": "Palermo",
+            "village": "Partinico",
+            "address": "Lago Poma sud-est"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 121,
+        "fields": {
+            "title": "Favignana",
+            "length": 16.7,
+            "expected_time": 280,
+            "ascent": 288,
+            "difficulty": "Hiker",
+            "description": "Visita dell'isola di favignana",
+            "track_file": "tracks/Favignana.gpx",
+            "start_point": 122,
+            "end_point": 123,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 122,
+        "fields": {
+            "latitude": 37.935226,
+            "longitude": 12.272521,
+            "province": "Trapani",
+            "village": "Favignana",
+            "address": "Faro di punta sottile"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 123,
+        "fields": {
+            "latitude": 37.9071,
+            "longitude": 12.365328,
+            "province": "Trapani",
+            "village": "Favignana",
+            "address": "Faro di punta Marsala"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 124,
+        "fields": {
+            "title": "Sentiero per l'Etna",
+            "length": 18.1,
+            "expected_time": 445,
+            "ascent": 2199,
+            "difficulty": "Pro Hiker",
+            "description": "Escursione sull'Etna",
+            "track_file": "tracks/Etna.gpx",
+            "start_point": 125,
+            "end_point": 126,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 125,
+        "fields": {
+            "latitude": 37.655399,
+            "longitude": 14.983877,
+            "province": "Catania",
+            "village": "Belpasso",
+            "address": "Monte di San Leo"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 126,
+        "fields": {
+            "latitude": 37.749308,
+            "longitude": 14.995278,
+            "province": "Catania",
+            "village": "Catania",
+            "address": "Monte Etna"
+        }
+    },
+    {
+        "model": "hiketracking.hike",
+        "pk": 127,
+        "fields": {
+            "title": "Parco dei Sicani",
+            "length": 5.8,
+            "expected_time": 115,
+            "ascent": 1170,
+            "difficulty": "Hiker",
+            "description": "Parco dei Sicani",
+            "track_file": "tracks/Parco dei Sicani.gpx",
+            "start_point": 128,
+            "end_point": 129,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 128,
+        "fields": {
+            "latitude": 37.69954,
+            "longitude": 13.142291,
+            "province": "Palermo",
+            "village": "Contessa Entellina",
+            "address": "Parco dei Sicani ingresso Ovest"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 129,
+        "fields": {
+            "latitude": 37.689523,
+            "longitude": 13.174764,
+            "province": "Palermo",
+            "village": "Contessa Entellina",
+            "address": "Monte San Genuardo"
         }
     }
+
 ]

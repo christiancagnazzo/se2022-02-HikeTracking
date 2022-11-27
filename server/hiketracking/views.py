@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-from django.db.models import Q
+
 from .models import CustomUser, Hike, HikeReferencePoint, Point, Hut, ParkingLot, Facility, HutFacility
 from .serializers import (AuthTokenCustomSerializer, RegisterSerializer,
                           UserSerializer, PorkingLotSerializer, PointSerializer, HuntsSerializer)
@@ -22,13 +22,89 @@ from rest_framework import status
 from .utility import get_province_and_village, InsertPoint
 
 
-    
+class NewHike(APIView):
+    # permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        user_id = CustomUser.objects.get(email=request.user)
+        data = request.data
+
+        try:
+            sp = get_province_and_village(
+                data['start_point_lat'], data['start_point_lng'])
+            start_point_type = 'none'
+
+            start_point = Point.objects.get_or_create(
+                latitude=data['start_point_lat'],
+                longitude=data['start_point_lng'],
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': data['start_point_address'],
+                    'type': start_point_type
+                }
+            )
+
+            ep = get_province_and_village(
+                data['end_point_lat'], data['end_point_lng'])
+            end_point_type = 'none'
+
+            end_point = Point.objects.get_or_create(
+                latitude=data['end_point_lat'],
+                longitude=data['end_point_lng'],
+                defaults={
+                    'province': ep['province'],
+                    'village': ep['village'],
+                    'address': data['end_point_address'],
+                    'type': end_point_type
+                }
+            )
+
+            hike = Hike.objects.create(
+                title=data['title'],
+                length=data['length'],
+                expected_time=data['expected_time'],
+                ascent=data['ascent'],
+                difficulty=data['difficulty'],
+                description=data['description'],
+                local_guide=user_id,
+                start_point=start_point[0],
+                end_point=end_point[0])
+
+            hike.save()
+
+            for rp in data['rp_list']:
+                rp_cp = get_province_and_village(
+                    rp['reference_point_lat'], rp['reference_point_lng'])
+                ref_point_type = 'none'
+                ref_point = Point.objects.get_or_create(
+                    latitude=rp['reference_point_lat'],
+                    longitude=rp['reference_point_lng'],
+                    defaults={
+                        'province': rp_cp['province'],
+                        'village': rp_cp['village'],
+                        'address': rp['reference_point_address'],
+                        'type': ref_point_type
+                    }
+                )
+
+                rp_hike = HikeReferencePoint.objects.create(
+                    hike=hike,
+                    point=ref_point[0]
+                )
+                rp_hike.save()
+
+            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
+
 
 class HikeFile(APIView):
     # permission_classes = (permissions.AllowAny,)
 
     def get(self, request, hike_id):
-        try:
+        try: 
             track = Hike.objects.get(id=hike_id).track_file
             return FileResponse(open(str(track), 'rb'))
         except Exception as e:
@@ -222,80 +298,6 @@ class Hikes(APIView):
 
         return Response(hikes, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        user_id = CustomUser.objects.get(email=request.user)
-        data = request.data
-
-        try:
-            sp = get_province_and_village(
-                data['start_point_lat'], data['start_point_lng'])
-            start_point_type = 'none'
-
-            start_point = Point.objects.get_or_create(
-                latitude=data['start_point_lat'],
-                longitude=data['start_point_lng'],
-                defaults={
-                    'province': sp['province'],
-                    'village': sp['village'],
-                    'address': data['start_point_address'],
-                    'type': start_point_type
-                }
-            )
-
-            ep = get_province_and_village(
-                data['end_point_lat'], data['end_point_lng'])
-            end_point_type = 'none'
-
-            end_point = Point.objects.get_or_create(
-                latitude=data['end_point_lat'],
-                longitude=data['end_point_lng'],
-                defaults={
-                    'province': ep['province'],
-                    'village': ep['village'],
-                    'address': data['end_point_address'],
-                    'type': end_point_type
-                }
-            )
-
-            hike = Hike.objects.create(
-                title=data['title'],
-                length=data['length'],
-                expected_time=data['expected_time'],
-                ascent=data['ascent'],
-                difficulty=data['difficulty'],
-                description=data['description'],
-                local_guide=user_id,
-                start_point=start_point[0],
-                end_point=end_point[0])
-
-            hike.save()
-
-            for rp in data['rp_list']:
-                rp_cp = get_province_and_village(
-                    rp['reference_point_lat'], rp['reference_point_lng'])
-                ref_point_type = 'none'
-                ref_point = Point.objects.get_or_create(
-                    latitude=rp['reference_point_lat'],
-                    longitude=rp['reference_point_lng'],
-                    defaults={
-                        'province': rp_cp['province'],
-                        'village': rp_cp['village'],
-                        'address': rp['reference_point_address'],
-                        'type': ref_point_type
-                    }
-                )
-
-                rp_hike = HikeReferencePoint.objects.create(
-                    hike=hike,
-                    point=ref_point[0]
-                )
-                rp_hike.save()
-
-            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
-        except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
-
 
 class Sessions(APIView):
 
@@ -317,23 +319,15 @@ class Huts(APIView):
                 name = request.GET.get('name', None)
                 nbeds = request.GET.get('nbeds', None)
                 fee = request.GET.get('fee', None)
-                services = request.GET.get('services', None)
 
                 huts = Hut.objects.all()
 
                 if name:
                     huts = huts.filter(name=name)
                 if nbeds:
-                    huts = huts.filter(n_beds__gte=nbeds)
+                    huts = huts.filter(n_beds=nbeds)
                 if fee:
-                    huts = huts.filter(fee__lte=fee)
-                if services:
-                    services_list = services.split("-")
-                    hl = HutFacility.objects.filter(facility_id__in=services_list).values('hut_id')
-                    huts_list = []
-                    for h in hl:
-                        huts_list.append(h['hut_id'])
-                    huts = Hut.objects.filter(id__in=huts_list)
+                    huts = huts.filter(fee=fee)
 
                 huts = huts.values()
 
@@ -346,16 +340,6 @@ class Huts(APIView):
                 point = Point.objects.get(id=h['point_id'])
                 h['lat'] = point.latitude
                 h['lon'] = point.longitude
-                h['address'] = point.address
-
-                facilities_list = []
-                all_facilities = HutFacility.objects.filter(hut_id=h['id'])
-                for f in all_facilities:
-                    fac_name = Facility.objects.get(id=f.facility_id).name
-                    facilities_list.append(fac_name)
-        
-                h['services'] = facilities_list
-
                 result.append(h)
 
             return Response(result, status=status.HTTP_200_OK)
@@ -365,7 +349,6 @@ class Huts(APIView):
 
     def post(self, request, format=None):
         pointSerializer = PointSerializer(data=request.data['position'])
-
         if pointSerializer.is_valid():
             point = InsertPoint(pointSerializer, 'hut')
             serializer = self.serializer_class(data={**request.data, 'point': point.id})
@@ -373,10 +356,9 @@ class Huts(APIView):
                 hut = serializer.save()
                 for service in request.data['services']:
                     try:
-                        obj, created = Facility.objects.get_or_create(name=service)
+                        obj = Facility.objects.get(name=service)
                         HutFacility.objects.get_or_create(hut=hut, facility=obj)
                     except Exception as exc:
-                        print(exc)
                         return Response(data={'message': 'error in crating the services', 'exception': exc},
                                         status=status.HTTP_400_BAD_REQUEST)
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -417,9 +399,7 @@ class ListParkingLotAPI(APIView):
         else:
             return Response(pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class Facilities(APIView):
-    permission_classes = (permissions.AllowAny,)
     def get(self, request):
         fac = Facility.objects.all().values()
         return Response(fac, status=status.HTTP_200_OK)
