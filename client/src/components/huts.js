@@ -38,7 +38,7 @@ function Huts(props){
 
 function HutCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
-  const services = props.hut.services.join()
+  const services = props.hut.services.join(', ')
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hut.name}>
       <Card.Body>
