@@ -183,10 +183,10 @@
     },
     {
         "model": "hiketracking.point",
-        "pk" : 7,
+        "pk" : 22,
         "fields":{
-            "latitude": 45.089292,
-            "longitude": 6.675187,
+            "latitude": 45.189292,
+            "longitude": 6.775187,
             "province": "Torino",
             "village": "Bardonecchia", 
             "address": "Grange della Rho"
@@ -194,10 +194,10 @@
     },
     {
         "model": "hiketracking.point",
-        "pk" : 8,
+        "pk" : 23,
         "fields":{
-            "latitude": 45.089308,
-            "longitude": 6.675215,
+            "latitude": 45.189308,
+            "longitude": 6.625215,
             "province": "Torino",
             "village": "Bardonecchia", 
             "address": "Punta Nera"
@@ -214,8 +214,8 @@
             "difficulty": "Pro Hiker",
             "description": "Percorso circolare che va a toccare il cuore del Gruppo Sorapiss. Tutto il settore sud est rimane purtroppo sconosciuto, poiché coperto dalle muraglie possenti del Fopà di Mattia e della Punta di Sorapiss, ma si ha modo di memorizzare tutta la fetta di territorio che va dal Passo Tre Croci alle pendici della Punta Nera. Nel complesso lungo e faticoso, consigliato a chi ha le gambe buone e sa trovare gli stimoli necessari. Sarà compensato da un ambiente sempre vario e comunque attraente. Dolce quando si rimontano le gobbe prative che avvicinano Forcella Faloria, severo lo scavalcamento della Sella di Punta Nera, impressionante la discesa sotto gli strapiombi (nel vero senso della parola) della Torre Pupa, lunare tra le pietraie che accompagnano al delizioso Lago di Sorapiss e sereno il rientro al Passo, sopra la Val Ansiei. L’ascesa alla Punta Nera, facoltativa, è la ciliegina sulla torta. Si domina la conca di Cortina, si ammirano le sue montagne tranne i tormentati e continui smantellamenti sul Faloria.",
             "track_file": "tracks/Punta Nera e Colle della Rho.gpx",
-            "start_point": 7,
-            "end_point": 8,
+            "start_point": 22,
+            "end_point": 23,
             "local_guide": 1
         }
     },
@@ -538,6 +538,286 @@
             "village": "Castellammare del golfo",
             "address": "Riserva dello zingaro"
         }
-    }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 103,
+        "fields": {
+            "latitude": 46.030789,
+            "longitude": 10.000777,
+            "province": "Bergamo",
+            "village": "Bergamo",
+            "address": "Via Casa Corti 3"
+        }
+    },
+    {
+        "model": "hiketracking.parkingLot",
+        "pk": 1,
+        "fields": {
+            "name": "Campeggi Valbondione",
+            "fee": 15,
+            "n_cars": 271,
+            "desc": "Il Campeggio Valbondione dispone di 271 piazzole, tutte fornite di corrente elettrica, ideali per roulotte, camper o tende. È situato a Valbondione (BG), in alta Val Seriana, alla base delle più alte vette delle Alpi Orobie e alla confluenza dei fiumi Serio e Bondione",
+            "point": 103
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 104,
+        "fields": {
+            "latitude": 46.55419,
+            "longitude": 11.96996,
+            "province": "Bolzano",
+            "village": "Badia",
+            "address": "Strada Sciarè 11, fraz. San Cassiano"
+        }
+    },
+    {
+        "model": "hiketracking.parkingLot",
+        "pk": 2,
+        "fields": {
+            "name": "CAMPING SASS DLACIA",
+            "fee": 30,
+            "n_cars": 156,
+            "desc": "Il Camping Sass Dlacia si trova nel  paesino di San Cassiano (BZ) in Alta Badia, alle porte del Parco Naturale Fanes-Senes-Braies. Circondato da boschi e pascoli alle pendici delle Dolomiti, è il punto di partenza perfetto per passeggiate, escursioni e pedalate.",
+            "point": 104
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 105,
+        "fields": {
+            "latitude": 46.3499021,
+            "longitude": 11.1110516,
+            "province": "Torino",
+            "village": "Predaia",
+            "address": "Via Merlonga 48/a, frazione Smarano"
+        }
+    },
+    {
+        "model": "hiketracking.parkingLot",
+        "pk": 3,
+        "fields": {
+            "name": "La sosta Smarano",
+            "fee": 50,
+            "n_cars": 98,
+            "desc": "Una posizione privilegiata per raggiungere facilmente i laghi di Coredo e Tavon e il grande bacino di Santa Giustina, ma anche i centri abitati.",
+            "point": 105
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 106,
+        "fields": {
+            "latitude": 45.85661,
+            "longitude": 7.81332,
+            "province": "Aosta",
+            "village": "Gressoney",
+            "address": "Loc. Tschaval"
+        }
+    },
+    {
+        "model": "hiketracking.parkingLot",
+        "pk": 4,
+        "fields": {
+            "name": "AREA CAMPER TSCHAVAL",
+            "fee": 28,
+            "n_cars": 256,
+            "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
+            "point": 106
+        }   
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 107,
+        "fields": {
+            "latitude": 45.876402615607724, 
+            "longitude": 6.929474337212479,
+            "province": "Aosta",
+            "village": "Courmayeur",
+            "address": "11013 Courmayeur AO",
+            "type": "hut"
+        }
+    },
+    {
+        "model": "hiketracking.hut",
+        "pk": 1,
+        "fields": {
+            "name": "The hut Rifugio Torino",
+            "fee": 65,
+            "n_beds": 97,
+            "desc": "Il rifugio Torino è un rifugio alpino, situato de facto in Italia nel territorio del comune di Courmayeur, nell'alta Valdigne, in Valle d'Aosta, sul massiccio del Monte Bianco",
+            "point": 107
+        }
+    },
+    {
+        "model": "hiketracking.hutFacility",
+        "pk": 1,
+        "fields": {
+            "hut": 1,
+            "facility": 1
+        }
+    },
+    {
+        "model": "hiketracking.hutFacility",
+        "pk": 2,
+        "fields": {
+            "hut": 1,
+            "facility": 2
+        }
+    },
 
+    {
+        "model": "hiketracking.point",
+        "pk": 108,
+        "fields": {
+            "latitude": 45.19003353370554,  
+            "longitude": 7.383432854943505,
+            "province": "Torino",
+            "village": "Viù",
+            "address": "Loocalità Colle del Lys",
+            "type": "hut"
+        }
+    },
+    {
+        "model": "hiketracking.hut",
+        "pk": 2,
+        "fields": {
+            "name": "Rifugio Colle del Lys",
+            "fee": 40,
+            "n_beds": 112,
+            "desc": "Lo Yeti Village è un nuovo complesso sciistico circondato dalla splendida natura del Colle del Lys",
+            "point": 108
+        }
+    },
+    {
+        "model": "hiketracking.hutFacility",
+        "pk": 3,
+        "fields": {
+            "hut": 2,
+            "facility": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk" : 22,
+        "fields":{
+            "latitude": 45.95614,
+            "longitude": 9.15020,
+            "province": "Como",
+            "village": "Colonno",
+            "address": "Via Luigi Civetta"
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk" : 23,
+        "fields":{
+            "latitude": 45.99601,
+            "longitude": 9.23868,
+            "province": "Como",
+            "village": "Griante",
+            "address": "Villa Margherita Ricordi"
+        }
+    },
+
+
+
+    {
+        "model": "hiketracking.hike",
+        "pk": 12,
+        "fields": {
+            "title": "Greenway Del Lago Di Como",
+            "length": 11.4,
+            "expected_time": 210,
+            "ascent": 276,
+            "difficulty": "Tourist",
+            "description": "Il terreno è pianeggiante. C'è una piccola salita e la pista non è molto sassosa.",
+            "track_file": "tracks/GreenWay.gpx",
+            "start_point": 22,
+            "end_point": 23,
+            "local_guide": 1
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk":25,
+        "fields": {
+            "latitude": 40.62984,
+            "longitude": 14.50302,
+            "province": "Salerno",
+            "village": "Nocelle",
+            "address": "Nocelle (SA)"
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk":24,
+        "fields": {
+            "latitude": 40.63111,
+            "longitude": 14.53658,
+            "province": "Napoli",
+            "village": "Bomerano",
+            "address": "Bomerano Pianillo (NA)"
+        }
+    },
+
+      {
+        "model": "hiketracking.hike",
+        "pk": 13,
+        "fields": {
+            "title": "Il Sentiero Degli Dei",
+            "length": 7.8,
+            "expected_time": 180,
+            "ascent": -500,
+            "difficulty": "Hiker",
+            "description": "Il sentiero è roccioso e non è asfaltato. Presenta alcune salite, ma nel complesso è un'escursione in discesa. Non c'è una ringhiera protettiva, quindi non è consigliabile farlo con i bambini. Anche le persone con vertigini dovrebbero evitarlo.",
+            "track_file": "tracks/Il-Sentiero-Degli-Dei.gpx",
+            "start_point": 24,
+            "end_point": 25,
+            "local_guide": 1
+        }
+    },
+    {
+        "model": "hiketracking.point",
+        "pk": 26,
+        "fields": {
+            "latitude": 44.14562,
+            "longitude": 9.65342,
+            "province": "La Spezia",
+            "village": "Monteresso",
+            "address": "Monteresso (SP)"
+        }
+    },
+
+    {
+        "model": "hiketracking.point",
+        "pk": 27,
+        "fields": {
+            "latitude": 44.13863,
+            "longitude": 9.67826,
+            "province": "La Spezia",
+            "village": "Vernazza",
+            "address": "Vernazza (SP)"
+        }
+    },
+
+      {
+        "model": "hiketracking.hike",
+        "pk": 14,
+        "fields": {
+            "title": "Sentiero Monterosso - Vernazza",
+            "length": 3.1,
+            "expected_time": 80,
+            "ascent": 175,
+            "difficulty": "Tourist",
+            "description": "Il sentiero dal lato di Monterosso guadagna bruscamente quota, quindi dovrai salire 500 gradini, lastricati sull'antico sentiero.",
+            "track_file": "tracks/SentieroMonterosso.gpx",
+            "start_point": 26,
+            "end_point": 27,
+            "local_guide": 1
+        }
+    }
 ]

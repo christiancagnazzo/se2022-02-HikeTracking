@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
+import {  ListGroup, Row, Col, Modal, Alert, Badge} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -65,7 +65,7 @@ function HikeCard(props) {
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          {isHiker ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : ''}
+          { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : <Badge bg="secondary">No Track Available</Badge>}
         </Card.Text>
       </Card.Body>
 
@@ -130,7 +130,8 @@ function HikeModalTrack(props) {
 
 
 
-  return (<Modal
+  return (
+  <Modal
     {...props}
     size="lg"
     aria-labelledby="contained-modal-title-vcenter"
