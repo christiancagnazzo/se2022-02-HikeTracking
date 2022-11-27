@@ -6,7 +6,7 @@ import API from '../API';
 import Map from './map'
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline,Circle } from 'react-leaflet'
 import { Icon } from 'leaflet'
-
+import GeographicalFilter from "./geographicalfilter";
 const myIconSp = new Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -148,7 +148,7 @@ function FilterForm(props) {
   const [position, setPosition] = useState("")
   
   let token = localStorage.getItem("token");
-  
+  const navigate = useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const filter = {
@@ -165,7 +165,7 @@ function FilterForm(props) {
         radius: radius
     }
     props.applyFilter(filter)
-    
+    navigate("hikes")
     
   }
 
@@ -274,48 +274,27 @@ function FilterForm(props) {
     <Form.Group className="mb-2" controlId="ascent">
         <Form.Label>Difficulty</Form.Label>
         <Form.Select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
-        <option value="All">All</option>
-        <option value="Tourist">Tourist</option>
-        <option value="Hiker">Hiker</option>
-        <option value="Pro Hiker">Pro Hiker</option>
+        <option value="All" >All</option>
+        <option value="Tourist" >Tourist</option>
+        <option value="Hiker" >Hiker</option>
+        <option value="Pro Hiker" >Pro Hiker</option>
         </Form.Select>
     </Form.Group>
-    <Row className="mb-2">
-      <Col>
-      <Form.Group className="" controlId="title">
-          <Form.Label>Province</Form.Label>
-          <Form.Select value={province} onChange={e => setProvince(e.target.value)}>
-          {Object.values(province_dic).sort().map((p) => <option value={p}>{p}</option>)}
-          </Form.Select>
-          
-    </Form.Group>
-      </Col>
-      <Col>
-      <Form.Group className="" controlId="title">
-          <Form.Label>City/Village</Form.Label>
-          <Form.Control onChange={e => setVillage(e.target.value)}></Form.Control>
-    </Form.Group>
-      </Col>
-    </Row>
-    
-    <Card><FilterMap position={position} setPosition={setPosition} radius={radius}></FilterMap>
-    </Card>
+    <GeographicalFilter 
+    position={position} 
+    setPosition={setPosition} 
+    radius={radius} 
+    setRadius={setRadius}
+    province={province}
+    setProvince={setProvince}
+    village={village}
+    setVillage={setVillage}
+     />
   
-    <Form.Group>
-    <Form.Label>Range - {radius} km</Form.Label>
-    {position !== '' ? <Button variant="outline-secondary" size="sm" onClick={() => setPosition('')}>Remove Range</Button> : ''}
-    
-      <Form.Range value = {radius} onChange={(e) => setRadius(e.target.value)} />
-      
-        {' '}
-        
-    </Form.Group>
-    
-    
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
+    <Button variant="primary" type="submit" onClick={handleSubmit}>
         Apply
-      </Button>
-      </Form>
+    </Button>
+    </Form>
     </Card>
   )
 

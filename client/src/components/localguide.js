@@ -15,7 +15,7 @@ function LocalGuide(props){
     const [huts, setHuts] = useState([]);
     const [parkinglots, setParkingLots] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
-  let token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
   
 
   useEffect(() => {
@@ -99,7 +99,7 @@ function LocalGuide(props){
 
     return(
     <>
-    <Sidebar usertype={"localguide"}/>
+    <Sidebar userPower={"localguide"}/>
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>

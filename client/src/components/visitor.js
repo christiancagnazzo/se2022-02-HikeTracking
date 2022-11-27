@@ -23,7 +23,7 @@ function VisitorPage(props) {
   useEffect(() => {
     const getHikes = async () => {
       try {
-        const hikes = await API.getAllHikes(token);
+        const hikes = await API.getAllHikes(token, null, props.userPower);
         if (hikes.error)
           setErrorMessage(hikes.msg)
         else
@@ -33,7 +33,7 @@ function VisitorPage(props) {
       }
     }
     getHikes()
-  }, []);
+  }, [props.userPower]);
 
   
   const applyFilterHikes = (filter) => {
@@ -51,11 +51,10 @@ function VisitorPage(props) {
       getFilteredHikes()
     }
 
-    /*useEffect(() => {
+    useEffect(() => {
       const getHuts = async () => {
         try {
           const huts = await API.getAllHuts(token);
-          console.log(huts)
           if (huts.error)
             setErrorMessage(huts.msg)
           else
@@ -66,7 +65,7 @@ function VisitorPage(props) {
         
       }
       getHuts()
-    }, []);*/
+    }, [props.userPower]);
 
     useEffect(() => {
       const getParkingLots = async function () {
@@ -79,7 +78,7 @@ function VisitorPage(props) {
       }
 
       getParkingLots()
-    }, [])
+    }, [props.userPower])
   
     
     const applyFilterHuts = (filter) => {
@@ -99,7 +98,7 @@ function VisitorPage(props) {
   
   return (
     <>
-      <Sidebar  />
+      <Sidebar userPower={props.userPower} />
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>

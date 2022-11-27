@@ -199,13 +199,12 @@ function HikeForm(props) {
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
           <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={handleInputFile}></input>
-
         </Form.Group>
         <PointInput parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
         <PointInput parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
-          <Map sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile}></Map>
+          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength}/>
         </Card>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>

@@ -82,7 +82,7 @@ class Hut(models.Model):
     n_beds = models.IntegerField()
     fee = models.FloatField()
     desc = models.TextField(blank=True, default=" ")
-    point = models.ForeignKey(Point, unique=True, on_delete=models.CASCADE)
+    point = models.OneToOneField(Point, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -113,7 +113,7 @@ class ParkingLot(models.Model):
     fee = models.FloatField()
     n_cars = models.IntegerField()
     desc = models.TextField(blank=True, default=" ")
-    point = models.ForeignKey(Point, unique=True, on_delete=models.CASCADE)
+    point = models.OneToOneField(Point, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

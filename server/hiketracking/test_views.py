@@ -1,11 +1,6 @@
 import json
 from http import HTTPStatus
-
 from django.test import TestCase
-from django.urls import reverse
-
-from ..models import *
-
 
 class HutTest(TestCase):
     def setUp(self):
@@ -25,7 +20,7 @@ class HutTest(TestCase):
         }
 
     def testAddHut(self):
-        response = self.client.post("/hiketracking/allhuts/",
+        response = self.client.post("/hiketracking/huts/",
                                     json.dumps(self.data),
                                     content_type="application/json"
                                     )
@@ -39,7 +34,7 @@ class HutTest(TestCase):
     def testAddHutBadcordination(self):
         self.data['position']['longitude'] = 'two'
 
-        response = self.client.post("/hiketracking/allhuts/",
+        response = self.client.post("/hiketracking/huts/",
                                     json.dumps(self.data),
                                     content_type="application/json"
                                     )
@@ -48,16 +43,16 @@ class HutTest(TestCase):
 
     def testAddHutEmptyAdress(self):
         self.data['position']['adress'] = ""
-        response = self.client.post("/hiketracking/allhuts/",
+        response = self.client.post("/hiketracking/huts/",
                                     json.dumps(self.data),
                                     content_type="application/json"
                                     )
 
-        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def testAddHutNullDiscriptiomn(self):
         self.data['desc'] = None
-        response = self.client.post("/hiketracking/allhuts/",
+        response = self.client.post("/hiketracking/huts/",
                                     json.dumps(self.data),
                                     content_type="application/json"
                                     )
