@@ -37,6 +37,7 @@ function ParkingLotForm(props) {
       setErrorMessage(req.msg)
     } else {
       navigate('/localguide/parkinglots')
+      props.updateDirty()
     }
   }
 
@@ -49,7 +50,6 @@ function ParkingLotForm(props) {
   }
   const setPoint = (point) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {
-    
         setPosition(point)
 
     }
@@ -73,7 +73,7 @@ function ParkingLotForm(props) {
         </Form.Group>
         
         
-        <PointInput point={position} setPoint = {setPosition} address={address} setAddress={setAddress} />
+        <PointInput point={position} setPoint = {setPoint} address={address} setAddress={setAddress} />
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
           <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />

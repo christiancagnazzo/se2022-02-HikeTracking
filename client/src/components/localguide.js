@@ -100,7 +100,7 @@ function LocalGuide(props){
           }
         }
         getParkingLots()
-      }, []);
+      }, [dirty]);
 
 
     return(
