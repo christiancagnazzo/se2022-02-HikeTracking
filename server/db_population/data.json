@@ -2830,5 +2830,264 @@
       "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
       "point": 106
     }
-  }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 151,
+    "fields": {
+      "latitude": 44.240084,
+      "longitude": 9.485246,
+      "province": "Metropolitan City of Genoa",
+      "village": "Mongelia",
+      "address": "Località la Secca, 1, 16030 Moneglia GE",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.point",
+    "pk": 152,
+    "fields": {
+      "latitude": 44.167137,
+      "longitude": 9.613327,
+      "province": "La Spezia",
+      "village": "Levanto",
+      "address": "Via Guido Semenza, 5, 19015 Levanto SP",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 138,
+    "fields": {
+      "title": "Mongelia-Levanto",
+      "length": 18.4,
+      "expected_time": 370,
+      "ascent": 1481,
+      "difficulty": "Hiker",
+      "description": "Stage of a pilgrimage along ancient Roman roads the entire length of Italy",
+      "track_file": "tracks/Mongelia-Levanto.gpx",
+      "start_point": 151,
+      "end_point": 152,
+      "local_guide": 17
+    }
+  },
+
+  {
+    "model": "hiketracking.point",
+    "pk": 153,
+    "fields": {
+      "latitude": 44.851584,
+      "longitude": 9.866935,
+      "province": "Piacenza",
+      "village": "Castell'Arquato ",
+      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.point",
+    "pk": 154,
+    "fields": {
+      "latitude": 44.867353,
+      "longitude": 10.057698,
+      "province": "Parma",
+      "village": "Fidenza",
+      "address": "Via Camillo Benso di Cavour",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 139,
+    "fields": {
+      "title": "Castell' Arquato to Fidenza",
+      "length": 23.5,
+      "expected_time": 390,
+      "ascent": 296,
+      "difficulty": "Moderate",
+      "description": "walk is along a peaceful stretch of the Via Francigena, where you can contemplate your experiences of the previous days",
+      "track_file": "tracks/castel-arquato-to-fidenza.gpx",
+      "start_point": 153,
+      "end_point": 154,
+      "local_guide": 17
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 155,
+    "fields": {
+      "latitude": 44.841117,
+      "longitude": 9.995562,
+      "province": "Parma",
+      "village": "Salsomaggiore Terme",
+      "address": "Loc. San Nicomede, 29, 43039 Salsomaggiore Terme PR",
+      "type": "none"
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 156,
+    "fields": {
+      "latitude": 44.840891,
+      "longitude": 9.999061,
+      "province": "Parma",
+      "village": "Salsomaggiore Terme",
+      "address": "Salsomaggiore Terme (PR)",
+      "type": "none"
+    }
+  },
+
+   {
+    "model": "hiketracking.hike",
+    "pk": 140,
+    "fields": {
+      "title": "Saline Farnesiane e Costa Marenga",
+      "length": 8.5,
+      "expected_time": 140,
+      "ascent": 117,
+      "difficulty": "Easy",
+      "description": "Dal museo MuMab di San Nicomede a Salsominore, rientro da Costa Marenga, passando per l'ultimo esempio di salina del territorio",
+      "track_file": "tracks/saline-farnesiane-e.gpx",
+      "start_point": 155,
+      "end_point": 156,
+      "local_guide": 17
+    }
+  },
+
+  {
+    "model": "hiketracking.point",
+    "pk": 157,
+    "fields": {
+      "latitude": 44.690660,
+      "longitude": 10.098623,
+      "province": "Parma",
+      "village": "Fornovo di Taro",
+      "address": "Via Cesare Battisti, 7, 43045 Fornovo di Taro PR",
+      "type": "none"
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 158,
+    "fields": {
+      "latitude": 44.584838,
+      "longitude": 10.033527,
+      "province": "Parma",
+      "village": "Cassio",
+      "address": "Cassio (PR)",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 141,
+    "fields": {
+      "title": "Fornovo to Cassio",
+      "length": 20.8,
+      "expected_time": 420,
+      "ascent": 1103,
+      "difficulty": "Moderate",
+      "description": "Situated at 1,040m it divides the Ligurian and Tuscan Apennines. The superb mountain scenery is a highlight and in addition to this, you will pass through the Salti del Diavolo, unusual rock formations which were formed over 80 million years ago. ",
+      "track_file": "tracks/fornovo-cassio.gpx",
+      "start_point": 157,
+      "end_point": 158,
+      "local_guide": 17
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 159,
+    "fields": {
+      "latitude": 44.906763,
+      "longitude": 9.770198,
+      "province": "Piacenza",
+      "village": "Carpaneto",
+      "address": "Carpaneto (PC)",
+      "type": "none"
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 160,
+    "fields": {
+      "latitude": 44.851585,
+      "longitude": 9.866935,
+      "province": "Piacenza",
+      "village": "Castell'Arquato ",
+      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 142,
+    "fields": {
+      "title": "Carpaneto to Castell'Arquato",
+      "length": 13.5,
+      "expected_time": 240,
+      "ascent": 212,
+      "difficulty": "Moderate",
+      "description": "A delightful shorter day of walking awaits as you travel through vineyard-covered hills and an area famed for its Colli Piacentini wines",
+      "track_file": "tracks/car-castel.gpx",
+      "start_point": 159,
+      "end_point": 160,
+      "local_guide": 17
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 161,
+    "fields": {
+      "latitude": 44.584839,
+      "longitude": 10.033528,
+      "province": "Parma",
+      "village": "Cassio",
+      "address": "Cassio (PR)",
+      "type": "none"
+    }
+  },
+
+   {
+    "model": "hiketracking.point",
+    "pk": 162,
+    "fields": {
+      "latitude": 44.510059,
+      "longitude": 9.989216,
+      "province": "Parma",
+      "village": "Berceto ",
+      "address": "Berceto (PR)",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 143,
+    "fields": {
+      "title": "Cassio to Berceto",
+      "length": 10.4,
+      "expected_time": 210,
+      "ascent": 268,
+      "difficulty": "Moderate",
+      "description": "Shady forests, hamlets and reach the crest of a hill before descending into Berceto",
+      "track_file": "tracks/cassio-berceto.gpx",
+      "start_point": 161,
+      "end_point": 162,
+      "local_guide": 17
+    }
+  },
+
+
 ]
