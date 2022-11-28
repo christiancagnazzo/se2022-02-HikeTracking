@@ -87,11 +87,6 @@ class RetrieveHutAPITest(TestCase):
         }
         print("Data is: ", self.data)
 
-
-    def test_retrieve_hut_api(self):
-        response = self.client.get('/hiketracking/huts', json.dumps(self.data), content_type = "application/json")
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-
 class AddParkingLotAPI(TestCase):
 
     def setUp(self):
