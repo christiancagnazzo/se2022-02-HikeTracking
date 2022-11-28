@@ -1,1380 +1,22 @@
 [
   {
-    "model": "admin.logentry",
-    "pk": 1,
-    "fields": {
-      "action_time": "2022-11-22T13:08:20.301Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "1",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 2,
-    "fields": {
-      "action_time": "2022-11-22T13:09:12.101Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "3",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 3,
-    "fields": {
-      "action_time": "2022-11-22T15:18:41.896Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "4",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 4,
-    "fields": {
-      "action_time": "2022-11-22T15:21:06.992Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "5",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 5,
-    "fields": {
-      "action_time": "2022-11-22T15:22:06.878Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "6",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 6,
-    "fields": {
-      "action_time": "2022-11-22T15:25:35.748Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "7",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 7,
-    "fields": {
-      "action_time": "2022-11-22T15:30:47.393Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "8",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 8,
-    "fields": {
-      "action_time": "2022-11-22T15:32:57.754Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "9",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 9,
-    "fields": {
-      "action_time": "2022-11-22T15:38:30.289Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "10",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 10,
-    "fields": {
-      "action_time": "2022-11-22T15:40:10.164Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "11",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 11,
-    "fields": {
-      "action_time": "2022-11-22T15:52:43.073Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "12",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 12,
-    "fields": {
-      "action_time": "2022-11-22T15:54:07.771Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "13",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 13,
-    "fields": {
-      "action_time": "2022-11-22T16:02:21.193Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "14",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 14,
-    "fields": {
-      "action_time": "2022-11-22T18:31:46.018Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "15",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 15,
-    "fields": {
-      "action_time": "2022-11-24T13:22:39.330Z",
-      "user": 2,
-      "content_type": 10,
-      "object_id": "1",
-      "object_repr": "Hut object (1)",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 16,
-    "fields": {
-      "action_time": "2022-11-24T13:26:01.822Z",
-      "user": 2,
-      "content_type": 13,
-      "object_id": "1",
-      "object_repr": "",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 17,
-    "fields": {
-      "action_time": "2022-11-24T13:26:19.799Z",
-      "user": 2,
-      "content_type": 6,
-      "object_id": "16",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 18,
-    "fields": {
-      "action_time": "2022-11-24T13:26:28.360Z",
-      "user": 2,
-      "content_type": 7,
-      "object_id": "1",
-      "object_repr": "shower",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 19,
-    "fields": {
-      "action_time": "2022-11-24T13:27:36.382Z",
-      "user": 2,
-      "content_type": 11,
-      "object_id": "1",
-      "object_repr": "mona131376st@gmail.com shower",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 20,
-    "fields": {
-      "action_time": "2022-11-24T13:27:47.167Z",
-      "user": 2,
-      "content_type": 10,
-      "object_id": "2",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 21,
-    "fields": {
-      "action_time": "2022-11-24T13:28:00.694Z",
-      "user": 2,
-      "content_type": 13,
-      "object_id": "2",
-      "object_repr": "hut",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 22,
-    "fields": {
-      "action_time": "2022-11-26T22:55:00.896Z",
-      "user": 2,
-      "content_type": 10,
-      "object_id": "3",
-      "object_repr": "mona131376st@gmail.com",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 23,
-    "fields": {
-      "action_time": "2022-11-27T21:22:47.016Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "130",
-      "object_repr": "130_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 24,
-    "fields": {
-      "action_time": "2022-11-27T21:27:39.043Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "130",
-      "object_repr": "130_none",
-      "action_flag": 3,
-      "change_message": ""
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 25,
-    "fields": {
-      "action_time": "2022-11-27T21:35:20.036Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "131",
-      "object_repr": "131_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 26,
-    "fields": {
-      "action_time": "2022-11-27T21:38:20.060Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "132",
-      "object_repr": "132_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 27,
-    "fields": {
-      "action_time": "2022-11-27T21:41:40.521Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "128",
-      "object_repr": "HPB Coreggia: Putigano to Alb",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 28,
-    "fields": {
-      "action_time": "2022-11-27T21:45:32.185Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "133",
-      "object_repr": "133_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 29,
-    "fields": {
-      "action_time": "2022-11-27T21:46:58.000Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "134",
-      "object_repr": "134_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 30,
-    "fields": {
-      "action_time": "2022-11-27T21:47:03.941Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "129",
-      "object_repr": "Appian Way Stage 04: Grottagli",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 31,
-    "fields": {
-      "action_time": "2022-11-27T21:50:05.841Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "135",
-      "object_repr": "135_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 32,
-    "fields": {
-      "action_time": "2022-11-27T21:53:02.173Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "136",
-      "object_repr": "136_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 33,
-    "fields": {
-      "action_time": "2022-11-27T21:53:10.261Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "130",
-      "object_repr": "Appian Way Stage 05: Taranto-M",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 34,
-    "fields": {
-      "action_time": "2022-11-27T21:55:34.899Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "137",
-      "object_repr": "137_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 35,
-    "fields": {
-      "action_time": "2022-11-27T21:58:00.887Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "138",
-      "object_repr": "138_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 36,
-    "fields": {
-      "action_time": "2022-11-27T21:58:08.511Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "131",
-      "object_repr": "Percorso, 07/feb/2020 17.53.04",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 37,
-    "fields": {
-      "action_time": "2022-11-27T22:00:26.985Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "139",
-      "object_repr": "139_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 38,
-    "fields": {
-      "action_time": "2022-11-27T22:01:12.472Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "140",
-      "object_repr": "140_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 39,
-    "fields": {
-      "action_time": "2022-11-27T22:02:50.242Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "132",
-      "object_repr": "MARATONA PER CHI CAMMINA (III)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 40,
-    "fields": {
-      "action_time": "2022-11-27T22:06:13.829Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "141",
-      "object_repr": "141_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 41,
-    "fields": {
-      "action_time": "2022-11-27T22:07:40.277Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "142",
-      "object_repr": "142_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 42,
-    "fields": {
-      "action_time": "2022-11-27T22:07:45.801Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "133",
-      "object_repr": "maratona per chi cammina (IV)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 43,
-    "fields": {
-      "action_time": "2022-11-27T22:11:15.696Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "143",
-      "object_repr": "143_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 44,
-    "fields": {
-      "action_time": "2022-11-27T22:11:59.374Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "144",
-      "object_repr": "144_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 45,
-    "fields": {
-      "action_time": "2022-11-27T22:12:05.445Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "134",
-      "object_repr": "MARATONA PERIFERIA CORSA (I)",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 46,
-    "fields": {
-      "action_time": "2022-11-27T22:15:30.760Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "145",
-      "object_repr": "145_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 47,
-    "fields": {
-      "action_time": "2022-11-27T22:16:37.061Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "146",
-      "object_repr": "146_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 48,
-    "fields": {
-      "action_time": "2022-11-27T22:17:08.489Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "135",
-      "object_repr": "Punta Tresino from Agropoli to",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 49,
-    "fields": {
-      "action_time": "2022-11-27T22:19:36.873Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "147",
-      "object_repr": "147_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 50,
-    "fields": {
-      "action_time": "2022-11-27T22:21:14.878Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "148",
-      "object_repr": "148_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 51,
-    "fields": {
-      "action_time": "2022-11-27T22:21:18.976Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "136",
-      "object_repr": "Path of the Sirens",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 52,
-    "fields": {
-      "action_time": "2022-11-27T22:25:39.172Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "149",
-      "object_repr": "149_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 53,
-    "fields": {
-      "action_time": "2022-11-27T22:27:10.292Z",
-      "user": 17,
-      "content_type": 13,
-      "object_id": "150",
-      "object_repr": "150_none",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "admin.logentry",
-    "pk": 54,
-    "fields": {
-      "action_time": "2022-11-27T22:27:17.079Z",
-      "user": 17,
-      "content_type": 8,
-      "object_id": "137",
-      "object_repr": "Path of the Sirens - Extended",
-      "action_flag": 1,
-      "change_message": "[{\"added\": {}}]"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 1,
-    "fields": {
-      "name": "Can add log entry",
-      "content_type": 1,
-      "codename": "add_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 2,
-    "fields": {
-      "name": "Can change log entry",
-      "content_type": 1,
-      "codename": "change_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 3,
-    "fields": {
-      "name": "Can delete log entry",
-      "content_type": 1,
-      "codename": "delete_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 4,
-    "fields": {
-      "name": "Can view log entry",
-      "content_type": 1,
-      "codename": "view_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 5,
-    "fields": {
-      "name": "Can add permission",
-      "content_type": 2,
-      "codename": "add_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 6,
-    "fields": {
-      "name": "Can change permission",
-      "content_type": 2,
-      "codename": "change_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 7,
-    "fields": {
-      "name": "Can delete permission",
-      "content_type": 2,
-      "codename": "delete_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 8,
-    "fields": {
-      "name": "Can view permission",
-      "content_type": 2,
-      "codename": "view_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 9,
-    "fields": {
-      "name": "Can add group",
-      "content_type": 3,
-      "codename": "add_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 10,
-    "fields": {
-      "name": "Can change group",
-      "content_type": 3,
-      "codename": "change_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 11,
-    "fields": {
-      "name": "Can delete group",
-      "content_type": 3,
-      "codename": "delete_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 12,
-    "fields": {
-      "name": "Can view group",
-      "content_type": 3,
-      "codename": "view_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 13,
-    "fields": {
-      "name": "Can add content type",
-      "content_type": 4,
-      "codename": "add_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 14,
-    "fields": {
-      "name": "Can change content type",
-      "content_type": 4,
-      "codename": "change_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 15,
-    "fields": {
-      "name": "Can delete content type",
-      "content_type": 4,
-      "codename": "delete_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 16,
-    "fields": {
-      "name": "Can view content type",
-      "content_type": 4,
-      "codename": "view_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 17,
-    "fields": {
-      "name": "Can add session",
-      "content_type": 5,
-      "codename": "add_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 18,
-    "fields": {
-      "name": "Can change session",
-      "content_type": 5,
-      "codename": "change_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 19,
-    "fields": {
-      "name": "Can delete session",
-      "content_type": 5,
-      "codename": "delete_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 20,
-    "fields": {
-      "name": "Can view session",
-      "content_type": 5,
-      "codename": "view_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 21,
-    "fields": {
-      "name": "Can add user",
-      "content_type": 6,
-      "codename": "add_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 22,
-    "fields": {
-      "name": "Can change user",
-      "content_type": 6,
-      "codename": "change_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 23,
-    "fields": {
-      "name": "Can delete user",
-      "content_type": 6,
-      "codename": "delete_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 24,
-    "fields": {
-      "name": "Can view user",
-      "content_type": 6,
-      "codename": "view_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 25,
-    "fields": {
-      "name": "Can add facility",
-      "content_type": 7,
-      "codename": "add_facility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 26,
-    "fields": {
-      "name": "Can change facility",
-      "content_type": 7,
-      "codename": "change_facility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 27,
-    "fields": {
-      "name": "Can delete facility",
-      "content_type": 7,
-      "codename": "delete_facility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 28,
-    "fields": {
-      "name": "Can view facility",
-      "content_type": 7,
-      "codename": "view_facility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 29,
-    "fields": {
-      "name": "Can add hike",
-      "content_type": 8,
-      "codename": "add_hike"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 30,
-    "fields": {
-      "name": "Can change hike",
-      "content_type": 8,
-      "codename": "change_hike"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 31,
-    "fields": {
-      "name": "Can delete hike",
-      "content_type": 8,
-      "codename": "delete_hike"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 32,
-    "fields": {
-      "name": "Can view hike",
-      "content_type": 8,
-      "codename": "view_hike"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 33,
-    "fields": {
-      "name": "Can add hike reference point",
-      "content_type": 9,
-      "codename": "add_hikereferencepoint"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 34,
-    "fields": {
-      "name": "Can change hike reference point",
-      "content_type": 9,
-      "codename": "change_hikereferencepoint"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 35,
-    "fields": {
-      "name": "Can delete hike reference point",
-      "content_type": 9,
-      "codename": "delete_hikereferencepoint"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 36,
-    "fields": {
-      "name": "Can view hike reference point",
-      "content_type": 9,
-      "codename": "view_hikereferencepoint"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 37,
-    "fields": {
-      "name": "Can add hut",
-      "content_type": 10,
-      "codename": "add_hut"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 38,
-    "fields": {
-      "name": "Can change hut",
-      "content_type": 10,
-      "codename": "change_hut"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 39,
-    "fields": {
-      "name": "Can delete hut",
-      "content_type": 10,
-      "codename": "delete_hut"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 40,
-    "fields": {
-      "name": "Can view hut",
-      "content_type": 10,
-      "codename": "view_hut"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 41,
-    "fields": {
-      "name": "Can add hut facility",
-      "content_type": 11,
-      "codename": "add_hutfacility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 42,
-    "fields": {
-      "name": "Can change hut facility",
-      "content_type": 11,
-      "codename": "change_hutfacility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 43,
-    "fields": {
-      "name": "Can delete hut facility",
-      "content_type": 11,
-      "codename": "delete_hutfacility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 44,
-    "fields": {
-      "name": "Can view hut facility",
-      "content_type": 11,
-      "codename": "view_hutfacility"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 45,
-    "fields": {
-      "name": "Can add parking lot",
-      "content_type": 12,
-      "codename": "add_parkinglot"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 46,
-    "fields": {
-      "name": "Can change parking lot",
-      "content_type": 12,
-      "codename": "change_parkinglot"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 47,
-    "fields": {
-      "name": "Can delete parking lot",
-      "content_type": 12,
-      "codename": "delete_parkinglot"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 48,
-    "fields": {
-      "name": "Can view parking lot",
-      "content_type": 12,
-      "codename": "view_parkinglot"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 49,
-    "fields": {
-      "name": "Can add point",
-      "content_type": 13,
-      "codename": "add_point"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 50,
-    "fields": {
-      "name": "Can change point",
-      "content_type": 13,
-      "codename": "change_point"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 51,
-    "fields": {
-      "name": "Can delete point",
-      "content_type": 13,
-      "codename": "delete_point"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 52,
-    "fields": {
-      "name": "Can view point",
-      "content_type": 13,
-      "codename": "view_point"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 53,
-    "fields": {
-      "name": "Can add auth token",
-      "content_type": 14,
-      "codename": "add_authtoken"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 54,
-    "fields": {
-      "name": "Can change auth token",
-      "content_type": 14,
-      "codename": "change_authtoken"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 55,
-    "fields": {
-      "name": "Can delete auth token",
-      "content_type": 14,
-      "codename": "delete_authtoken"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 56,
-    "fields": {
-      "name": "Can view auth token",
-      "content_type": 14,
-      "codename": "view_authtoken"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 1,
-    "fields": {
-      "app_label": "admin",
-      "model": "logentry"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 2,
-    "fields": {
-      "app_label": "auth",
-      "model": "permission"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 3,
-    "fields": {
-      "app_label": "auth",
-      "model": "group"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 4,
-    "fields": {
-      "app_label": "contenttypes",
-      "model": "contenttype"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 5,
-    "fields": {
-      "app_label": "sessions",
-      "model": "session"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 6,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "customuser"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 7,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "facility"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 8,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "hike"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 9,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "hikereferencepoint"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 10,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "hut"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 11,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "hutfacility"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 12,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "parkinglot"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 13,
-    "fields": {
-      "app_label": "hiketracking",
-      "model": "point"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 14,
-    "fields": {
-      "app_label": "knox",
-      "model": "authtoken"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "kwm3b2i61okike6en5hgtwaape37i7r4",
-    "fields": {
-      "session_data": ".eJxVjEEOwiAQRe_C2pCZgUhx6d4zkIEBqRqalHbVeHdt0oVu_3vvbyrwutSw9jyHUdRFkTr9bpHTM7cdyIPbfdJpass8Rr0r-qBd3ybJr-vh_h1U7vVbO_FERsDZknxxNADRuYgzLhtg7yVHQMyYorUoLJGFwCGC9wMaZPX-ANLJN10:1oz3Wk:OoTe3yh6WXYXlE3VJkCcRrJLQg1EPH7rrs2iLP-FfVs",
-      "expire_date": "2022-12-10T22:20:02.527Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "ur0l02uv6ofpkks9tzv695qrqut9tiie",
-    "fields": {
-      "session_data": ".eJxVjEEOwiAQRe_C2pCZgUhx6d4zkIEBqRqalHbVeHdt0oVu_3vvbyrwutSw9jyHUdRFkTr9bpHTM7cdyIPbfdJpass8Rr0r-qBd3ybJr-vh_h1U7vVbO_FERsDZknxxNADRuYgzLhtg7yVHQMyYorUoLJGFwCGC9wMaZPX-ANLJN10:1oxT0K:Q-zXil5OfMF4sydomVa-g8bJSUKuP7vvvwmIcSsCjNQ",
-      "expire_date": "2022-12-06T13:08:00.636Z"
-    }
-  },
-  {
-    "model": "sessions.session",
-    "pk": "znmp82jykupycysl4hr40tbhw5jc4p2z",
-    "fields": {
-      "session_data": ".eJxVjDsOwyAQRO9CHSG-BqdM7zOgXViCkwgkY1dR7h5bcpF0o3lv5s0CbGsJW6clzIldmXTs8lsixCfVg6QH1HvjsdV1mZEfCj9p51NL9Lqd7t9BgV72NTqyo5CSootGo9zzoJ20JAxlSyOSyKSyVlagSgk8IhltTTTeehiIfb4D6zgv:1ozOx3:zlpUZDyV6iQtB-wVd0ffIeAPeWjtfLC8_KfFP17Ut7I",
-      "expire_date": "2022-12-11T21:12:37.475Z"
-    }
-  },
-  {
     "model": "hiketracking.customuser",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "",
-      "last_name": "",
       "email": "g@mail.com",
       "role": "localguide",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2022-11-27T21:12:55.833Z",
-      "groups": [],
-      "user_permissions": []
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1
     }
   },
   {
     "model": "hiketracking.customuser",
     "pk": 2,
     "fields": {
-      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "",
-      "last_name": "",
       "email": "h@mail.com",
       "role": "hiker",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2022-11-27T21:12:55.837Z",
-      "groups": [],
-      "user_permissions": []
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1
     }
   },
   {
@@ -2200,6 +842,306 @@
     }
   },
   {
+    "model": "hiketracking.point",
+    "pk": 151,
+    "fields": {
+      "latitude": 44.240084,
+      "longitude": 9.485246,
+      "province": "Metropolitan City of Genoa",
+      "village": "Mongelia",
+      "address": "Località la Secca, 1, 16030 Moneglia GE",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 152,
+    "fields": {
+      "latitude": 44.167137,
+      "longitude": 9.613327,
+      "province": "La Spezia",
+      "village": "Levanto",
+      "address": "Via Guido Semenza, 5, 19015 Levanto SP",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 153,
+    "fields": {
+      "latitude": 44.851584,
+      "longitude": 9.866935,
+      "province": "Piacenza",
+      "village": "Castell'Arquato ",
+      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 154,
+    "fields": {
+      "latitude": 44.867353,
+      "longitude": 10.057698,
+      "province": "Parma",
+      "village": "Fidenza",
+      "address": "Via Camillo Benso di Cavour",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 155,
+    "fields": {
+      "latitude": 44.841117,
+      "longitude": 9.995562,
+      "province": "Parma",
+      "village": "Salsomaggiore Terme",
+      "address": "Loc. San Nicomede, 29, 43039 Salsomaggiore Terme PR",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 156,
+    "fields": {
+      "latitude": 44.840891,
+      "longitude": 9.999061,
+      "province": "Parma",
+      "village": "Salsomaggiore Terme",
+      "address": "Salsomaggiore Terme (PR)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 157,
+    "fields": {
+      "latitude": 44.69066,
+      "longitude": 10.098623,
+      "province": "Parma",
+      "village": "Fornovo di Taro",
+      "address": "Via Cesare Battisti, 7, 43045 Fornovo di Taro PR",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 158,
+    "fields": {
+      "latitude": 44.584838,
+      "longitude": 10.033527,
+      "province": "Parma",
+      "village": "Cassio",
+      "address": "Cassio (PR)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 159,
+    "fields": {
+      "latitude": 44.906763,
+      "longitude": 9.770198,
+      "province": "Piacenza",
+      "village": "Carpaneto",
+      "address": "Carpaneto (PC)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 160,
+    "fields": {
+      "latitude": 44.851585,
+      "longitude": 9.866935,
+      "province": "Piacenza",
+      "village": "Castell'Arquato ",
+      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 161,
+    "fields": {
+      "latitude": 44.584839,
+      "longitude": 10.033528,
+      "province": "Parma",
+      "village": "Cassio",
+      "address": "Cassio (PR)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 162,
+    "fields": {
+      "latitude": 44.510059,
+      "longitude": 9.989216,
+      "province": "Parma",
+      "village": "Berceto ",
+      "address": "Berceto (PR)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 163,
+    "fields": {
+      "latitude": 44.422712,
+      "longitude": 9.936237,
+      "province": "Massa and Carrara",
+      "village": "Previde",
+      "address": "Previde(MS)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 164,
+    "fields": {
+      "latitude": 44.331833,
+      "longitude": 9.936237,
+      "province": "Massa and Carrara",
+      "village": "Filattiera",
+      "address": "Filattiera (MS)",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 165,
+    "fields": {
+      "latitude": 40.66605,
+      "longitude": 16.61339,
+      "province": "",
+      "village": "",
+      "address": "Via Roma 12",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 166,
+    "fields": {
+      "latitude": 40.67208,
+      "longitude": 16.62886,
+      "province": "Matera",
+      "village": "Trasano",
+      "address": "Viale Trasano",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 167,
+    "fields": {
+      "latitude": 40.51674,
+      "longitude": 16.06289,
+      "province": "Potenza",
+      "village": "Pietrapertosa",
+      "address": "Parco Pierto 10",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 168,
+    "fields": {
+      "latitude": 40.67092,
+      "longitude": 16.63172,
+      "province": "Matera",
+      "village": "Pedale della Palomba",
+      "address": "Statale 123",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 169,
+    "fields": {
+      "latitude": 39.93403,
+      "longitude": 16.16156,
+      "province": "Potenza",
+      "village": "Viggianello",
+      "address": "Viggianello Piazza Centrale",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 170,
+    "fields": {
+      "latitude": 40.5243,
+      "longitude": 16.04634,
+      "province": "Potenza",
+      "village": "Castelmezzano",
+      "address": "Via Tredicilance 12",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 171,
+    "fields": {
+      "latitude": 40.14136,
+      "longitude": 15.9827,
+      "province": "Potenza",
+      "village": "Castelsaraceno",
+      "address": "Piazzale Ceti Radogna",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 172,
+    "fields": {
+      "latitude": 39.92537,
+      "longitude": 16.21372,
+      "province": "Potenza",
+      "village": "Terranova di Pollino",
+      "address": "Via Pollino 12",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 173,
+    "fields": {
+      "latitude": 40.67202,
+      "longitude": 16.62876,
+      "province": "Matera",
+      "village": "Trasano",
+      "address": "Lombardo Al Piceno",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 174,
+    "fields": {
+      "latitude": 40.69908,
+      "longitude": 16.47273,
+      "province": "",
+      "village": "",
+      "address": "Via Marco polo 12",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk": 175,
+    "fields": {
+      "latitude": 40.66681,
+      "longitude": 16.61095,
+      "province": "",
+      "village": "",
+      "address": "Lombardo 13",
+      "type": "none"
+    }
+  },
+  {
     "model": "hiketracking.hike",
     "pk": 1,
     "fields": {
@@ -2728,6 +1670,278 @@
     }
   },
   {
+    "model": "hiketracking.hike",
+    "pk": 138,
+    "fields": {
+      "title": "Mongelia-Levanto",
+      "length": 18,
+      "expected_time": 370,
+      "ascent": 1481,
+      "difficulty": "Hiker",
+      "description": "Stage of a pilgrimage along ancient Roman roads the entire length of Italy",
+      "track_file": "tracks/Mongelia-Levanto.gpx",
+      "start_point": 151,
+      "end_point": 152,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 139,
+    "fields": {
+      "title": "Castell' Arquato to Fidenza",
+      "length": 23,
+      "expected_time": 390,
+      "ascent": 296,
+      "difficulty": "Moderate",
+      "description": "walk is along a peaceful stretch of the Via Francigena, where you can contemplate your experiences of the previous days",
+      "track_file": "tracks/castel-arquato-to-fidenza.gpx",
+      "start_point": 153,
+      "end_point": 154,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 140,
+    "fields": {
+      "title": "Saline Farnesiane e Costa Marenga",
+      "length": 8,
+      "expected_time": 140,
+      "ascent": 117,
+      "difficulty": "Easy",
+      "description": "Dal museo MuMab di San Nicomede a Salsominore, rientro da Costa Marenga, passando per l'ultimo esempio di salina del territorio",
+      "track_file": "tracks/saline-farnesiane-e.gpx",
+      "start_point": 155,
+      "end_point": 156,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 141,
+    "fields": {
+      "title": "Fornovo to Cassio",
+      "length": 20,
+      "expected_time": 420,
+      "ascent": 1103,
+      "difficulty": "Moderate",
+      "description": "Situated at 1,040m it divides the Ligurian and Tuscan Apennines. The superb mountain scenery is a highlight and in addition to this, you will pass through the Salti del Diavolo, unusual rock formations which were formed over 80 million years ago. ",
+      "track_file": "tracks/fornovo-cassio.gpx",
+      "start_point": 157,
+      "end_point": 158,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 142,
+    "fields": {
+      "title": "Carpaneto to Castell'Arquato",
+      "length": 13,
+      "expected_time": 240,
+      "ascent": 212,
+      "difficulty": "Moderate",
+      "description": "A delightful shorter day of walking awaits as you travel through vineyard-covered hills and an area famed for its Colli Piacentini wines",
+      "track_file": "tracks/car-castel.gpx",
+      "start_point": 159,
+      "end_point": 160,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 143,
+    "fields": {
+      "title": "Cassio to Berceto",
+      "length": 10,
+      "expected_time": 210,
+      "ascent": 268,
+      "difficulty": "Moderate",
+      "description": "Shady forests, hamlets and reach the crest of a hill before descending into Berceto",
+      "track_file": "tracks/cassio-berceto.gpx",
+      "start_point": 161,
+      "end_point": 162,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 144,
+    "fields": {
+      "title": "Previdè to Filattiera",
+      "length": 21,
+      "expected_time": 390,
+      "ascent": 373,
+      "difficulty": "Moderate",
+      "description": "Along the way today you will see many interesting pilgrimage sites, such as small alters, little chapels and signs that during medieval times faith was so much a part of life",
+      "track_file": "tracks/pre-fil.gpx",
+      "start_point": 163,
+      "end_point": 164,
+      "local_guide": 17
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 145,
+    "fields": {
+      "title": "Belvedere Murgia",
+      "length": 4283,
+      "expected_time": 120,
+      "ascent": 412,
+      "difficulty": "Tourist",
+      "description": "Scopri questo sentiero ad anello di 4,3-km vicino a Matera, Basilicata. Un percorso generalmente considerato facile che richiede una media di 1 o 36 min per essere completato.",
+      "track_file": "tracks/Matera_-_Belvedere_Murgia_Materana.gpx",
+      "start_point": 165,
+      "end_point": 165,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 146,
+    "fields": {
+      "title": "Cave di Murgia",
+      "length": 4203,
+      "expected_time": 240,
+      "ascent": 422,
+      "difficulty": "Tourist",
+      "description": "Sperimenta questo sentiero ad anello di 4,2-km vicino a Matera, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 1 o 4 min per essere completato. ",
+      "track_file": "tracks/Cave_di_Murgia_-_Cappella_di_San_Falcione.gpx",
+      "start_point": 166,
+      "end_point": 166,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 147,
+    "fields": {
+      "title": "Pietrapertosa",
+      "length": 10303,
+      "expected_time": 240,
+      "ascent": 1005,
+      "difficulty": "Tourist",
+      "description": "Dirigiti su questo sentiero ad anello di 10,3-km vicino a Pietrapertosa, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 4 o 30 min per essere completato",
+      "track_file": "tracks/Pietrapertosa_-_Castelmezzano.gpx",
+      "start_point": 167,
+      "end_point": 167,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 148,
+    "fields": {
+      "title": "Parco Radogna",
+      "length": 8220,
+      "expected_time": 240,
+      "ascent": 422,
+      "difficulty": "Tourist",
+      "description": "Esplora questo sentiero ad anello di 8,2-km vicino a Matera, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 2 o 38 min per essere completato",
+      "track_file": "tracks/Parco_Radogna_-_Matera.gpx",
+      "start_point": 168,
+      "end_point": 168,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 149,
+    "fields": {
+      "title": "Piano del Pollino",
+      "length": 14227,
+      "expected_time": 240,
+      "ascent": 1971,
+      "difficulty": "Tourist",
+      "description": "Sperimenta questo sentiero ad anello di 14,2-km vicino a Viggianello, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 4 o 59 min per essere completato.",
+      "track_file": "tracks/Piano_del_Pollino_-_Giardino_degli_Dei.gpx",
+      "start_point": 169,
+      "end_point": 169,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 150,
+    "fields": {
+      "title": "Ferrata Marciosa",
+      "length": 7675,
+      "expected_time": 240,
+      "ascent": 989,
+      "difficulty": "Tourist",
+      "description": "Scopri questo sentiero ad anello di 7,7-km vicino a Castelmezzano, Basilicata.",
+      "track_file": "tracks/Via_Ferrata_Marciosa_-_Via_Ferrata_Salemm.gpx",
+      "start_point": 170,
+      "end_point": 170,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 151,
+    "fields": {
+      "title": "Sentiero CAI del Bosco Favino",
+      "length": 12710,
+      "expected_time": 240,
+      "ascent": 1823,
+      "difficulty": "Tourist",
+      "description": "Goditi questo sentiero andata e ritorno di 12,7-km vicino a Castelsaraceno, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 4 o 58 min per essere completato.",
+      "track_file": "tracks/Sentiero_CAI_970__dal_Bosco_Favino_al_Monte_Alpi.gpx",
+      "start_point": 171,
+      "end_point": 171,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 152,
+    "fields": {
+      "title": "Colle Impiso",
+      "length": 14277,
+      "expected_time": 240,
+      "ascent": 1967,
+      "difficulty": "Tourist",
+      "description": "Scopri questo sentiero andata e ritorno di 14,3-km vicino a Terranova di Pollino, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 5 o 1 min per essere completato",
+      "track_file": "tracks/Colle_Impiso_-_Piani_di_Vacquarro_-_Grande_Porta_del_Pollino.gpx",
+      "start_point": 172,
+      "end_point": 172,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 153,
+    "fields": {
+      "title": "Parco delle Murgie",
+      "length": 6823,
+      "expected_time": 240,
+      "ascent": 422,
+      "difficulty": "Tourist",
+      "description": "Controlla questo sentiero ad anello di 6,8-km vicino a Matera, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 2 o 9 min per essere completato",
+      "track_file": "tracks/Parco_delle_Murgie_-_Chiese_Rupestri_di_Matera.gpx",
+      "start_point": 173,
+      "end_point": 173,
+      "local_guide": 1
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 154,
+    "fields": {
+      "title": "Picciano Tappa 7",
+      "length": 29704,
+      "expected_time": 240,
+      "ascent": 438,
+      "difficulty": "Tourist",
+      "description": "Prova questo sentiero da punto a punto di 29,8-km vicino a Matera, Basilicata. Un percorso generalmente considerato impegnativo che richiede una media di 7 o 26 min per essere completato",
+      "track_file": "tracks/Via_Peuceta_Tappa_7__Picciano_-_Matera.gpx",
+      "start_point": 174,
+      "end_point": 175,
+      "local_guide": 1
+    }
+  },
+  {
     "model": "hiketracking.hut",
     "pk": 1,
     "fields": {
@@ -2829,306 +2043,6 @@
       "n_cars": 256,
       "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
       "point": 106
-    }
-  },
-  {
-    "model": "hiketracking.point",
-    "pk": 151,
-    "fields": {
-      "latitude": 44.240084,
-      "longitude": 9.485246,
-      "province": "Metropolitan City of Genoa",
-      "village": "Mongelia",
-      "address": "Località la Secca, 1, 16030 Moneglia GE",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.point",
-    "pk": 152,
-    "fields": {
-      "latitude": 44.167137,
-      "longitude": 9.613327,
-      "province": "La Spezia",
-      "village": "Levanto",
-      "address": "Via Guido Semenza, 5, 19015 Levanto SP",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 138,
-    "fields": {
-      "title": "Mongelia-Levanto",
-      "length": 18.4,
-      "expected_time": 370,
-      "ascent": 1481,
-      "difficulty": "Hiker",
-      "description": "Stage of a pilgrimage along ancient Roman roads the entire length of Italy",
-      "track_file": "tracks/Mongelia-Levanto.gpx",
-      "start_point": 151,
-      "end_point": 152,
-      "local_guide": 17
-    }
-  },
-
-  {
-    "model": "hiketracking.point",
-    "pk": 153,
-    "fields": {
-      "latitude": 44.851584,
-      "longitude": 9.866935,
-      "province": "Piacenza",
-      "village": "Castell'Arquato ",
-      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.point",
-    "pk": 154,
-    "fields": {
-      "latitude": 44.867353,
-      "longitude": 10.057698,
-      "province": "Parma",
-      "village": "Fidenza",
-      "address": "Via Camillo Benso di Cavour",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 139,
-    "fields": {
-      "title": "Castell' Arquato to Fidenza",
-      "length": 23.5,
-      "expected_time": 390,
-      "ascent": 296,
-      "difficulty": "Moderate",
-      "description": "walk is along a peaceful stretch of the Via Francigena, where you can contemplate your experiences of the previous days",
-      "track_file": "tracks/castel-arquato-to-fidenza.gpx",
-      "start_point": 153,
-      "end_point": 154,
-      "local_guide": 17
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 155,
-    "fields": {
-      "latitude": 44.841117,
-      "longitude": 9.995562,
-      "province": "Parma",
-      "village": "Salsomaggiore Terme",
-      "address": "Loc. San Nicomede, 29, 43039 Salsomaggiore Terme PR",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 156,
-    "fields": {
-      "latitude": 44.840891,
-      "longitude": 9.999061,
-      "province": "Parma",
-      "village": "Salsomaggiore Terme",
-      "address": "Salsomaggiore Terme (PR)",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.hike",
-    "pk": 140,
-    "fields": {
-      "title": "Saline Farnesiane e Costa Marenga",
-      "length": 8.5,
-      "expected_time": 140,
-      "ascent": 117,
-      "difficulty": "Easy",
-      "description": "Dal museo MuMab di San Nicomede a Salsominore, rientro da Costa Marenga, passando per l'ultimo esempio di salina del territorio",
-      "track_file": "tracks/saline-farnesiane-e.gpx",
-      "start_point": 155,
-      "end_point": 156,
-      "local_guide": 17
-    }
-  },
-
-  {
-    "model": "hiketracking.point",
-    "pk": 157,
-    "fields": {
-      "latitude": 44.690660,
-      "longitude": 10.098623,
-      "province": "Parma",
-      "village": "Fornovo di Taro",
-      "address": "Via Cesare Battisti, 7, 43045 Fornovo di Taro PR",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 158,
-    "fields": {
-      "latitude": 44.584838,
-      "longitude": 10.033527,
-      "province": "Parma",
-      "village": "Cassio",
-      "address": "Cassio (PR)",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 141,
-    "fields": {
-      "title": "Fornovo to Cassio",
-      "length": 20.8,
-      "expected_time": 420,
-      "ascent": 1103,
-      "difficulty": "Moderate",
-      "description": "Situated at 1,040m it divides the Ligurian and Tuscan Apennines. The superb mountain scenery is a highlight and in addition to this, you will pass through the Salti del Diavolo, unusual rock formations which were formed over 80 million years ago. ",
-      "track_file": "tracks/fornovo-cassio.gpx",
-      "start_point": 157,
-      "end_point": 158,
-      "local_guide": 17
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 159,
-    "fields": {
-      "latitude": 44.906763,
-      "longitude": 9.770198,
-      "province": "Piacenza",
-      "village": "Carpaneto",
-      "address": "Carpaneto (PC)",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 160,
-    "fields": {
-      "latitude": 44.851585,
-      "longitude": 9.866935,
-      "province": "Piacenza",
-      "village": "Castell'Arquato ",
-      "address": "Via Sforza Caolzio, 9, 29014 Castell'Arquato PC",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 142,
-    "fields": {
-      "title": "Carpaneto to Castell'Arquato",
-      "length": 13.5,
-      "expected_time": 240,
-      "ascent": 212,
-      "difficulty": "Moderate",
-      "description": "A delightful shorter day of walking awaits as you travel through vineyard-covered hills and an area famed for its Colli Piacentini wines",
-      "track_file": "tracks/car-castel.gpx",
-      "start_point": 159,
-      "end_point": 160,
-      "local_guide": 17
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 161,
-    "fields": {
-      "latitude": 44.584839,
-      "longitude": 10.033528,
-      "province": "Parma",
-      "village": "Cassio",
-      "address": "Cassio (PR)",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 162,
-    "fields": {
-      "latitude": 44.510059,
-      "longitude": 9.989216,
-      "province": "Parma",
-      "village": "Berceto ",
-      "address": "Berceto (PR)",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 143,
-    "fields": {
-      "title": "Cassio to Berceto",
-      "length": 10.4,
-      "expected_time": 210,
-      "ascent": 268,
-      "difficulty": "Moderate",
-      "description": "Shady forests, hamlets and reach the crest of a hill before descending into Berceto",
-      "track_file": "tracks/cassio-berceto.gpx",
-      "start_point": 161,
-      "end_point": 162,
-      "local_guide": 17
-    }
-  },
-
-  {
-    "model": "hiketracking.point",
-    "pk": 163,
-    "fields": {
-      "latitude": 44.422712,
-      "longitude": 9.936237,
-      "province": "Massa and Carrara",
-      "village": "Previde",
-      "address": "Previde(MS)",
-      "type": "none"
-    }
-  },
-
-   {
-    "model": "hiketracking.point",
-    "pk": 164,
-    "fields": {
-      "latitude": 44.331833,
-      "longitude": 9.936237,
-      "province": "Massa and Carrara",
-      "village": "Filattiera",
-      "address": "Filattiera (MS)",
-      "type": "none"
-    }
-  },
-
-  {
-    "model": "hiketracking.hike",
-    "pk": 144,
-    "fields": {
-      "title": "Previdè to Filattiera",
-      "length": 21.2,
-      "expected_time": 390,
-      "ascent": 373,
-      "difficulty": "Moderate",
-      "description": "Along the way today you will see many interesting pilgrimage sites, such as small alters, little chapels and signs that during medieval times faith was so much a part of life",
-      "track_file": "tracks/pre-fil.gpx",
-      "start_point": 163,
-      "end_point": 164,
-      "local_guide": 17
     }
   }
 ]
