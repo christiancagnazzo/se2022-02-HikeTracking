@@ -3089,5 +3089,46 @@
     }
   },
 
+  {
+    "model": "hiketracking.point",
+    "pk": 163,
+    "fields": {
+      "latitude": 44.422712,
+      "longitude": 9.936237,
+      "province": "Massa and Carrara",
+      "village": "Previde",
+      "address": "Previde(MS)",
+      "type": "none"
+    }
+  },
 
+   {
+    "model": "hiketracking.point",
+    "pk": 164,
+    "fields": {
+      "latitude": 44.331833,
+      "longitude": 9.936237,
+      "province": "Massa and Carrara",
+      "village": "Filattiera",
+      "address": "Filattiera (MS)",
+      "type": "none"
+    }
+  },
+
+  {
+    "model": "hiketracking.hike",
+    "pk": 144,
+    "fields": {
+      "title": "Previdè to Filattiera",
+      "length": 21.2,
+      "expected_time": 390,
+      "ascent": 373,
+      "difficulty": "Moderate",
+      "description": "Along the way today you will see many interesting pilgrimage sites, such as small alters, little chapels and signs that during medieval times faith was so much a part of life",
+      "track_file": "tracks/pre-fil.gpx",
+      "start_point": 163,
+      "end_point": 164,
+      "local_guide": 17
+    }
+  }
 ]
