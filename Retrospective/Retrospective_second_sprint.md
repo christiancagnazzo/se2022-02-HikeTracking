@@ -58,24 +58,31 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-We did not separate in the planning the task for unit tests and integration tests; in general, in this sprint we have estimated better than last sprint
+
+While planning we did not seperate the tasks for unit tests and integration tests; Overall, We did better estimations in this sprint. 
 
 - What lessons did you learn (both positive and negative) in this sprint?
-Giving simple task helps our estimation; a better planning help us to work better
+
+By simplifying the tasks, the quality of the process of estimation increased; Better planning leads to better work.
 
 - Which improvement goals set in the previous retrospective were you able  to achieve? 
-Better coordination with the team members 
-Better planning
-Better division of the work between group
+
+Better coordination with the team members;  
+Better planning;
+Improved division of the work between group
   
 - Which ones you were not able to achieve? Why?
-In time estimation we didn’t considered the time to fix bugs and test again the code
+
+While estimating, we didn’t considered the time to fix bugs and test the code again.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-Separate Integration and Unit Test in the tasks 
-Cleaning code and improving quality in back end and frontend 
+
+Separation of the tasks regarding Integration and Unit Test
+Cleaner code and improved quality in backend and frontend 
 
 
 - One thing you are proud of as a Team!!
+
 We did a good team work
 
+The team is in good spirit
