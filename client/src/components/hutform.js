@@ -40,6 +40,8 @@ function HikeForm(props) {
       setErrorMessage(req.msg)
     } else {
       navigate('/localguide/huts')
+      console.log("okk")
+      props.updateDirty()
     }
 
   }
@@ -51,28 +53,9 @@ function HikeForm(props) {
     }
     return false
   }
-  const setPoint = (point) => {
-    if (!isNaN(point[0]) && !isNaN(point[1])) {
-    
-        setPosition(point)
+  
 
-    }
-  }
-
-  useEffect(() => {
-    const getHuts = async function () {
-      let req = await API.getAllHuts(token)
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        let all_huts = []
-        req.msg.forEach((el) => all_huts.push({ "hutId": el.id, "hutName": el.name, "lat": el.lat, "lon": el.lon }))
-        setHuts(all_huts)
-      }
-    }
-
-    getHuts()
-  }, [])
+  
 
   useEffect(() => {
     const getFacilities = async function () {
@@ -102,6 +85,12 @@ function HikeForm(props) {
     getParkingLots()
   }, [])*/
 
+  const setPoint = (point) => {
+    if (!isNaN(point[0]) && !isNaN(point[1])) {
+      setPosition(point)
+
+    }
+  }
 
   return (
     <Card body>
@@ -127,8 +116,11 @@ function HikeForm(props) {
         onRemove={(e) => {setServices(e)}} // Function will trigger on remove event
         displayValue="name" // Property name to display in the dropdown options
         />
-        <PointInput point={position} setPoint = {setPosition} address={address} setAddress={setAddress} />
-       
+        <PointInput point={position} setPoint = {setPoint} address={address} setAddress={setAddress} />
+        <Form.Group className="mb-3" controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
+        </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit

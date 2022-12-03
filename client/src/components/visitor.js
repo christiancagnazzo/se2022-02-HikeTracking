@@ -11,10 +11,12 @@ import Hikes from './hikes';
 import FilterFormHuts from './filterformhuts';
 import Huts from './huts';
 import ParkingLots from './parkinglots';
+import Profile from './profile';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
+  const [profile, setProfile] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
@@ -23,7 +25,7 @@ function VisitorPage(props) {
   useEffect(() => {
     const getHikes = async () => {
       try {
-        const hikes = await API.getAllHikes(token);
+        const hikes = await API.getAllHikes(token, null, props.userPower);
         if (hikes.error)
           setErrorMessage(hikes.msg)
         else
@@ -33,13 +35,13 @@ function VisitorPage(props) {
       }
     }
     getHikes()
-  }, []);
+  }, [props.userPower]);
 
   
   const applyFilterHikes = (filter) => {
     async function  getFilteredHikes(){
       try{
-        const filteredHikes = await API.getAllHikes(token, filter)
+        const filteredHikes = await API.getAllHikes(token, filter, props.userPower)
         if (hikes.error)
             setErrorMessage(filteredHikes.msg)
           else
@@ -51,11 +53,10 @@ function VisitorPage(props) {
       getFilteredHikes()
     }
 
-    /*useEffect(() => {
+    useEffect(() => {
       const getHuts = async () => {
         try {
           const huts = await API.getAllHuts(token);
-          console.log(huts)
           if (huts.error)
             setErrorMessage(huts.msg)
           else
@@ -66,7 +67,7 @@ function VisitorPage(props) {
         
       }
       getHuts()
-    }, []);*/
+    }, [props.userPower]);
 
     useEffect(() => {
       const getParkingLots = async function () {
@@ -79,7 +80,7 @@ function VisitorPage(props) {
       }
 
       getParkingLots()
-    }, [])
+    }, [props.userPower])
   
     
     const applyFilterHuts = (filter) => {
@@ -89,17 +90,33 @@ function VisitorPage(props) {
           if (filteredHuts.error)
               setErrorMessage(filteredHuts.msg)
             else
-              setHikes(filteredHuts.msg);
+              setHuts(filteredHuts.msg);
           } catch (err) {
             console.log(err)
           }
         }
         getFilteredHuts()
       }
+
+
+    useEffect(() => {
+      const getProfile = async () => {
+        try {
+          const profile = await API.getProfile(token);
+          if (profile.error)
+            setErrorMessage(profile.msg)
+          else
+            setProfile(profile.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getProfile()
+    }, []);
   
   return (
     <>
-      <Sidebar  />
+      <Sidebar userPower={props.userPower} />
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
@@ -108,6 +125,8 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
+            <Route path="profile" element={<Profile profile={profile}/>}/>
+            <Route path="formProfile" element={<FormProfile profile={profile} setProfile={setProfile}/>}/>
           </Routes>
         </Row>
       </Col>

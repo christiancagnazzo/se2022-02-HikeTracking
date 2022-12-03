@@ -15,8 +15,13 @@ function LocalGuide(props){
     const [huts, setHuts] = useState([]);
     const [parkinglots, setParkingLots] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
-  let token = localStorage.getItem("token");
+    const [dirty, setDirty] = useState(false)
+    let token = localStorage.getItem("token");
   
+  const updateDirty = () => {
+    const flag = dirty
+    setDirty(!flag)
+  }
 
   useEffect(() => {
     const getHikes = async () => {
@@ -31,7 +36,7 @@ function LocalGuide(props){
       }
     }
     getHikes()
-  }, []);
+  }, [dirty]);
 
   
   const applyFilterHikes = (filter) => {
@@ -55,14 +60,15 @@ function LocalGuide(props){
           const huts = await API.getAllHuts(token);
           if (huts.error)
             setErrorMessage(huts.msg)
-          else
-            setHikes(huts.msg);
+          else{
+            setHuts(huts.msg);
+          }
         } catch (err) {
           console.log(err)
         }
       }
       getHuts()
-    }, []);
+    }, [dirty]);
   
     
     const applyFilterHuts = (filter) => {
@@ -88,24 +94,24 @@ function LocalGuide(props){
             if (plots.error)
               setErrorMessage(plots.msg)
             else
-              setHikes(plots.msg);
+              setParkingLots(plots.msg);
           } catch (err) {
             console.log(err)
           }
         }
         getParkingLots()
-      }, []);
+      }, [dirty]);
 
 
     return(
     <>
-    <Sidebar usertype={"localguide"}/>
+    <Sidebar userPower={"localguide"}/>
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>
         <Route path="*" element={<HikeForm/>}/>
-        <Route path="addhut" element={<HutForm/>}/>
-        <Route path="addparkinglot" element={<ParkingLotForm/>}/>
+        <Route path="addhut" element={<HutForm updateDirty={updateDirty}/>}/>
+        <Route path="addparkinglot" element={<ParkingLotForm updateDirty={updateDirty}/>}/>
         <Route path="hikes" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
         <Route path="huts" element={<Huts huts={huts}/>}/>
         <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} applyFilter={() => {}}/>}/>

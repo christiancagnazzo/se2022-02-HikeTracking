@@ -4,7 +4,7 @@ async function createHike(hike_description, hike_file, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
-    let response = await fetch(URL + 'hike/', {
+    let response = await fetch(URL + 'hikes/', {
       method: 'POST',
       body: JSON.stringify(hike_description),
       headers: {
@@ -62,7 +62,7 @@ async function createHut(hut_description, token) {
 
 async function createParkingLot(parking_lot_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-
+  
   try {
     let response = await fetch(URL + 'parkingLots/', {
       method: 'POST',
@@ -126,7 +126,7 @@ async function logout(token) {
   });
 }
 
-async function getAllHikes(token, filters) {
+async function getAllHikes(token, filters, userPower) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
@@ -155,7 +155,7 @@ async function getAllHikes(token, filters) {
       query += '&around=' + filters.position.lat + "-" + filters.position.lng + "-" + filters.radius
   }
 
-  let response = await fetch(URL + 'allhikes/' + query, {
+  let response = await fetch(URL + 'hikes/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -164,7 +164,9 @@ async function getAllHikes(token, filters) {
 
   if (response.status == '200') {
     let hikes = await response.json();
-    hikes.forEach(async h => {
+    if(userPower === "hiker"){
+    for(let i = 0; i < hikes.length; i++){
+      const h = hikes[i]
       let response = await fetch(URL + 'hike/file/' + h["id"], {
         method: 'GET',
         headers: {
@@ -175,7 +177,8 @@ async function getAllHikes(token, filters) {
         const text = new TextDecoder().decode((await response.body.getReader().read()).value);
         h['file'] = text;
       }
-    });
+    };
+  }
 
     return { msg: hikes }
   }
@@ -197,9 +200,13 @@ async function getAllHuts(token, filters) {
       query += '&nbeds=' + filters.nbeds
     if (filters.fee)
       query += '&fee=' + filters.fee
+    if (filters.services.length > 0){
+      let res = filters.services.map((s)=> s.id).toString().replace(",","-")
+      query += '&services=' + res
+    }
   }
-
-  let response = await fetch(URL + 'allhuts/' + query, {
+  
+  let response = await fetch(URL + 'hut/' + query, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -243,14 +250,12 @@ async function getAllParkingLots(token) {
   }
 }
 
-async function getFacilities(token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+async function getFacilities() {
+  
 
   let response = await fetch(URL + 'facilities/', {
     method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
+    
   });
   if (response.status == '200')
     return { msg: await response.json() }
@@ -277,6 +282,71 @@ async function getCitiesByProvince(token, type,province) {
   }
 }
 
-const API = { getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+async function createRecord(record_description, record_file, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'profile/', {
+      method: 'POST',
+      body: JSON.stringify(record_description),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status == '200') {
+      response = await response.json()
+      let second_response = await fetch(URL + 'profile/file/' + response['record_id'], {
+        method: 'PUT',
+        body: record_file,
+        headers: {
+          'Authorization': valid_token
+        },
+      })
+
+      if (second_response.status == '200')
+        return { msg: "Record Creato" };
+
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    }
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+
+  catch (e) {
+    console.log(e) // TODO
+  }
+}
+
+async function getProfile(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'profile/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200') {
+    let records = await response.json();
+    for(let i = 0; i < records.length; i++){
+      const h = records[i]
+      let response = await fetch(URL + 'profile/file/' + h["id"], {
+        method: 'GET',
+        headers: {
+          'Authorization': valid_token
+        },
+      });
+      if (response.status === 200) {
+        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+        h['file'] = text;
+      }
+    };
+    return { msg: records }
+  }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+const API = {getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;
