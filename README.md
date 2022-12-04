@@ -27,30 +27,13 @@ or you can directly download the file.
   
 ## Usage   
 
-### Docker (Local)
+### Docker
 
 This installation uses docker as prerequisite. Run this conmand to install it:
 ```sh
 $ curl -fsSL https://get.docker.com | bash -s docker
 ```
 
-<!--
-## Describe directory
-
-### server
-
-### client
--->
-
-In the project directory, you can run:
-```sh
-$ docker compose up
-```
-This commamd may cost several minutes. 
-  
-Then you will be automatically connected to the home page. Defaultly it is localhost:3000.
-
-### Docker without clone the project
 Copy the "docker-compose.yml" file in a folder and run:
 ```sh
 $ docker compose pull
@@ -64,7 +47,7 @@ $ docker compose up
 Clone the project and run:
 ```sh
 $ cd server
-$ pip install -r requirements.txt --no-dependencies
+$ pip install -r requirements.txt
 $ python manage.py makemigrations hiketracking
 $ python manage.py migrate  
 $ python manage.py runserver
@@ -87,6 +70,8 @@ HARD CODED USER
 |--------------|----------|-------------|
 | "h@mail.com" | "1234"   | Hiker       |
 | "g@mail.com" | "1234"   | Local Guide |
+
+To execute the code locally, it is necessary to create a file with the name 'key.py' in the 'server / server' folder and insert the following string 'key = APP_PASSWORD' with the password to access the mail service used to send the registration confirm email
 
 ## Changelog
 
