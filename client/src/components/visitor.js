@@ -12,11 +12,13 @@ import FilterFormHuts from './filterformhuts';
 import Huts from './huts';
 import ParkingLots from './parkinglots';
 import Profile from './profile';
+import Preferences from './preferences';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
   const [profile, setProfile] = useState([]);
+  const [preferences, setPreferences] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
@@ -113,6 +115,21 @@ function VisitorPage(props) {
       }
       getProfile()
     }, []);
+    
+    useEffect(() => {
+      const getPreferences = async () => {
+        try {
+          const preferences = await API.getPreferences(token);
+          if (preferences.error)
+            setErrorMessage(preferences.msg)
+          else
+            setPreferences(preferences.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getPreferences()
+    }, []);
   
   return (
     <>
@@ -127,6 +144,7 @@ function VisitorPage(props) {
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             <Route path="profile" element={<Profile profile={profile}/>}/>
             <Route path="formProfile" element={<FormProfile profile={profile} setProfile={setProfile}/>}/>
+            <Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>
           </Routes>
         </Row>
       </Col>
