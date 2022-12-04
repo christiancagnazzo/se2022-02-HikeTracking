@@ -1,27 +1,30 @@
 import { Container, Form, Row, Button, Card, Alert } from "react-bootstrap"
 import { useEffect, useState } from "react";
 import API from '../API';
+import { useNavigate } from 'react-router-dom';
 
 function FormProfile(props) {
-  let [length, setLength] = useState(9)
-  let [time, setTime] = useState(240)
-  let [ascent, setAscent] = useState(3538)
-  let [difficulty, setDifficulty] = useState("Tourist")
+  const [length, setLength] = useState(9)
+  const [time, setTime] = useState(240)
+  const [ascent, setAscent] = useState(3538)
+  const [difficulty, setDifficulty] = useState("Tourist")
+  
+  const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
+  
+  let navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     let x=props.profile;
     
-    let formData = new FormData()
-    formData.append('File', file)
     let record = {
       'length': length,
       'expected_time': time,
       'ascent': ascent,
       'difficulty': difficulty,
           }
-    let req = await API.createRecord(record, formData, token)
+    let req = await API.createRecord(record, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
@@ -39,16 +42,6 @@ function FormProfile(props) {
     return false
   }
   
-
-  useEffect(() => {
-    if (file !== '') {
-      const fr = new FileReader()
-      fr.readAsText(file)
-      fr.onload = () => {
-        setReadFile(fr.result)
-      }
-    }
-  }, [file])
 
   return (
     <Card body>
@@ -88,4 +81,4 @@ function FormProfile(props) {
 
 
 
-export default FormProfile
+export default FormProfile;

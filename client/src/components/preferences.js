@@ -1,21 +1,22 @@
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useEffect, useState } from "react";
 import API from '../API';
+import { useNavigate } from 'react-router-dom';
 
 function Preferences(props) {
-  let [lengthMin, setLengthMin] = useState()
-  let [lengthMax, setLengthMax] = useState()
-  let [timeMin, setTimeMin] = useState()
-  let [timeMax, setTimeMax] = useState()
-  let [ascentMin, setAscentMin] = useState()
-  let [ascentMax, setAscentMax] = useState()
-  let [difficulty, setDifficulty] = useState()
+  const [lengthMin, setLengthMin] = useState()
+  const [lengthMax, setLengthMax] = useState()
+  const [timeMin, setTimeMin] = useState()
+  const [timeMax, setTimeMax] = useState()
+  const [ascentMin, setAscentMin] = useState()
+  const [ascentMax, setAscentMax] = useState()
+  const [difficulty, setDifficulty] = useState()
+  const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
+  let navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();    
-    let formData = new FormData()
-    formData.append('File', file)
     let preferences = {
       'lengthMin': lengthMin,
       'lengthMax': lengthMax,
@@ -25,7 +26,7 @@ function Preferences(props) {
       'ascentMax': ascentMax,
       'difficulty': difficulty 
     }
-    let req = await API.createPrefernces(preferences, formData, token)
+    let req = await API.createPreferences(preferences, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
@@ -41,17 +42,6 @@ function Preferences(props) {
     }
     return false
   }
-  
-
-  useEffect(() => {
-    if (file !== '') {
-      const fr = new FileReader()
-      fr.readAsText(file)
-      fr.onload = () => {
-        setReadFile(fr.result)
-      }
-    }
-  }, [file])
 
   return (
     <Card body>

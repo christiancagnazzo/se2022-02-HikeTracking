@@ -13,6 +13,7 @@ import Huts from './huts';
 import ParkingLots from './parkinglots';
 import Profile from './profile';
 import Preferences from './preferences';
+import FormProfile from './formProfile';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);

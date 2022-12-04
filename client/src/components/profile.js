@@ -1,5 +1,5 @@
 
-import { Col,Row } from 'react-bootstrap';
+import { Col,Row,Card,ListGroup} from 'react-bootstrap';
 
 function Profile(props){
     

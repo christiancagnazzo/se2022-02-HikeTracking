@@ -282,7 +282,7 @@ async function getCitiesByProvince(token, type,province) {
   }
 }
 
-async function createRecord(record_description, record_file, token) {
+async function createRecord(record_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
@@ -294,23 +294,11 @@ async function createRecord(record_description, record_file, token) {
         'Authorization': valid_token
       },
     })
-    if (response.status == '200') {
-      response = await response.json()
-      let second_response = await fetch(URL + 'profile/file/' + response['record_id'], {
-        method: 'PUT',
-        body: record_file,
-        headers: {
-          'Authorization': valid_token
-        },
-      })
-
-      if (second_response.status == '200')
+      if (response.status == '200')
         return { msg: "Record Creato" };
 
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
     }
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
-  }
 
   catch (e) {
     console.log(e) // TODO
