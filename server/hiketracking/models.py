@@ -31,7 +31,7 @@ class CustomerProfile(models.Model):
     max_altitude = models.IntegerField(null=True)
     class Difficulty(models.TextChoices):
         TOURIST = "Tourist"
-        HIKER = "HIKER"
+        HIKER = "Hiker"
         PRO_HIKER = "Pro Hiker"
     difficulty = models.CharField(choices=Difficulty.choices)
 
