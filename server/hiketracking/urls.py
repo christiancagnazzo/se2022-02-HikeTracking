@@ -1,7 +1,7 @@
 from django.urls import include, path
 from knox import views as knox_views
 
-from views import (HikeFile, Hikes, LoginAPI, RegisterAPI, Facilities,
+from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI, Facilities,
                     UserDetail, UserList, Sessions, Huts, ActivateAccount, ParkingLotAPI)
 
 app_name = 'hiketracking'
