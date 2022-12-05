@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Hike, ParkingLot, Point, Hut
+from .models import Hike, ParkingLot, Point, Hut, Facility
 from hiketracking.models import CustomUser
 from django.utils.translation import gettext_lazy as _
 
@@ -82,3 +82,9 @@ class PorkingLotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParkingLot
         fields = ['name', 'fee', 'n_cars', 'desc', 'point']
+
+
+class FacilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Facility
+        fields = '__all__'

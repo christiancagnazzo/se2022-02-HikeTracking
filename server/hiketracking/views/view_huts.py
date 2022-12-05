@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hiketracking.models import Hut, HutFacility, Point, Facility
-from hiketracking.serializers import HuntsSerializer, PointSerializer
+from hiketracking.serializers import HuntsSerializer, PointSerializer, FacilitySerializer
 from hiketracking.utility import InsertPoint
 from rest_framework.generics import ListAPIView
 
@@ -93,3 +93,4 @@ class Huts(APIView):
 class Facilities(ListAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Facility.objects.all().values()
+    serializer_class = FacilitySerializer
