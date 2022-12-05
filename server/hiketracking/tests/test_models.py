@@ -6,6 +6,7 @@ from django.test import TestCase
 from hiketracking.views import Hike
 from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility
 
+
 class UsersManagersTests(TestCase):
 
     def test_create_user(self):
@@ -107,11 +108,14 @@ class FullListHikeTest(TestCase):
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
         user_id = User.objects.get(email='test@user.com')
-        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                   address="test address")
         p1.save()
-        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
-        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
-        
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy', start_point=p1,
+                            end_point=p1, local_guide=user_id)
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0, difficulty='medium', start_point=p1,
+                            end_point=p1, local_guide=user_id)
+
     # Test to get full list of hikes
     def test_get_full_list_of_hikes(self):
         hike_list = Hike.objects.all()
@@ -129,9 +133,11 @@ class AddHikeDescriptionTest(TestCase):
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
         user_id = User.objects.get(email='test@user.com')
-        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                   address="test address")
         p1.save()
-        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy', start_point=p1,
+                            end_point=p1, local_guide=user_id)
 
     def test_add_hike_description(self):
         hike_concerned = Hike.objects.get(id=1)
@@ -221,7 +227,8 @@ class AddParkingLotTest(TestCase):
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
         user_id = User.objects.get(email='test@user.com')
-        p1 = Point.objects.create(latitude=0.01, longitude=0.01, province="start province", village="start village", address="start address")
+        p1 = Point.objects.create(latitude=0.01, longitude=0.01, province="start province", village="start village",
+                                  address="start address")
         ParkingLot.objects.create(name="test parking lot name 2", fee=0.05, n_cars=5, point_id=1)
 
     def test_add_parking_lot(self):
@@ -230,18 +237,20 @@ class AddParkingLotTest(TestCase):
         self.assertEqual(park[0].name, "test parking lot name 2")
         self.assertEqual(park[0].n_cars, 5)
 
+
 class RetrieveHutTest(TestCase):
 
     def setUp(self):
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
         user_id = User.objects.get(email='test@user.com')
-        Point.objects.create(latitude=0.01, longitude=0.01, province="test province", village="test village", address="test address")
-        p1 = Point.objects.get(latitude = 0.01)
-        Hut.objects.create(name = "TestHut", n_beds = 1, fee = 20, point_id = p1.id)
+        Point.objects.create(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                             address="test address")
+        p1 = Point.objects.get(latitude=0.01)
+        Hut.objects.create(name="TestHut", n_beds=1, fee=20, point_id=p1.id)
 
     def test_retrieve_hut(self):
-        concerned_hut = Hut.objects.get(name = "TestHut")
+        concerned_hut = Hut.objects.get(name="TestHut")
         self.assertEqual(concerned_hut.n_beds, 1)
         self.assertEqual(concerned_hut.fee, 20)
         self.assertEqual(concerned_hut.desc, " ")
