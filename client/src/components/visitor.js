@@ -143,9 +143,8 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="profile" element={<Profile profile={profile}/>}/>
-            <Route path="formProfile" element={<FormProfile profile={profile} setProfile={setProfile}/>}/>
-            <Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>
+            <Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>
+            {/*<Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>*/}
           </Routes>
         </Row>
       </Col>

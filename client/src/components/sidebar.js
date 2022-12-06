@@ -1,11 +1,10 @@
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, HolidayVillage, LocalParking } from '@mui/icons-material'
+import { Hiking, HolidayVillage, LocalParking, ManageAccounts } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add';
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
 
 const colorBackgroundMenu = "#566400"
 
@@ -42,7 +41,7 @@ function HikerMenu(props){
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
-
+    const profileIcon = <ManageAccounts></ManageAccounts>
     const updateActive = (idx, relocation) => {
       let active = []
       for(let i = 0; i < 5; i++){
@@ -67,11 +66,14 @@ function HikerMenu(props){
           <MenuItem onClick={() => updateActive(2,"huts")}active={active[2]}>Browse</MenuItem>
           {props.hiker ? <MenuItem onClick={() => updateActive(3,"filterhuts")}active={active[3]}>Filter</MenuItem> : ''}
         </SubMenu>
-  
         <SubMenu icon={parkingLot} label='Parking Lot'>
           <MenuItem onClick={() => updateActive(4,"parkinglots")}active={active[4]}>Browse</MenuItem>
         </SubMenu>
+        <SubMenu icon={profileIcon} label='My profile'>
+          <MenuItem onClick={() => updateActive(5,"profile") }active={active[4]}>Profile</MenuItem>
+        </SubMenu>
       </Menu>
+
     </Sidebar>
     )
 }
