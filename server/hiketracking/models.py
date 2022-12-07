@@ -81,8 +81,8 @@ class Hike(models.Model):
         PARTLY_BLOCKED = "Partly blocked"
         SPECIAL_GEAR = "Requires special gear"
 
-    condition = models.CharField(max_length=30, choices=Condition.choices)
-    condition_description = models.CharField(max_length=100)
+    condition = models.CharField(blank=True, max_length=30, choices=Condition.choices)
+    condition_description = models.CharField(blank=True, max_length=100)
 
     def __str__(self):
         return self.title
@@ -105,11 +105,11 @@ class Hut(models.Model):
     name = models.CharField(max_length=50, unique=True)
     n_beds = models.IntegerField()
     fee = models.FloatField()
-    ascent = models.IntegerField()
-    phone = models.CharField(max_length=10)
-    email = models.EmailField()
+    ascent = models.IntegerField(default=1000)
+    phone = models.CharField(blank=True, max_length=10)
+    email = models.EmailField(blank=True)
     web_site = models.CharField(max_length=50, blank=True, default='')
-    desc = models.TextField(blank=True, default=" ")
+    desc = models.TextField(blank=True, default="")
     point = models.OneToOneField(Point, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -145,7 +145,7 @@ class ParkingLot(models.Model):
     name = models.CharField(max_length=50, unique=True)
     fee = models.FloatField()
     n_cars = models.IntegerField()
-    desc = models.TextField(blank=True, default=" ")
+    desc = models.TextField(blank=True, default="")
     point = models.OneToOneField(Point, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -158,7 +158,7 @@ class HutHike(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['hut', 'hike'], name='huthike')
+            models.UniqueConstraint(fields=['hut','hike'], name='huthike')
         ]
 
 

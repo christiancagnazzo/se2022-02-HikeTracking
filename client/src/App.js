@@ -51,13 +51,14 @@ function App2() {
       let result = await API.checkAuth(token)
       if (result.error) {
         //setMessage(result.msg)
+        navigate('')
       } else {
         setLoggedIn(true);
         setUser(result.msg.user);
         setUserPower(result.msg.role)
         //setDirty(true);
         setMessage('');
-        navigate('/'+result.msg.role);
+        //navigate('/'+result.msg.role);
       }
     }
     catch (e) {
@@ -110,9 +111,8 @@ function App2() {
             <Route path='/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
-            <Route path='/localguide/*' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
+            <Route path='/localguide/*' element={ <LocalGuide userPower={userPower}/>}/>
             <Route path='/registration' element={<RegistrationForm />}></Route>
-            
           </Routes>
         </Row>
       </Container>

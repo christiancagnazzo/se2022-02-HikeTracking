@@ -37,6 +37,26 @@ async function createHike(hike_description, hike_file, token) {
   }
 }
 
+
+async function getHike(hike_title,  token) {
+  return
+  /*const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'hike/' + hike_title), {
+      headers: {
+        'Authorization': valid_token
+      }
+    }
+    if(response.status === '200'){
+      const hike = await response.json()
+    
+    
+
+  }
+}*/
+}
+
 async function createHut(hut_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
@@ -398,6 +418,6 @@ async function createPreferences(preferences_description, preferences_file, toke
   }
 }
 
-const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike };
 
 export default API;

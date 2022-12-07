@@ -1,6 +1,6 @@
 import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import { json, useNavigate } from 'react-router-dom';
+import { json, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
@@ -91,6 +91,7 @@ function HikeForm(props) {
 
     }
   }
+
 
   return (
     <Card body>

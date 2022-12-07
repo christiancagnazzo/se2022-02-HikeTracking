@@ -46,7 +46,7 @@ function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
   const isHiker = props.userPower === 'hiker'
-
+  const isLocalGuide = props.userPower === 'localguide'
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
       <Card.Body>
@@ -66,6 +66,7 @@ function HikeCard(props) {
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
           { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker)?<Badge bg="secondary">No Track Available</Badge>:''}
+          {isLocalGuide? <Button variant='warning'>Edit</Button> : ''}
         </Card.Text>
       </Card.Body>
 

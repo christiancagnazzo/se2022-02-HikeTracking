@@ -5,15 +5,17 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import Hike from "./hikes";
+import { useParams } from "react-router-dom";
 
 function HikeForm(props) {
-  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
+  const {hiketitle} = useParams()
+  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE')
   let [length, setLength] = useState(9)
   let [time, setTime] = useState(240)
   let [ascent, setAscent] = useState(3538)
   let [difficulty, setDifficulty] = useState("Tourist")
   let [sp, setSp] = useState(["", ""])
-  let [addressSp, setAddressSp] = useState('Dummy start	')
+  let [addressSp, setAddressSp] = useState('Dummy start')
   let [ep, setEp] = useState(["", ""])
   let [addressEp, setAddressEp] = useState('Dummy ending')
   let [rp, setRp] = useState(['', ''])
@@ -49,14 +51,50 @@ function HikeForm(props) {
       'description': desc,
       'rp_list': rpList
     }
-    let req = await API.createHike(hikeDescription, formData, token)
+   
+      let req;
+      if (!hiketitle) await API.createHike(hikeDescription, formData, token)
+      else await API.modifyHike(hikeDescription, formData, token)
+      if (req.error) {
+        setErrorMessage(req.msg)
+      } else {
+        navigate('/')
+      }
+    
+  }
+
+  const handleDelete = async(event) => {
+    event.preventDefault()
+    let req = await API.deleteHike(hiketitle, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
       navigate('/')
     }
-
+  
   }
+
+
+  useEffect(() => {
+    async function getHike(title){
+      const hike = await API.getHike(title, token)
+      setTitle(hike.title)
+      setLength(hike.length)
+      setTime(hike.time)
+      setAscent(hike.ascent)
+      setDifficulty(hike.difficulty)
+      setSp([hike.start_point_lat, hike.start_point_lng])
+      setAddressSp(hike.start_point_address)
+      setEp([hike.end_point_lat, hike.end_point_lng])
+      setAddressEp(hike.end_point_address)
+      setRpList(hike.rp)
+      setDesc(hike.description)
+      setFile(hike.file)
+    }
+    if(hiketitle && false){
+      getHike(hiketitle)
+    }
+  },[hiketitle])
 /*
   const handleInputFile = async (e) => {
     //gpx analyses and input
@@ -166,6 +204,22 @@ function HikeForm(props) {
     getParkingLots()
   }, [])
 
+  let action;
+  if(hiketitle) {
+    action = <>
+      <Button variant="warning" type="submit" onClick={handleSubmit}>
+        Modify
+      </Button>{' '}
+      <Button variant="danger" type="submit" onClick={handleDelete}>
+        Remove
+      </Button>
+    </>
+  }
+  else{
+    action = <Button variant="primary" type="submit" onClick={handleSubmit}>
+    Submit
+  </Button>
+  }
 
   return (
     <Card body>
@@ -214,9 +268,7 @@ function HikeForm(props) {
           <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
         </Form.Group>
         {' '}
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Submit
-        </Button>
+        {action}
       </Form>
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>

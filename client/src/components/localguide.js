@@ -11,13 +11,14 @@ import Huts from './huts';
 import ParkingLots from './parkinglots';
 
 function LocalGuide(props){
-    const [hikes, setHikes] = useState([]);
-    const [huts, setHuts] = useState([]);
-    const [parkinglots, setParkingLots] = useState([])
-    const [errorMessage, setErrorMessage] = useState('')
-    const [dirty, setDirty] = useState(false)
-    let token = localStorage.getItem("token");
+  const [hikes, setHikes] = useState([]);
+  const [huts, setHuts] = useState([]);
+  const [parkinglots, setParkingLots] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
+  const [dirty, setDirty] = useState(false)
+  let token = localStorage.getItem("token");
   
+  console.log(props.userPower)
   const updateDirty = () => {
     const flag = dirty
     setDirty(!flag)
@@ -115,6 +116,7 @@ function LocalGuide(props){
         <Route path="hikes" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
         <Route path="huts" element={<Huts huts={huts}/>}/>
         <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} applyFilter={() => {}}/>}/>
+        <Route path="edithike/:hiketitle" element={<HikeForm updateDirty={updateDirty}/>}/>
     </Routes>
     </Row>
     </Col>
