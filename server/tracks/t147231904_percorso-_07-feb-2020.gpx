@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx version="1.1" creator="outdooractive - http://www.outdooractive.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:oa="http://www.outdooractive.com/GPX/Extensions/1">
+  <metadata>
+    <name>Percorso, 07/feb/2020 17.53.04</name>
+    <author>
+      <name>mirko gallitelli - Community</name>
+    </author>
+    <link href="https://www.outdooractive.com/r/147231904"/>
+    <time>2021-09-27T06:00:31.317</time>
+    <extensions>
+      <oa:oaCategory>hikingTourTrail</oa:oaCategory>
+    </extensions>
+  </metadata>
+  <trk>
+    <name>Percorso, 07/feb/2020 17.53.04</name>
+    <desc>&quot;MARATONA&quot; / PERCORSO 1 CITTADINO</desc>
+    <type>hikingTourTrail</type>
+    <trkseg>
+      <trkpt lat="40.472825" lon="17.237708">
+        <ele>19.97576</ele>
+        <sym>empty</sym>
+      </trkpt>
+      <trkpt lat="40.47279" lon="17.237708">
+        <ele>19.9155</ele>
+      </trkpt>
+      <trkpt lat="40.47339" lon="17.234704">
+        <ele>8.71949</ele>
+      </trkpt>
+      <trkpt lat="40.474147" lon="17.234903">
+        <ele>7.4467</ele>
+      </trkpt>
+      <trkpt lat="40.474878" lon="17.234876">
+        <ele>2.94979</ele>
+      </trkpt>
+      <trkpt lat="40.475571" lon="17.232853">
+        <ele>2.76251</ele>
+      </trkpt>
+      <trkpt lat="40.476391" lon="17.230911">
+        <ele>4.49328</ele>
+      </trkpt>
+      <trkpt lat="40.476391" lon="17.230911">
+        <ele>4.49328</ele>
+        <extensions>
+          <oa:locType>calcWayPoint</oa:locType>
+        </extensions>
+      </trkpt>
+      <trkpt lat="40.477175" lon="17.229833">
+        <ele>6.49204</ele>
+      </trkpt>
+      <trkpt lat="40.476906" lon="17.230223">
+        <ele>5.82502</ele>
+      </trkpt>
+      <trkpt lat="40.476906" lon="17.230223">
+        <ele>5.82502</ele>
+        <sym>empty</sym>
+        <extensions>
+          <oa:locType>inputWayPoint</oa:locType>
+        </extensions>
+      </trkpt>
+      <trkpt lat="40.478236" lon="17.228953">
+        <ele>2.78966</ele>
+      </trkpt>
+      <trkpt lat="40.478236" lon="17.228953">
+        <ele>2.78966</ele>
+        <extensions>
+          <oa:locType>calcWayPoint</oa:locType>
+        </extensions>
+      </trkpt>
+      <trkpt lat="40.479305" lon="17.227682">
+        <ele>4.59648</ele>
+      </trkpt>
+      <trkpt lat="40.47937" lon="17.227323">
+        <ele>4.22933</ele>
+      </trkpt>
+      <trkpt lat="40.479223" lon="17.227001">
+        <ele>4.11671</ele>
+      </trkpt>
+      <trkpt lat="40.479027" lon="17.226598">
+        <ele>3.89873</ele>
+      </trkpt>
+      <trkpt lat="40.478774" lon="17.226325">
+        <ele>4.34104</ele>
+      </trkpt>
+      <trkpt lat="40.478456" lon="17.226191">
+        <ele>4.96027</ele>
+      </trkpt>
+      <trkpt lat="40.477611" lon="17.226046">
+        <ele>6.80485</ele>
+      </trkpt>
+      <trkpt lat="40.476799" lon="17.225939">
+        <ele>6.2473</ele>
+      </trkpt>
+      <trkpt lat="40.476093" lon="17.22691">
+        <ele>13.35864</ele>
+      </trkpt>
+      <trkpt lat="40.475265" lon="17.228562">
+        <ele>5.9333</ele>
+      </trkpt>
+      <trkpt lat="40.474116" lon="17.23089">
+        <ele>11.85697</ele>
+      </trkpt>
+      <trkpt lat="40.473634" lon="17.231813">
+        <ele>9.04826</ele>
+      </trkpt>
+      <trkpt lat="40.473283" lon="17.232703">
+        <ele>7.90534</ele>
+      </trkpt>
+      <trkpt lat="40.473479" lon="17.233679">
+        <ele>11.12631</ele>
+      </trkpt>
+      <trkpt lat="40.473283" lon="17.234699">
+        <ele>8.68449</ele>
+      </trkpt>
+      <trkpt lat="40.472965" lon="17.236029">
+        <ele>11.96473</ele>
+      </trkpt>
+      <trkpt lat="40.472043" lon="17.235782">
+        <ele>7.99792</ele>
+      </trkpt>
+      <trkpt lat="40.471798" lon="17.23589">
+        <ele>6.79457</ele>
+      </trkpt>
+      <trkpt lat="40.471243" lon="17.236641">
+        <ele>11.63402</ele>
+      </trkpt>
+      <trkpt lat="40.469181" lon="17.239527">
+        <ele>16.80707</ele>
+      </trkpt>
+      <trkpt lat="40.467141" lon="17.242402">
+        <ele>13.80001</ele>
+      </trkpt>
+      <trkpt lat="40.465709" lon="17.244387">
+        <ele>16.18786</ele>
+      </trkpt>
+      <trkpt lat="40.463815" lon="17.246103">
+        <ele>9.1453</ele>
+      </trkpt>
+      <trkpt lat="40.463815" lon="17.246103">
+        <ele>9.1453</ele>
+        <extensions>
+          <oa:locType>calcWayPoint</oa:locType>
+        </extensions>
+      </trkpt>
+      <trkpt lat="40.464542" lon="17.247316">
+        <ele>19.90566</ele>
+      </trkpt>
+      <trkpt lat="40.465089" lon="17.24767">
+        <ele>24.84025</ele>
+      </trkpt>
+      <trkpt lat="40.465725" lon="17.247842">
+        <ele>26.23618</ele>
+      </trkpt>
+      <trkpt lat="40.466852" lon="17.248153">
+        <ele>30.34059</ele>
+      </trkpt>
+      <trkpt lat="40.470144" lon="17.249172">
+        <ele>28.5868</ele>
+      </trkpt>
+      <trkpt lat="40.470144" lon="17.249172">
+        <ele>28.5868</ele>
+        <extensions>
+          <oa:locType>calcWayPoint</oa:locType>
+        </extensions>
+      </trkpt>
+      <trkpt lat="40.47163" lon="17.240889">
+        <ele>24.92749</ele>
+      </trkpt>
+      <trkpt lat="40.472789" lon="17.241275">
+        <ele>28.57122</ele>
+      </trkpt>
+      <trkpt lat="40.473376" lon="17.237928">
+        <ele>20.45888</ele>
+      </trkpt>
+      <trkpt lat="40.472957" lon="17.237864">
+        <ele>19.80252</ele>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

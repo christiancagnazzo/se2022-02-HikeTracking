@@ -94,13 +94,13 @@ function LocalGuide(props){
             if (plots.error)
               setErrorMessage(plots.msg)
             else
-              setHikes(plots.msg);
+              setParkingLots(plots.msg);
           } catch (err) {
             console.log(err)
           }
         }
         getParkingLots()
-      }, []);
+      }, [dirty]);
 
 
     return(

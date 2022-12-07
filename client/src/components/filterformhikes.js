@@ -327,7 +327,7 @@ function FilterMap(props){
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {props.position !==""?<Circle center={props.position}  radius={props.radius * 1000}/>:''}  
+            {props.position !==""?<Circle center={props.position}  radius={props.radius}/>:''}  
             <MapFunction setCenter={setCenter} setPosition={props.setPosition}/>
             {/*position !==""?<Marker position={position} icon={myIconSp}>
             <Popup>

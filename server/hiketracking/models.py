@@ -22,12 +22,27 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-# Create your models here.
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    min_length = models.FloatField(null=True)
+    max_length = models.FloatField(null=True)
+    min_time = models.IntegerField(null=True)
+    max_time = models.IntegerField(null=True)
+    min_altitude = models.IntegerField(null=True)
+    max_altitude = models.IntegerField(null=True)
+
+    class Difficulty(models.TextChoices):
+        TOURIST = "Tourist"
+        HIKER = "Hiker"
+        PRO_HIKER = "Pro Hiker"
+
+    difficulty = models.CharField(choices=Difficulty.choices, max_length=30)
+
 
 class Point(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
-    province = models.CharField(max_length=30)
+    province = models.CharField(max_length=100)
     village = models.CharField(max_length=30)
     address = models.CharField(max_length=100)
 
@@ -44,7 +59,7 @@ class Point(models.Model):
         ]
 
     def __str__(self):
-        return self.id.__str__()+'_'+self.type
+        return self.id.__str__() + '_' + self.type
 
 
 class Hike(models.Model):
@@ -59,6 +74,15 @@ class Hike(models.Model):
     start_point = models.ForeignKey(Point, on_delete=models.CASCADE, related_name="start_point")
     end_point = models.ForeignKey(Point, on_delete=models.CASCADE, related_name="end_point")
     local_guide = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    class Condition(models.TextChoices):
+        OPEN = "Open"
+        CLOSED = "Closed"
+        PARTLY_BLOCKED = "Partly blocked"
+        SPECIAL_GEAR = "Requires special gear"
+
+    condition = models.CharField(max_length=30, choices=Condition.choices)
+    condition_description = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
@@ -81,11 +105,20 @@ class Hut(models.Model):
     name = models.CharField(max_length=50, unique=True)
     n_beds = models.IntegerField()
     fee = models.FloatField()
+    ascent = models.IntegerField()
+    phone = models.CharField(max_length=10)
+    email = models.EmailField()
+    web_site = models.CharField(max_length=50, blank=True, default='')
     desc = models.TextField(blank=True, default=" ")
     point = models.OneToOneField(Point, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+
+class HutPhoto(models.Model):
+    hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
+    track_file = models.FileField(upload_to='hutimages')
 
 
 class Facility(models.Model):
@@ -117,3 +150,22 @@ class ParkingLot(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class HutHike(models.Model):
+    hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
+    hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['hut', 'hike'], name='huthike')
+        ]
+
+
+class UserHikeLog(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    hike = models.ForeignKey(Hike, on_delete=models.CASCADE)
+    counter = models.IntegerField()  # useful to differentiate different run of the same hike
+    point = models.ForeignKey(Point, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    end = models.BooleanField(default=False)

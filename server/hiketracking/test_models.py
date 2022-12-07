@@ -213,3 +213,36 @@ class AddHutTest(TestCase):
         services = Facility.objects.all()
         self.assertEqual(len(services), 2)
         self.assertEqual(len(HutFacility.objects.filter(hut=hunt).all()), 2)
+
+
+class AddParkingLotTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point.objects.create(latitude=0.01, longitude=0.01, province="start province", village="start village", address="start address")
+        ParkingLot.objects.create(name="test parking lot name 2", fee=0.05, n_cars=5, point_id=1)
+
+    def test_add_parking_lot(self):
+        park = ParkingLot.objects.all()
+        self.assertEqual(park[0].fee, 0.05)
+        self.assertEqual(park[0].name, "test parking lot name 2")
+        self.assertEqual(park[0].n_cars, 5)
+
+class RetrieveHutTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        Point.objects.create(latitude=0.01, longitude=0.01, province="test province", village="test village", address="test address")
+        p1 = Point.objects.get(latitude = 0.01)
+        Hut.objects.create(name = "TestHut", n_beds = 1, fee = 20, point_id = p1.id)
+
+    def test_retrieve_hut(self):
+        concerned_hut = Hut.objects.get(name = "TestHut")
+        self.assertEqual(concerned_hut.n_beds, 1)
+        self.assertEqual(concerned_hut.fee, 20)
+        self.assertEqual(concerned_hut.desc, " ")
+        self.assertEqual(concerned_hut.point_id, 1)

@@ -11,10 +11,15 @@ import Hikes from './hikes';
 import FilterFormHuts from './filterformhuts';
 import Huts from './huts';
 import ParkingLots from './parkinglots';
+import Profile from './profile';
+import Preferences from './preferences';
+import FormProfile from './formProfile';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
+  const [profile, setProfile] = useState([]);
+  const [preferences, setPreferences] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
@@ -39,7 +44,7 @@ function VisitorPage(props) {
   const applyFilterHikes = (filter) => {
     async function  getFilteredHikes(){
       try{
-        const filteredHikes = await API.getAllHikes(token, filter)
+        const filteredHikes = await API.getAllHikes(token, filter, props.userPower)
         if (hikes.error)
             setErrorMessage(filteredHikes.msg)
           else
@@ -88,13 +93,44 @@ function VisitorPage(props) {
           if (filteredHuts.error)
               setErrorMessage(filteredHuts.msg)
             else
-              setHikes(filteredHuts.msg);
+              setHuts(filteredHuts.msg);
           } catch (err) {
             console.log(err)
           }
         }
         getFilteredHuts()
       }
+
+
+    useEffect(() => {
+      const getProfile = async () => {
+        try {
+          const profile = await API.getProfile(token);
+          if (profile.error)
+            setErrorMessage(profile.msg)
+          else
+            setProfile(profile.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getProfile()
+    }, []);
+    
+    useEffect(() => {
+      const getPreferences = async () => {
+        try {
+          const preferences = await API.getPreferences(token);
+          if (preferences.error)
+            setErrorMessage(preferences.msg)
+          else
+            setPreferences(preferences.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getPreferences()
+    }, []);
   
   return (
     <>
@@ -107,6 +143,8 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
+            <Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>
+            {/*<Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>*/}
           </Routes>
         </Row>
       </Col>

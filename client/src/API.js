@@ -165,7 +165,8 @@ async function getAllHikes(token, filters, userPower) {
   if (response.status == '200') {
     let hikes = await response.json();
     if(userPower === "hiker"){
-    hikes.forEach(async h => {
+    for(let i = 0; i < hikes.length; i++){
+      const h = hikes[i]
       let response = await fetch(URL + 'hike/file/' + h["id"], {
         method: 'GET',
         headers: {
@@ -176,7 +177,7 @@ async function getAllHikes(token, filters, userPower) {
         const text = new TextDecoder().decode((await response.body.getReader().read()).value);
         h['file'] = text;
       }
-    });
+    };
   }
 
     return { msg: hikes }
@@ -281,6 +282,122 @@ async function getCitiesByProvince(token, type,province) {
   }
 }
 
-const API = { getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+async function createRecord(record_description, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'profile/', {
+      method: 'POST',
+      body: JSON.stringify(record_description),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+      if (response.status == '200')
+        return { msg: "Record Creato" };
+
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    }
+
+  catch (e) {
+    console.log(e) // TODO
+  }
+}
+
+async function getProfile(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'profile/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200') {
+    let records = await response.json();
+    for(let i = 0; i < records.length; i++){
+      const h = records[i]
+      let response = await fetch(URL + 'profile/file/' + h["id"], {
+        method: 'GET',
+        headers: {
+          'Authorization': valid_token
+        },
+      });
+      if (response.status === 200) {
+        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+        h['file'] = text;
+      }
+    };
+    return { msg: records }
+  }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+async function getPreferences(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'preferences/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200') {
+    let preferences = await response.json();
+    for(let i = 0; i < preferences.length; i++){
+      const h = preferences[i]
+      let response = await fetch(URL + 'profile/file/' + h["id"], {
+        method: 'GET',
+        headers: {
+          'Authorization': valid_token
+        },
+      });
+      if (response.status === 200) {
+        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+        h['file'] = text;
+      }
+    };
+    return { msg: preferences }
+  }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+async function createPreferences(preferences_description, preferences_file, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'preferences/', {
+      method: 'POST',
+      body: JSON.stringify(preferences_description),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status == '200') {
+      response = await response.json()
+      let second_response = await fetch(URL + 'preferences/file/' + response['preferences_id'], {
+        method: 'PUT',
+        body: preferences_file,
+        headers: {
+          'Authorization': valid_token
+        },
+      })
+
+      if (second_response.status == '200')
+        return { msg: "Preference Creato" };
+
+      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    }
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+
+  catch (e) {
+    console.log(e) // TODO
+  }
+}
+
+const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;

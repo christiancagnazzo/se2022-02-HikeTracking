@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from .key import key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,6 +148,6 @@ MEDIA_ROOT = BASE_DIR
 # add email registration Configuration
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'hiketrackPolito2022@gmail.com'
-EMAIL_HOST_PASSWORD = 'ytyxfarqbthgvvjr'
+EMAIL_HOST_USER = 'hiketrack2022@gmail.com'
+EMAIL_HOST_PASSWORD = key
 EMAIL_PORT = 587
