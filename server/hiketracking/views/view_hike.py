@@ -8,117 +8,117 @@ from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser
 from hiketracking.utility import get_province_and_village
 
 
-class HikeFile(APIView):
+class HikeFile( APIView ):
     # permission_classes = (permissions.AllowAny,)
 
     def get(self, request, hike_id):
         try:
-            track = Hike.objects.get(id=hike_id).track_file
-            return FileResponse(open(str(track), 'rb'))
+            track = Hike.objects.get( id=hike_id ).track_file
+            return FileResponse( open( str( track ), 'rb' ) )
         except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print( e )
+            return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR )
 
     def put(self, request, hike_id):
         try:
             file = request.FILES['File']
-        except:
-            Hike.objects.filter(id=hike_id).delete()
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": "File Requested"})
+        except Exception as e:
+            Hike.objects.filter( id=hike_id ).delete()
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "File Requested"} )
 
         try:
-            hike = Hike.objects.get(id=hike_id)
+            hike = Hike.objects.get( id=hike_id )
             hike.track_file = file
             hike.save()
-            return Response(status=status.HTTP_200_OK)
-        except:
-            Hike.objects.filter(id=hike_id).delete()
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"})
+            return Response( status=status.HTTP_200_OK )
+        except Exception as e:
+            Hike.objects.filter( id=hike_id ).delete()
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )
 
 
-class Hikes(APIView):
+class Hikes( APIView ):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
 
-        filters = request.GET.get('filters', None)
+        filters = request.GET.get( 'filters', None )
 
         if filters:
-            minLength = request.GET.get('minLength', None)
-            maxLength = request.GET.get('maxLength', None)
-            minTime = request.GET.get('minTime', None)
-            maxTime = request.GET.get('maxTime', None)
-            minAscent = request.GET.get('minAscent', None)
-            maxAscent = request.GET.get('maxAscent', None)
-            difficulty = request.GET.get('difficulty', None)
-            province = request.GET.get('province', None)
-            village = request.GET.get('village', None)
+            minLength = request.GET.get( 'minLength', None )
+            maxLength = request.GET.get( 'maxLength', None )
+            minTime = request.GET.get( 'minTime', None )
+            maxTime = request.GET.get( 'maxTime', None )
+            minAscent = request.GET.get( 'minAscent', None )
+            maxAscent = request.GET.get( 'maxAscent', None )
+            difficulty = request.GET.get( 'difficulty', None )
+            province = request.GET.get( 'province', None )
+            village = request.GET.get( 'village', None )
 
             hikes = Hike.objects.all()
 
             if minLength:
-                hikes = hikes.filter(length__gte=minLength)
+                hikes = hikes.filter( length__gte=minLength )
             if maxLength:
-                hikes = hikes.filter(length__lte=maxLength)
+                hikes = hikes.filter( length__lte=maxLength )
             if minTime:
-                hikes = hikes.filter(expected_time__gte=minTime)
+                hikes = hikes.filter( expected_time__gte=minTime )
             if maxTime:
-                hikes = hikes.filter(expected_time__lte=maxTime)
+                hikes = hikes.filter( expected_time__lte=maxTime )
             if minAscent:
-                hikes = hikes.filter(ascent__gt=minAscent)
+                hikes = hikes.filter( ascent__gt=minAscent )
             if maxAscent:
-                hikes = hikes.filter(ascent__lte=maxAscent)
+                hikes = hikes.filter( ascent__lte=maxAscent )
             if difficulty:
-                hikes = hikes.filter(difficulty=difficulty)
+                hikes = hikes.filter( difficulty=difficulty )
 
             if province:
-                inner_query = Point.objects.filter(province=province)
-                hikes = hikes.filter(start_point__in=inner_query)
+                inner_query = Point.objects.filter( province=province )
+                hikes = hikes.filter( start_point__in=inner_query )
 
             if village:
-                inner_query = Point.objects.filter(village=village.lower().capitalize())
-                hikes = hikes.filter(start_point__in=inner_query)
+                inner_query = Point.objects.filter( village=village.lower().capitalize() )
+                hikes = hikes.filter( start_point__in=inner_query )
 
             hikes = hikes.values()
 
         else:
             hikes = Hike.objects.values()
 
-        around = request.GET.get('around', None)
+        around = request.GET.get( 'around', None )
 
         if filters and around:
             filtered_hikes = []
-            fields = around.split("-")
+            fields = around.split( "-" )
             radius = fields[2]
             input_coordinates = (fields[0], fields[1])
 
             for h in hikes:
-                refer_p = Point.objects.get(id=h['start_point_id'])
+                refer_p = Point.objects.get( id=h['start_point_id'] )
                 hike_coordinates = (refer_p.latitude, refer_p.longitude)
                 distance = geopy.distance.geodesic(
-                    input_coordinates, hike_coordinates).km
+                    input_coordinates, hike_coordinates ).km
 
-                if distance <= float(radius):
-                    filtered_hikes.append(h)
+                if distance <= float( radius ):
+                    filtered_hikes.append( h )
 
             hikes = filtered_hikes
 
         result = {}
         for h in hikes:
             result = HikeReferencePoint.objects.filter(
-                hike_id=h['id']).values()
+                hike_id=h['id'] ).values()
             list = []
             for r in result:
-                refer_p = Point.objects.get(id=r['point_id'])
-                list.append({
+                refer_p = Point.objects.get( id=r['point_id'] )
+                list.append( {
                     'reference_point_lat': refer_p.latitude,
                     'reference_point_lng': refer_p.longitude,
-                    'reference_point_address': refer_p.address})
+                    'reference_point_address': refer_p.address} )
 
             h['rp'] = list
 
-            startP = Point.objects.get(id=h['start_point_id'])
-            endP = Point.objects.get(id=h['end_point_id'])
+            startP = Point.objects.get( id=h['start_point_id'] )
+            endP = Point.objects.get( id=h['end_point_id'] )
 
             h['start_point_lat'] = startP.latitude
             h['start_point_lng'] = startP.longitude
@@ -127,15 +127,15 @@ class Hikes(APIView):
             h['end_point_lng'] = endP.longitude
             h['end_point_address'] = endP.address
 
-        return Response(hikes, status=status.HTTP_200_OK)
+        return Response( hikes, status=status.HTTP_200_OK )
 
     def post(self, request):
-        user_id = CustomUser.objects.get(email=request.user)
+        user_id = CustomUser.objects.get( email=request.user )
         data = request.data
 
         try:
             sp = get_province_and_village(
-                data['start_point_lat'], data['start_point_lng'])
+                data['start_point_lat'], data['start_point_lng'] )
             start_point_type = 'none'
 
             start_point = Point.objects.get_or_create(
@@ -150,7 +150,7 @@ class Hikes(APIView):
             )
 
             ep = get_province_and_village(
-                data['end_point_lat'], data['end_point_lng'])
+                data['end_point_lat'], data['end_point_lng'] )
             end_point_type = 'none'
 
             end_point = Point.objects.get_or_create(
@@ -173,13 +173,13 @@ class Hikes(APIView):
                 description=data['description'],
                 local_guide=user_id,
                 start_point=start_point[0],
-                end_point=end_point[0])
+                end_point=end_point[0] )
 
             hike.save()
 
             for rp in data['rp_list']:
                 rp_cp = get_province_and_village(
-                    rp['reference_point_lat'], rp['reference_point_lng'])
+                    rp['reference_point_lat'], rp['reference_point_lng'] )
                 ref_point_type = 'none'
                 ref_point = Point.objects.get_or_create(
                     latitude=rp['reference_point_lat'],
@@ -198,7 +198,7 @@ class Hikes(APIView):
                 )
                 rp_hike.save()
 
-            return Response(status=status.HTTP_200_OK, data={"hike_id": hike.id})
+            return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
         except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"Error": str(e)})
+            print( e )
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )

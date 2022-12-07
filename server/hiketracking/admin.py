@@ -1,20 +1,25 @@
 from django.contrib import admin
-
-from hiketracking.form import CustomUserCreationForm, CustomUserChangeForm
-from hiketracking.models import Hike, HikeReferencePoint, CustomUser, Point, Hut, Facility, HutFacility, ParkingLot
 from django.contrib.auth.admin import UserAdmin
 
+from hiketracking.form import CustomUserCreationForm, CustomUserChangeForm
+from hiketracking.models import Hike, HikeReferencePoint, CustomUser, Point, Hut, Facility, HutFacility, ParkingLot, \
+    CustomerProfile, HutPhoto, HutHike, UserHikeLog
+
 # Register your models here.
-admin.site.register(Hike)
-admin.site.register(HikeReferencePoint)
-admin.site.register(Point)
-admin.site.register(Hut)
-admin.site.register(Facility)
-admin.site.register(HutFacility)
-admin.site.register(ParkingLot)
+admin.site.register( CustomerProfile )
+admin.site.register( Point )
+admin.site.register( Hike )
+admin.site.register( HikeReferencePoint )
+admin.site.register( Hut )
+admin.site.register( HutPhoto )
+admin.site.register( Facility )
+admin.site.register( HutFacility )
+admin.site.register( ParkingLot )
+admin.site.register( HutHike )
+admin.site.register( UserHikeLog )
 
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin( UserAdmin ):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
@@ -34,4 +39,4 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register( CustomUser, CustomUserAdmin )
