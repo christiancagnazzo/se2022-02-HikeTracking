@@ -1,12 +1,13 @@
+import geopy.distance
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
-import geopy.distance
+
 from hiketracking.models import Hut, HutFacility, Point, Facility
 from hiketracking.serilizers.serilizer_huts import HuntsSerializer, FacilitySerializer
 from hiketracking.serilizers.serilizer_point import PointSerializer
-from hiketracking.utility import InsertPoint
+from hiketracking.utility import insert_point, link_hike_to_hut
 
 
 class Huts( ListCreateAPIView ):
@@ -66,7 +67,7 @@ class Huts( ListCreateAPIView ):
                 start_lon = request.GET.get( 'start_lon', None )
 
                 huts = Hut.objects.all()
-                    
+
                 if name:
                     huts = huts.filter( name=name )
                 if nbeds:
@@ -85,7 +86,7 @@ class Huts( ListCreateAPIView ):
 
             else:
                 huts = Hut.objects.values()
-            
+
             if filters and start_lat and start_lon:
                 filtered_huts = []
                 input_coordinates = (start_lat, start_lon)
@@ -100,7 +101,7 @@ class Huts( ListCreateAPIView ):
                         filtered_huts.append( h )
 
                 huts = filtered_huts
-                
+
             result = []
 
             for h in huts:
@@ -126,12 +127,13 @@ class Huts( ListCreateAPIView ):
 
     def post(self, request, *args, **kwargs):
         pointSerializer = PointSerializer( data=request.data['position'] )
-
         if pointSerializer.is_valid():
-            point = InsertPoint( pointSerializer, 'hut' )
+            point = insert_point( pointSerializer, 'hut' )
             serializer = self.serializer_class( data={**request.data, 'point': point.id} )
             if serializer.is_valid():
                 hut = serializer.save()
+                for hike in self.request.data['relatedHike']:
+                    link_hike_to_hut( hike, hut )
                 for service in request.data['services']:
                     try:
                         obj, created = Facility.objects.get_or_create( name=service )
@@ -140,7 +142,8 @@ class Huts( ListCreateAPIView ):
                         print( exc )
                         return Response( data={'message': 'error in crating the services', 'exception': exc},
                                          status=status.HTTP_400_BAD_REQUEST )
-                return Response( serializer.data, status=status.HTTP_200_OK )
+
+                return Response( data=serializer.data, status=status.HTTP_200_OK )
             else:
                 return Response( serializer.errors, status=status.HTTP_400_BAD_REQUEST )
         else:
@@ -151,3 +154,5 @@ class Facilities( ListAPIView ):
     permission_classes = (permissions.AllowAny,)
     queryset = Facility.objects.all().values()
     serializer_class = FacilitySerializer
+
+
