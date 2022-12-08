@@ -4,7 +4,7 @@ from knox import views as knox_views
 from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI,
                     Facilities, AccountConfirmation, HutHikeView,
                     UserDetail, UserList, Sessions, Huts, ActivateAccount,
-                    ParkingLotAPI, Recommended)
+                    ParkingLotAPI, Recommended, Profile)
 
 app_name = 'hiketracking'
 urlpatterns = [
@@ -24,4 +24,5 @@ urlpatterns = [
     path( 'facilities/', Facilities.as_view() ),
     path( 'users/validate/', AccountConfirmation.as_view() ),
     path( 'hikes/recommended', Recommended.as_view() ),
+    path( 'profile/<int:pk>', Profile.as_view() ),
 ]

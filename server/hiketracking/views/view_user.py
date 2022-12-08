@@ -10,8 +10,10 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from hiketracking.models import CustomUser
-from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
+
+from hiketracking.models import CustomUser, CustomerProfile
+from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer, \
+    CustomerProfileSerializer
 from hiketracking.tokens import account_activation_token
 
 
@@ -88,9 +90,9 @@ class LoginAPI( KnoxLoginView ):
         user = serializer.validated_data['user']
         user_role = user.role.lower().replace( " ", "" )
         if not user.is_active:
-            return Response( status=status.HTTP_401_UNAUTHORIZED)
+            return Response( status=status.HTTP_401_UNAUTHORIZED )
         if (user_role == 'localguide' or user_role == 'hutworker') and not user.is_confirmed:
-            return Response( status=status.HTTP_401_UNAUTHORIZED)
+            return Response( status=status.HTTP_401_UNAUTHORIZED )
 
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )
@@ -101,29 +103,64 @@ class LoginAPI( KnoxLoginView ):
 
 class Sessions( generics.RetrieveAPIView ):
     def get(self, request):
-        user = CustomUser.objects.get(email=request.user)
-        return Response(status=status.HTTP_200_OK, data={"user": user.email, "role": user.role.lower().replace(" ", "")})
+        user = CustomUser.objects.get( email=request.user )
+        return Response( status=status.HTTP_200_OK,
+                         data={"user": user.email, "role": user.role.lower().replace( " ", "" )} )
 
 
-class AccountConfirmation(APIView):
+class AccountConfirmation( APIView ):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
-        users = CustomUser.objects.filter(is_confirmed=False).filter(is_active=True).values()
-        return Response(status=status.HTTP_200_OK, data={"users": users})
+        users = CustomUser.objects.filter( is_confirmed=False ).filter( is_active=True ).values()
+        return Response( status=status.HTTP_200_OK, data={"users": users} )
 
     def post(self, request):
         try:
             if not request.data and "user_id" not in request.data:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response( status=status.HTTP_400_BAD_REQUEST )
 
             user_id = request.data["user_id"]
-            u = CustomUser.objects.get(id=user_id)
+            u = CustomUser.objects.get( id=user_id )
             if u.is_active:
                 u.is_confirmed = True
-                u.save() # this will update only
-                return Response(status=status.HTTP_200_OK)
+                u.save()  # this will update only
+                return Response( status=status.HTTP_200_OK )
             else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response( status=status.HTTP_400_BAD_REQUEST )
+        except Exception:
+            return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR )
+
+
+class Profile( generics.RetrieveUpdateAPIView ):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = CustomerProfileSerializer
+
+    def get_queryset(self):
+        print( self.kwargs.get( 'pk' ) )
+        try:
+            profile = CustomerProfile.objects.get_or( user_id__exact=self.kwargs.get( 'pk' ) )
+        except Exception:
+            profile = None
+        return profile
+
+    def put(self, request, *args, **kwargs):
+        user = CustomUser.objects.get( id=self.kwargs.get( 'pk' ) )
+        if user.role == "Hiker" and user.is_active and user.is_confirmed:
+            try:
+                Customer_profile = CustomerProfile.objects.get( user=user )
+            except Exception:
+                Customer_profile = None
+
+            if Customer_profile:
+                serializer = self.serializer_class( instance=Customer_profile, data={**request.data} )
+            else:
+                serializer = self.serializer_class( data={**request.data} )
+            if serializer.is_valid():
+                serializer.save()
+                return Response( data=serializer.data, status=status.HTTP_200_OK )
+            else:
+                return Response( data=serializer.errors, status=status.HTTP_400_BAD_REQUEST )
+
+        return Response( data={'message': " the user is authorized  "},
+                         status=status.HTTP_400_BAD_REQUEST )
