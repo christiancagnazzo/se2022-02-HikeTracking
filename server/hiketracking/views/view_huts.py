@@ -2,7 +2,7 @@ from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
-
+import geopy.distance
 from hiketracking.models import Hut, HutFacility, Point, Facility
 from hiketracking.serilizers.serilizer_huts import HuntsSerializer, FacilitySerializer
 from hiketracking.serilizers.serilizer_point import PointSerializer
@@ -51,6 +51,8 @@ class Huts( ListCreateAPIView ):
     #     return huts
 
     def get(self, request, *args, **kwargs):
+        RADIUS = 5
+
         try:
 
             filters = request.GET.get( 'filters', None )
@@ -60,9 +62,11 @@ class Huts( ListCreateAPIView ):
                 nbeds = request.GET.get( 'nbeds', None )
                 fee = request.GET.get( 'fee', None )
                 services = request.GET.get( 'services', None )
+                start_lat = request.GET.get( 'start_lat', None )
+                start_lon = request.GET.get( 'start_lon', None )
 
                 huts = Hut.objects.all()
-
+                    
                 if name:
                     huts = huts.filter( name=name )
                 if nbeds:
@@ -81,7 +85,22 @@ class Huts( ListCreateAPIView ):
 
             else:
                 huts = Hut.objects.values()
+            
+            if filters and start_lat and start_lon:
+                filtered_huts = []
+                input_coordinates = (start_lat, start_lon)
 
+                for h in huts:
+                    refer_p = Point.objects.get( id=h['point_id'] )
+                    huts_coordinates = (refer_p.latitude, refer_p.longitude)
+                    distance = geopy.distance.geodesic(
+                        input_coordinates, huts_coordinates ).km
+
+                    if distance <= float( RADIUS ):
+                        filtered_huts.append( h )
+
+                huts = filtered_huts
+                
             result = []
 
             for h in huts:

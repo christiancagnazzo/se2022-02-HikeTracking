@@ -9,10 +9,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
 from hiketracking.models import CustomUser
-from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer, \
-    SessionsSerializer
+from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer
 from hiketracking.tokens import account_activation_token
 
 
@@ -87,18 +86,44 @@ class LoginAPI( KnoxLoginView ):
         serializer = AuthTokenCustomSerializer( data=request.data )
         serializer.is_valid( raise_exception=True )
         user = serializer.validated_data['user']
+        user_role = user.role.lower().replace( " ", "" )
+        if not user.is_active:
+            return Response( status=status.HTTP_401_UNAUTHORIZED)
+        if (user_role == 'localguide' or user_role == 'hutworker') and not user.is_confirmed:
+            return Response( status=status.HTTP_401_UNAUTHORIZED)
+
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )
         return Response( status=status.HTTP_200_OK,
-                         data={"user": user.email, "role": user.role.lower().replace( " ", "" ),
+                         data={"user": user.email, "role": user_role,
                                "token": result.data['token']} )
 
 
 class Sessions( generics.RetrieveAPIView ):
-    serializer_class = SessionsSerializer
+    def get(self, request):
+        user = CustomUser.objects.get(email=request.user)
+        return Response(status=status.HTTP_200_OK, data={"user": user.email, "role": user.role.lower().replace(" ", "")})
 
-    # permission_classes = (permissions.AllowAny,)
 
-    def get_queryset(self):
-        email = self.request.user
-        return CustomUser.objects.get( email=email )
+class AccountConfirmation(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        users = CustomUser.objects.filter(is_confirmed=False).filter(is_active=True).values()
+        return Response(status=status.HTTP_200_OK, data={"users": users})
+
+    def post(self, request):
+        try:
+            if not request.data and "user_id" not in request.data:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            user_id = request.data["user_id"]
+            u = CustomUser.objects.get(id=user_id)
+            if u.is_active:
+                u.is_confirmed = True
+                u.save() # this will update only
+                return Response(status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

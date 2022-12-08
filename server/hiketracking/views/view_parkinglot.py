@@ -1,7 +1,7 @@
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+import geopy.distance
 from hiketracking.models import ParkingLot, Point
 from hiketracking.serilizers.serilizer_parkinglot import PorkingLotSerializer
 from hiketracking.serilizers.serilizer_point import PointSerializer
@@ -13,9 +13,35 @@ class ParkingLotAPI( APIView ):
     serializer_class = PorkingLotSerializer
 
     def get(self, request):
+        RADIUS = 5
+
         try:
-            result = []
+            filters = request.GET.get( 'filters', None )
+
             listParkigLot = ParkingLot.objects.all().values()
+
+            if filters:
+                start_lat = request.GET.get( 'start_lat', None )
+                start_lon = request.GET.get( 'start_lon', None )
+                
+                if filters and start_lat and start_lon:
+                    filtered_pl = []
+                    input_coordinates = (start_lat, start_lon)
+
+                    for h in listParkigLot:
+                        refer_p = Point.objects.get( id=h['point_id'] )
+                        pl_coordinates = (refer_p.latitude, refer_p.longitude)
+                        distance = geopy.distance.geodesic(
+                            input_coordinates, pl_coordinates ).km
+
+                        if distance <= float( RADIUS ):
+                            filtered_pl.append( h )
+
+                    listParkigLot = filtered_pl
+          
+                
+            result = []
+            
             for p in listParkigLot:
                 point = Point.objects.get( id=p['point_id'] )
                 p['lat'] = point.latitude
