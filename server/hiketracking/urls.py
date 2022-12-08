@@ -1,8 +1,10 @@
 from django.urls import path
 from knox import views as knox_views
 
-from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI, Facilities, AccountConfirmation,
-                    UserDetail, UserList, Sessions, Huts, ActivateAccount, ParkingLotAPI, Recommended)
+from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI,
+                    Facilities, AccountConfirmation, HutHikeView,
+                    UserDetail, UserList, Sessions, Huts, ActivateAccount,
+                    ParkingLotAPI, Recommended)
 
 app_name = 'hiketracking'
 urlpatterns = [
@@ -18,6 +20,7 @@ urlpatterns = [
     path( 'activate/<slug:uidb64>/<slug:token>/', ActivateAccount.as_view(), name='activate' ),
     path( 'parkingLots/', ParkingLotAPI.as_view() ),
     path( 'hut/', Huts.as_view() ),
+    path( 'HutHikeView/', HutHikeView.as_view() ),
     path( 'facilities/', Facilities.as_view() ),
     path( 'users/validate/', AccountConfirmation.as_view() ),
     path( 'hikes/recommended', Recommended.as_view() ),

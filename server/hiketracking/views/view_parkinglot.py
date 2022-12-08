@@ -5,7 +5,7 @@ import geopy.distance
 from hiketracking.models import ParkingLot, Point
 from hiketracking.serilizers.serilizer_parkinglot import PorkingLotSerializer
 from hiketracking.serilizers.serilizer_point import PointSerializer
-from hiketracking.utility import InsertPoint
+from hiketracking.utility import insert_point
 
 
 class ParkingLotAPI( APIView ):
@@ -56,7 +56,7 @@ class ParkingLotAPI( APIView ):
     def post(self, request):
         pointSerializer = PointSerializer( data=request.data['position'] )
         if pointSerializer.is_valid():
-            point = InsertPoint( pointSerializer, 'parking_lot' )
+            point = insert_point( pointSerializer, 'parking_lot' )
             serializer = self.serializer_class( data={**request.data, 'point': point.id} )
             if serializer.is_valid():
                 serializer.save()
