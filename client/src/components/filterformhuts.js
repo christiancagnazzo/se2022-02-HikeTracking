@@ -63,6 +63,12 @@ function FilterFormHuts(props) {
     getFacilities()
   }, [])
 
+  const clearState = () =>{
+    setMinBed('')
+    setMaxFee('')
+    
+  }
+
   return (
     <Card body>
       <Form>
@@ -119,6 +125,10 @@ function FilterFormHuts(props) {
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Apply
         </Button>
+        &nbsp;
+    <Button variant = "danger" onClick = {clearState}>
+      Reset
+    </Button>
       </Form>
     </Card>
   )

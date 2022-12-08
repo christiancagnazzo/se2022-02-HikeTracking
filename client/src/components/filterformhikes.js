@@ -175,6 +175,20 @@ function FilterForm(props) {
     }
     return false
   }
+
+  const clearState = () =>{
+    setMinLength('')
+    setMaxLength('')
+    setMinTime('')
+    setMaxTime('')
+    setMinAscent('')
+    setMaxAscent('')
+    setDifficulty("All")
+    setProvince('-')
+    setVillage("")
+    setRadius(50)
+    setPosition("")
+  }
   
 
   return (
@@ -293,6 +307,10 @@ function FilterForm(props) {
   
     <Button variant="primary" type="submit" onClick={handleSubmit}>
         Apply
+    </Button>
+    &nbsp;
+    <Button variant = "danger" onClick = {clearState}>
+      Reset
     </Button>
     </Form>
     </Card>
