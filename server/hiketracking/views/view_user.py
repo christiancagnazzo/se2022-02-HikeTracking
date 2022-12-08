@@ -95,10 +95,6 @@ class LoginAPI( KnoxLoginView ):
 
 
 class Sessions( generics.RetrieveAPIView ):
-    serializer_class = SessionsSerializer
-
-    # permission_classes = (permissions.AllowAny,)
-
-    def get_queryset(self):
-        email = self.request.user
-        return CustomUser.objects.get( email=email )
+    def get(self, request):
+        user = CustomUser.objects.get(email=request.user)
+        return Response(status=200, data={"user": user.email, "role": user.role.lower().replace(" ", "")})
