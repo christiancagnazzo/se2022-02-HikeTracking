@@ -4,7 +4,7 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser
+from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile
 from hiketracking.utility import get_province_and_village
 
 
@@ -65,7 +65,7 @@ class Hikes( APIView ):
             if maxTime:
                 hikes = hikes.filter( expected_time__lte=maxTime )
             if minAscent:
-                hikes = hikes.filter( ascent__gt=minAscent )
+                hikes = hikes.filter( ascent__gte=minAscent )
             if maxAscent:
                 hikes = hikes.filter( ascent__lte=maxAscent )
             if difficulty:
@@ -202,3 +202,49 @@ class Hikes( APIView ):
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
+
+
+class Recommended(APIView):
+
+    def get(self, request):
+        user_id = request.user.id
+        
+        try:
+            profile = CustomerProfile.objects.get(user=user_id)
+            hikes = Hike.objects.all()\
+                                .filter(length__gte=profile.min_length)\
+                                .filter(length__lte=profile.max_length)\
+                                .filter(expected_time__gte=profile.min_time)\
+                                .filter(expected_time__lte=profile.max_time)\
+                                .filter(ascent__gte=profile.min_altitude)\
+                                .filter(ascent__lte=profile.max_altitude)\
+                                .filter(difficulty=profile.difficulty)\
+                                .values()
+
+            result = {}
+            for h in hikes:
+                result = HikeReferencePoint.objects.filter(hike_id=h['id'] ).values()
+                list = []
+                for r in result:
+                    refer_p = Point.objects.get( id=r['point_id'] )
+                    list.append( {
+                        'reference_point_lat': refer_p.latitude,
+                        'reference_point_lng': refer_p.longitude,
+                        'reference_point_address': refer_p.address} )
+
+                h['rp'] = list
+
+                startP = Point.objects.get( id=h['start_point_id'] )
+                endP = Point.objects.get( id=h['end_point_id'] )
+
+                h['start_point_lat'] = startP.latitude
+                h['start_point_lng'] = startP.longitude
+                h['start_point_address'] = startP.address
+                h['end_point_lat'] = endP.latitude
+                h['end_point_lng'] = endP.longitude
+                h['end_point_address'] = endP.address
+
+            return Response(hikes, status=status.HTTP_200_OK)     
+        
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
