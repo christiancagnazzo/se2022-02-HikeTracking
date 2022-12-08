@@ -1,10 +1,10 @@
 import json
 from http import HTTPStatus
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from hiketracking.models import Hut
-from hiketracking.tests.test_utilty import CreateTestUser
+from hiketracking.models import Point, Hut, Hike
 
 
 class HutTest( TestCase ):
@@ -93,6 +93,7 @@ class HutTest( TestCase ):
                                      )
 
         self.assertEqual( response.status_code, HTTPStatus.BAD_REQUEST )
+
     def testbadPhoneNumber2(self):
         self.data['phone'] = "12345678909876543"
         response = self.client.post( self.url,
@@ -112,25 +113,39 @@ class HutTest( TestCase ):
         self.assertEqual( response.status_code, HTTPStatus.OK )
 
 
-class RetrieveHutAPITest( TestCase ):
-
+class HutHikeTest( TestCase ):
     def setUp(self):
-        p1 = CreateTestUser()
-        h1 = Hut( name="TestHut", n_beds=1, fee=20, point_id=p1.id )
-        print( "H1 is: ", h1 )
-        self.data = {
-            "name": h1.name,
-            "position": {
-                "latitude": p1.latitude,
-                "longitude": p1.longitude,
-                "address": p1.address
-            },
-            "n_beds": h1.n_beds,
-            "fee": h1.fee,
-            "services": ["shower", "sona"]
+        User = get_user_model()
+        User.objects.create_user( email='test@user.com', password='foo', role='smth' )
+        user_id = User.objects.get( email='test@user.com' )
+        p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
+                    address="test" )
+        p2 = Point( latitude=0.31, longitude=10.01, province="test province", village="test village",
+                    address="addresstest" )
+        hunt = Hut( name="test parking pot name 1", n_beds=2,
+                    fee=10, ascent=10,
+                    phone="+999222", email="md@gmail.com",
+                    web_site="www.hi.com",
+                    desc="testHunt", point_id=2 )
 
-        }
-        print( "Data is: ", self.data )
+        p1.save()
+        p2.save()
+        hunt.Point = p1
+        hike = Hike.objects.create( title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy',
+                                    start_point=p2,
+                                    end_point=p2, local_guide=user_id )
+        hunt.save()
+        hike.save()
+        self.data = {
+            'hike': '1',
+            'hut': '1'}
+        self.url = self.url = '/hiketracking/HutHikeView/'
+        self.context_type = "application/json"
+
+    def test_hut_hike(self):
+        response = self.client.post( self.url, json.dumps( self.data ),
+                                     content_type=self.context_type )
+        self.assertEqual( response.status_code, HTTPStatus.CREATED )
 
 
 class AddParkingLotAPI( TestCase ):
