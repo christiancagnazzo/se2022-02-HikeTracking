@@ -106,7 +106,7 @@ class Hut( models.Model ):
     n_beds = models.IntegerField()
     fee = models.FloatField()
     ascent = models.IntegerField( default=0 )
-    phone_regex = RegexValidator( regex=r'^\+?1?\d{9,15}$',
+    phone_regex = RegexValidator( regex=r'^\+?1?\d{4,15}$',
                                   message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed." )
     phone = models.CharField( validators=[phone_regex], max_length=17, default='+00000000' )
     email = models.EmailField( default="hutsemail" )

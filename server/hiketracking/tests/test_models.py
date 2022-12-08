@@ -4,6 +4,7 @@ from django.test import Client
 from django.test import TestCase
 
 from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility
+from hiketracking.tests.test_utilty import CreateTestUser
 
 
 class UsersManagersTests( TestCase ):
@@ -173,22 +174,31 @@ class AddHutTest( TestCase ):
         User = get_user_model()
         User.objects.create_user( email='test@user.com', password='foo', role='smth' )
         self.user_id = User.objects.get( email='test@user.com' )
+
         return super().setUp()
 
     def testHut(self):
         p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
                     address="test address" )
-        hunt = Hut( name="test parking pot name 1", fee=10.01, n_beds=2, desc="testHunt", point_id=1 )
-        service = ["serve1", "serve2"]
         p1.save()
+
+        hunt = Hut( name="test parking pot name 1", n_beds=2,
+                    fee=10.01, ascent=10,
+                    phone="+999222", email="md@gmail.com",
+                    web_site="www.hi.com",
+                    desc="testHunt", point_id=1 )
         hunt.Point = p1
         hunt.save()
+        service = ["serve1", "serve2"]
 
-        list = Hut.objects.all()
-        self.assertEqual( list[0].fee, 10.01 )
-        self.assertEqual( list[0].name, "test parking pot name 1" )
-        self.assertEqual( list[0].n_beds, 2 )
-        self.assertEqual( list[0].point_id, 1 )
+        hut_list = Hut.objects.all()
+        self.assertEqual( hut_list[0].fee, 10.01 )
+        self.modelvalues( hunt, hut_list, service )
+
+    def modelvalues(self, hunt, hut_list, service):
+        self.assertEqual( hut_list[0].name, "test parking pot name 1" )
+        self.assertEqual( hut_list[0].n_beds, 2 )
+        self.assertEqual( hut_list[0].point_id, 1 )
         for service_ in service:
             obj, isNew = Facility.objects.get_or_create( name=service_ )
             self.assertTrue( isNew )
@@ -200,7 +210,11 @@ class AddHutTest( TestCase ):
     def testHutTextFee(self):
         p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
                     address="" )
-        hunt = Hut( name="test parking pot name 1", fee=10, n_beds=2, desc="testHunt", point_id=1 )
+        hunt = Hut( name="test parking pot name 1", n_beds=2,
+                    fee=10, ascent=10,
+                    phone="+999222", email="md@gmail.com",
+                    web_site="www.hi.com",
+                    desc="testHunt", point_id=1 )
         service = ["serve1", "serve2"]
         p1.save()
         hunt.Point = p1
@@ -208,16 +222,7 @@ class AddHutTest( TestCase ):
 
         list = Hut.objects.all()
         self.assertEqual( list[0].fee, 10 )
-        self.assertEqual( list[0].name, "test parking pot name 1" )
-        self.assertEqual( list[0].n_beds, 2 )
-        self.assertEqual( list[0].point_id, 1 )
-        for service_ in service:
-            obj, isNew = Facility.objects.get_or_create( name=service_ )
-            self.assertTrue( isNew )
-            HutFacility.objects.get_or_create( hut=hunt, facility=obj )
-        services = Facility.objects.all()
-        self.assertEqual( len( services ), 2 )
-        self.assertEqual( len( HutFacility.objects.filter( hut=hunt ).all() ), 2 )
+        self.modelvalues( hunt, list, service )
 
 
 class AddParkingLotTest( TestCase ):
@@ -225,9 +230,9 @@ class AddParkingLotTest( TestCase ):
     def setUp(self):
         User = get_user_model()
         User.objects.create_user( email='test@user.com', password='foo', role='smth' )
-        user_id = User.objects.get( email='test@user.com' )
-        p1 = Point.objects.create( latitude=0.01, longitude=0.01, province="start province", village="start village",
-                                   address="start address" )
+        User.objects.get( email='test@user.com' )
+        Point.objects.create( latitude=0.01, longitude=0.01, province="start province", village="start village",
+                              address="start address" )
         ParkingLot.objects.create( name="test parking lot name 2", fee=0.05, n_cars=5, point_id=1 )
 
     def test_add_parking_lot(self):
@@ -240,12 +245,7 @@ class AddParkingLotTest( TestCase ):
 class RetrieveHutTest( TestCase ):
 
     def setUp(self):
-        User = get_user_model()
-        User.objects.create_user( email='test@user.com', password='foo', role='smth' )
-        user_id = User.objects.get( email='test@user.com' )
-        Point.objects.create( latitude=0.01, longitude=0.01, province="test province", village="test village",
-                              address="test address" )
-        p1 = Point.objects.get( latitude=0.01 )
+        p1 = CreateTestUser()
         Hut.objects.create( name="TestHut", n_beds=1, fee=20, point_id=p1.id )
 
     def test_retrieve_hut(self):
