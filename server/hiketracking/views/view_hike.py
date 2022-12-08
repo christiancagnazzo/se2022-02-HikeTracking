@@ -9,8 +9,6 @@ from hiketracking.utility import get_province_and_village
 
 
 class HikeFile( APIView ):
-    # permission_classes = (permissions.AllowAny,)
-
     def get(self, request, hike_id):
         try:
             track = Hike.objects.get( id=hike_id ).track_file
@@ -21,17 +19,17 @@ class HikeFile( APIView ):
 
     def put(self, request, hike_id):
         try:
-            file = request.FILES['File']
-        except Exception as e:
+            hikeFile = request.FILES['File']
+        except Exception :
             Hike.objects.filter( id=hike_id ).delete()
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "File Requested"} )
 
         try:
             hike = Hike.objects.get( id=hike_id )
-            hike.track_file = file
+            hike.track_file = hikeFile
             hike.save()
             return Response( status=status.HTTP_200_OK )
-        except Exception as e:
+        except Exception :
             Hike.objects.filter( id=hike_id ).delete()
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )
 
@@ -39,10 +37,58 @@ class HikeFile( APIView ):
 class Hikes( APIView ):
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request):
+    def get(self, request, format=None):
 
         filters = request.GET.get( 'filters', None )
 
+        hikes = self.hikeView( filters, request )
+
+        around = request.GET.get( 'around', None )
+
+        if filters and around:
+            filtered_hikes = []
+            fields = around.split( "-" )
+            radius = fields[2]
+            input_coordinates = (fields[0], fields[1])
+
+            for h in hikes:
+                refer_p = Point.objects.get( id=h['start_point_id'] )
+                hike_coordinates = (refer_p.latitude, refer_p.longitude)
+                distance = geopy.distance.geodesic(
+                    input_coordinates, hike_coordinates ).km
+
+                if distance <= float( radius ):
+                    filtered_hikes.append( h )
+
+            hikes = filtered_hikes
+
+        result = {}
+        for h in hikes:
+            result = HikeReferencePoint.objects.filter(
+                hike_id=h['id'] ).values()
+            reference_list = []
+            for r in result:
+                refer_p = Point.objects.get( id=r['point_id'] )
+                reference_list.append( {
+                    'reference_point_lat': refer_p.latitude,
+                    'reference_point_lng': refer_p.longitude,
+                    'reference_point_address': refer_p.address} )
+
+            h['rp'] = reference_list
+
+            startP = Point.objects.get( id=h['start_point_id'] )
+            endP = Point.objects.get( id=h['end_point_id'] )
+
+            h['start_point_lat'] = startP.latitude
+            h['start_point_lng'] = startP.longitude
+            h['start_point_address'] = startP.address
+            h['end_point_lat'] = endP.latitude
+            h['end_point_lng'] = endP.longitude
+            h['end_point_address'] = endP.address
+
+        return Response( hikes, status=status.HTTP_200_OK )
+
+    def hikeView(self, filters, request):
         if filters:
             minLength = request.GET.get( 'minLength', None )
             maxLength = request.GET.get( 'maxLength', None )
@@ -83,53 +129,9 @@ class Hikes( APIView ):
 
         else:
             hikes = Hike.objects.values()
+        return hikes
 
-        around = request.GET.get( 'around', None )
-
-        if filters and around:
-            filtered_hikes = []
-            fields = around.split( "-" )
-            radius = fields[2]
-            input_coordinates = (fields[0], fields[1])
-
-            for h in hikes:
-                refer_p = Point.objects.get( id=h['start_point_id'] )
-                hike_coordinates = (refer_p.latitude, refer_p.longitude)
-                distance = geopy.distance.geodesic(
-                    input_coordinates, hike_coordinates ).km
-
-                if distance <= float( radius ):
-                    filtered_hikes.append( h )
-
-            hikes = filtered_hikes
-
-        result = {}
-        for h in hikes:
-            result = HikeReferencePoint.objects.filter(
-                hike_id=h['id'] ).values()
-            list = []
-            for r in result:
-                refer_p = Point.objects.get( id=r['point_id'] )
-                list.append( {
-                    'reference_point_lat': refer_p.latitude,
-                    'reference_point_lng': refer_p.longitude,
-                    'reference_point_address': refer_p.address} )
-
-            h['rp'] = list
-
-            startP = Point.objects.get( id=h['start_point_id'] )
-            endP = Point.objects.get( id=h['end_point_id'] )
-
-            h['start_point_lat'] = startP.latitude
-            h['start_point_lng'] = startP.longitude
-            h['start_point_address'] = startP.address
-            h['end_point_lat'] = endP.latitude
-            h['end_point_lng'] = endP.longitude
-            h['end_point_address'] = endP.address
-
-        return Response( hikes, status=status.HTTP_200_OK )
-
-    def post(self, request):
+    def post(self, request, format=None):
         user_id = CustomUser.objects.get( email=request.user )
         data = request.data
 
@@ -204,35 +206,35 @@ class Hikes( APIView ):
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
 
-class Recommended(APIView):
+class Recommended( APIView ):
 
     def get(self, request):
         user_id = request.user.id
-        
+
         try:
-            profile = CustomerProfile.objects.get(user=user_id)
-            hikes = Hike.objects.all()\
-                                .filter(length__gte=profile.min_length)\
-                                .filter(length__lte=profile.max_length)\
-                                .filter(expected_time__gte=profile.min_time)\
-                                .filter(expected_time__lte=profile.max_time)\
-                                .filter(ascent__gte=profile.min_altitude)\
-                                .filter(ascent__lte=profile.max_altitude)\
-                                .filter(difficulty=profile.difficulty)\
-                                .values()
+            profile = CustomerProfile.objects.get( user=user_id )
+            hikes = Hike.objects.all() \
+                .filter( length__gte=profile.min_length ) \
+                .filter( length__lte=profile.max_length ) \
+                .filter( expected_time__gte=profile.min_time ) \
+                .filter( expected_time__lte=profile.max_time ) \
+                .filter( ascent__gte=profile.min_altitude ) \
+                .filter( ascent__lte=profile.max_altitude ) \
+                .filter( difficulty=profile.difficulty ) \
+                .values()
 
             result = {}
             for h in hikes:
-                result = HikeReferencePoint.objects.filter(hike_id=h['id'] ).values()
-                list = []
+                result = HikeReferencePoint.objects.filter( hike_id=h['id'] ).values()
+                reference_list = []
                 for r in result:
                     refer_p = Point.objects.get( id=r['point_id'] )
-                    list.append( {
+                    reference_list.append( {
                         'reference_point_lat': refer_p.latitude,
                         'reference_point_lng': refer_p.longitude,
                         'reference_point_address': refer_p.address} )
 
-                h['rp'] = list
+                h['rp'] = reference_list
 
                 startP = Point.objects.get( id=h['start_point_id'] )
                 endP = Point.objects.get( id=h['end_point_id'] )
@@ -244,7 +246,7 @@ class Recommended(APIView):
                 h['end_point_lng'] = endP.longitude
                 h['end_point_address'] = endP.address
 
-            return Response(hikes, status=status.HTTP_200_OK)     
-        
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response( hikes, status=status.HTTP_200_OK )
+
+        except Exception:
+            return Response( status=status.HTTP_400_BAD_REQUEST )
