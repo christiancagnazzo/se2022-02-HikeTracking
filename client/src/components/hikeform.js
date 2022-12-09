@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import Hike from "./hikes";
+import GpxParser from 'gpxparser';
 
 function HikeForm(props) {
-  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE	')
+   let [title, setTitle] = useState('Path to the ROCCIAMELONE')
   let [length, setLength] = useState(9)
   let [time, setTime] = useState(240)
   let [ascent, setAscent] = useState(3538)
@@ -16,7 +17,7 @@ function HikeForm(props) {
   let [addressSp, setAddressSp] = useState('Dummy start	')
   let [ep, setEp] = useState(["", ""])
   let [addressEp, setAddressEp] = useState('Dummy ending')
-  let [rp, setRp] = useState(['', ''])
+  let [rp, setRp] = useState([[,]])
   let [addressRp, setAddressRp] = useState('')
   let [rpList, setRpList] = useState([])
   let [desc, setDesc] = useState('First hike to be uploaded')
@@ -57,36 +58,35 @@ function HikeForm(props) {
     }
 
   }
-/*
+
+  
+
   const handleInputFile = async (e) => {
     //gpx analyses and input
-    
+    e.preventDefault();
     let gpx = new GpxParser(); //Create gpxParser Object
-    //setErrorMessage('test node2')
-
     var objFile = document.getElementById("formFile").files[0];
     if (objFile.length == 0) {
     } else {
       var reader = new FileReader();
       reader.onload = function (evt) {
         var fileString = this.result;
-        //setErrorMessage(fileString)
         gpx.parse(fileString);
         let track1 = gpx.tracks[0];
-        let point1 = track1.points[0];
+        let rp = [];
         for (var i = 1; i < track1.points.length - 1; i++) {
-          let rp = [];
           rp[i - 1] = [track1.points[i].lat, track1.points[i].lon];
         }
+        setRp(rp);
+        let startPoint = track1.points[0];
         let endPoint = track1.points[track1.points.length - 1];
-
+        setSp([startPoint.lat, startPoint.lon]);
         setEp([endPoint.lat, endPoint.lon]);
-
+        rpList = rp;
       }
       reader.readAsText(objFile, "UTF-8");
     }
   }
-*/
 
   const checkNum = (num) => {
     if (!isNaN(num)) {
@@ -137,8 +137,9 @@ function HikeForm(props) {
   }, [file])
 
   useEffect(() => {
+    let filters = { "start_lat": sp[0], "start_lon": sp[1]}
     const getHuts = async function () {
-      let req = await API.getAllHuts(token)
+      let req = await API.getAllHuts(token, filters)
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
@@ -149,11 +150,12 @@ function HikeForm(props) {
     }
 
     getHuts()
-  }, [])
+  }, [sp[0], sp[1]])
 
   useEffect(() => {
+    let filters = { "start_lat": sp[0], "start_lon": sp[1]}
     const getParkingLots = async function () {
-      let req = await API.getAllParkingLots(token)
+      let req = await API.getAllParkingLots(token, filters)
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
@@ -164,7 +166,7 @@ function HikeForm(props) {
     }
 
     getParkingLots()
-  }, [])
+  }, [sp[0], sp[1]])
 
 
   return (
@@ -197,15 +199,12 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
-          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e)=> {
-            setFile(e.target.files[0]);
-          
-          }}></input>
-
+          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={handleInputFile}></input>
+        { file === '' ? <Alert style={{"margin-top":"10px"}} variant="secondary">Upload a gpx track file to modify the fields</Alert> : ''}
         </Form.Group>
-        <PointInput parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
-        <PointInput parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
-        <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
+        <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
+        <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
+        <RefPoint file={file} point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
           <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength}/>
         </Card>
@@ -226,10 +225,12 @@ function HikeForm(props) {
 }
 
 function RefPoint(props) {
-  return (<>
+  let listRefPointTitle = <Row className="mb-3">
+    <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
+  </Row>
+    ;
+  const listRefPoint = props.point.map((point) =>
     <Row className="mb-3">
-      <Form.Label htmlFor="basic-url">Reference Point</Form.Label>
-
       <Col>
         <InputGroup size="sm" >
           <InputGroup.Text id="inputGroup-sizing-default" >
@@ -238,7 +239,7 @@ function RefPoint(props) {
           <Form.Control
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
-            value={props.point[0]}
+            value={point[0]}
             onChange={(e) => props.setPoint([e.target.value, props.point[1]])}
           />
         </InputGroup>
@@ -251,7 +252,7 @@ function RefPoint(props) {
           <Form.Control
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
-            value={props.point[1]}
+            value={point[1]}
             onChange={(e) => props.setPoint([props.point[0], e.target.value])}
           />
         </InputGroup>
@@ -269,18 +270,23 @@ function RefPoint(props) {
           />
         </InputGroup>
       </Col>
+    </Row>
+  );
 
-    </Row>
-    <Row>
-      <div align="center">
-        <Button onClick={() => props.addPoint()}>Add</Button>
-        &nbsp; &nbsp;
-        <Button variant="danger" onClick={() => props.removeAll()}>Remove All</Button>
-      </div>
-    </Row>
+  let addAndRemoveAll = <Row>
+    <div align="center">
+      <Button onClick={() => props.addPoint()}>Add</Button>
+      &nbsp; &nbsp;
+      <Button variant="danger" onClick={() => props.removeAll()}>Remove All</Button>
+    </div>
+  </Row>;
+
+  return (<>
+    {listRefPointTitle}
+    {listRefPoint}
+    {addAndRemoveAll}
     <br />
   </>
-
   )
 }
 
@@ -302,6 +308,7 @@ function PointInput(props) {
           Lat
         </InputGroup.Text>
         <Form.Control
+          disabled={props.file === ''}
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
           value={props.point[0]} onChange={(e) => props.setPoint([e.target.value, props.point[1]], props.which)}
@@ -314,6 +321,7 @@ function PointInput(props) {
             Lng
           </InputGroup.Text>
           <Form.Control
+          disabled={props.file === ''}
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             value={props.point[1]} onChange={(e) => props.setPoint([props.point[0], e.target.value], props.which)}
@@ -326,6 +334,7 @@ function PointInput(props) {
             Addr
           </InputGroup.Text>
           <Form.Control
+          disabled={props.file === ''}
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             value={props.address}
@@ -390,9 +399,9 @@ function PointInput(props) {
 
 
         <InputGroup size="sm">
-          <Button variant={variant1} className="border-right-0" onClick={() => setSelected('GPS')}>GPS</Button>
-          <Button variant={variant2} onClick={() => setSelected('Hut')}>Hut</Button>
-          <Button variant={variant3} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
+          <Button disabled={props.file === ''} variant={variant1} className="border-right-0" onClick={() => setSelected('GPS')}>GPS</Button>
+          <Button disabled={props.file === ''} variant={variant2} onClick={() => setSelected('Hut')}>Hut</Button>
+          <Button disabled={props.file === ''} variant={variant3} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
         </InputGroup>
 
 
@@ -408,3 +417,4 @@ function PointInput(props) {
 }
 
 export default HikeForm
+
