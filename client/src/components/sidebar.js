@@ -17,6 +17,9 @@ function MySidebar(props){
     else if (props.userPower === "localguide"){
         menu = <LocalGuideMenu />
     }
+    else if (props.userPower === "platformmanager"){
+      menu = <PlatformManager />
+  }
     return (
         <Col  sm={2} className="px-0  bg-success">
             <ProSidebarProvider >
@@ -44,7 +47,7 @@ function HikerMenu(props){
     const profileIcon = <ManageAccounts></ManageAccounts>
     const updateActive = (idx, relocation) => {
       let active = []
-      for(let i = 0; i < 5; i++){
+      for(let i = 0; i < 6; i++){
         if(i === idx){
           active.push(true)
         }
@@ -69,9 +72,7 @@ function HikerMenu(props){
         <SubMenu icon={parkingLot} label='Parking Lot'>
           <MenuItem onClick={() => updateActive(4,"parkinglots")}active={active[4]}>Browse</MenuItem>
         </SubMenu>
-        <SubMenu icon={profileIcon} label='My profile'>
-          <MenuItem onClick={() => updateActive(5,"profile") }active={active[4]}>Profile</MenuItem>
-        </SubMenu>
+       
       </Menu>
 
     </Sidebar>
@@ -121,5 +122,38 @@ function LocalGuideMenu(props){
           </Menu>
         </Sidebar>
         )
+}
+function PlatformManager(props){
+  const lengthOption = 6
+  const [active, setActive] = useState(initFlagArray(lengthOption))
+  const hikingIcon = <Hiking></Hiking>
+  const parkingLot = <LocalParking></LocalParking>
+  const hutIcon = <HolidayVillage></HolidayVillage>
+  const navigate = useNavigate()
+  const updateActive = (idx, relocation) => {
+    let active = []
+    for(let i = 0; i < lengthOption; i++){
+      if(i === idx){
+        active.push(true)
+      }
+      else {
+        active.push(false)
+      }
+    }
+    setActive(active)
+    navigate(relocation)
+  }
+  return (
+      <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
+        <Menu>
+          <SubMenu label="Managing accounts">
+            <MenuItem onClick={() => {updateActive(0,'/confirmation')}} active={active[0]}>
+              managing Account</MenuItem>
+              
+          </SubMenu>
+          
+        </Menu>
+      </Sidebar>
+      )
 }
 export default MySidebar;

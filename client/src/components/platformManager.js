@@ -8,14 +8,13 @@ import { Col, Row } from 'react-bootstrap';
 import ConfirmAccount from './confirmAccount';
 
 function platformManager(props){
-    // if (props.userPower!== "PlatformManager") navigate("/")
+    
     return(
     <>
-    <Sidebar userPower={"PlatformManager"}/>
+    <Sidebar userPower={"platformmanager"}/>
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>
-        
         <Route path="confirmAccount" element={<ConfirmAccount setDirty={setDirty}/>}/>
     </Routes>
     </Row>
