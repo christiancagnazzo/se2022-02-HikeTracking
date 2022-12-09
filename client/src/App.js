@@ -111,8 +111,7 @@ function App2() {
             <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
-            <Route path='/platformmanager' element={userPower==="platformmanager"?<RegistrationForm />: navigate("/")}></Route>
-            
+            <Route path='/registration' element={<RegistrationForm />}></Route>
             
           </Routes>
         </Row>
