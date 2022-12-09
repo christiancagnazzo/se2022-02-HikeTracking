@@ -1,15 +1,15 @@
-import { Form, Button, Card, Alert } from "react-bootstrap"
-import { useEffect, useState } from "react";
+import { Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
+import {  useState } from "react";
 import API from '../API';
 import { useNavigate } from 'react-router-dom';
 
 function Preferences(props) {
-  const [lengthMin, setLengthMin] = useState()
-  const [lengthMax, setLengthMax] = useState()
-  const [timeMin, setTimeMin] = useState()
-  const [timeMax, setTimeMax] = useState()
-  const [ascentMin, setAscentMin] = useState()
-  const [ascentMax, setAscentMax] = useState()
+  const [minLength, setMinLength] = useState()
+  const [maxLength, setMaxLength] = useState()
+  const [minTime, setMinTime] = useState()
+  const [maxTime, setMaxTime] = useState()
+  const [minAscent, setMinAscent] = useState()
+  const [maxAscent, setMaxAscent] = useState()
   const [difficulty, setDifficulty] = useState()
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
@@ -18,12 +18,12 @@ function Preferences(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();    
     let preferences = {
-      'lengthMin': lengthMin,
-      'lengthMax': lengthMax,
-      'timeMin': timeMin,
-      'timeMax': timeMax,
-      'ascentMin': ascentMin,
-      'ascentMax': ascentMax,
+      'minLength': minLength,
+      'maxLength': maxLength,
+      'minTime': minTime,
+      'maxTime': maxTime,
+      'minAscent': minAscent,
+      'maxAscent': maxAscent,
       'difficulty': difficulty 
     }
     let req = await API.createPreferences(preferences, token)
@@ -46,50 +46,110 @@ function Preferences(props) {
   return (
     <Card body>
       <Form>
-        <Form.Group className="mb-2" controlId="lengthMin">
-          <Form.Label>Length Min (kms)</Form.Label>
-          <Form.Control type="text" placeholder="LengthMin" value={lengthMin}
-            onChange={(e) => { if (checkNum(e.target.value)) { setLengthMin(e.target.value) } }} />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="lengthMax">
-          <Form.Label>Length Max (kms)</Form.Label>
-          <Form.Control type="text" placeholder="LengthMax" value={lengthMax}
-            onChange={(e) => { if (checkNum(e.target.value)) { setLengthMax(e.target.value) } }} />
-        </Form.Group>
-
-        <Form.Group className="mb-2" controlId="timeMin">
-          <Form.Label>Time Min</Form.Label>
-          <Form.Control type="text" placeholder="Minimum time" value={timeMin} onChange={(e) => { if (checkNum(e.target.value)) { setTimeMin(e.target.value) } }} />
-        </Form.Group>
-
-        <Form.Group className="mb-2" controlId="timeMax">
-          <Form.Label>Time Max</Form.Label>
-          <Form.Control type="text" placeholder="Maximum time" value={timeMax} onChange={(e) => { if (checkNum(e.target.value)) { setTimeMax(e.target.value) } }} />
-        </Form.Group>
-
-
-        <Form.Group className="mb-2" controlId="ascentMin">
-          <Form.Label>Ascent Min (meters)</Form.Label>
-          <Form.Control type="text" placeholder="Minimum Ascent" value={ascentMin} onChange={(e) => { if (checkNum(e.target.value)) { setAscentMin(e.target.value) } }} />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="ascentMax">
-          <Form.Label>Ascent Max (meters)</Form.Label>
-          <Form.Control type="text" placeholder="Maximum Ascent" value={ascentMax} onChange={(e) => { if (checkNum(e.target.value)) { setAscentMax(e.target.value) } }} />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="diffuculty">
-          <Form.Label>Difficulty</Form.Label>
-          <Form.Select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
-            <option value="Tourist">Tourist</option>
-            <option value="Hiker">Hiker</option>
-            <option value="Pro Hiker">Pro Hiker</option>
-          </Form.Select>
-        </Form.Group>
-        {' '}
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Form>
-      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
+      <Row className="mb-2"> 
+      <Form.Label htmlFor="basic-url">Length (in kms)</Form.Label>
+      <Col>
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default" >
+            Min
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={minLength}
+            onChange={(e) => checkNum(e.target.value, setMinLength)}
+          />
+        </InputGroup>
+      </Col>
+      <Col>
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default">
+            Max
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={maxLength}
+            onChange={(e) => checkNum(e.target.value, setMaxLength)}
+          />
+        </InputGroup>
+      </Col>
+    </Row>
+        
+    <Row className="mb-2">
+      <Form.Label htmlFor="basic-url">Expected time (in min)</Form.Label>
+      <Col>
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default" >
+            Min
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={minTime}
+            onChange={(e) => checkNum(e.target.value, setMinTime)}
+            
+          />
+        </InputGroup>
+      </Col>
+      <Col>
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default">
+            Max
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={maxTime}
+            onChange={(e) => checkNum(e.target.value, setMaxTime)}
+          />
+        </InputGroup>
+      </Col>
+    </Row>
+    <Row className="mb-2">
+      <Form.Label htmlFor="basic-url">Ascent (in meters)</Form.Label>
+      <Col>
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default" >
+            Min
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={minAscent}
+            onChange={(e) => checkNum(e.target.value, setMinAscent)}
+            
+          />
+        </InputGroup>
+      </Col>
+      <Col >
+        <InputGroup size="sm" className="">
+          <InputGroup.Text id="inputGroup-sizing-default">
+            Max
+          </InputGroup.Text>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={maxAscent}
+            onChange={(e) => checkNum(e.target.value, setMaxAscent)}
+          />
+        </InputGroup>
+      </Col>
+    </Row>
+    
+    <Form.Group className="mb-2" controlId="ascent">
+        <Form.Label>Difficulty</Form.Label>
+        <Form.Select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+        <option value="All" >All</option>
+        <option value="Tourist" >Tourist</option>
+        <option value="Hiker" >Hiker</option>
+        <option value="Pro Hiker" >Pro Hiker</option>
+        </Form.Select>
+    </Form.Group>
+    <Button variant="primary" type="submit" onClick={handleSubmit}>
+        Apply
+    </Button>
+    </Form>
     </Card>
   )
 
