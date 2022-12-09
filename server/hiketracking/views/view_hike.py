@@ -137,12 +137,10 @@ class Hikes( APIView ):
         user_id = CustomUser.objects.get( email=request.user )
         data = request.data
         try:
-            
             hike = Hike.objects.get(title=data['title'])
-            hike.delete()
             hike.track_file.delete()
-        except Exception as e:
-            print(e)
+            hike.delete()
+            
         finally:
             try:
                 sp = get_province_and_village(
@@ -241,7 +239,6 @@ class Hike_( APIView ):
                 h['end_point_lat'] = endP.latitude
                 h['end_point_lng'] = endP.longitude
                 h['end_point_address'] = endP.address
-                print(h)
                 return Response(status=status.HTTP_200_OK, data={"hike" : h})
         except Exception as e:
             print(e)
