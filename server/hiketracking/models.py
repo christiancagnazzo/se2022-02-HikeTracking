@@ -81,6 +81,8 @@ class Hike( models.Model ):
         PARTLY_BLOCKED = "Partly blocked"
         SPECIAL_GEAR = "Requires special gear"
 
+    condition = models.CharField(blank=True, max_length=30, choices=Condition.choices)
+    condition_description = models.CharField(blank=True, max_length=100)
     condition = models.CharField( max_length=30, choices=Condition.choices, default=Condition.OPEN )
     condition_description = models.CharField( max_length=100, default=" " )
 
@@ -139,7 +141,7 @@ class HutFacility( models.Model ):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint( fields=['hut', 'facility'], name='hutfac' )
+            models.UniqueConstraint(fields=['hut', 'facility'], name='hutfac')
         ]
 
 
@@ -147,6 +149,8 @@ class ParkingLot( models.Model ):
     name = models.CharField( max_length=50, unique=True )
     fee = models.FloatField()
     n_cars = models.IntegerField()
+    desc = models.TextField(blank=True, default="")
+    point = models.OneToOneField(Point, on_delete=models.CASCADE)
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
 
@@ -160,8 +164,8 @@ class HutHike( models.Model ):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint( fields=['hut', 'hike'], name='huthike' )
-        ]
+            models.UniqueConstraint(fields=['hut','hike'], name='huthike')
+            ]
 
     def __str__(self):
         return "hut:" + str( self.hut ) + " hike:" + str( self.hike )
