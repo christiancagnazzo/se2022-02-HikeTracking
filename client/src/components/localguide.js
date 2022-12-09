@@ -18,7 +18,6 @@ function LocalGuide(props){
   const [dirty, setDirty] = useState(false)
   let token = localStorage.getItem("token");
   
-  console.log(props.userPower)
   const updateDirty = () => {
     const flag = dirty
     setDirty(!flag)
@@ -110,13 +109,13 @@ function LocalGuide(props){
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>
+        <Route path="edithike/:hiketitle" element={<HikeForm updateDirty={updateDirty}/>}/>
         <Route path="*" element={<HikeForm/>}/>
         <Route path="addhut" element={<HutForm updateDirty={updateDirty}/>}/>
         <Route path="addparkinglot" element={<ParkingLotForm updateDirty={updateDirty}/>}/>
         <Route path="hikes" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
         <Route path="huts" element={<Huts huts={huts}/>}/>
         <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} applyFilter={() => {}}/>}/>
-        <Route path="edithike/:hiketitle" element={<HikeForm updateDirty={updateDirty}/>}/>
     </Routes>
     </Row>
     </Col>

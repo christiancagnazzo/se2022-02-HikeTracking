@@ -5,7 +5,7 @@ async function createHike(hike_description, hike_file, token) {
 
   try {
     let response = await fetch(URL + 'hikes/', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
@@ -38,23 +38,46 @@ async function createHike(hike_description, hike_file, token) {
 }
 
 
-async function getHike(hike_title,  token) {
-  return
-  /*const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
+
+async function deleteHike(title, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
-    let response = await fetch(URL + 'hike/' + hike_title), {
+    let response = await fetch(URL + 'hikes/' + title, {
+      method: 'DELETE',
       headers: {
         'Authorization': valid_token
       }
+    })
+    if(response.status == 200){
+      return true
     }
-    if(response.status === '200'){
-      const hike = await response.json()
-    
-    
 
+  } catch(e){
+    console.log(e)
   }
-}*/
+}
+
+
+async function getHike(title,  token) {
+  
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'hikes/' + title, {
+      headers: {
+        'Authorization': valid_token
+      }
+    })
+
+    if(response.status == 200){
+      const hike = await response.json()
+      return hike
+   }
+  }
+  catch(e) {
+    console.log(e)
+  }
 }
 
 async function createHut(hut_description, token) {
@@ -69,6 +92,7 @@ async function createHut(hut_description, token) {
         'Authorization': valid_token
       },
     })
+  
     if (response.status == '200')
       return { msg: "Hut created" };
 
@@ -187,23 +211,30 @@ async function getAllHikes(token, filters, userPower) {
     if (userPower === "hiker") {
       for (let i = 0; i < hikes.length; i++) {
         const h = hikes[i]
-        let response = await fetch(URL + 'hike/file/' + h["id"], {
-          method: 'GET',
-          headers: {
-            'Authorization': valid_token
-          },
-        });
-        if (response.status === 200) {
-          const text = new TextDecoder().decode((await response.body.getReader().read()).value);
-          h['file'] = text;
+        h['file'] = await getHikeFile(h['hike_id'],token);
         }
-      };
-    }
-
+    };
     return { msg: hikes }
   }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+
+async function getHikeFile(hike_id, token){
+  console.log("fille")
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'hike/file/' + hike_id, {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status === 200) {
+    console.log(response)
+    const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+    return text
   }
 }
 
@@ -428,6 +459,6 @@ async function createPreferences(preferences_description, preferences_file, toke
   }
 }
 
-const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike };
+const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile };
 
 export default API;

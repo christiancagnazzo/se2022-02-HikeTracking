@@ -165,8 +165,7 @@ class HutHike( models.Model ):
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['hut','hike'], name='huthike')
-            models.UniqueConstraint( fields=['hut', 'hike'], name='huthike' )
-        ]
+            ]
 
     def __str__(self):
         return "hut:" + str( self.hut ) + " hike:" + str( self.hike )
