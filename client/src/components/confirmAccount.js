@@ -1,14 +1,12 @@
 import { Col,Row,Card,ListGroup, Button} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import API from '../API';
-import { SetMeal } from '@mui/icons-material';
+
 
 
 
 
 function ConfirmAccount(props){
-  const navigate = useNavigate();
   const [mail, setMail]=useState("")
   const [final, setFinal]=useState("")
   const [role,setRole]=useState("")
@@ -17,8 +15,9 @@ function ConfirmAccount(props){
   
   
   const postRequest = async () => {
+    
     try {
-      const desc={mail:"mail", final:"final", role:"role"}
+      const desc={mail:mail, final:final, role:role}
       const request = await API.postRequest(desc,token);
       if (request.error){
         setErrorMessage(request.msg)
@@ -30,7 +29,6 @@ function ConfirmAccount(props){
       console.log(err)
     }
   }
-  
     return (
       showAccounts(props.req,postRequest,setMail,setFinal,setRole)
     );
@@ -91,7 +89,7 @@ function UserCard(props) {
         setMail(mail);
         setFinal(approve);
         setRole(role);
-        return postRequest;
+        return postRequest();
 }
 
 
