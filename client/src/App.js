@@ -9,8 +9,9 @@ import { LoginForm } from './components/login';
 import MyNavbar from './components/navbarlogin';
 import Hike from './components/hikes';
 import LocalGuide from './components/localguide'
+import PlatformManager from './components/platformManager';
 import { Helmet } from "react-helmet";
-import RegistrationForm from './components/registration';
+
 import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 
@@ -111,7 +112,7 @@ function App2() {
             <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ userPower === 'localguide' ? <LocalGuide></LocalGuide> : <Navigate replace to={'/login'}></Navigate>}></Route>
-            <Route path='/registration' element={<RegistrationForm />}></Route>
+            <Route path='/platformmanager/*' element={userPower === 'platformmanager' ? < PlatformManager/>: <Navigate replace to={'/login'}></Navigate>}></Route>
             
           </Routes>
         </Row>

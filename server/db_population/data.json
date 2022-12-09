@@ -23,6 +23,17 @@
   },
   {
     "model": "hiketracking.customuser",
+    "pk": 2,
+    "fields": {
+      "email": "pm@mail.com",
+      "role": "platformmanager",
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1,
+      "is_confirmed": 1
+    }
+  },
+  {
+    "model": "hiketracking.customuser",
     "pk": 17,
     "fields": {
       "password": "pbkdf2_sha256$390000$ifjGdP7ueT3cwTeELvt4o2$/Nbc27DWB9RHQ26phdc4E2KmZe7lzv4WfpdiAyU4woQ=",

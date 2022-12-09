@@ -353,21 +353,7 @@ async function getPreferences(token) {
     },
   });
   if (response.status == '200') {
-    let preferences = await response.json();
-    for (let i = 0; i < preferences.length; i++) {
-      const h = preferences[i]
-      let response = await fetch(URL + 'profile/file/' + h["id"], {
-        method: 'GET',
-        headers: {
-          'Authorization': valid_token
-        },
-      });
-      if (response.status === 200) {
-        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
-        h['file'] = text;
-      }
-    };
-    return { msg: preferences }
+    return { msg: response }
   }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -408,6 +394,47 @@ async function createPreferences(preferences_description, preferences_file, toke
   }
 }
 
-const API = { createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
+async function postRequest(desc,token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  
+  try {
+    let response = await fetch(URL + 'platformmanager/', {
+      method: 'POST',
+      body: JSON.stringify(desc),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status == '200')
+      return { msg: "user updated" };
+
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+
+  catch (e) {
+    console.log(e) // TODO
+  }
+}
+
+
+
+async function getRequests(token) {
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'platformmanager/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  if (response.status == '200') {
+      return { msg: response }
+  }
+  else {
+    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  }
+}
+
+const API = { getRequests,postRequest,createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
 export default API;
