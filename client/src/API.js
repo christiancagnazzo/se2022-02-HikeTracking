@@ -354,62 +354,14 @@ async function getProfile(token) {
     },
   });
   if (response.status == '200') {
-    let records = await response.json();
-    for (let i = 0; i < records.length; i++) {
-      const h = records[i]
-      let response = await fetch(URL + 'profile/file/' + h["id"], {
-        method: 'GET',
-        headers: {
-          'Authorization': valid_token
-        },
-      });
-      if (response.status === 200) {
-        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
-        h['file'] = text;
-      }
-    };
-    return { msg: records }
+    return { msg: await response.json() }
   }
   else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
+    return { error: "Something went wrong. Please try again" }
   }
 }
-async function getPreferences(token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'preferences/', {
-    method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
-  });
-  if (response.status == '200') {
-    return { msg: response }
-  }
-  else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
-  }
-}
-async function createPreferences(preferences_description, preferences_file, token) {
-  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-  try {
-    let response = await fetch(URL + 'profile/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': valid_token
-      },
-    })
-    if (response.status == '200')
-      return { msg: await response.json() }
-    else {
-      return { error: 'Error', msg: "Something went wrong. Please try again" }
-    }
-  }
-  catch(e) {
-    console.log(e)
-  }
-}
+
 
 
 const API = { getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile };
