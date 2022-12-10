@@ -39,12 +39,12 @@ function Preferences(props) {
     const getProfile = async function () {
       let req = await API.getProfile(token)
       if (req.msg) {
-        setLengthMin(req.msg[0].min_length)
-        setLengthMax(req.msg[0].max_length)
-        setTimeMin(req.msg[0].min_time)
-        setTimeMax(req.msg[0].max_time)
-        setAscentMin(req.msg[0].min_altitude)
-        setAscentMax(req.msg[0].max_altitude)
+        setLengthMin(req.msg[0].min_length?req.msg[0].min_length:'')
+        setLengthMax(req.msg[0].max_length?req.msg[0].max_length:'')
+        setTimeMin(req.msg[0].min_time?req.msg[0].min_time:'')
+        setTimeMax(req.msg[0].max_time?req.msg[0].max_time:'')
+        setAscentMin(req.msg[0].min_altitude?req.msg[0].min_altitude:'')
+        setAscentMax(req.msg[0].max_altitude?req.msg[0].max_altitude:'')
       }
     }
     getProfile()
