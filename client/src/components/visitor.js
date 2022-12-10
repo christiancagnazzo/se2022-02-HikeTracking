@@ -12,6 +12,8 @@ import FilterFormHuts from './filterformhuts';
 import Huts from './huts';
 import ParkingLots from './parkinglots';
 import Preferences from './preferences';
+import FormProfile from './formProfile';
+import RecommendedHikes from './RecomHikes';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
@@ -19,6 +21,7 @@ function VisitorPage(props) {
   const [profile, setProfile] = useState([]);
   const [preferences, setPreferences] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
+  const [recommendedhikes,setRecommendedhikes] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
   
@@ -99,6 +102,56 @@ function VisitorPage(props) {
         getFilteredHuts()
       }
 
+
+    useEffect(() => {
+      const getProfile = async () => {
+        try {
+          const profile = await API.getProfile(token);
+          if (profile.error)
+            setErrorMessage(profile.msg)
+          else
+            setProfile(profile.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getProfile()
+    }, []);
+    
+    useEffect(() => {
+      const getPreferences = async () => {
+        try {
+          const preferences = await API.getPreferences(token);
+          if (preferences.error)
+            setErrorMessage(preferences.msg)
+          else
+            setPreferences(preferences.msg);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getPreferences()
+    }, []);
+  // create a function and use effect and use preferences in existing api of filtering hikes but mapping dekhni parhni 
+
+
+      useEffect(() => {
+        const getRecommendedHikes = async() =>{
+          try{
+            const filter = preferences[0]
+            const r_hikes = await API.getAllHikes(token, filter, props.userPower)
+            if(r_hikes.error)
+              setErrorMessage(r_hikes.msg)
+              else
+                setRecommendedhikes(r_hikes.msg);
+          } catch(err){
+            console.log(err)
+          }
+        }
+        getRecommendedHikes()
+      }, [props.userPower])
+    
+
   return (
     <>
       <Sidebar userPower={props.userPower} />
@@ -107,6 +160,7 @@ function VisitorPage(props) {
           <Routes>
             <Route path="*" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
             <Route path="filterhikes" element={<FilterFormHikes   applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
+            <Route path= "recommendedhikes" element ={<RecommendedHikes recommendedhikes={recommendedhikes}/>}/>
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>

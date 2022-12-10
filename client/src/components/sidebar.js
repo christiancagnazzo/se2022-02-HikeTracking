@@ -64,6 +64,7 @@ function HikerMenu(props){
         <SubMenu label="Hikes" icon={hikingIcon}>
           <MenuItem onClick={() => updateActive(0,"hikes")} active={active[0]}>Browse</MenuItem>
           <MenuItem onClick={() => updateActive(1,"filterhikes")} active={active[1]}>Filter</MenuItem>
+          <MenuItem onClick = {() => updateActive(6, "recommendedhikes")} active = {active[6]}>Recommended Hikes</MenuItem>
         </SubMenu>
         <SubMenu icon ={hutIcon} label='Hut'>
           <MenuItem onClick={() => updateActive(2,"huts")}active={active[2]}>Browse</MenuItem>
