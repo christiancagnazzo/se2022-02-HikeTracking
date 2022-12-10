@@ -40,7 +40,7 @@ async function createHike(hike_description, hike_file, token) {
 
 
 
-async function deleteHike(title, token){
+async function deleteHike(title, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
     let response = await fetch(URL + 'hikes/' + title, {
@@ -49,18 +49,18 @@ async function deleteHike(title, token){
         'Authorization': valid_token
       }
     })
-    if(response.status == 200){
+    if (response.status == 200) {
       return true
     }
 
-  } catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
 
-async function getHike(title,  token) {
-  
+async function getHike(title, token) {
+
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
@@ -70,12 +70,12 @@ async function getHike(title,  token) {
       }
     })
 
-    if(response.status == 200){
+    if (response.status == 200) {
       const hike = await response.json()
       return hike
-   }
+    }
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
   }
 }
@@ -92,7 +92,7 @@ async function createHut(hut_description, token) {
         'Authorization': valid_token
       },
     })
-  
+
     if (response.status == '200')
       return { msg: "Hut created" };
 
@@ -211,8 +211,8 @@ async function getAllHikes(token, filters, userPower) {
     if (userPower === "hiker") {
       for (let i = 0; i < hikes.length; i++) {
         const h = hikes[i]
-        h['file'] = await getHikeFile(h['hike_id'],token);
-        }
+        h['file'] = await getHikeFile(h['id'], token);
+      }
     };
     return { msg: hikes }
   }
@@ -222,17 +222,15 @@ async function getAllHikes(token, filters, userPower) {
 }
 
 
-async function getHikeFile(hike_id, token){
-  console.log("fille")
+async function getHikeFile(hike_id, token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
   let response = await fetch(URL + 'hike/file/' + hike_id, {
     method: 'GET',
     headers: {
-      'Authorization': valid_token
+      //'Authorization': valid_token
     },
   });
   if (response.status === 200) {
-    console.log(response)
     const text = new TextDecoder().decode((await response.body.getReader().read()).value);
     return text
   }
@@ -312,8 +310,6 @@ async function getAllParkingLots(token, filters) {
 }
 
 async function getFacilities() {
-
-
   let response = await fetch(URL + 'facilities/', {
     method: 'GET',
 
@@ -326,43 +322,26 @@ async function getFacilities() {
   }
 }
 
-async function getCitiesByProvince(token, type, province) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-
-  let response = await fetch(URL + 'province?prov=' + province & "type?t=" + type, {
-    method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
-  });
-  if (response.status == '200')
-    return { msg: await response.json() }
-
-  else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
-  }
-}
-
-async function createRecord(record_description, token) {
+async function setProfile(preferences, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
     let response = await fetch(URL + 'profile/', {
-      method: 'POST',
-      body: JSON.stringify(record_description),
+      method: 'PUT',
+      body: JSON.stringify(preferences),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': valid_token
       },
     })
     if (response.status == '200')
-      return { msg: "Record Creato" };
-
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+      return { msg: "Profile updated!"}
+    else {
+      return { error: 'Error', msg: "Something went wrong. Please try again" }
+    }
   }
-
-  catch (e) {
-    console.log(e) // TODO
+  catch(e) {
+    console.log(e)
   }
 }
 
@@ -414,78 +393,24 @@ async function createPreferences(preferences_description, preferences_file, toke
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
-    let response = await fetch(URL + 'preferences/', {
-      method: 'POST',
-      body: JSON.stringify(preferences_description),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': valid_token
-      },
-    })
-    if (response.status == '200') {
-      response = await response.json()
-      let second_response = await fetch(URL + 'preferences/file/' + response['preferences_id'], {
-        method: 'PUT',
-        body: preferences_file,
-        headers: {
-          'Authorization': valid_token
-        },
-      })
-
-      if (second_response.status == '200')
-        return { msg: "Preference Creato" };
-
-      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
-    }
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
-  }
-
-  catch (e) {
-    console.log(e) // TODO
-  }
-}
-
-async function postRequest(desc,token) {
-  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-  
-  try {
-    let response = await fetch(URL + 'platformmanager/', {
-      method: 'POST',
-      body: JSON.stringify(desc),
+    let response = await fetch(URL + 'profile/', {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': valid_token
       },
     })
     if (response.status == '200')
-      return { msg: "user updated" };
-
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+      return { msg: await response.json() }
+    else {
+      return { error: 'Error', msg: "Something went wrong. Please try again" }
+    }
   }
-
-  catch (e) {
-    console.log(e) // TODO
-  }
-}
-
-
-
-async function getRequests(token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'platformmanager/', {
-    method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
-  });
-  if (response.status == '200') {
-      return { msg: response }
-  }
-  else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  catch(e) {
+    console.log(e)
   }
 }
 
-const API = { getRequests,postRequest,createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut };
 
+const API = { getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile };
 export default API;
