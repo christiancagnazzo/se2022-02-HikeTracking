@@ -375,6 +375,43 @@ async function getRecommendedHikes(token){
   }
 }
 
+async function getAccountsToValidate(token){
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'users/validate/',{
+    headers:{
+      'Authorization': valid_token
+    },
+  })
+  if (response.status == 200){
+    return {msg: await response.json()}
+  } else {
+    return {error: "Error", msg: "Something went wrong. Please try again"}
+  }
+}
 
-const API = { getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes };
+async function activateAccount(params, token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'users/validate/', {
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status == '200')
+      return { msg: "Updated!"}
+    else {
+      return { error: 'Error', msg: "Something went wrong. Please try again" }
+    }
+  }
+  catch(e) {
+    console.log(e)
+  }
+}
+
+
+const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes };
 export default API;
