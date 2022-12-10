@@ -97,7 +97,6 @@ function HikeForm(props) {
       const blob = new Blob([file], {type: 'text/plain'})
       const newFile = new File([blob], filename)
       setFile(newFile)
-      console.log(newFile)
       } catch(e){
         console.log(e)
       }
@@ -227,7 +226,7 @@ function HikeForm(props) {
       <Form>
         <Form.Group className="mb-2" controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control type="text" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Form.Control disabled = {hiketitle!==undefined}type="text" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="length">
           <Form.Label>Length (kms)</Form.Label>
