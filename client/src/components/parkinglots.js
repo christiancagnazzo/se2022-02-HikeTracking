@@ -23,7 +23,20 @@ function displayParkingLotsUtil(parkinglots, userPower){
       }
       rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
     }
-    return <>{rows}</>
+    return (
+      <>
+        <Container>
+          <Row>
+            <Col xs={10}>
+              <h1>All Parking Lots</h1>
+            </Col>
+          </Row>
+        </Container>
+        <div>
+          {rows}
+        </div>
+      </>
+    )
 }
 
 function ParkingLots(props){
