@@ -44,7 +44,7 @@ function HikerMenu(props){
     const profileIcon = <ManageAccounts></ManageAccounts>
     const updateActive = (idx, relocation) => {
       let active = []
-      for(let i = 0; i < 5; i++){
+      for(let i = 0; i < 6; i++){
         if(i === idx){
           active.push(true)
         }
@@ -61,6 +61,7 @@ function HikerMenu(props){
         <SubMenu label="Hikes" icon={hikingIcon}>
           <MenuItem onClick={() => updateActive(0,"hikes")} active={active[0]}>Browse</MenuItem>
           <MenuItem onClick={() => updateActive(1,"filterhikes")} active={active[1]}>Filter</MenuItem>
+          <MenuItem onClick = {() => updateActive(6, "recommendedhikes")} active = {active[6]}>Recommended Hikes</MenuItem>
         </SubMenu>
         <SubMenu icon ={hutIcon} label='Hut'>
           <MenuItem onClick={() => updateActive(2,"huts")}active={active[2]}>Browse</MenuItem>

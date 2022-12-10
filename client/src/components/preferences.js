@@ -26,11 +26,12 @@ function Preferences(props) {
       'ascentMax': ascentMax,
       'difficulty': difficulty 
     }
+    
     let req = await API.createPreferences(preferences, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
-        props.setPreferences(preferences)
+      props.setPreferences(preferences)
       navigate('/')
     }
 
