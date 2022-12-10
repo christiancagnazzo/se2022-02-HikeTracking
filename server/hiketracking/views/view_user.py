@@ -11,7 +11,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hiketracking.models import CustomUser, CustomerProfile
+from hiketracking.models import CustomUser, CustomerProfile, Hut, HutWorker
 from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer, \
     CustomerProfileSerializer
 from hiketracking.tokens import account_activation_token
@@ -32,11 +32,14 @@ class RegisterAPI( generics.GenericAPIView ):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
+        working_hut = request.data.pop('working_hut',None)
         serializer = self.get_serializer( data=request.data )
         serializer.is_valid( raise_exception=True )
         serializer.is_active = False
         user = serializer.save()
         current_site = get_current_site( request )
+        print("okk")
         mail_subject = 'Activation link has been sent to your email id'
         message = render_to_string( './acc_active_email.html', {
             'user': user,
@@ -50,6 +53,9 @@ class RegisterAPI( generics.GenericAPIView ):
         )
         try:
             email.send()
+            if request.data['role'] == 'Hut Worker' and working_hut:
+                hut = Hut.objects.get(name=working_hut)
+                HutWorker.objects.create(hutworker = user, hut= hut)
             return Response( status=status.HTTP_200_OK, data={
                 "message": 'Please confirm your email address to complete the registration'} )
         except Exception as e:

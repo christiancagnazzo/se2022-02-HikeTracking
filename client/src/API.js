@@ -155,7 +155,7 @@ async function signin(credentials) {
   if (response.status == '200')
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Something went wrong with the recording.  Please try again" }
+    return { error: 'Error', msg: "Something went wrong during the registration. This email is associated with an existing account." }
   }
 
 }
