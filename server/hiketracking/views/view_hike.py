@@ -139,7 +139,6 @@ class Hikes( APIView ):
         user_id = CustomUser.objects.get( email=request.user )
         data = request.data
         try:
-            
             hike = Hike.objects.get(title=data['title'])
             hike.delete()
             hike.track_file.delete()
