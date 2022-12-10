@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { ListGroup, Row, Col, Modal, Alert, Badge } from 'react-bootstrap';
+import { ListGroup, Row, Col, Modal, Alert, Badge, NavItem } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -46,7 +46,8 @@ function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
   const isHiker = props.userPower === 'hiker'
-
+  const isLocalGuide = props.userPower === 'localguide'
+  const navigate = useNavigate()
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
       <Card.Body>
@@ -66,6 +67,7 @@ function HikeCard(props) {
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
           { (isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker)?<Badge bg="secondary">No Track Available</Badge>:''}
+          {isLocalGuide? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
         </Card.Text>
       </Card.Body>
 

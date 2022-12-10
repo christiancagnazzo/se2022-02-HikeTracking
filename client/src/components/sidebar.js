@@ -70,9 +70,10 @@ function HikerMenu(props){
         <SubMenu icon={parkingLot} label='Parking Lot'>
           <MenuItem onClick={() => updateActive(4,"parkinglots")}active={active[4]}>Browse</MenuItem>
         </SubMenu>
+        {props.hiker ?
         <SubMenu icon={profileIcon} label='My profile'>
           <MenuItem onClick={() => updateActive(5,"profile") }active={active[4]}>Profile</MenuItem>
-        </SubMenu>
+        </SubMenu> : ''}
       </Menu>
 
     </Sidebar>

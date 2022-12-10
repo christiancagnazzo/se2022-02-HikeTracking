@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.test import Client
 from django.test import TestCase
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility
+from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
 from hiketracking.tests.test_utilty import CreateTestUser
 
 
@@ -255,7 +255,7 @@ class RetrieveHutTest( TestCase ):
         self.assertEqual( concerned_hut.desc, " " )
         self.assertEqual( concerned_hut.point_id, 1 )
         
-        
+
         
         
         
@@ -271,6 +271,7 @@ class recommendedHikeTest(TestCase):
         Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
         return super().setUp()
     def test_recommendHike(self):
+        
         pass
         
 
@@ -372,13 +373,31 @@ class modifyAndDeleteHikeTest(TestCase):
     def test_deleteHikeById(self):
         obj = Hike.objects.get(title = "Trekking")
         obj.delete()
-        hike2 = CustomerProfile.objects.all()
-        self.assertFalse(hike2)
+        hike2 = Hike.objects.all()
+        self.assertTrue(hike2.exists())
 
     def test_deleteAllHikes(self):
         Hike.objects.all().delete()
-        hike2 = CustomerProfile.objects.all()
-        self.assertFalse(hike2)
+        hike2 = Hike.objects.all()
+        self.assertFalse(hike2.exists())
+
+class CustomerProfileTest(TestCase):
+    def setUp(self) -> None:
+        c1 = CustomUser(email = "test@test.com",role = "Testrole")
+        c1.save()
+        CustomerProfile.objects.create(user =c1,min_length = 0.01,max_length = 0.01,min_time = 1,max_time = 1,min_altitude = 1,max_altitude = 1)
+        return super().setUp()
+
+    def test_CustomerProfile(self):
+        cp1 = CustomerProfile.objects.all()
+        self.assertEqual(cp1[0].user.email, "test@test.com")
+        self.assertEqual(cp1[0].user.role, "Testrole")
+        self.assertEqual(cp1[0].min_length, 0.01)
+        self.assertEqual(cp1[0].max_length, 0.01)
+        self.assertEqual(cp1[0].min_time, 1)
+        self.assertEqual(cp1[0].max_time, 1)
+        self.assertEqual(cp1[0].min_altitude, 1)
+        self.assertEqual(cp1[0].max_altitude, 1)
 
 
 
