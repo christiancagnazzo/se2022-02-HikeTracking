@@ -257,18 +257,27 @@ class Recommended( APIView ):
 
     def get(self, request):
         user_id = request.user.id
-
+    
         try:
             profile = CustomerProfile.objects.get( user=user_id )
-            hikes = Hike.objects.all() \
-                .filter( length__gte=profile.min_length ) \
-                .filter( length__lte=profile.max_length ) \
-                .filter( expected_time__gte=profile.min_time ) \
-                .filter( expected_time__lte=profile.max_time ) \
-                .filter( ascent__gte=profile.min_altitude ) \
-                .filter( ascent__lte=profile.max_altitude ) \
-                .filter( difficulty=profile.difficulty ) \
-                .values()
+            hikes = Hike.objects.all()
+           
+            if profile.min_length:
+                hikes = hikes.filter( length__gte=profile.min_length ) 
+            if profile.max_length:
+                hikes = hikes.filter( length__lte=profile.max_length )
+            if profile.min_time:
+                hikes = hikes.filter( expected_time__gte=profile.min_time )
+            if profile.max_time:
+                hikes = hikes.filter( expected_time__lte=profile.max_time )
+            if profile.min_altitude:
+                hikes = hikes.filter( ascent__gte=profile.min_altitude )
+            if profile.max_altitude:
+                hikes = hikes.filter( ascent__lte=profile.max_altitude )
+            if profile.difficulty:
+                hikes = hikes.filter( difficulty=profile.difficulty )
+
+            hikes = hikes.values()
 
             result = {}
             for h in hikes:
@@ -295,5 +304,6 @@ class Recommended( APIView ):
 
             return Response( hikes, status=status.HTTP_200_OK )
 
-        except Exception:
+        except Exception as e:
+            print(e)
             return Response( status=status.HTTP_400_BAD_REQUEST )

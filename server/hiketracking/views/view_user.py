@@ -156,6 +156,7 @@ class Profile( generics.RetrieveUpdateAPIView ):
 
     def put(self, request, *args, **kwargs):
         user_id = request.user.id
+        print(request.data)
         request.data['user'] = user_id
         user = CustomUser.objects.get( id=user_id)
         try:

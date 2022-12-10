@@ -24,6 +24,6 @@ urlpatterns = [
     path( 'HutHikeView/', HutHikeView.as_view() ),
     path( 'facilities/', Facilities.as_view() ),
     path( 'users/validate/', AccountConfirmation.as_view() ),
-    path( 'hikes/recommended', Recommended.as_view() ),
+    path( 'hikes/recommended/', Recommended.as_view() ),
     path( 'profile/', Profile.as_view() ),
 ]

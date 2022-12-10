@@ -24,19 +24,19 @@ class CustomUser( AbstractUser ):
 
 class CustomerProfile( models.Model ):
     user = models.OneToOneField( CustomUser, on_delete=models.CASCADE )
-    min_length = models.FloatField()
-    max_length = models.FloatField()
-    min_time = models.IntegerField()
-    max_time = models.IntegerField()
-    min_altitude = models.IntegerField()
-    max_altitude = models.IntegerField()
+    min_length = models.FloatField( null=True )
+    max_length = models.FloatField( null=True )
+    min_time = models.IntegerField( null=True )
+    max_time = models.IntegerField( null=True )
+    min_altitude = models.IntegerField( null=True )
+    max_altitude = models.IntegerField( null=True )
 
     class Difficulty( models.TextChoices ):
         TOURIST = "Tourist"
         HIKER = "Hiker"
         PRO_HIKER = "Pro Hiker"
 
-    difficulty = models.CharField( choices=Difficulty.choices, max_length=30 )
+    difficulty = models.CharField( choices=Difficulty.choices, max_length=30, null=True )
 
 
 class Point( models.Model ):

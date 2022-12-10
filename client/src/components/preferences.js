@@ -18,15 +18,14 @@ function Preferences(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     let preferences = {
-      'min_length': lengthMin? lengthMin: null,
-      'max_length': lengthMax? lengthMax: null,
-      'min_time': timeMin? timeMin:null,
-      'max_time': timeMax?timeMax:null,
-      'min_altitude': ascentMin?ascentMin:null,
-      'max_altitude': ascentMax?ascentMax:null,
-      'difficulty': difficulty?difficulty:null
+      'min_length': lengthMin,
+      'max_length': lengthMax,
+      'min_time': timeMin,
+      'max_time': timeMax,
+      'min_altitude': ascentMin,
+      'max_altitude': ascentMax,
+      'difficulty': difficulty
     }
-    console.log(preferences)
     let req = await API.setProfile(preferences, token)
     if (req.error) {
       setErrorMessage(req.msg)
