@@ -77,9 +77,12 @@ function UserCard(props) {
         <ListGroup className="list-group-flush">
           <ListGroup.Item>Mail: {mail}</ListGroup.Item>
           <ListGroup.Item>Role Request: {role}</ListGroup.Item>
-        </ListGroup>  
-        <Button variant="success" onClick={() =>result(true,props.postRequest,props.setMail, props.setFinal, mail,role,props.setRole)}>Approve</Button>
+        </ListGroup>
+        <Card.Body>
+        <Button variant="success" onClick={() =>result(true,props.postRequest,props.setMail, props.setFinal, mail,role,props.setRole)}>Approve</Button> {' '}
         <Button variant="danger" onClick={() =>result(false,props.postRequest,props.setMail, props.setFinal, mail,role,props.setRole)}>Do not approve</Button>
+        </Card.Body>  
+        
       </Card>
     </>
     );

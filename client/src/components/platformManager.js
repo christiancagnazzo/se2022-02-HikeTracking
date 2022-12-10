@@ -43,7 +43,7 @@ let token = localStorage.getItem("token");
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>
-        <Route path="confirmAccount" element={<ConfirmAccount setDirty={setDirty} req={req} />}/>
+        <Route path="*" element={<ConfirmAccount setDirty={setDirty} req={req} />}/>
     </Routes>
     </Row>
     </Col>
