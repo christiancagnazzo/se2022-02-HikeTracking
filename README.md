@@ -73,15 +73,23 @@ HARD CODED USER
 
 To execute the code locally, it is necessary to create a file with the name 'key.py' in the 'server / server' folder and insert the following string 'key = APP_PASSWORD' with the password to access the mail service used to send the registration confirm email
 
-## Changelog
-
+### Demo3(12/12/2022)
+- add recommend hikes
+- add unit test
+- Refactoring test
+- add sonar-project
+- add security check
 ### Demo2(28/11/2022)
+- add requirement.txt
+- add Retrospective
+- fix bug and add some api
+- introduce jinja template to Refactor code
 ### Demo1(14/11/2022)
 - add user management
 - add some pages
-- add  some api
+- add some api
 - add docker file
-- add test for api 
+- add test 
   
 ### Create project(04/11/2022)
 
