@@ -895,7 +895,7 @@
     "model": "hiketracking.point",
     "pk": 154,
     "fields": {
-      "latitude": 44.867353,
+      "latitude": 44.8673530,
       "longitude": 10.057698,
       "province": "Parma",
       "village": "Fidenza",
@@ -1943,7 +1943,7 @@
     "model": "hiketracking.hike",
     "pk": 154,
     "fields": {
-      "title": "Picciano Tappa 7",
+      "title": "Picciano Tappa 77",
       "length": 29704,
       "expected_time": 240,
       "ascent": 438,
