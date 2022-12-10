@@ -140,10 +140,8 @@ class Hikes( APIView ):
         data = request.data
         try:
             hike = Hike.objects.get(title=data['title'])
-            hike.delete()
             hike.track_file.delete()
-        except Exception as e:
-            print(e)
+            hike.delete()
         finally:
             try:
                 sp = get_province_and_village(
@@ -175,7 +173,6 @@ class Hikes( APIView ):
                         'type': end_point_type
                     }
                 )
-                
                 hike = Hike.objects.create(
                     title=data['title'],
                     length=data['length'],
@@ -186,7 +183,6 @@ class Hikes( APIView ):
                     local_guide=user_id,
                     start_point=start_point[0],
                     end_point=end_point[0] )
-
                 hike.save()
 
                 for rp in data['rp_list']:
@@ -212,7 +208,7 @@ class Hikes( APIView ):
 
                 return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
             except Exception as e:
-                print( e )
+                
                 return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
 class Hike_( APIView ):
@@ -242,7 +238,7 @@ class Hike_( APIView ):
                 h['end_point_lat'] = endP.latitude
                 h['end_point_lng'] = endP.longitude
                 h['end_point_address'] = endP.address
-                print(h)
+                
                 return Response(status=status.HTTP_200_OK, data={"hike" : h})
         except Exception as e:
             print(e)
