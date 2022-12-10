@@ -6,29 +6,42 @@ import Map from './map'
 import API from '../API';
 import FilterForm from './filterformhikes';
 
-function displayHutsUtil(huts){
-  let hutscard =  huts.map((h,idx) => 
-      <Col className="pb-4 px-0" key={idx}>
-        <HutCard hut={h}/>
-      </Col>)
-    let rows = []
-    for(let i = 0; i < Math.ceil(huts.length/3);i++){
-      let cols = []
-      let j
-      for(j = 0; j < 3 && hutscard.length; j++){
-        cols.push(hutscard.pop())
-      }
-      for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-      }
-      rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
+function displayHutsUtil(huts) {
+  let hutscard = huts.map((h, idx) =>
+    <Col className="pb-4 px-0" key={idx}>
+      <HutCard hut={h} />
+    </Col>)
+  let rows = []
+  for (let i = 0; i < Math.ceil(huts.length / 3); i++) {
+    let cols = []
+    let j
+    for (j = 0; j < 3 && hutscard.length; j++) {
+      cols.push(hutscard.pop())
     }
-    return <>{rows}</>
+    for (; j < 3; j++) {
+      cols.push(<Col className="pb-4 px-0" key={j}></Col>)
+    }
+    rows.push(<Row className='px-0' key={i}>{cols}</Row>)
+  }
+  return (
+    <>
+      <Container>
+        <Row>
+          <Col xs={10}>
+            <h1>All Huts</h1>
+          </Col>
+        </Row>
+      </Container>
+      <div>
+        {rows}
+      </div>
+    </>
+  )
 }
 
-function Huts(props){
-  if(props.huts.length === 0) {
-    return  <h1>No available huts</h1>
+function Huts(props) {
+  if (props.huts.length === 0) {
+    return <h1>No available huts</h1>
   }
   else {
     return displayHutsUtil(props.huts)
@@ -54,7 +67,7 @@ function HutCard(props) {
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          
+
         </Card.Text>
       </Card.Body>
 
@@ -65,7 +78,7 @@ function HutCard(props) {
       name={props.hut.name}
       desc={props.hut.desc}
     />
-    
+
   </>
   );
 }

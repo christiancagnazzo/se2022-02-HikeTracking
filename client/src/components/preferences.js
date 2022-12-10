@@ -57,7 +57,10 @@ function Preferences(props) {
     return false
   }
 
-  return (<Card body>
+  return (
+    <>
+  <h1>My Profile</h1>
+  <Card body>
   <Form>
   <Row className="mb-2"> 
   <Form.Label htmlFor="basic-url">Length (in kms)</Form.Label>
@@ -164,6 +167,7 @@ function Preferences(props) {
 </Button>
 </Form>
 </Card>
+</>
 )
 
 }

@@ -165,7 +165,8 @@ function FilterForm(props) {
         radius: radius
     }
     props.applyFilter(filter)
-    navigate("hikes")
+    props.setFiltered(true)
+    navigate("/hikes")
     
   }
 
