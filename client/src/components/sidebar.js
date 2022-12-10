@@ -19,6 +19,8 @@ function MySidebar(props){
     }
     else if(props.userPower==="platformmanager"){
       menu=<PlatformManagerMenu></PlatformManagerMenu>
+    } else if(props.userPower === "hutworker"){
+      menu = <HutWorkerMenu/>
     }
     return (
         <Col  sm={2} className="px-0  bg-success">
@@ -158,20 +160,47 @@ function PlatformManagerMenu(props){
               <MenuItem onClick={() => updateActive(1,"/filterhikes")} active={active[1]}>Filter</MenuItem>
           </SubMenu>
           <SubMenu icon ={hutIcon} label='Hut'>
-            <MenuItem onClick={() => updateActive(1,"/huts")}active={active[2]}>Browse</MenuItem>
+            <MenuItem onClick={() => updateActive(2,"/huts")}active={active[2]}>Browse</MenuItem>
           </SubMenu>
     
           <SubMenu icon={parkingLot} label='Parking Lot'>
-            <MenuItem onClick={() => updateActive(2,"/parkinglots")}active={active[3]}>Browse</MenuItem>
+            <MenuItem onClick={() => updateActive(3,"/parkinglots")}active={active[3]}>Browse</MenuItem>
           </SubMenu>
           <SubMenu icon={profileIcon} label='Requests'>
-            <MenuItem onClick={() => updateActive(3,"/platformmanager/confirmAccount/")} active={active[4]}>Account to confirm</MenuItem>      
+            <MenuItem onClick={() => updateActive(4,"/platformmanager/confirmAccount/")} active={active[4]}>Account to confirm</MenuItem>      
           </SubMenu>
         </Menu>
       </Sidebar>
       )
 }
 
-
+function HutWorkerMenu(){
+  const lengthOption = 1
+  const hikingIcon = <Hiking></Hiking>
+  const [active, setActive] = useState(initFlagArray(lengthOption))
+  const navigate = useNavigate()
+  const updateActive = (idx, relocation) => {
+    let active = []
+    for(let i = 0; i < lengthOption; i++){
+      if(i === idx){
+        active.push(true)
+      }
+      else {
+        active.push(false)
+      }
+    }
+    setActive(active)
+    navigate(relocation)
+  }
+  return (
+    <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
+      <Menu>
+          <SubMenu label="Hikes" icon={hikingIcon}>
+              <MenuItem onClick={() => updateActive(0,"/hutworker/hikes")} active={active[0]}>Browse</MenuItem>
+          </SubMenu>
+      </Menu>
+    </Sidebar>
+  )
+}
 
 export default MySidebar;

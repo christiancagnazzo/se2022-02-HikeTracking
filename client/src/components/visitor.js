@@ -115,7 +115,8 @@ function VisitorPage(props) {
           console.log(err)
         }
       }
-      getProfile()
+      if(props.userPower === 'hiker')
+        getProfile()
     }, []);
     
     
@@ -135,7 +136,8 @@ function VisitorPage(props) {
         console.log(err)
       }
     }
-    getRecommendedHikes()
+    if(props.userPower === 'hiker')
+      getRecommendedHikes()
   }, [props.userPower])
     
 

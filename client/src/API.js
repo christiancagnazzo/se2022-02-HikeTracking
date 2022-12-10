@@ -412,6 +412,49 @@ async function activateAccount(params, token) {
   }
 }
 
+async function getHutWorkerHikes(token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    const response = await fetch(URL + "worker/hikes/", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status === 200) {
+      return ({msg : await response.json()})
+    }
+    else {
+      return ({err: await response.json()})
+    }
+  }
+  catch(e) {
+    console.log(e)
+  }
+}
 
-const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes };
+async function updateCondition(condition, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'worker/hikes/', {
+      method: 'PUT',
+      body: JSON.stringify(condition),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+
+    if (response.status == '200')
+      return { msg: "Condition updated" };
+    
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+  catch(e){
+    console.log(e)
+  }
+}
+
+const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition };
 export default API;

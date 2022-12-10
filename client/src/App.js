@@ -14,6 +14,7 @@ import { Helmet } from "react-helmet";
 
 import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
+import HutWorker from './components/hutworker';
 
 
 function App() {
@@ -36,7 +37,7 @@ function App2() {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const [dirty, setDirty] = useState(true);
-  const [userPower, setUserPower] = useState("")
+  const [userPower, setUserPower] = useState("hutworker")
   const [filter, setFilter] = useState("all")
 
   function handleError(err) {
@@ -109,12 +110,13 @@ function App2() {
       <Container fluid className="flex-grow-1">
         <Row className = "h-100">
           <Routes>
-            <Route path='/*' element={(<VisitorPage user={user} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
+            <Route path='/hutworker/*' element={<HutWorker userPower={userPower}/>}/>
             <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ <LocalGuide userPower={userPower}/>}/>
             <Route path='/registration' element={<RegistrationForm />}></Route>
             <Route path='/platformmanager/*' element={userPower === 'platformmanager' ? < PlatformManager/>: <Navigate replace to={'/login'}></Navigate>}></Route>
+            <Route path='/*' element={(<VisitorPage user={user} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             
           </Routes>
         </Row>

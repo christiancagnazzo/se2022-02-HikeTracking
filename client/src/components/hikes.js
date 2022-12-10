@@ -78,8 +78,10 @@ function Hikes(props) {
 function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
+  const [modalConditionShow, setModalContionShow] = useState(false)
   const isHiker = props.userPower === 'hiker'
   const isLocalGuide = props.userPower === 'localguide'
+  const isHutWoker = props.userPower === 'hutworker'
   const navigate = useNavigate()
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
@@ -94,6 +96,7 @@ function HikeCard(props) {
         <ListGroup.Item>Difficulty: {props.hike.difficulty}</ListGroup.Item>
         <ListGroup.Item>Start point: {props.hike.start_point_address}</ListGroup.Item>
         <ListGroup.Item>End point: {props.hike.end_point_address}</ListGroup.Item>
+        {isHiker?<ListGroup.Item>Condition: {props.hike.condition}</ListGroup.Item>:''}
       </ListGroup>
       <Card.Body>
         <Card.Text>
@@ -101,6 +104,8 @@ function HikeCard(props) {
           {' '}
           {(isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker) ? <Badge bg="secondary">No Track Available</Badge> : ''}
           {isLocalGuide ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
+          {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
+          
         </Card.Text>
       </Card.Body>
 
@@ -111,6 +116,8 @@ function HikeCard(props) {
       title={props.hike.title}
       description={props.hike.description}
       rpList={props.hike.rp}
+      condition = {props.hike.condition}
+      condition_description = {props.hike.condition_description}
     />
     {isHiker ? <HikeModalTrack
       show={modalMapShow}
@@ -121,10 +128,36 @@ function HikeCard(props) {
       ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
       rpList={props.hike.rp}
     /> : ''}
+    
   </>
   );
 }
 
+function HikeConditionDescription(props){
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {props.title}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Condition</h4>
+        <h5>
+          {props.condition}{': '}{props.description}
+        </h5>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function HikeModalDescription(props) {
   return (
@@ -150,6 +183,14 @@ function HikeModalDescription(props) {
             <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
           )}
         </ul>
+
+        {props.condition !== "Open"?<>
+        <h4>
+          Condition description: </h4>
+          <p>
+          {props.condition_description}
+            </p></>
+        :''}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

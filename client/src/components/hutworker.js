@@ -7,11 +7,13 @@ import ParkingLotForm from './parkinglotform';
 import API from '../API';
 import { useState, useEffect } from 'react';
 import Hikes from './hikes';
+import HikeCondition from './hikecondition';
 
 
 function HutWorker(props){
   const [hikes, setHikes] = useState([]);
   const [dirty, setDirty] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
   
   const updateDirty = () => {
@@ -22,8 +24,9 @@ function HutWorker(props){
   useEffect(() => {
     const getHikes = async () => {
       try {
-        const hikes = await API.getHutWorkerHikes(token);
-        if (hikes.error)
+        const hikes = await API.getAllHikes(token);
+        console.log(hikes)
+        if (hikes.err)
           setErrorMessage(hikes.msg)
         else
           setHikes(hikes.msg);
@@ -40,20 +43,15 @@ function HutWorker(props){
     
   
     
-    
-    
-      
-
-
     return(
     <>
     <Sidebar userPower={"hutworker"}/>
     <Col sm={10} className="py-1">
     <Row className="p-4">
     <Routes>
-        
+        <Route path="condition/:hiketitle" element={<HikeCondition/>}/>
+
         <Route path="*" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
-        
     </Routes>
     </Row>
     </Col>
