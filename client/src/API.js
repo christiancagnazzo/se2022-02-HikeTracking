@@ -361,8 +361,20 @@ async function getProfile(token) {
   }
 }
 
+async function getRecommendedHikes(token){
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'hikes/recommended/',{
+    headers:{
+      'Authorization': valid_token
+    },
+  })
+  if (response.status == 200){
+    return {msg: await response.json()}
+  } else {
+    return {error: "Something went wrong. Please try again"}
+  }
+}
 
 
-
-const API = { getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile };
+const API = { getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes };
 export default API;
