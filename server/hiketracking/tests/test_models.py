@@ -343,16 +343,16 @@ class modifyAndDeleteHikeTest(TestCase):
         self.assertEqual(hike1[0].expected_time, 10)
         self.assertEqual(hike1[0].ascent , 10)
         self.assertEqual(hike1[0].difficulty, 'hard')
-        self.assertEqual(hike1[0].start_point.latitude, 0.1)
-        self.assertEqual(hike1[0].start_point.longitude, 0.1)
-        self.assertEqual(hike1[0].start_point.province, "modifyTestProvince")
-        self.assertEqual(hike1[0].start_point.village, "modifyTestVillage")
-        self.assertEqual(hike1[0].start_point.address, "modifyTestAddress")
-        self.assertEqual(hike1[0].end_point.latitude, 0.1)
-        self.assertEqual(hike1[0].end_point.longitude, 0.1)
-        self.assertEqual(hike1[0].end_point.province, "modifyTestProvince")
-        self.assertEqual(hike1[0].end_point.village, "modifyTestVillage")
-        self.assertEqual(hike1[0].end_point.address, "modifyTestAddress")
+        self.assertEqual(hike1[0].start_point.latitude, 0.01)
+        self.assertEqual(hike1[0].start_point.longitude, 0.01)
+        self.assertEqual(hike1[0].start_point.province, "test province")
+        self.assertEqual(hike1[0].start_point.village, "test village")
+        self.assertEqual(hike1[0].start_point.address, "test address")
+        self.assertEqual(hike1[0].end_point.latitude, 0.01)
+        self.assertEqual(hike1[0].end_point.longitude, 0.01)
+        self.assertEqual(hike1[0].end_point.province, "test province")
+        self.assertEqual(hike1[0].end_point.village, "test village")
+        self.assertEqual(hike1[0].end_point.address, "test address")
 
         self.assertEqual(hike1[1].title,"Trekking")
         self.assertEqual(hike1[1].length , 3)
@@ -398,7 +398,5 @@ class CustomerProfileTest(TestCase):
         self.assertEqual(cp1[0].max_time, 1)
         self.assertEqual(cp1[0].min_altitude, 1)
         self.assertEqual(cp1[0].max_altitude, 1)
-
-
 
 
