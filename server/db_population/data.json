@@ -23,7 +23,7 @@
   },
   {
     "model": "hiketracking.customuser",
-    "pk": 2,
+    "pk": 3,
     "fields": {
       "email": "pm@mail.com",
       "role": "platformmanager",
