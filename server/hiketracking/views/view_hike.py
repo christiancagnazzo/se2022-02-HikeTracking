@@ -9,6 +9,8 @@ from hiketracking.utility import get_province_and_village
 
 
 class HikeFile( APIView ):
+    permission_classes = (permissions.AllowAny,)
+    
     def get(self, request, hike_id):
         try:
             track = Hike.objects.get( id=hike_id ).track_file

@@ -24,12 +24,12 @@ class CustomUser( AbstractUser ):
 
 class CustomerProfile( models.Model ):
     user = models.OneToOneField( CustomUser, on_delete=models.CASCADE )
-    min_length = models.FloatField( null=True )
-    max_length = models.FloatField( null=True )
-    min_time = models.IntegerField( null=True )
-    max_time = models.IntegerField( null=True )
-    min_altitude = models.IntegerField( null=True )
-    max_altitude = models.IntegerField( null=True )
+    min_length = models.FloatField()
+    max_length = models.FloatField()
+    min_time = models.IntegerField()
+    max_time = models.IntegerField()
+    min_altitude = models.IntegerField()
+    max_altitude = models.IntegerField()
 
     class Difficulty( models.TextChoices ):
         TOURIST = "Tourist"

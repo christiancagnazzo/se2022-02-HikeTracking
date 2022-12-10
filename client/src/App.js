@@ -108,7 +108,7 @@ function App2() {
       <Container fluid className="flex-grow-1">
         <Row className = "h-100">
           <Routes>
-            <Route path='/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
+            <Route path='/*' element={(<VisitorPage user={user} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ <LocalGuide userPower={userPower}/>}/>

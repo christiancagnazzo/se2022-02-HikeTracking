@@ -69,7 +69,9 @@ class SessionsSerializer( serializers.ModelSerializer ):
 class CustomerProfileSerializer( serializers.ModelSerializer ):
     class Meta:
         model = CustomerProfile
-        fields = '__all__'
+        fields = ['user','min_length', 'max_length', 'min_time', 'max_time', 'min_altitude', 'max_altitude', 'difficulty']
+
+
 
     def create(self, validated_data):
         return CustomerProfile.objects.create( **validated_data )

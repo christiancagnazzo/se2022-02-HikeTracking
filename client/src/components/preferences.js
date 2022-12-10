@@ -10,31 +10,46 @@ function Preferences(props) {
   const [timeMax, setTimeMax] = useState()
   const [ascentMin, setAscentMin] = useState()
   const [ascentMax, setAscentMax] = useState()
-  const [difficulty, setDifficulty] = useState()
+  const [difficulty, setDifficulty] = useState("Tourist")
   const [errorMessage, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
   let navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault();    
+    event.preventDefault();
     let preferences = {
-      'lengthMin': lengthMin,
-      'lengthMax': lengthMax,
-      'timeMin': timeMin,
-      'timeMax': timeMax,
-      'ascentMin': ascentMin,
-      'ascentMax': ascentMax,
-      'difficulty': difficulty 
+      'min_length': lengthMin,
+      'max_length': lengthMax,
+      'min_time': timeMin,
+      'max_time': timeMax,
+      'min_altitude': ascentMin,
+      'max_altitude': ascentMax,
+      'difficulty': difficulty
     }
-    let req = await API.createPreferences(preferences, token)
+    console.log(preferences)
+    let req = await API.setProfile(preferences, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
-        props.setPreferences(preferences)
       navigate('/')
     }
-
   }
+
+
+  useEffect(() => {
+    const getProfile = async function () {
+      let req = await API.getProfile(token)
+      if (req.msg) {
+        setLengthMin(req.msg[0].min_length)
+        setLengthMax(req.msg[0].max_length)
+        setTimeMin(req.msg[0].min_time)
+        setTimeMax(req.msg[0].max_time)
+        setAscentMin(req.msg[0].min_altitude)
+        setAscentMax(req.msg[0].max_altitude)
+      }
+    }
+    getProfile()
+  }, [])
 
   const checkNum = (num) => {
     if (!isNaN(num)) {

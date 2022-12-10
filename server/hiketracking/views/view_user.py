@@ -133,11 +133,21 @@ class AccountConfirmation( APIView ):
 
 
 class Profile( generics.RetrieveUpdateAPIView ):
-    permission_classes = (permissions.AllowAny,)
     serializer_class = CustomerProfileSerializer
 
+    def get(self, request):
+        try:
+            user_id = request.user.id
+            profile = CustomerProfile.objects.filter(user_id=user_id).values()
+            if profile:
+                return Response(status=status.HTTP_200_OK, data=profile)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR )
+
     def get_queryset(self):
-        print( self.kwargs.get( 'pk' ) )
         try:
             profile = CustomerProfile.objects.get_or( user_id__exact=self.kwargs.get( 'pk' ) )
         except Exception:
@@ -145,13 +155,15 @@ class Profile( generics.RetrieveUpdateAPIView ):
         return profile
 
     def put(self, request, *args, **kwargs):
-        user = CustomUser.objects.get( id=self.kwargs.get( 'pk' ) )
-        if user.role == "Hiker" and user.is_active and user.is_confirmed:
-            try:
-                Customer_profile = CustomerProfile.objects.get( user=user )
-            except Exception:
-                Customer_profile = None
+        user_id = request.user.id
+        request.data['user'] = user_id
+        user = CustomUser.objects.get( id=user_id)
+        try:
+            Customer_profile = CustomerProfile.objects.get( user=user )
+        except Exception:
+            Customer_profile = None
 
+        try: 
             if Customer_profile:
                 serializer = self.serializer_class( instance=Customer_profile, data={**request.data} )
             else:
@@ -160,7 +172,8 @@ class Profile( generics.RetrieveUpdateAPIView ):
                 serializer.save()
                 return Response( data=serializer.data, status=status.HTTP_200_OK )
             else:
+                print(serializer.errors)
                 return Response( data=serializer.errors, status=status.HTTP_400_BAD_REQUEST )
-
-        return Response( data={'message': " the user is authorized  "},
-                         status=status.HTTP_400_BAD_REQUEST )
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR )
