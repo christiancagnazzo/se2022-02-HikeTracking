@@ -7,10 +7,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar from './components/navbarlogin';
-import Hike from './components/hikes';
-import LocalGuide from './components/localguide'
-import { Helmet } from "react-helmet";
 import RegistrationForm from './components/registration';
+import LocalGuide from './components/localguide'
+import PlatformManager from './components/platformManager';
+import { Helmet } from "react-helmet";
+
 import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 
@@ -113,6 +114,8 @@ function App2() {
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ <LocalGuide userPower={userPower}/>}/>
             <Route path='/registration' element={<RegistrationForm />}></Route>
+            <Route path='/platformmanager/*' element={userPower === 'platformmanager' ? < PlatformManager/>: <Navigate replace to={'/login'}></Navigate>}></Route>
+            
           </Routes>
         </Row>
       </Container>
