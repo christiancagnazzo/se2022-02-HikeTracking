@@ -6,6 +6,7 @@ import API from '../API';
 import Map from './map'
 import Hike from "./hikes";
 import { useParams } from "react-router-dom";
+import GpxParser from 'gpxparser';
 
 function HikeForm(props) {
   const { hiketitle } = useParams()
