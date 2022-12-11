@@ -11,9 +11,6 @@ import RegistrationForm from './components/registration';
 import LocalGuide from './components/localguide'
 import PlatformManager from './components/platformManager';
 import { Helmet } from "react-helmet";
-
-import { createTheme } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
 import HutWorker from './components/hutworker';
 
 
@@ -37,13 +34,9 @@ function App2() {
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [message, setMessage] = useState('');
-  const [dirty, setDirty] = useState(true);
   const [userPower, setUserPower] = useState("")
   const [filter, setFilter] = useState("all")
 
-  function handleError(err) {
-    console.log(err);
-  }
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,7 +86,6 @@ function App2() {
         setUser(result.msg.user);
         setUserId(result.msg.id);
         setUserPower(result.msg.role)
-        //setDirty(true);
         localStorage.setItem('token', JSON.stringify(result.msg.token));
         setMessage('');
         navigate('/'+result.msg.role);
