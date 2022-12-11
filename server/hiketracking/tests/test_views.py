@@ -3,8 +3,9 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.test import Client
 
-from hiketracking.models import Point, Hut, Hike, CustomUser
+from hiketracking.models import Point, Hut, Hike, CustomUser, HutWorker, HutHike
 
 
 class HutTest( TestCase ):
@@ -204,6 +205,8 @@ class HikesHutWorker( TestCase ):
                     web_site="www.hi.com",
                     desc="testHunt", point_id=2 )
 
+
+
         p1.save()
         p2.save()
         hunt.Point = p1
@@ -212,9 +215,19 @@ class HikesHutWorker( TestCase ):
                                     end_point=p2, local_guide=user_id )
         hunt.save()
         hike.save()
+        HutHike.objects.create(hike_id=hike.id, hut_id=hunt.id)
+
+        HutWorker.objects.create(hut_id=hunt.id, hutworker_id=1)
 
         self.url = self.url = '/hiketracking/worker/hikes/'
         self.context_type = "application/json"
+
+
+    #def test_get_hut_worker(self):
+       # c = Client()
+      #  c.login(username="test@user.com", password="foo")
+       # response = c.get('/hiketracking/worker/hikes/')
+       # self.assertEqual(response.status_code, 200)
 
     def test_hut_worker(self):
         self.data = {

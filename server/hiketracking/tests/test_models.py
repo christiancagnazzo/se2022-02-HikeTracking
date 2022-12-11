@@ -88,6 +88,7 @@ class LoginTest( TestCase ):
         self.assertEqual( user.email, 'test@user.com' )
         self.assertFalse( user.is_staff )
         self.assertFalse( user.is_superuser )
+        self.assertFalse (user.is_confirmed)
         user.is_active = True
 
     def test_credentials(self):
@@ -101,6 +102,14 @@ class LoginTest( TestCase ):
     def test_invalid_password(self):
         user = authenticate( email='test@user.com', password='doo' )
         self.assertFalse( user is not None and user.is_authenticated )
+
+    def test_user_is_active(self):
+        user = authenticate(email='test@user.com', password='foo')
+        self.assertEqual(user.is_active, True)
+
+    def test_user_is_not_confirmed(self):
+        user = authenticate(email='test@user.com', password='foo')
+        self.assertEqual(user.is_confirmed, False)
 
 
 class FullListHikeTest( TestCase ):
