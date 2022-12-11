@@ -3,8 +3,9 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.test import Client
 
-from hiketracking.models import Point, Hut, Hike
+from hiketracking.models import Point, Hut, Hike, CustomUser, HutWorker, HutHike
 
 
 class HutTest( TestCase ):
@@ -187,3 +188,185 @@ class AddParkingLotAPI( TestCase ):
         response = self.client.post( self.url, json.dumps( self.data ),
                                      content_type=self.context_type )
         self.assertEqual( response.status_code, HTTPStatus.BAD_REQUEST )
+
+class HikesHutWorker( TestCase ):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user( email='test@user.com', password='foo', role='smth' )
+        user_id = User.objects.get( email='test@user.com' )
+
+        p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
+                    address="test" )
+        p2 = Point( latitude=0.31, longitude=10.01, province="test province", village="test village",
+                    address="addresstest" )
+        hunt = Hut( name="test parking pot name 1", n_beds=2,
+                    fee=10, ascent=10,
+                    phone="+999222", email="md@gmail.com",
+                    web_site="www.hi.com",
+                    desc="testHunt", point_id=2 )
+
+
+
+        p1.save()
+        p2.save()
+        hunt.Point = p1
+        hike = Hike.objects.create( title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy',
+                                    start_point=p2,
+                                    end_point=p2, local_guide=user_id )
+        hunt.save()
+        hike.save()
+        HutHike.objects.create(hike_id=hike.id, hut_id=hunt.id)
+
+        HutWorker.objects.create(hut_id=hunt.id, hutworker_id=1)
+
+        self.url = self.url = '/hiketracking/worker/hikes/'
+        self.context_type = "application/json"
+
+
+    #def test_get_hut_worker(self):
+       # c = Client()
+      #  c.login(username="test@user.com", password="foo")
+       # response = c.get('/hiketracking/worker/hikes/')
+       # self.assertEqual(response.status_code, 200)
+
+    def test_hut_worker(self):
+        self.data = {
+
+            "condition": 'Closed',
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        response = self.client.put( self.url, json.dumps( self.data ),
+                                     content_type=self.context_type )
+        self.assertEqual( response.status_code, HTTPStatus.OK )
+
+        a = list(Hike.objects.all().values())
+
+        self.assertEqual(a[0]["condition"], self.data["condition"])
+        self.assertEqual(a[0]["condition_description"], self.data["condition_description"])
+        self.assertEqual(a[0]["id"], self.data["hike_id"])
+
+    def test_wrong_attribute_condtion(self):
+        self.data = {
+
+            "conditio": "Closed",
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_attribute_condition_desc(self):
+        self.data = {
+
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": 1
+        }
+
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_attribute_hike_id(self):
+        self.data = {
+            "condition": "Closed",
+            "condition_description": 'hike closed',
+            "hike_i": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_hike_id(self):
+        self.data = {
+
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": 3
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_hike_id_two(self):
+        self.data = {
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": "saddsa"
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_missing_fields(self):
+
+        self.data={
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+class ValidateLocalGuide(TestCase):
+
+    def setUp(self):
+        c1 = CustomUser(email="test@atest.com", role="local guide", is_staff=0, is_active=1)
+        c1.save()
+
+        c2 = CustomUser(email="test@test.com", role="Platform Manager", is_staff=0, is_confirmed=1, is_active=1)
+        c2.save()
+
+        self.url = self.url = '/hiketracking/users/validate/'
+        self.context_type = "application/json"
+
+    def test_retrieve_unconfirmed_Account(self):
+
+        response = self.client.get(self.url, content_type = self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        cust_upd = CustomUser.objects.all()
+        a = list(response.data.values())
+        b = list(a[0].values())
+        self.assertEqual(b[0]["email"], cust_upd[0].email)
+        self.assertEqual(b[0]["role"], cust_upd[0].role)
+        self.assertEqual(b[0]["is_staff"], cust_upd[0].is_staff)
+        self.assertEqual(b[0]["is_active"], cust_upd[0].is_active)
+        self.assertEqual(b[0]["is_confirmed"], cust_upd[0].is_confirmed)
+
+    def test_account_confirmation_api(self):
+        self.data = {
+            "user_id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type = self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 1)
+
+    def test_wrong_user_id(self):
+        self.data = {
+            "user_id": 0
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR )
+
+    def test_user_not_active(self):
+        CustomUser.objects.filter(id=1).update(is_active=0)
+        self.data = {
+            "user_id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_self_data_attribute(self):
+
+        self.data = {
+            "id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)

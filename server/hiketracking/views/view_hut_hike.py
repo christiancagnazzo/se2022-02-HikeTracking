@@ -14,7 +14,7 @@ class HutHikeView(ListCreateAPIView):
 
 
 class HikesHutWorker(APIView):
-    #permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     def get(self, request):
         user_id = request.user.id
 

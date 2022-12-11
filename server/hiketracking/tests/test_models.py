@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.test import Client
 from django.test import TestCase
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
+from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser,HutWorker, HutHike
 from hiketracking.tests.test_utilty import CreateTestUser
 from  hiketracking.views.view_hike import Recommended
 
@@ -88,6 +88,7 @@ class LoginTest( TestCase ):
         self.assertEqual( user.email, 'test@user.com' )
         self.assertFalse( user.is_staff )
         self.assertFalse( user.is_superuser )
+        self.assertFalse (user.is_confirmed)
         user.is_active = True
 
     def test_credentials(self):
@@ -101,6 +102,14 @@ class LoginTest( TestCase ):
     def test_invalid_password(self):
         user = authenticate( email='test@user.com', password='doo' )
         self.assertFalse( user is not None and user.is_authenticated )
+
+    def test_user_is_active(self):
+        user = authenticate(email='test@user.com', password='foo')
+        self.assertEqual(user.is_active, True)
+
+    def test_user_is_not_confirmed(self):
+        user = authenticate(email='test@user.com', password='foo')
+        self.assertEqual(user.is_confirmed, False)
 
 
 class FullListHikeTest( TestCase ):
@@ -256,3 +265,220 @@ class RetrieveHutTest( TestCase ):
         self.assertEqual( concerned_hut.desc, " " )
         self.assertEqual( concerned_hut.point_id, 1 )
         
+
+        
+        
+        
+
+class recommendedHikeTest(TestCase):
+    def setUp(self) -> None:
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1.save()
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
+        return super().setUp()
+    def test_recommendHike(self):
+        
+        pass
+        
+
+class modifyAndDeleteHikeTest(TestCase):
+    def setUp(self) -> None:
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1.save()
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
+        return super().setUp()
+    
+    
+    def test_context(self):
+        hike1 = Hike.objects.all()
+        self.assertEqual(hike1[0].title,"Climbing")
+        self.assertEqual(hike1[0].length , 2)
+        self.assertEqual(hike1[0].expected_time, 1)
+        self.assertEqual(hike1[0].ascent , 1)
+        self.assertEqual(hike1[0].difficulty, 'easy')
+        self.assertEqual(hike1[0].start_point.latitude, 0.01)
+        self.assertEqual(hike1[0].start_point.longitude, 0.01)
+        self.assertEqual(hike1[0].start_point.province, "test province")
+        self.assertEqual(hike1[0].start_point.village, "test village")
+        self.assertEqual(hike1[0].start_point.address, "test address")
+        self.assertEqual(hike1[0].end_point.latitude, 0.01)
+        self.assertEqual(hike1[0].end_point.longitude, 0.01)
+        self.assertEqual(hike1[0].end_point.province, "test province")
+        self.assertEqual(hike1[0].end_point.village, "test village")
+        self.assertEqual(hike1[0].end_point.address, "test address")
+
+        self.assertEqual(hike1[1].title,"Trekking")
+        self.assertEqual(hike1[1].length , 3)
+        self.assertEqual(hike1[1].expected_time, 2)
+        self.assertEqual(hike1[1].ascent , 0)
+        self.assertEqual(hike1[1].difficulty, 'medium')
+        self.assertEqual(hike1[1].start_point.latitude, 0.01)
+        self.assertEqual(hike1[1].start_point.longitude, 0.01)
+        self.assertEqual(hike1[1].start_point.province, "test province")
+        self.assertEqual(hike1[1].start_point.village, "test village")
+        self.assertEqual(hike1[1].start_point.address, "test address")
+        self.assertEqual(hike1[0].end_point.latitude, 0.01)
+        self.assertEqual(hike1[0].end_point.longitude, 0.01)
+        self.assertEqual(hike1[0].end_point.province, "test province")
+        self.assertEqual(hike1[0].end_point.village, "test village")
+        self.assertEqual(hike1[0].end_point.address, "test address")
+
+    def test_modifyHike(self):
+        hike1 = Hike.objects.get(title = "Climbing")
+        hike1.title="modifyTest"
+        hike1.length=10
+        hike1.expected_time=10
+        hike1.ascent=10
+        hike1.difficulty="hard"
+        hike1.start_point.latitude=0.1
+        hike1.start_point.province="modifyTestProvince"
+        hike1.start_point.village="modifyTestVillage"
+        hike1.start_point.address="modifyTestAddress"
+        hike1.end_point.latitude=0.1
+        hike1.end_point.province="modifyTestProvince"
+        hike1.end_point.village="modifyTestVillage"
+        hike1.end_point.address="modifyTestAddress"
+        hike1.save()
+        hike1 = Hike.objects.all()
+        self.assertEqual(hike1[0].title,"modifyTest")
+        self.assertEqual(hike1[0].length , 10)
+        self.assertEqual(hike1[0].expected_time, 10)
+        self.assertEqual(hike1[0].ascent , 10)
+        self.assertEqual(hike1[0].difficulty, 'hard')
+        self.assertEqual(hike1[0].start_point.latitude, 0.01)
+        self.assertEqual(hike1[0].start_point.longitude, 0.01)
+        self.assertEqual(hike1[0].start_point.province, "test province")
+        self.assertEqual(hike1[0].start_point.village, "test village")
+        self.assertEqual(hike1[0].start_point.address, "test address")
+        self.assertEqual(hike1[0].end_point.latitude, 0.01)
+        self.assertEqual(hike1[0].end_point.longitude, 0.01)
+        self.assertEqual(hike1[0].end_point.province, "test province")
+        self.assertEqual(hike1[0].end_point.village, "test village")
+        self.assertEqual(hike1[0].end_point.address, "test address")
+
+        self.assertEqual(hike1[1].title,"Trekking")
+        self.assertEqual(hike1[1].length , 3)
+        self.assertEqual(hike1[1].expected_time, 2)
+        self.assertEqual(hike1[1].ascent , 0)
+        self.assertEqual(hike1[1].difficulty, 'medium')
+        self.assertEqual(hike1[1].start_point.latitude, 0.01)
+        self.assertEqual(hike1[1].start_point.longitude, 0.01)
+        self.assertEqual(hike1[1].start_point.province, "test province")
+        self.assertEqual(hike1[1].start_point.village, "test village")
+        self.assertEqual(hike1[1].start_point.address, "test address")
+        self.assertEqual(hike1[0].end_point.latitude, 0.01)
+        self.assertEqual(hike1[0].end_point.longitude, 0.01)
+        self.assertEqual(hike1[0].end_point.province, "test province")
+        self.assertEqual(hike1[0].end_point.village, "test village")
+        self.assertEqual(hike1[0].end_point.address, "test address")
+
+    def test_deleteHikeById(self):
+        obj = Hike.objects.get(title = "Trekking")
+        obj.delete()
+        hike2 = Hike.objects.all()
+        self.assertTrue(hike2.exists())
+
+    def test_deleteAllHikes(self):
+        Hike.objects.all().delete()
+        hike2 = Hike.objects.all()
+        self.assertFalse(hike2.exists())
+
+class CustomerProfileTest(TestCase):
+    def setUp(self) -> None:
+        c1 = CustomUser(email = "test@test.com",role = "Testrole")
+        c1.save()
+        CustomerProfile.objects.create(user =c1,min_length = 0.01,max_length = 0.01,min_time = 1,max_time = 1,min_altitude = 1,max_altitude = 1)
+        return super().setUp()
+
+    def test_CustomerProfile(self):
+        cp1 = CustomerProfile.objects.all()
+        self.assertEqual(cp1[0].user.email, "test@test.com")
+        self.assertEqual(cp1[0].user.role, "Testrole")
+        self.assertEqual(cp1[0].min_length, 0.01)
+        self.assertEqual(cp1[0].max_length, 0.01)
+        self.assertEqual(cp1[0].min_time, 1)
+        self.assertEqual(cp1[0].max_time, 1)
+        self.assertEqual(cp1[0].min_altitude, 1)
+        self.assertEqual(cp1[0].max_altitude, 1)
+
+
+class HutWorkerTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='HutWorker')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                   address="test address")
+        p1.save()
+        testHike = Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy', start_point=p1,
+                            end_point=p1, local_guide = user_id)
+        testHut = Hut.objects.create(name="TestHut", n_beds=1, fee=20, point_id=p1.id)
+        testHutHike = HutHike.objects.create(hike_id = testHike.id, hut_id = testHut.id)
+
+        HutWorker.objects.create(hut_id = testHut.id, hutworker_id = user_id.id)
+
+    def test_hutworker(self):
+
+        h = HutWorker.objects.all()
+        self.assertEqual(h[0].hut_id, 1)
+        self.assertEqual(h[0].hutworker_id, 1)
+
+
+    def test_hike_condition(self):
+        h = HutWorker.objects.all()
+        huthike = HutHike.objects.all()
+        if h[0].hut_id == 1:
+            if huthike[0].hike_id == 1:
+                Hike.objects.filter(id = huthike[0].hike_id).update(condition = "Closed")
+
+        hike = Hike.objects.all()
+        self.assertEqual(hike[0].condition, "Closed")
+
+
+class AccountConfirmationTest(TestCase):
+
+    def setUp(self):
+
+        c1 = CustomUser(email="test@atest.com", role="local guide", is_staff = 0, is_active = 1)
+        c1.save()
+
+        c2 = CustomUser(email="test@test.com", role="Platform Manager", is_staff =0, is_confirmed = 1, is_active =1)
+        c2.save()
+
+    def test_confirming_user(self):
+
+        cust = CustomUser.objects.all()
+
+        if cust[1].role == "Platform Manager":
+            if cust[0].is_confirmed == 0:
+                CustomUser.objects.filter(role = cust[0].role).update(is_confirmed = 1)
+
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 1)
+
+    def test_not_confirmed_user(self):
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 0)
+
+
+
+
+
+
