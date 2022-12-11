@@ -102,7 +102,6 @@ function LocalGuide(props){
         getParkingLots()
       }, [dirty]);
 
-
     return(
     <>
     <Sidebar userPower={"localguide"}/>
@@ -113,7 +112,7 @@ function LocalGuide(props){
         <Route path="addhike" element={<HikeForm/>}/>
         <Route path="addhut" element={<HutForm updateDirty={updateDirty}/>}/>
         <Route path="addparkinglot" element={<ParkingLotForm updateDirty={updateDirty}/>}/>
-        <Route path="*" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
+        <Route path="*" element={<Hikes userId={props.userId} userPower={props.userPower} hikes={hikes} />}/>
         <Route path="huts" element={<Huts huts={huts}/>}/>
         <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} applyFilter={() => {}}/>}/>
     </Routes>

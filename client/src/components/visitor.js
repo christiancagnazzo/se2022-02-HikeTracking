@@ -147,9 +147,9 @@ function VisitorPage(props) {
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} hikes={hikes} />}/>
+            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} />}/>
             <Route path="filterhikes" element={<FilterFormHikes  setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
-            <Route path= "recommendedhikes" element ={<RecommendedHikes recommendedhikes={recommendedhikes}/>}/>
+            <Route path= "recommendedhikes" element ={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes}/>}/>
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>

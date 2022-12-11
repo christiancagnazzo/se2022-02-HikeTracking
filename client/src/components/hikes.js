@@ -9,10 +9,10 @@ import Sidebar from './sidebar';
 import { useNavigate } from 'react-router-dom';
 
 
-function displayHikesUtil(hikes, userPower, filtered, setFiltered) {
+function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId) {
   let hikescard = hikes.map((h, idx) =>
     <Col className="pb-4 px-0" key={idx}>
-      <HikeCard userPower={userPower} hike={h} />
+      <HikeCard userId={userId} userPower={userPower} hike={h} />
     </Col>)
   let rows = []
   for (let i = 0; i < Math.ceil(hikes.length / 3); i++) {
@@ -31,7 +31,7 @@ function displayHikesUtil(hikes, userPower, filtered, setFiltered) {
       <Container>
         <Row>
           <Col xs={10}>
-            <h1>All Hikes</h1>
+            { filtered ? <h1>Filtered Hikes</h1> : <h1>All Hikes</h1> }
           </Col>
           <Col xs={2}>
             { filtered ? <Button variant='secondary' onClick={()=> {
@@ -68,7 +68,7 @@ function Hikes(props) {
     )
   }
   else {
-    return displayHikesUtil(props.hikes, props.userPower, props.filtered, props.setFiltered)
+    return displayHikesUtil(props.hikes, props.userPower, props.filtered, props.setFiltered, props.userId)
   }
 
 }
@@ -82,6 +82,7 @@ function HikeCard(props) {
   const isHiker = props.userPower === 'hiker'
   const isLocalGuide = props.userPower === 'localguide'
   const isHutWoker = props.userPower === 'hutworker'
+  const canModify = props.userId && props.userId === props.hike.local_guide_id
   const navigate = useNavigate()
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
@@ -103,7 +104,7 @@ function HikeCard(props) {
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
           {(isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker) ? <Badge bg="secondary">No Track Available</Badge> : ''}
-          {isLocalGuide ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
+          {isLocalGuide && canModify ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
           {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
           
         </Card.Text>

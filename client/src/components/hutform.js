@@ -114,7 +114,7 @@ function HikeForm(props) {
           <Form.Control type="text" placeholder="Ascent" value={n_beds} onChange={(e) => { if (checkNum(e.target.value)) { setNBeds(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="acent">
-          <Form.Label>Acent</Form.Label>
+          <Form.Label>Ascent</Form.Label>
           <Form.Control type="text" placeholder="Enter ascent" value={ascent} onChange={(e) => setAscent(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="phone">

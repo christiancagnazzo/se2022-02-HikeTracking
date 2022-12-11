@@ -29,7 +29,7 @@ function HikeCondition(props){
         if (req.error) {
           setErrorMessage(req.msg)
         } else {
-          navigate('/')
+          navigate('/hutworker')
         }
     
       }

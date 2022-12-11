@@ -103,7 +103,7 @@ class LoginAPI( KnoxLoginView ):
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )
         return Response( status=status.HTTP_200_OK,
-                         data={"user": user.email, "role": user_role,
+                         data={"id":user.id, "user": user.email, "role": user_role,
                                "token": result.data['token']} )
 
 
@@ -111,7 +111,7 @@ class Sessions( generics.RetrieveAPIView ):
     def get(self, request):
         user = CustomUser.objects.get( email=request.user )
         return Response( status=status.HTTP_200_OK,
-                         data={"user": user.email, "role": user.role.lower().replace( " ", "" )} )
+                         data={"id":user.id, "user": user.email, "role": user.role.lower().replace( " ", "" )} )
 
 
 class AccountConfirmation( APIView ):

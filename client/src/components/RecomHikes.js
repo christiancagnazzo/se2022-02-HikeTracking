@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { ListGroup, Row, Col, Modal, Alert, Badge } from 'react-bootstrap';
+import { ListGroup, Row, Col, Modal, Alert, Badge, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Map from './map'
 import API from '../API';
@@ -26,7 +26,18 @@ function displayRecommendedHikesUtil(hikes, userPower) {
     }
     rows.push(<Row className='px-0' key={i}>{cols}</Row>)
   }
-  return <>{rows}</>
+  return (
+    <Container>
+    <Row>
+      <Col xs={10}>
+        <h1>Recommended Hikes</h1>
+      </Col>
+      <Col>
+        {rows}
+      </Col>
+    </Row>
+  </Container>
+  )
 }
 
 
@@ -46,7 +57,7 @@ function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
   const isHiker = props.userPower === 'hiker'
-
+  
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
       <Card.Body>
