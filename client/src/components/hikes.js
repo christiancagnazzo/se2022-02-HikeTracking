@@ -4,25 +4,14 @@ import { ListGroup, Row, Col, Modal, Badge, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import Map from './map'
 import { useNavigate } from 'react-router-dom';
-
+import UTILS from '../utils/utils';
 
 function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId) {
   let hikescard = hikes.map((h, idx) =>
-    <Col className="pb-4 px-0" key={idx}>
+    <Col className="pb-4 px-0" key={h.id}>
       <HikeCard userId={userId} userPower={userPower} hike={h} />
     </Col>)
-  let rows = []
-  for (let i = 0; i < Math.ceil(hikes.length / 3); i++) {
-    let cols = []
-    let j
-    for (j = 0; j < 3 && hikescard.length; j++) {
-      cols.push(hikescard.pop())
-    }
-    for (; j < 3; j++) {
-      cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-    }
-    rows.push(<Row className='px-0' key={i}>{cols}</Row>)
-  }
+  let rows = UTILS.createRows(hikes, hikescard)
   return (
     <>
       <Container>

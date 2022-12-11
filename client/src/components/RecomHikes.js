@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { ListGroup, Row, Col, Modal, Badge, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import Map from './map'
+import UTILS from '../utils/utils';
 
 
 
@@ -11,18 +12,7 @@ function displayRecommendedHikesUtil(hikes, userPower) {
     <Col className="pb-4 px-0" key={idx}>
       <HikeCard userPower={userPower} hike={h} />
     </Col>)
-  let rows = []
-  for (let i = 0; i < Math.ceil(hikes.length / 3); i++) {
-    let cols = []
-    let j
-    for (j = 0; j < 3 && hikescard.length; j++) {
-      cols.push(hikescard.pop())
-    }
-    for (; j < 3; j++) {
-      cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-    }
-    rows.push(<Row className='px-0' key={i}>{cols}</Row>)
-  }
+  let rows = UTILS.createRows(hikes, hikescard)
   return (
     <Container>
     <Row>
