@@ -45,6 +45,17 @@
   },
   {
     "model": "hiketracking.customuser",
+    "pk": 5,
+    "fields": {
+      "email": "hw2@mail.com",
+      "role": "hutworker",
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1,
+      "is_confirmed": 0
+    }
+  },
+  {
+    "model": "hiketracking.customuser",
     "pk": 17,
     "fields": {
       "password": "pbkdf2_sha256$390000$ifjGdP7ueT3cwTeELvt4o2$/Nbc27DWB9RHQ26phdc4E2KmZe7lzv4WfpdiAyU4woQ=",
@@ -2068,6 +2079,30 @@
       "n_cars": 256,
       "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
       "point": 106
+    }
+  },
+  {
+    "model": "hiketracking.huthike",
+    "pk": 1,
+    "fields": {
+      "hike": 1,
+      "hut": 1
+    }
+  },
+  {
+    "model": "hiketracking.huthike",
+    "pk": 2,
+    "fields": {
+      "hike": 2,
+      "hut": 1
+    }
+  },
+  {
+    "model": "hiketracking.hutworker",
+    "pk": 1,
+    "fields": {
+      "hutworker": 4,
+      "hut": 1
     }
   }
 ]
