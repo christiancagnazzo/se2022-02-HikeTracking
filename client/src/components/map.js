@@ -94,9 +94,8 @@ function Map(props){
             }
         }
     },[gpxFile])
-    
     return (
-        <MapContainer center={[45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
+        <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
             <Click sp={props.sp}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -121,6 +120,8 @@ function Click(props){
         
         
       })
-      return null
+    if(props.sp[0] && props.sp[1])
+    map.flyTo(props.sp)
+    return null
 }
 export default Map

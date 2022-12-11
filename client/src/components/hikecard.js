@@ -23,7 +23,7 @@ function HikeCard(props) {
           <ListGroup.Item>Difficulty: {props.hike.difficulty}</ListGroup.Item>
           <ListGroup.Item>Start point: {props.hike.start_point_address}</ListGroup.Item>
           <ListGroup.Item>End point: {props.hike.end_point_address}</ListGroup.Item>
-          {isHiker?<ListGroup.Item>Condition: {props.hike.condition}</ListGroup.Item>:''}
+          {isHiker?<ListGroup.Item>Condition: {props.hike.condition? props.hike.condition: 'Open'}</ListGroup.Item>:''}
         </ListGroup>
         <Card.Body>
           <Card.Text>

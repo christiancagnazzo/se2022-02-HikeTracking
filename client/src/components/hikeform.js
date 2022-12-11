@@ -181,7 +181,7 @@ function HikeForm(props) {
         setHuts(all_huts)
       }
     }
-
+    if(sp[0] && sp[1])
     getHuts()
   }, [sp,token])
 
@@ -197,7 +197,7 @@ function HikeForm(props) {
         setParkingLots(all_plot)
       }
     }
-
+    if(sp[0] && sp[1])
     getParkingLots()
   }, [sp, token])
 
