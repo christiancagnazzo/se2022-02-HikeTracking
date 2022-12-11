@@ -44,7 +44,7 @@ function HutWorker(props) {
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-            <Route path="condition/:hiketitle" element={<HikeCondition />} />
+            <Route path="condition/:hiketitle" element={<HikeCondition updateDirty={updateDirty}/>} />
 
             <Route path="*" element={<Hikes userPower={props.userPower} hikes={hikes} />} />
           </Routes>
