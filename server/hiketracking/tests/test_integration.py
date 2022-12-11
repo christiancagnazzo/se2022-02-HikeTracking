@@ -51,7 +51,7 @@ class recommendedHikeTest(TestCase):
         pass
         
 
-class modifyAndDeleteHikeTest(TestCase):
+class modifyHikeTest(TestCase):
     def setUp(self) -> None:
         User = get_user_model()
         User.objects.create_user(email='test@user.com', password='foo', role='smth')
@@ -111,6 +111,19 @@ class modifyAndDeleteHikeTest(TestCase):
         self.assertEqual(hike1[0].end_point.village, "test village")
         self.assertEqual(hike1[0].end_point.address, "test address")
 
+
+
+class deleteHikeTest(TestCase):
+    def setUp(self) -> None:
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1.save()
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
+        return super().setUp()
+
     def test_deleteHikeById(self):
         obj = Hike.objects.get(title = "Trekking")
         obj.delete()
@@ -121,6 +134,7 @@ class modifyAndDeleteHikeTest(TestCase):
         Hike.objects.all().delete()
         hike2 = Hike.objects.all()
         self.assertFalse(hike2.exists())
+
 
 class CustomerProfileTest(TestCase):
     def setUp(self) -> None:
@@ -139,3 +153,26 @@ class CustomerProfileTest(TestCase):
         self.assertEqual(cp1[0].max_time, 1)
         self.assertEqual(cp1[0].min_altitude, 1)
         self.assertEqual(cp1[0].max_altitude, 1)
+
+    def test_modifyProfile(self):
+        p1 = CustomerProfile.objects.get(min_length = 0.01)
+        p1.min_altitude = 2
+        p1.min_length =  0.02
+        p1.min_time = 2
+        p1.max_altitude = 2
+        p1.max_length =  0.02
+        p1.max_time = 2
+        p1.save()
+        cp1 = CustomerProfile.objects.all()
+        self.assertEqual(cp1[0].min_length, 0.02)
+        self.assertEqual(cp1[0].max_length, 0.02)
+        self.assertEqual(cp1[0].min_time, 2)
+        self.assertEqual(cp1[0].max_time, 2)
+        self.assertEqual(cp1[0].min_altitude, 2)
+        self.assertEqual(cp1[0].max_altitude, 2)
+
+
+    def test_deleteAllProfile(self):
+        CustomerProfile.objects.all().delete()
+        p2 = CustomerProfile.objects.all()
+        self.assertFalse(p2.exists())
