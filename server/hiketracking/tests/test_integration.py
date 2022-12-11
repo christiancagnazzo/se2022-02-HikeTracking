@@ -37,22 +37,6 @@ class recommendedHikeTest(TestCase):
         return super().setUp()
     def test_Hike(self):
         hike1 = Hike.objects.all()
-        self.assertEqual(hike1[0].title,"Climbing")
-        self.assertEqual(hike1[0].length , 2)
-        self.assertEqual(hike1[0].expected_time, 1)
-        self.assertEqual(hike1[0].ascent , 1)
-        self.assertEqual(hike1[0].difficulty, 'easy')
-        self.assertEqual(hike1[0].start_point.latitude, 0.01)
-        self.assertEqual(hike1[0].start_point.longitude, 0.01)
-        self.assertEqual(hike1[0].start_point.province, "test province")
-        self.assertEqual(hike1[0].start_point.village, "test village")
-        self.assertEqual(hike1[0].start_point.address, "test address")
-        self.assertEqual(hike1[0].end_point.latitude, 0.01)
-        self.assertEqual(hike1[0].end_point.longitude, 0.01)
-        self.assertEqual(hike1[0].end_point.province, "test province")
-        self.assertEqual(hike1[0].end_point.village, "test village")
-        self.assertEqual(hike1[0].end_point.address, "test address")
-
         util_assertion(self, hike1)
         
 
@@ -78,22 +62,7 @@ class modifyHikeTest(TestCase):
         hike1.end_point.address="modifyTestAddress"
         hike1.save()
         hike1 = Hike.objects.all()
-        self.assertEqual(hike1[0].title,"modifyTest")
-        self.assertEqual(hike1[0].length , 10)
-        self.assertEqual(hike1[0].expected_time, 10)
-        self.assertEqual(hike1[0].ascent , 10)
-        self.assertEqual(hike1[0].difficulty, 'hard')
-        self.assertEqual(hike1[0].start_point.latitude, 0.01)
-        self.assertEqual(hike1[0].start_point.longitude, 0.01)
-        self.assertEqual(hike1[0].start_point.province, "test province")
-        self.assertEqual(hike1[0].start_point.village, "test village")
-        self.assertEqual(hike1[0].start_point.address, "test address")
-        self.assertEqual(hike1[0].end_point.latitude, 0.01)
-        self.assertEqual(hike1[0].end_point.longitude, 0.01)
-        self.assertEqual(hike1[0].end_point.province, "test province")
-        self.assertEqual(hike1[0].end_point.village, "test village")
-        self.assertEqual(hike1[0].end_point.address, "test address")
-
+    
         util_assertion(self, hike1)
 
 
