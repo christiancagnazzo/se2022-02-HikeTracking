@@ -145,6 +145,7 @@ class Huts( ListCreateAPIView ):
 
                 return Response( data=serializer.data, status=status.HTTP_200_OK )
             else:
+                print(serializer.errors)
                 return Response( serializer.errors, status=status.HTTP_400_BAD_REQUEST )
         else:
             return Response( pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST )

@@ -82,7 +82,7 @@ async function getHike(title, token) {
 
 async function createHut(hut_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-
+  console.log(hut_description)
   try {
     let response = await fetch(URL + 'hut/', {
       method: 'POST',
