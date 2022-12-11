@@ -287,6 +287,16 @@ class HikesHutWorker( TestCase ):
                                    content_type=self.context_type)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
+    def test_missing_fields(self):
+
+        self.data={
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
 class ValidateLocalGuide(TestCase):
 
     def setUp(self):
