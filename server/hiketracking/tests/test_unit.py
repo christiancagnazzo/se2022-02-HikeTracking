@@ -5,9 +5,8 @@ from django.test import TestCase
 import json
 from django.contrib.auth import get_user
 from unittest import mock
-from unittest.mock import Mock
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
+from hiketracking.models import Hike, Point,CustomerProfile,CustomUser
 from hiketracking.tests.test_utilty import CreateTestUser
 
 class MockResponse:
@@ -160,6 +159,12 @@ class modifyAndDeleteHikeUnitTest(TestCase):
         c.delete('/hiketracking/hikes/')
         hike2 = Hike.objects.all()
         self.assertTrue(hike2.exists())
+
+
+
+
+
+
 
 
 
