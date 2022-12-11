@@ -75,7 +75,6 @@ function Hikes(props) {
 function HikeCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const [modalMapShow, setModalMapShow] = useState(false);
-  const [modalConditionShow, setModalContionShow] = useState(false)
   const isHiker = props.userPower === 'hiker'
   const isLocalGuide = props.userPower === 'localguide'
   const isHutWoker = props.userPower === 'hutworker'
@@ -131,31 +130,7 @@ function HikeCard(props) {
   );
 }
 
-function HikeConditionDescription(props){
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {props.title}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Condition</h4>
-        <h5>
-          {props.condition}{': '}{props.description}
-        </h5>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
+
 
 function HikeModalDescription(props) {
   return (

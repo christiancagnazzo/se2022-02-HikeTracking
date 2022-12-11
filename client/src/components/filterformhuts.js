@@ -1,4 +1,4 @@
-import {  Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
+import {  Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
@@ -17,7 +17,7 @@ function FilterFormHuts(props) {
   const [village, setVillage] = useState("")
   const [radius, setRadius] = useState(50)
   const [position, setPosition] = useState("")*/
-  let [errorMessage, setErrorMessage] = useState('')
+  let [_, setErrorMessage] = useState('')
 
   let token = localStorage.getItem("token");
 
@@ -50,7 +50,7 @@ function FilterFormHuts(props) {
     }
 
     getFacilities()
-  }, [])
+  }, [token])
 
   const clearState = () =>{
     setMinBed('')

@@ -206,9 +206,7 @@ function MapFunction(props) {
   })
   useEffect(() => {
     map.locate()
-
-
-  }, [props.position])
+  }, [props.position, map])
   return null
 }
 

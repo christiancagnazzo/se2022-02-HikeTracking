@@ -1,8 +1,7 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
+import {  Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import {  useNavigate } from 'react-router-dom';
 import {  useState } from "react";
 import API from '../API';
-import Map from './map'
 
 
 

@@ -10,7 +10,7 @@ import HikeCondition from './hikecondition';
 function HutWorker(props) {
   const [hikes, setHikes] = useState([]);
   const [dirty, setDirty] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [_, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
 
   const updateDirty = () => {
@@ -32,7 +32,7 @@ function HutWorker(props) {
       }
     }
     getHikes()
-  }, [dirty]);
+  }, [dirty, token]);
 
 
   return (

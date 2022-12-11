@@ -171,7 +171,6 @@ async function logout(token) {
 }
 
 async function getAllHikes(token, filters, userPower) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 
@@ -223,7 +222,6 @@ async function getAllHikes(token, filters, userPower) {
 
 
 async function getHikeFile(hike_id, token) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
   let response = await fetch(URL + 'hike/file/' + hike_id, {
     method: 'GET',
     headers: {
@@ -237,7 +235,6 @@ async function getHikeFile(hike_id, token) {
 }
 
 async function getAllHuts(token, filters) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 
@@ -286,7 +283,6 @@ async function checkAuth(token) {
 }
 
 async function getAllParkingLots(token, filters) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 

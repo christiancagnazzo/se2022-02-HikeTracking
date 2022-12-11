@@ -42,7 +42,7 @@ const myIconTp = new Icon({
 
 function Map(props){
     const [positions, setPositions] = useState([])
-    
+    const gpxFile = props.gpxFile
     const rpList = props.rpList.map((pos,idx) => {
         return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp} key={idx}>
             <Popup>
@@ -93,9 +93,8 @@ function Map(props){
 
             }
         }
-    },[props.gpxFile])
+    },[gpxFile])
     
-    const center = props.sp !== ["",""] ? props.sp : [45.07104275068942, 7.677664908245942]
     return (
         <MapContainer center={[45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
             <Click sp={props.sp}></Click>

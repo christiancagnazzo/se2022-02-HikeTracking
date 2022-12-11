@@ -1,7 +1,6 @@
 import {  Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMapEvents,Circle } from 'react-leaflet'
+import {  useState } from "react";
 import GeographicalFilter from "./geographicalfilter";
 
 
@@ -24,7 +23,6 @@ function FilterForm(props) {
   const[radius, setRadius] = useState(50)
   const [position, setPosition] = useState("")
   
-  let token = localStorage.getItem("token");
   const navigate = useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -197,41 +195,7 @@ function FilterForm(props) {
 }
 
 
-function MapFunction(props) {
-  const map = useMapEvents({
-    click: (e) => {
-      props.setPosition(e.latlng)
-    },
-    locationfound: (e) => {
-      props.setCenter(e.latlng)
-      map.flyTo(e.latlng)
-    }
-  })
-  useEffect(() => {
-    map.locate()
-    
-  },[]) 
-  return null
-}
 
-function FilterMap(props){
-  const [center, setCenter] = useState([45.07104275068942, 7.677664908245942])
-  
-  return(
-    <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {props.position !==""?<Circle center={props.position}  radius={props.radius}/>:''}  
-            <MapFunction setCenter={setCenter} setPosition={props.setPosition}/>
-            {/*position !==""?<Marker position={position} icon={myIconSp}>
-            <Popup>
-                Reference Point: {"ok"}
-            </Popup>
-  </Marker> : ''*/}
-    </MapContainer>
-  )
-}
+
 
 export default FilterForm

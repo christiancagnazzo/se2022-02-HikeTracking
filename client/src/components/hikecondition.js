@@ -11,7 +11,7 @@ function HikeCondition(props){
     const [condition, setCondition] = useState()
     const [desc, setDesc] = useState()
     const navigate = useNavigate()
-    const [errorMessage, setErrorMessage] = useState('')
+    const [_, setErrorMessage] = useState('')
     let token = localStorage.getItem("token")
 
     const handleSubmit = async (event) => {
@@ -46,7 +46,7 @@ function HikeCondition(props){
         
         getHike()
     },
-    [hiketitle])
+    [hiketitle, token])
 
     return(
         

@@ -14,7 +14,7 @@ function LocalGuide(props){
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
-  const [errorMessage, setErrorMessage] = useState('')
+  const [_, setErrorMessage] = useState('')
   const [dirty, setDirty] = useState(false)
   let token = localStorage.getItem("token");
   
@@ -36,71 +36,45 @@ function LocalGuide(props){
       }
     }
     getHikes()
-  }, [dirty]);
+  }, [dirty,token]);
 
   
-  const applyFilterHikes = (filter) => {
-    async function  getFilteredHikes(){
-      try{
-        const filteredHikes = await API.getAllHikes(token, filter)
-        if (hikes.error)
-            setErrorMessage(filteredHikes.msg)
-          else
-            setHikes(filteredHikes.msg);
-        } catch (err) {
-          console.log(err)
+  
+
+  useEffect(() => {
+    const getHuts = async () => {
+      try {
+        const huts = await API.getAllHuts(token);
+        if (huts.error)
+          setErrorMessage(huts.msg)
+        else{
+          setHuts(huts.msg);
         }
+      } catch (err) {
+        console.log(err)
       }
-      getFilteredHikes()
     }
-
+    getHuts()
+  }, [dirty,token]);
+  
+    
+    
+    
     useEffect(() => {
-      const getHuts = async () => {
+      const getParkingLots = async () => {
+        
         try {
-          const huts = await API.getAllHuts(token);
-          if (huts.error)
-            setErrorMessage(huts.msg)
-          else{
-            setHuts(huts.msg);
-          }
+          const plots = await API.getAllParkingLots(token);
+          if (plots.error)
+            setErrorMessage(plots.msg)
+          else
+            setParkingLots(plots.msg);
         } catch (err) {
           console.log(err)
         }
       }
-      getHuts()
-    }, [dirty]);
-  
-    
-    const applyFilterHuts = (filter) => {
-      async function  getFilteredHuts(){
-        try{
-          const filteredHuts = await API.getAllHuts(token, filter)
-          if (filteredHuts.error)
-              setErrorMessage(filteredHuts.msg)
-            else
-              setHikes(filteredHuts.msg);
-          } catch (err) {
-            console.log(err)
-          }
-        }
-        getFilteredHuts()
-      }
-    
-      useEffect(() => {
-        const getParkingLots = async () => {
-          
-          try {
-            const plots = await API.getAllParkingLots(token);
-            if (plots.error)
-              setErrorMessage(plots.msg)
-            else
-              setParkingLots(plots.msg);
-          } catch (err) {
-            console.log(err)
-          }
-        }
-        getParkingLots()
-      }, [dirty]);
+      getParkingLots()
+    }, [dirty, token]);
 
     return(
     <>

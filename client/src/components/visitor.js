@@ -14,12 +14,10 @@ import RecommendedHikes from './RecomHikes';
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
-  const [profile, setProfile] = useState([]);
-  const [preferences, setPreferences] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [recommendedhikes,setRecommendedhikes] = useState([])
   const [filtered, setFiltered] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [_, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
   
 
@@ -36,7 +34,7 @@ function VisitorPage(props) {
       }
     }
     getHikes()
-  }, [props.userPower]);
+  }, [props.userPower, token]);
 
   
   const applyFilterHikes = (filter) => {
@@ -68,7 +66,7 @@ function VisitorPage(props) {
         
       }
       getHuts()
-    }, [props.userPower]);
+    }, [props.userPower,token]);
 
     useEffect(() => {
       const getParkingLots = async function () {
@@ -81,7 +79,7 @@ function VisitorPage(props) {
       }
 
       getParkingLots()
-    }, [props.userPower])
+    }, [props.userPower,token])
   
     
     const applyFilterHuts = (filter) => {
@@ -100,21 +98,7 @@ function VisitorPage(props) {
       }
 
 
-    useEffect(() => {
-      const getProfile = async () => {
-        try {
-          const profile = await API.getProfile(token);
-          if (profile.error)
-            setErrorMessage(profile.msg)
-          else
-            setProfile(profile.msg);
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      if(props.userPower === 'hiker')
-        getProfile()
-    }, []);
+    
     
     
   // create a function and use effect and use preferences in existing api of filtering hikes but mapping dekhni parhni 
@@ -123,7 +107,6 @@ function VisitorPage(props) {
   useEffect(() => {
     const getRecommendedHikes = async() =>{
       try{
-        const filter = preferences[0]
         const r_hikes = await API.getRecommendedHikes(token)
         if(r_hikes.error)
           setErrorMessage(r_hikes.msg)
@@ -135,7 +118,7 @@ function VisitorPage(props) {
     }
     if(props.userPower === 'hiker')
       getRecommendedHikes()
-  }, [props.userPower])
+  }, [props.userPower, token])
     
 
   return (
@@ -151,7 +134,7 @@ function VisitorPage(props) {
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
-            <Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>
+            <Route path="preferences" element={<Preferences/>}/>
           </Routes>
         </Row>
       </Col>

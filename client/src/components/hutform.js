@@ -72,7 +72,7 @@ function HikeForm(props) {
     }
 
     getFacilities()
-  }, [])
+  }, [token])
 
   useEffect(() => {
     const getHikes = async function () {
@@ -85,7 +85,7 @@ function HikeForm(props) {
     }
 
     getHikes()
-  }, [])
+  }, [token])
 
   const setPoint = (point) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {

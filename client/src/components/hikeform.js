@@ -103,7 +103,7 @@ function HikeForm(props) {
       getHike(hiketitle)
     }
     console.log(hiketitle)
-  }, [hiketitle])
+  }, [hiketitle, token])
 
 
   const checkNum = (num) => {
@@ -186,7 +186,7 @@ function HikeForm(props) {
     }
 
     getHuts()
-  }, [sp[0], sp[1]])
+  }, [sp,token])
 
   useEffect(() => {
     let filters = { "start_lat": sp[0], "start_lon": sp[1] }
@@ -202,7 +202,7 @@ function HikeForm(props) {
     }
 
     getParkingLots()
-  }, [sp[0], sp[1]])
+  }, [sp, token])
 
   let action;
   if (hiketitle) {

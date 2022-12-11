@@ -21,7 +21,7 @@ function ConfirmAccount(props) {
     }
 
     getAccounts()
-  }, [])
+  }, [token])
 
 
   if (accounts.length === 0) {

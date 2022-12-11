@@ -1,9 +1,10 @@
-import { Form, Button, Card, Alert, Row, Col,InputGroup } from "react-bootstrap"
+import { Form, Button, Card, Row, Col,InputGroup } from "react-bootstrap"
 import { useEffect, useState } from "react";
 import API from '../API';
 import { useNavigate } from 'react-router-dom';
 
 function Preferences(props) {
+  
   const [lengthMin, setLengthMin] = useState('')
   const [lengthMax, setLengthMax] = useState('')
   const [timeMin, setTimeMin] = useState('')
@@ -11,7 +12,7 @@ function Preferences(props) {
   const [ascentMin, setAscentMin] = useState('')
   const [ascentMax, setAscentMax] = useState('')
   const [difficulty, setDifficulty] = useState("Tourist")
-  const [errorMessage, setErrorMessage] = useState('')
+  const [_, setErrorMessage] = useState('')
   let token = localStorage.getItem("token");
   let navigate = useNavigate();
 
@@ -48,7 +49,7 @@ function Preferences(props) {
       }
     }
     getProfile()
-  }, [])
+  }, [token])
 
   const checkNum = (num, callback) => {
     if (!isNaN(num)) {

@@ -12,7 +12,7 @@ import ConfirmAccount from './confirmAccount';
 function PlatformManager(props){
 // use effects that need to PM
 const [req,setReq] = useState([]);
-const [errorMessage,setErrorMessage]=useState("")
+const [_,setErrorMessage]=useState("")
 const [dirty,setDirty]=useState(true)
 let token = localStorage.getItem("token");
 useEffect(() => {
@@ -31,7 +31,7 @@ useEffect(() => {
       }
     }
     getRequests()
-  },[dirty]);
+  },[dirty,token]);
   
     
     
