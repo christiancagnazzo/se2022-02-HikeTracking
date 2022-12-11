@@ -11,11 +11,11 @@ import ConfirmAccount from './confirmAccount';
 
 function PlatformManager(props){
 // use effects that need to PM
-const [req,setReq] = useState([{mail:"ccc@gmail.com", role:"localguide"}]);
+const [req,setReq] = useState([]);
 const [errorMessage,setErrorMessage]=useState("")
 const [dirty,setDirty]=useState(true)
 let token = localStorage.getItem("token");
-/*useEffect(() => {
+useEffect(() => {
     const getRequests = async () => {
       
         if (dirty) 
@@ -32,7 +32,7 @@ let token = localStorage.getItem("token");
     }
     getRequests()
   },[dirty]);
-  */
+  
     
     
 
