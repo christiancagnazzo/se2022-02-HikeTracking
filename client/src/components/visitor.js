@@ -18,8 +18,13 @@ function VisitorPage(props) {
   const [recommendedhikes,setRecommendedhikes] = useState([])
   const [filtered, setFiltered] = useState(false)
   const [_, setErrorMessage] = useState('')
+  const [dirty, setDirty] = useState(false)
   let token = localStorage.getItem("token");
   
+  const updateDirty = () => {
+    const flag = dirty
+    setDirty(!flag)
+  }
 
   useEffect(() => {
     const getHikes = async () => {
@@ -118,7 +123,7 @@ function VisitorPage(props) {
     }
     if(props.userPower === 'hiker')
       getRecommendedHikes()
-  }, [props.userPower, token])
+  }, [props.userPower, token, dirty])
     
 
   return (
@@ -134,7 +139,7 @@ function VisitorPage(props) {
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
-            <Route path="preferences" element={<Preferences/>}/>
+            <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
           </Routes>
         </Row>
       </Col>

@@ -248,8 +248,8 @@ class Hike_( APIView ):
     def delete(self, request, title):
         try:
             hike = Hike.objects.get(title=title)
-            hike.delete()
             hike.track_file.delete()
+            hike.delete()
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status=status.HTTP_404_NOT_FOUND)

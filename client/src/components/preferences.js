@@ -31,7 +31,8 @@ function Preferences(props) {
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
-      navigate('/')
+      props.updateDirty()
+      navigate('/recommendedhikes')
     }
   }
 

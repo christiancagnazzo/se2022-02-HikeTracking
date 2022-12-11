@@ -56,6 +56,7 @@ function HikeForm(props) {
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
+      props.updateDirty()
       navigate('/')
     }
 
@@ -67,6 +68,7 @@ function HikeForm(props) {
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
+      props.updateDirty()
       navigate('/')
     }
 
@@ -78,7 +80,6 @@ function HikeForm(props) {
       try {
         let hike = await API.getHike(title, token)
         hike = hike.hike
-        console.log(hike)
         setTitle(hike.title)
         setLength(hike.length)
         setTime(hike.expected_time)
@@ -102,7 +103,6 @@ function HikeForm(props) {
     if (hiketitle) {
       getHike(hiketitle)
     }
-    console.log(hiketitle)
   }, [hiketitle, token])
 
 
@@ -142,8 +142,8 @@ function HikeForm(props) {
   }
 
   const cleanRPoint = () => {
+    if(!rpList.length) return
     let list = rpList.map((pos) => {
-      console.log(pos)
       return {
         'lat': pos['reference_point_lat'],
         'lon': pos['reference_point_lng']
@@ -252,7 +252,7 @@ function HikeForm(props) {
             setFile(e.target.files[0]);
 
           }}></input>
-          {file === '' ? <Alert style={{ "margin-top": "10px" }} variant="secondary">Upload a gpx track file to modify the fields</Alert> : ''}
+          {file === '' ? <Alert style={{ "marginTop": "10px" }} variant="secondary">Upload a gpx track file to modify the fields</Alert> : ''}
         </Form.Group>
         <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
         <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />

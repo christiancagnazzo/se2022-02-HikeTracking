@@ -22,7 +22,6 @@ function HutWorker(props) {
     const getHikes = async () => {
       try {
         const hikes = await API.getHutWorkerHikes(token);
-        console.log(hikes)
         if (hikes.err)
           setErrorMessage(hikes.msg)
         else

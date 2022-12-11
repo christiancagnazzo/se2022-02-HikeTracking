@@ -31,7 +31,6 @@ function Huts(props) {
     return <h1>No available huts</h1>
   }
   else {
-    console.log(props.huts)
     return displayHutsUtil(props.huts)
   }
 }

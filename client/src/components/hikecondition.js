@@ -37,7 +37,6 @@ function HikeCondition(props){
     useEffect(() => {
         async function getHike(){
             const h = (await API.getHike(hiketitle, token)).hike
-            console.log(h)
             setHike(h)
             setTitle(h.title)
             setCondition(h.condition)
