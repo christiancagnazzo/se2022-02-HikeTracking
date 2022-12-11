@@ -433,3 +433,43 @@ class HutWorkerTest(TestCase):
 
         hike = Hike.objects.all()
         self.assertEqual(hike[0].condition, "Closed")
+
+
+class AccountConfirmationTest(TestCase):
+
+    def setUp(self):
+
+        c1 = CustomUser(email="test@atest.com", role="local guide", is_staff = 0, is_active = 1)
+        c1.save()
+
+        c2 = CustomUser(email="test@test.com", role="Platform Manager", is_staff =0, is_confirmed = 1, is_active =1)
+        c2.save()
+
+    def test_confirming_user(self):
+
+        cust = CustomUser.objects.all()
+
+        if cust[1].role == "Platform Manager":
+            if cust[0].is_confirmed == 0:
+                CustomUser.objects.filter(role = cust[0].role).update(is_confirmed = 1)
+
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 1)
+
+    def test_not_confirmed_user(self):
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 0)
+
+
+
+
+
+
