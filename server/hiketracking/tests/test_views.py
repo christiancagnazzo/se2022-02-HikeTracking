@@ -193,6 +193,7 @@ class HikesHutWorker( TestCase ):
         User = get_user_model()
         User.objects.create_user( email='test@user.com', password='foo', role='smth' )
         user_id = User.objects.get( email='test@user.com' )
+
         p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
                     address="test" )
         p2 = Point( latitude=0.31, longitude=10.01, province="test province", village="test village",
@@ -211,21 +212,80 @@ class HikesHutWorker( TestCase ):
                                     end_point=p2, local_guide=user_id )
         hunt.save()
         hike.save()
-        self.data = {
 
-            "condition": 'closed',
-            "condition_description": 'hike closed',
-            "hike_id": 1
-        }
         self.url = self.url = '/hiketracking/worker/hikes/'
         self.context_type = "application/json"
 
     def test_hut_worker(self):
-        print(self.data)
+        self.data = {
+
+            "condition": 'Closed',
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
         response = self.client.put( self.url, json.dumps( self.data ),
                                      content_type=self.context_type )
         self.assertEqual( response.status_code, HTTPStatus.OK )
 
+        a = list(Hike.objects.all().values())
+
+        self.assertEqual(a[0]["condition"], self.data["condition"])
+        self.assertEqual(a[0]["condition_description"], self.data["condition_description"])
+        self.assertEqual(a[0]["id"], self.data["hike_id"])
+
+    def test_wrong_attribute_condtion(self):
+        self.data = {
+
+            "conditio": "Closed",
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_attribute_condition_desc(self):
+        self.data = {
+
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": 1
+        }
+
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_attribute_hike_id(self):
+        self.data = {
+            "condition": "Closed",
+            "condition_description": 'hike closed',
+            "hike_i": 1
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_hike_id(self):
+        self.data = {
+
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": 3
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_hike_id_two(self):
+        self.data = {
+            "condition": "Closed",
+            "condition_descriptio": 'hike closed',
+            "hike_id": "saddsa"
+        }
+        response = self.client.put(self.url, json.dumps(self.data),
+                                   content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
 class ValidateLocalGuide(TestCase):
 
