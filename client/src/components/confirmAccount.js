@@ -1,4 +1,4 @@
-import { Col, Row, Card, ListGroup, Button, Alert } from 'react-bootstrap';
+import { Col, Card, ListGroup, Button, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import API from '../API';
 

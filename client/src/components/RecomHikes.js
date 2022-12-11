@@ -1,12 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { ListGroup, Row, Col, Modal, Alert, Badge, Container } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { ListGroup, Row, Col, Modal, Badge, Container } from 'react-bootstrap';
+import { useState } from 'react';
 import Map from './map'
-import API from '../API';
-import FilterForm from './filterformhikes';
-import Sidebar from './sidebar';
-import { useNavigate } from 'react-router-dom';
+
 
 
 function displayRecommendedHikesUtil(hikes, userPower) {

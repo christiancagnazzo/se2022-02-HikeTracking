@@ -1,12 +1,9 @@
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
+import {   Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import Map from './map'
 import API from '../API';
 import FilterFormHikes from './filterformhikes';
 import Sidebar from './sidebar';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Hikes from './hikes';
 import FilterFormHuts from './filterformhuts';
 import Huts from './huts';

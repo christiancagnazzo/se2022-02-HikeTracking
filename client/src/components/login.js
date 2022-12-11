@@ -1,7 +1,6 @@
 import { Form, Button, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from "../API";
 
 function LoginForm(props) {
   const [username, setUsername] = useState('h@mail.com');

@@ -1,20 +1,9 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import {  Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
-import Map from './map'
-import { Icon } from 'leaflet'
 import Multiselect from "multiselect-react-dropdown";
-import GeographicalFilter from "./geographicalfilter";
-const myIconSp = new Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+
 
 
 

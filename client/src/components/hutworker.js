@@ -1,9 +1,6 @@
 import Sidebar from './sidebar';
 import { Routes, Route } from 'react-router-dom';
-import HikeForm from './hikeform';
 import { Col, Row } from 'react-bootstrap';
-import HutForm from './hutform';
-import ParkingLotForm from './parkinglotform';
 import API from '../API';
 import { useState, useEffect } from 'react';
 import Hikes from './hikes';

@@ -1,10 +1,8 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import { json, useNavigate } from 'react-router-dom';
+import {  Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
+import {  useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
-import Hike from "./hikes";
 import { useParams } from "react-router-dom";
 
 function HikeForm(props) {

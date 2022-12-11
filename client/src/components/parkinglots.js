@@ -1,10 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import Map from './map'
-import API from '../API';
-import FilterForm from './filterformhikes';
+import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+
   
 function displayParkingLotsUtil(parkinglots, userPower){
   let parkinglotscards =  parkinglots.map((h,idx) => 

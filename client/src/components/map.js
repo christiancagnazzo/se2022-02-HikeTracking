@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
 import GpxParser from 'gpxparser';

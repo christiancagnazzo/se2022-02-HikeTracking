@@ -13,7 +13,7 @@ async function createHike(hike_description, hike_file, token) {
       },
     })
 
-    if (response.status == '200') {
+    if (response.status === 200) {
       response = await response.json()
       let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
         method: 'PUT',
@@ -23,7 +23,7 @@ async function createHike(hike_description, hike_file, token) {
         },
       })
 
-      if (second_response.status == '200')
+      if (second_response.status === 200)
         return { msg: "Hike Creato" };
 
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -49,7 +49,7 @@ async function deleteHike(title, token) {
         'Authorization': valid_token
       }
     })
-    if (response.status == 200) {
+    if (response.status === 200) {
       return true
     }
 
@@ -70,7 +70,7 @@ async function getHike(title, token) {
       }
     })
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       const hike = await response.json()
       return hike
     }
@@ -93,7 +93,7 @@ async function createHut(hut_description, token) {
       },
     })
 
-    if (response.status == '200')
+    if (response.status === 200)
       return { msg: "Hut created" };
 
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -116,7 +116,7 @@ async function createParkingLot(parking_lot_description, token) {
         'Authorization': valid_token
       },
     })
-    if (response.status == '201')
+    if (response.status === 201)
       return { msg: "Parking Lot created" };
     else
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -136,7 +136,7 @@ async function login(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong in the login. Please try again" }
@@ -152,7 +152,7 @@ async function signin(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong during the registration. This email is associated with an existing account." }
@@ -206,7 +206,7 @@ async function getAllHikes(token, filters, userPower) {
     },
   });
 
-  if (response.status == '200') {
+  if (response.status === 200) {
     let hikes = await response.json();
     if (userPower === "hiker") {
       for (let i = 0; i < hikes.length; i++) {
@@ -263,7 +263,7 @@ async function getAllHuts(token, filters) {
       //'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -278,7 +278,7 @@ async function checkAuth(token) {
       'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -302,7 +302,7 @@ async function getAllParkingLots(token, filters) {
       //'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -314,7 +314,7 @@ async function getFacilities() {
     method: 'GET',
 
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
 
   else {
@@ -334,7 +334,7 @@ async function setProfile(preferences, token) {
         'Authorization': valid_token
       },
     })
-    if (response.status == '200')
+    if (response.status === 200)
       return { msg: "Profile updated!"}
     else {
       return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -353,7 +353,7 @@ async function getProfile(token) {
       'Authorization': valid_token
     },
   });
-  if (response.status == '200') {
+  if (response.status === 200) {
     return { msg: await response.json() }
   }
   else {
@@ -368,7 +368,7 @@ async function getRecommendedHikes(token){
       'Authorization': valid_token
     },
   })
-  if (response.status == 200){
+  if (response.status === 200){
     return {msg: await response.json()}
   } else {
     return {error: "Something went wrong. Please try again"}
@@ -382,7 +382,7 @@ async function getAccountsToValidate(token){
       'Authorization': valid_token
     },
   })
-  if (response.status == 200){
+  if (response.status === 200){
     return {msg: await response.json()}
   } else {
     return {error: "Error", msg: "Something went wrong. Please try again"}
@@ -401,7 +401,7 @@ async function activateAccount(params, token) {
         'Authorization': valid_token
       },
     })
-    if (response.status == '200')
+    if (response.status === 200)
       return { msg: "Updated!"}
     else {
       return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -446,7 +446,7 @@ async function updateCondition(condition, token){
       },
     })
 
-    if (response.status == '200')
+    if (response.status === 200)
       return { msg: "Condition updated" };
     
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
