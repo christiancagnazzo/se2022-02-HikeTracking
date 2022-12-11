@@ -52,10 +52,7 @@ function HikeForm(props) {
 
 
   const checkNum = (num) => {
-    if (!isNaN(num)) {
-      return true;
-    }
-    return false
+    return !isNaN(num)
   }
 
 

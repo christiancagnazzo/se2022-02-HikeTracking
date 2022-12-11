@@ -107,10 +107,7 @@ function HikeForm(props) {
 
 
   const checkNum = (num) => {
-    if (!isNaN(num)) {
-      return true;
-    }
-    return false
+    return !isNaN(num)
   }
   const setPoint = (point, which) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {

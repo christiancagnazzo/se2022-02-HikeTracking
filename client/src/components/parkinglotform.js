@@ -39,15 +39,11 @@ function ParkingLotForm(props) {
 
 
   const checkNum = (num) => {
-    if (!isNaN(num)) {
-      return true;
-    }
-    return false
+    return !isNaN(num)
   }
   const setPoint = (point) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {
         setPosition(point)
-
     }
   }
 
@@ -62,13 +58,10 @@ function ParkingLotForm(props) {
           <Form.Label>Fee per hour (in €)</Form.Label>
           <Form.Control type="text" placeholder="Fee" value={fee} onChange={(e) => { if (checkNum(e.target.value)) { setFee(e.target.value) } }} />
         </Form.Group>
-        
         <Form.Group className="mb-2" controlId="n_cars">
           <Form.Label>Number of parking spaces</Form.Label>
           <Form.Control type="text" placeholder="n_car" value={n_cars} onChange={(e) => { if (checkNum(e.target.value)) { setNCars(e.target.value) } }} />
         </Form.Group>
-        
-        
         <PointInput point={position} setPoint = {setPoint} address={address} setAddress={setAddress} />
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
@@ -81,9 +74,7 @@ function ParkingLotForm(props) {
       </Form>
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>
-
   )
-
 }
 
 
@@ -93,7 +84,6 @@ function PointInput(props) {
   return (
     <Row className="mb-3">
             <Form.Label htmlFor="basic-url">Position</Form.Label>
-
       <Col>
       <InputGroup size="sm" >
         <InputGroup.Text id="inputGroup-sizing-default" >
@@ -131,8 +121,6 @@ function PointInput(props) {
           />
         </InputGroup>
       </Col>
-      
-      
     </Row>
 
   )
