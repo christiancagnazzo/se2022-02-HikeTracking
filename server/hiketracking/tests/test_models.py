@@ -454,6 +454,14 @@ class AccountConfirmationTest(TestCase):
                         is_staff=0, is_confirmed=1, is_active=1)
         c2.save()
 
+
+    def assert_util(self,cust_upd) :
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+
+
     def test_confirming_user(self):
 
         cust = CustomUser.objects.all()
@@ -464,16 +472,10 @@ class AccountConfirmationTest(TestCase):
                     role=cust[0].role).update(is_confirmed=1)
 
         cust_upd = CustomUser.objects.all()
-        self.assertEqual(cust_upd[0].email, "test@atest.com")
-        self.assertEqual(cust_upd[0].role, "local guide")
-        self.assertEqual(cust_upd[0].is_staff, 0)
-        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assert_util(cust_upd)
         self.assertEqual(cust_upd[0].is_confirmed, 1)
 
     def test_not_confirmed_user(self):
         cust_upd = CustomUser.objects.all()
-        self.assertEqual(cust_upd[0].email, "test@atest.com")
-        self.assertEqual(cust_upd[0].role, "local guide")
-        self.assertEqual(cust_upd[0].is_staff, 0)
-        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assert_util(cust_upd)
         self.assertEqual(cust_upd[0].is_confirmed, 0)
