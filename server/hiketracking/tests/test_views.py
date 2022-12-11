@@ -187,3 +187,41 @@ class AddParkingLotAPI( TestCase ):
         response = self.client.post( self.url, json.dumps( self.data ),
                                      content_type=self.context_type )
         self.assertEqual( response.status_code, HTTPStatus.BAD_REQUEST )
+
+class HikesHutWorker( TestCase ):
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user( email='test@user.com', password='foo', role='smth' )
+        user_id = User.objects.get( email='test@user.com' )
+        p1 = Point( latitude=0.01, longitude=10.01, province="test province", village="test village",
+                    address="test" )
+        p2 = Point( latitude=0.31, longitude=10.01, province="test province", village="test village",
+                    address="addresstest" )
+        hunt = Hut( name="test parking pot name 1", n_beds=2,
+                    fee=10, ascent=10,
+                    phone="+999222", email="md@gmail.com",
+                    web_site="www.hi.com",
+                    desc="testHunt", point_id=2 )
+
+        p1.save()
+        p2.save()
+        hunt.Point = p1
+        hike = Hike.objects.create( title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy',
+                                    start_point=p2,
+                                    end_point=p2, local_guide=user_id )
+        hunt.save()
+        hike.save()
+        self.data = {
+
+            "condition": 'closed',
+            "condition_description": 'hike closed',
+            "hike_id": 1
+        }
+        self.url = self.url = '/hiketracking/worker/hikes/'
+        self.context_type = "application/json"
+
+    def test_hut_worker(self):
+        print(self.data)
+        response = self.client.put( self.url, json.dumps( self.data ),
+                                     content_type=self.context_type )
+        self.assertEqual( response.status_code, HTTPStatus.OK )

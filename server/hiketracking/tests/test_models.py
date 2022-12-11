@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.test import Client
 from django.test import TestCase
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
+from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser,HutWorker, HutHike
 from hiketracking.tests.test_utilty import CreateTestUser
 from  hiketracking.views.view_hike import Recommended
 
@@ -401,3 +401,35 @@ class CustomerProfileTest(TestCase):
         self.assertEqual(cp1[0].max_altitude, 1)
 
 
+class HutWorkerTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='HutWorker')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
+                   address="test address")
+        p1.save()
+        testHike = Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy', start_point=p1,
+                            end_point=p1, local_guide = user_id)
+        testHut = Hut.objects.create(name="TestHut", n_beds=1, fee=20, point_id=p1.id)
+        testHutHike = HutHike.objects.create(hike_id = testHike.id, hut_id = testHut.id)
+
+        HutWorker.objects.create(hut_id = testHut.id, hutworker_id = user_id.id)
+
+    def test_hutworker(self):
+
+        h = HutWorker.objects.all()
+        self.assertEqual(h[0].hut_id, 1)
+        self.assertEqual(h[0].hutworker_id, 1)
+
+
+    def test_hike_condition(self):
+        h = HutWorker.objects.all()
+        huthike = HutHike.objects.all()
+        if h[0].hut_id == 1:
+            if huthike[0].hike_id == 1:
+                Hike.objects.filter(id = huthike[0].hike_id).update(condition = "Closed")
+
+        hike = Hike.objects.all()
+        self.assertEqual(hike[0].condition, "Closed")
