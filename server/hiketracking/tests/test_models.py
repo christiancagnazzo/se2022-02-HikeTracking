@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
 from hiketracking.tests.test_utilty import CreateTestUser
+from  hiketracking.views.view_hike import Recommended
 
 
 class UsersManagersTests( TestCase ):
@@ -270,24 +271,7 @@ class recommendedHikeTest(TestCase):
         Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
         Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
         return super().setUp()
-    def test_recommendHike(self):
-        
-        pass
-        
-
-class modifyAndDeleteHikeTest(TestCase):
-    def setUp(self) -> None:
-        User = get_user_model()
-        User.objects.create_user(email='test@user.com', password='foo', role='smth')
-        user_id = User.objects.get(email='test@user.com')
-        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
-        p1.save()
-        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
-        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
-        return super().setUp()
-    
-    
-    def test_context(self):
+    def test_Hike(self):
         hike1 = Hike.objects.all()
         self.assertEqual(hike1[0].title,"Climbing")
         self.assertEqual(hike1[0].length , 2)
@@ -320,6 +304,19 @@ class modifyAndDeleteHikeTest(TestCase):
         self.assertEqual(hike1[0].end_point.province, "test province")
         self.assertEqual(hike1[0].end_point.village, "test village")
         self.assertEqual(hike1[0].end_point.address, "test address")
+        pass
+        
+
+class modifyAndDeleteHikeTest(TestCase):
+    def setUp(self) -> None:
+        User = get_user_model()
+        User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",address="test address")
+        p1.save()
+        Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1,difficulty='easy',start_point=p1,end_point=p1,local_guide=user_id)
+        Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0,difficulty='medium',start_point=p1,end_point=p1,local_guide=user_id)
+        return super().setUp()
 
     def test_modifyHike(self):
         hike1 = Hike.objects.get(title = "Climbing")
