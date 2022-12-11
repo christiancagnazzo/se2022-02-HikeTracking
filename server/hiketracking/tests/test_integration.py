@@ -4,6 +4,24 @@ from django.test import TestCase
 
 from hiketracking.models import Hike, Point,CustomerProfile,CustomUser
 
+def util_assertion(self, hike1):
+    self.assertEqual(hike1[1].title,"Trekking")
+    self.assertEqual(hike1[1].length , 3)
+    self.assertEqual(hike1[1].expected_time, 2)
+    self.assertEqual(hike1[1].ascent , 0)
+    self.assertEqual(hike1[1].difficulty, 'medium')
+    self.assertEqual(hike1[1].start_point.latitude, 0.01)
+    self.assertEqual(hike1[1].start_point.longitude, 0.01)
+    self.assertEqual(hike1[1].start_point.province, "test province")
+    self.assertEqual(hike1[1].start_point.village, "test village")
+    self.assertEqual(hike1[1].start_point.address, "test address")
+    self.assertEqual(hike1[0].end_point.latitude, 0.01)
+    self.assertEqual(hike1[0].end_point.longitude, 0.01)
+    self.assertEqual(hike1[0].end_point.province, "test province")
+    self.assertEqual(hike1[0].end_point.village, "test village")
+    self.assertEqual(hike1[0].end_point.address, "test address")
+
+
 def set_up():
     User = get_user_model()
     User.objects.create_user(email='test@user.com', password='foo', role='smth')
@@ -35,22 +53,7 @@ class recommendedHikeTest(TestCase):
         self.assertEqual(hike1[0].end_point.village, "test village")
         self.assertEqual(hike1[0].end_point.address, "test address")
 
-        self.assertEqual(hike1[1].title,"Trekking")
-        self.assertEqual(hike1[1].length , 3)
-        self.assertEqual(hike1[1].expected_time, 2)
-        self.assertEqual(hike1[1].ascent , 0)
-        self.assertEqual(hike1[1].difficulty, 'medium')
-        self.assertEqual(hike1[1].start_point.latitude, 0.01)
-        self.assertEqual(hike1[1].start_point.longitude, 0.01)
-        self.assertEqual(hike1[1].start_point.province, "test province")
-        self.assertEqual(hike1[1].start_point.village, "test village")
-        self.assertEqual(hike1[1].start_point.address, "test address")
-        self.assertEqual(hike1[0].end_point.latitude, 0.01)
-        self.assertEqual(hike1[0].end_point.longitude, 0.01)
-        self.assertEqual(hike1[0].end_point.province, "test province")
-        self.assertEqual(hike1[0].end_point.village, "test village")
-        self.assertEqual(hike1[0].end_point.address, "test address")
-        pass
+        util_assertion(self, hike1)
         
 
 class modifyHikeTest(TestCase):
@@ -91,21 +94,7 @@ class modifyHikeTest(TestCase):
         self.assertEqual(hike1[0].end_point.village, "test village")
         self.assertEqual(hike1[0].end_point.address, "test address")
 
-        self.assertEqual(hike1[1].title,"Trekking")
-        self.assertEqual(hike1[1].length , 3)
-        self.assertEqual(hike1[1].expected_time, 2)
-        self.assertEqual(hike1[1].ascent , 0)
-        self.assertEqual(hike1[1].difficulty, 'medium')
-        self.assertEqual(hike1[1].start_point.latitude, 0.01)
-        self.assertEqual(hike1[1].start_point.longitude, 0.01)
-        self.assertEqual(hike1[1].start_point.province, "test province")
-        self.assertEqual(hike1[1].start_point.village, "test village")
-        self.assertEqual(hike1[1].start_point.address, "test address")
-        self.assertEqual(hike1[0].end_point.latitude, 0.01)
-        self.assertEqual(hike1[0].end_point.longitude, 0.01)
-        self.assertEqual(hike1[0].end_point.province, "test province")
-        self.assertEqual(hike1[0].end_point.village, "test village")
-        self.assertEqual(hike1[0].end_point.address, "test address")
+        util_assertion(self, hike1)
 
 
 
