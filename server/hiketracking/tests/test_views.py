@@ -4,7 +4,7 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from hiketracking.models import Point, Hut, Hike
+from hiketracking.models import Point, Hut, Hike, CustomUser
 
 
 class HutTest( TestCase ):
@@ -225,3 +225,65 @@ class HikesHutWorker( TestCase ):
         response = self.client.put( self.url, json.dumps( self.data ),
                                      content_type=self.context_type )
         self.assertEqual( response.status_code, HTTPStatus.OK )
+
+
+class ValidateLocalGuide(TestCase):
+
+    def setUp(self):
+        c1 = CustomUser(email="test@atest.com", role="local guide", is_staff=0, is_active=1)
+        c1.save()
+
+        c2 = CustomUser(email="test@test.com", role="Platform Manager", is_staff=0, is_confirmed=1, is_active=1)
+        c2.save()
+
+        self.url = self.url = '/hiketracking/users/validate/'
+        self.context_type = "application/json"
+
+    def test_retrieve_unconfirmed_Account(self):
+
+        response = self.client.get(self.url, content_type = self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        cust_upd = CustomUser.objects.all()
+        a = list(response.data.values())
+        b = list(a[0].values())
+        self.assertEqual(b[0]["email"], cust_upd[0].email)
+        self.assertEqual(b[0]["role"], cust_upd[0].role)
+        self.assertEqual(b[0]["is_staff"], cust_upd[0].is_staff)
+        self.assertEqual(b[0]["is_active"], cust_upd[0].is_active)
+        self.assertEqual(b[0]["is_confirmed"], cust_upd[0].is_confirmed)
+
+    def test_account_confirmation_api(self):
+        self.data = {
+            "user_id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type = self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        cust_upd = CustomUser.objects.all()
+        self.assertEqual(cust_upd[0].email, "test@atest.com")
+        self.assertEqual(cust_upd[0].role, "local guide")
+        self.assertEqual(cust_upd[0].is_staff, 0)
+        self.assertEqual(cust_upd[0].is_active, 1)
+        self.assertEqual(cust_upd[0].is_confirmed, 1)
+
+    def test_wrong_user_id(self):
+        self.data = {
+            "user_id": 0
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR )
+
+    def test_user_not_active(self):
+        CustomUser.objects.filter(id=1).update(is_active=0)
+        self.data = {
+            "user_id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_wrong_self_data_attribute(self):
+
+        self.data = {
+            "id": 1
+        }
+        response = self.client.post(self.url, json.dumps(self.data), content_type=self.context_type)
+        self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
