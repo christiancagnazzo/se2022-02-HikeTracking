@@ -4,7 +4,7 @@ import { Hiking, HolidayVillage, LocalParking, ManageAccounts } from '@mui/icons
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
+import UTILS from '../utils/utils';
 const colorBackgroundMenu = "#566400"
 
 function MySidebar(props){
@@ -40,14 +40,17 @@ function initFlagArray(length){
 }
 
 function HikerMenu(props){
+    const lengthOption = 5
     const [active, setActive] = useState(initFlagArray(5))
     const navigate = useNavigate()
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
     const profileIcon = <ManageAccounts></ManageAccounts>
-    const updateActive = UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
+    const updateActive = (idx, relocation) => {
+      UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
+    }
     return (
     <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
       <Menu>
@@ -84,8 +87,10 @@ function LocalGuideMenu(props){
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
     const navigate = useNavigate()
-    const updateActive = UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
+    const updateActive = (idx, relocation) => {
+      UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
+    }
     return (
         <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
           <Menu>
@@ -116,7 +121,10 @@ function PlatformManagerMenu(props){
   const hutIcon = <HolidayVillage></HolidayVillage>
   const profileIcon = <ManageAccounts></ManageAccounts>
   const navigate = useNavigate()
-  const updateActive = UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
+  const updateActive = (idx, relocation) => {
+    UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
+
+  }
   return (
       <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
         <Menu>
@@ -144,8 +152,10 @@ function HutWorkerMenu(){
   const hikingIcon = <Hiking></Hiking>
   const [active, setActive] = useState(initFlagArray(lengthOption))
   const navigate = useNavigate()
-  const updateActive = UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
+  const updateActive = (idx, relocation) => {
+    UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
+  }
   return (
     <Sidebar width='auto' className='border-0' backgroundColor={colorBackgroundMenu} >
       <Menu>
