@@ -66,7 +66,7 @@ function App2() {
     }
   }
   checkAuth()
-  },[navigate])
+  },[])
 
   const doLogout = async () => {
     let token = localStorage.getItem("token");
