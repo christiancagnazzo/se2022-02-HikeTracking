@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 
-from hiketracking.models import Hut, HutFacility, Point, Facility
+from hiketracking.models import Hut, HutFacility, Point, Facility, HutHike, Hike
 from hiketracking.serilizers.serilizer_huts import HuntsSerializer, FacilitySerializer
 from hiketracking.serilizers.serilizer_point import PointSerializer
 from hiketracking.utility import insert_point, link_hike_to_hut
@@ -116,7 +116,14 @@ class Huts( ListCreateAPIView ):
                     fac_name = Facility.objects.get( id=f.facility_id ).name
                     facilities_list.append( fac_name )
 
+                hike_list = []
+                all_hikes = HutHike.objects.filter( hut_id=h['id'] )
+                for hi in all_hikes:
+                    hi_name = Hike.objects.get( id=hi.hike_id ).title
+                    hike_list.append( hi_name )
+
                 h['services'] = facilities_list
+                h['hikes'] = hike_list
 
                 result.append( h )
 

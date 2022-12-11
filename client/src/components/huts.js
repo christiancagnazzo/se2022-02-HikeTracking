@@ -44,6 +44,7 @@ function Huts(props) {
     return <h1>No available huts</h1>
   }
   else {
+    console.log(props.huts)
     return displayHutsUtil(props.huts)
   }
 }
@@ -52,6 +53,7 @@ function Huts(props) {
 function HutCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const services = props.hut.services.join(', ')
+  const hikes = props.hut.hikes.join(', ')
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hut.name}>
       <Card.Body>
@@ -59,9 +61,14 @@ function HutCard(props) {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Address: {props.hut.address}</ListGroup.Item>
+        <ListGroup.Item>Ascent: {props.hut.ascent}€</ListGroup.Item>
         <ListGroup.Item>#Beds: {props.hut.n_beds}</ListGroup.Item>
         <ListGroup.Item>Services: {services}</ListGroup.Item>
+        <ListGroup.Item>Hikes: {hikes}</ListGroup.Item>
         <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>
+        <ListGroup.Item>Phone number: {props.hut.phone}</ListGroup.Item>
+        <ListGroup.Item>Email: {props.hut.email}</ListGroup.Item>
+        <ListGroup.Item>Web Site: {props.hut.website}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
