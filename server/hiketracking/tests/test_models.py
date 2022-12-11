@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility,CustomerProfile,CustomUser
 from hiketracking.tests.test_utilty import CreateTestUser
-from  hiketracking.views.view_hike import Recommended
+
 
 
 class UsersManagersTests( TestCase ):
