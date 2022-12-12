@@ -23,6 +23,39 @@
   },
   {
     "model": "hiketracking.customuser",
+    "pk": 3,
+    "fields": {
+      "email": "pm@mail.com",
+      "role": "platformmanager",
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1,
+      "is_confirmed": 1
+    }
+  },
+  {
+    "model": "hiketracking.customuser",
+    "pk": 4,
+    "fields": {
+      "email": "hw@mail.com",
+      "role": "hutworker",
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1,
+      "is_confirmed": 1
+    }
+  },
+  {
+    "model": "hiketracking.customuser",
+    "pk": 5,
+    "fields": {
+      "email": "hw2@mail.com",
+      "role": "hutworker",
+      "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
+      "is_active": 1,
+      "is_confirmed": 0
+    }
+  },
+  {
+    "model": "hiketracking.customuser",
     "pk": 17,
     "fields": {
       "password": "pbkdf2_sha256$390000$ifjGdP7ueT3cwTeELvt4o2$/Nbc27DWB9RHQ26phdc4E2KmZe7lzv4WfpdiAyU4woQ=",
@@ -884,7 +917,7 @@
     "model": "hiketracking.point",
     "pk": 154,
     "fields": {
-      "latitude": 44.867353,
+      "latitude": 44.8673530,
       "longitude": 10.057698,
       "province": "Parma",
       "village": "Fidenza",
@@ -1146,7 +1179,7 @@
   },
   {
     "model": "hiketracking.hike",
-    "pk": 1,
+    "pk": 300,
     "fields": {
       "title": "Sentiero per il ROCCIAMELONE",
       "length": 9,
@@ -1789,7 +1822,7 @@
     "pk": 145,
     "fields": {
       "title": "Belvedere Murgia",
-      "length": 4283,
+      "length": 4,
       "expected_time": 120,
       "ascent": 412,
       "difficulty": "Tourist",
@@ -1805,7 +1838,7 @@
     "pk": 146,
     "fields": {
       "title": "Cave di Murgia",
-      "length": 4203,
+      "length": 4,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1821,7 +1854,7 @@
     "pk": 147,
     "fields": {
       "title": "Pietrapertosa",
-      "length": 10303,
+      "length": 1,
       "expected_time": 240,
       "ascent": 1005,
       "difficulty": "Tourist",
@@ -1837,7 +1870,7 @@
     "pk": 148,
     "fields": {
       "title": "Parco Radogna",
-      "length": 8220,
+      "length": 8,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1853,7 +1886,7 @@
     "pk": 149,
     "fields": {
       "title": "Piano del Pollino",
-      "length": 14227,
+      "length": 12,
       "expected_time": 240,
       "ascent": 1971,
       "difficulty": "Tourist",
@@ -1869,7 +1902,7 @@
     "pk": 150,
     "fields": {
       "title": "Ferrata Marciosa",
-      "length": 7675,
+      "length": 7,
       "expected_time": 240,
       "ascent": 989,
       "difficulty": "Tourist",
@@ -1885,7 +1918,7 @@
     "pk": 151,
     "fields": {
       "title": "Sentiero CAI del Bosco Favino",
-      "length": 12710,
+      "length": 12,
       "expected_time": 240,
       "ascent": 1823,
       "difficulty": "Tourist",
@@ -1901,7 +1934,7 @@
     "pk": 152,
     "fields": {
       "title": "Colle Impiso",
-      "length": 14277,
+      "length": 14,
       "expected_time": 240,
       "ascent": 1967,
       "difficulty": "Tourist",
@@ -1917,7 +1950,7 @@
     "pk": 153,
     "fields": {
       "title": "Parco delle Murgie",
-      "length": 6823,
+      "length": 6,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1932,8 +1965,8 @@
     "model": "hiketracking.hike",
     "pk": 154,
     "fields": {
-      "title": "Picciano Tappa 7",
-      "length": 29704,
+      "title": "Picciano Tappa 77",
+      "length": 29,
       "expected_time": 240,
       "ascent": 438,
       "difficulty": "Tourist",
@@ -2046,6 +2079,30 @@
       "n_cars": 256,
       "desc": "Al fondo della magnifica valle del LYS ( o di GRESSONEY), ai piedi del massiccio del MONTEROSA, vi aspetta un accogliente area di sosta per il vostro camper. La struttura nasce dal desiderio di un ex camperista di creare una struttura come si sarebbe aspettato di trovare in una località di montagna.",
       "point": 106
+    }
+  },
+  {
+    "model": "hiketracking.huthike",
+    "pk": 1,
+    "fields": {
+      "hike": 300,
+      "hut": 1
+    }
+  },
+  {
+    "model": "hiketracking.huthike",
+    "pk": 2,
+    "fields": {
+      "hike": 2,
+      "hut": 1
+    }
+  },
+  {
+    "model": "hiketracking.hutworker",
+    "pk": 1,
+    "fields": {
+      "hutworker": 4,
+      "hut": 1
     }
   }
 ]

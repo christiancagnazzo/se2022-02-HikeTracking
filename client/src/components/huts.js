@@ -1,34 +1,34 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import Map from './map'
-import API from '../API';
-import FilterForm from './filterformhikes';
+import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+import UTILS from '../utils/utils';
 
-function displayHutsUtil(huts){
-  let hutscard =  huts.map((h,idx) => 
-      <Col className="pb-4 px-0" key={idx}>
-        <HutCard hut={h}/>
-      </Col>)
-    let rows = []
-    for(let i = 0; i < Math.ceil(huts.length/3);i++){
-      let cols = []
-      let j
-      for(j = 0; j < 3 && hutscard.length; j++){
-        cols.push(hutscard.pop())
-      }
-      for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-      }
-      rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
-    }
-    return <>{rows}</>
+function displayHutsUtil(huts) {
+  let hutscard = huts.map((h, idx) =>
+    <Col className="pb-4 px-0" key={idx}>
+      <HutCard hut={h} />
+    </Col>)
+  let rows = UTILS.createRows(huts, hutscard)
+  return (
+    <>
+      <Container>
+        <Row>
+          <Col xs={10}>
+            <h1>All Huts</h1>
+          </Col>
+        </Row>
+      </Container>
+      <div>
+        {rows}
+      </div>
+    </>
+  )
 }
 
-function Huts(props){
-  if(props.huts.length === 0) {
-    return  <h1>No available huts</h1>
+function Huts(props) {
+  if (props.huts.length === 0) {
+    return <h1>No available huts</h1>
   }
   else {
     return displayHutsUtil(props.huts)
@@ -39,6 +39,7 @@ function Huts(props){
 function HutCard(props) {
   const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
   const services = props.hut.services.join(', ')
+  const hikes = props.hut.hikes.join(', ')
   return (<>
     <Card style={{ width: '22rem' }} key={0} title={props.hut.name}>
       <Card.Body>
@@ -46,15 +47,20 @@ function HutCard(props) {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Address: {props.hut.address}</ListGroup.Item>
+        <ListGroup.Item>Ascent: {props.hut.ascent}€</ListGroup.Item>
         <ListGroup.Item>#Beds: {props.hut.n_beds}</ListGroup.Item>
         <ListGroup.Item>Services: {services}</ListGroup.Item>
+        <ListGroup.Item>Hikes: {hikes}</ListGroup.Item>
         <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>
+        <ListGroup.Item>Phone number: {props.hut.phone}</ListGroup.Item>
+        <ListGroup.Item>Email: {props.hut.email}</ListGroup.Item>
+        <ListGroup.Item>Web Site: {props.hut.website}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
           <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
           {' '}
-          
+
         </Card.Text>
       </Card.Body>
 
@@ -65,7 +71,7 @@ function HutCard(props) {
       name={props.hut.name}
       desc={props.hut.desc}
     />
-    
+
   </>
   );
 }

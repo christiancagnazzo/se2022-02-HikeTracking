@@ -36,7 +36,7 @@ class CustomerProfile( models.Model ):
         HIKER = "Hiker"
         PRO_HIKER = "Pro Hiker"
 
-    difficulty = models.CharField( choices=Difficulty.choices, max_length=30 )
+    difficulty = models.CharField( choices=Difficulty.choices, max_length=30, null=True )
 
 
 class Point( models.Model ):
@@ -119,6 +119,9 @@ class Hut( models.Model ):
     def __str__(self):
         return self.name
 
+class HutWorker(models.Model):
+    hutworker = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
 
 class HutPhoto( models.Model ):
     hut = models.ForeignKey( Hut, on_delete=models.CASCADE )

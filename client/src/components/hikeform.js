@@ -1,23 +1,21 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import { json, useNavigate } from 'react-router-dom';
+import {  Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
+import {  useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
-import Hike from "./hikes";
 import { useParams } from "react-router-dom";
 
 function HikeForm(props) {
-  const {hiketitle} = useParams()
+  const { hiketitle } = useParams()
   let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE')
   let [length, setLength] = useState(9)
   let [time, setTime] = useState(240)
   let [ascent, setAscent] = useState(3538)
   let [difficulty, setDifficulty] = useState("Tourist")
-  let [sp, setSp] = useState(["",""])
-  let [addressSp, setAddressSp] = useState('Dummy start')
+  let [sp, setSp] = useState(["", ""])
+  let [addressSp, setAddressSp] = useState('')
   let [ep, setEp] = useState(["", ""])
-  let [addressEp, setAddressEp] = useState('Dummy ending')
+  let [addressEp, setAddressEp] = useState('')
   let [rp, setRp] = useState(['', ''])
   let [addressRp, setAddressRp] = useState('')
   let [rpList, setRpList] = useState([])
@@ -34,7 +32,7 @@ function HikeForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     let formData = new FormData()
     formData.append('File', file)
     let hikeDescription = {
@@ -52,67 +50,65 @@ function HikeForm(props) {
       'description': desc,
       'rp_list': rpList
     }
-   
-      let req = await API.createHike(hikeDescription, formData, token)
-      
-      if (req.error) {
-        setErrorMessage(req.msg)
-      } else {
-        navigate('/')
-      }
-    
+
+    let req = await API.createHike(hikeDescription, formData, token)
+
+    if (req.error) {
+      setErrorMessage(req.msg)
+    } else {
+      props.updateDirty()
+      console.log("sss")
+      navigate('/')
+    }
+
   }
 
-  const handleDelete = async(event) => {
+  const handleDelete = async (event) => {
     event.preventDefault()
     let req = await API.deleteHike(hiketitle, token)
     if (req.error) {
       setErrorMessage(req.msg)
     } else {
+      props.updateDirty()
       navigate('/')
     }
-  
+
   }
 
 
   useEffect(() => {
-    async function getHike(title){
+    async function getHike(title) {
       try {
-      let hike = await API.getHike(title, token)
-      hike = hike.hike
-      console.log(hike)
-      setTitle(hike.title)
-      setLength(hike.length)
-      setTime(hike.expected_time)
-      setAscent(hike.ascent)
-      setDifficulty(hike.difficulty)
-      setSp([hike.start_point_lat, hike.start_point_lng])
-      setAddressSp(hike.start_point_address)
-      setEp([hike.end_point_lat, hike.end_point_lng])
-      setAddressEp(hike.end_point_address)
-      setRpList(hike.rp)
-      setDesc(hike.description)
-      const filename = hike.track_file.split('/')[1]
-      let file = await API.getHikeFile(hike.id, token)
-      const blob = new Blob([file], {type: 'text/plain'})
-      const newFile = new File([blob], filename)
-      setFile(newFile)
-      } catch(e){
+        let hike = await API.getHike(title, token)
+        hike = hike.hike
+        setTitle(hike.title)
+        setLength(hike.length)
+        setTime(hike.expected_time)
+        setAscent(hike.ascent)
+        setDifficulty(hike.difficulty)
+        setSp([hike.start_point_lat, hike.start_point_lng])
+        setAddressSp(hike.start_point_address)
+        setEp([hike.end_point_lat, hike.end_point_lng])
+        setAddressEp(hike.end_point_address)
+        setRpList(hike.rp)
+        setDesc(hike.description)
+        const filename = hike.track_file.split('/')[1]
+        let file = await API.getHikeFile(hike.id, token)
+        const blob = new Blob([file], { type: 'text/plain' })
+        const newFile = new File([blob], filename)
+        setFile(newFile)
+      } catch (e) {
         console.log(e)
       }
     }
-    if(hiketitle){
+    if (hiketitle) {
       getHike(hiketitle)
     }
-    console.log(hiketitle)
-  },[hiketitle])
+  }, [hiketitle, token])
 
 
   const checkNum = (num) => {
-    if (!isNaN(num)) {
-      return true;
-    }
-    return false
+    return !isNaN(num)
   }
   const setPoint = (point, which) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {
@@ -140,21 +136,21 @@ function HikeForm(props) {
     setRPoint(['', ''])
     setAddressRp('')
     setRpList([...rpList, point])
-    let tp = {'lat': rp[0], 'lon': rp[1]}
+    let tp = { 'lat': rp[0], 'lon': rp[1] }
     setTrackPoints(trackPoints.filter((point) => {
       return point['lat'] !== tp['lat'] && point['lon'] !== tp['lon']
     }))
   }
 
   const cleanRPoint = () => {
+    if(!rpList.length) return
     let list = rpList.map((pos) => {
-      console.log(pos)
       return {
         'lat': pos['reference_point_lat'],
         'lon': pos['reference_point_lng']
       }
     })
-    setTrackPoints([...trackPoints,...list])
+    setTrackPoints([...trackPoints, ...list])
     setRpList([])
   }
 
@@ -175,8 +171,9 @@ function HikeForm(props) {
   }, [file])
 
   useEffect(() => {
+    let filters = { "start_lat": sp[0], "start_lon": sp[1] }
     const getHuts = async function () {
-      let req = await API.getAllHuts(token)
+      let req = await API.getAllHuts(token, filters)
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
@@ -185,13 +182,14 @@ function HikeForm(props) {
         setHuts(all_huts)
       }
     }
-
+    if(sp[0] && sp[1])
     getHuts()
-  }, [])
+  }, [sp,token])
 
   useEffect(() => {
+    let filters = { "start_lat": sp[0], "start_lon": sp[1] }
     const getParkingLots = async function () {
-      let req = await API.getAllParkingLots(token)
+      let req = await API.getAllParkingLots(token, filters)
       if (req.error) {
         setErrorMessage(req.msg)
       } else {
@@ -200,12 +198,12 @@ function HikeForm(props) {
         setParkingLots(all_plot)
       }
     }
-
+    if(sp[0] && sp[1])
     getParkingLots()
-  }, [])
+  }, [sp, token])
 
   let action;
-  if(hiketitle) {
+  if (hiketitle) {
     action = <>
       <Button variant="warning" type="submit" onClick={handleSubmit}>
         Modify
@@ -215,10 +213,10 @@ function HikeForm(props) {
       </Button>
     </>
   }
-  else{
+  else {
     action = <Button variant="primary" type="submit" onClick={handleSubmit}>
-    Submit
-  </Button>
+      Submit
+    </Button>
   }
 
   return (
@@ -226,7 +224,7 @@ function HikeForm(props) {
       <Form>
         <Form.Group className="mb-2" controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control disabled = {hiketitle!==undefined}type="text" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Form.Control disabled={hiketitle !== undefined} type="text" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="length">
           <Form.Label>Length (kms)</Form.Label>
@@ -251,18 +249,18 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-3" controlId="end-point">
           <label htmlFor="formFile" className="form-label">Track file</label>
-          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e)=> {
+          <input className="form-control" type="file" id="formFile" accept=".gpx" onChange={(e) => {
             setFile(e.target.files[0]);
-          
-          }}></input>
 
+          }}></input>
+          {file === '' ? <Alert style={{ "marginTop": "10px" }} variant="secondary">Upload a gpx track file to modify the fields</Alert> : ''}
         </Form.Group>
-        <PointInput parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
-        <PointInput parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
-        <RefPoint point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
+        <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
+        <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
+        <RefPoint file={file} point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
-          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength} updateTrackPoints={updateTrackPoints}  
-          setTrackPoints={setTrackPoints} trackPoints={trackPoints}/>
+          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength} updateTrackPoints={updateTrackPoints}
+            setTrackPoints={setTrackPoints} trackPoints={trackPoints} />
         </Card>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
@@ -314,7 +312,8 @@ function RefPoint(props) {
           <InputGroup.Text id="inputGroup-sizing-default">
             Addr
           </InputGroup.Text>
-          <Form.Control 
+          <Form.Control
+            disabled={props.file === ''}
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             value={props.address}
@@ -355,6 +354,7 @@ function PointInput(props) {
           Lat
         </InputGroup.Text>
         <Form.Control
+          disabled={props.file === ''}
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
           value={props.point[0]} onChange={(e) => props.setPoint([e.target.value, props.point[1]], props.which)}
@@ -367,6 +367,7 @@ function PointInput(props) {
             Lng
           </InputGroup.Text>
           <Form.Control
+            disabled={props.file === ''}
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             value={props.point[1]} onChange={(e) => props.setPoint([props.point[0], e.target.value], props.which)}
@@ -379,6 +380,7 @@ function PointInput(props) {
             Addr
           </InputGroup.Text>
           <Form.Control
+            disabled={props.file === ''}
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             value={props.address}
@@ -443,9 +445,9 @@ function PointInput(props) {
 
 
         <InputGroup size="sm">
-          <Button variant={variant1} className="border-right-0" onClick={() => setSelected('GPS')}>GPS</Button>
-          <Button variant={variant2} onClick={() => setSelected('Hut')}>Hut</Button>
-          <Button variant={variant3} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
+          <Button variant={variant1} disabled={props.file === ''} className="border-right-0" onClick={() => setSelected('GPS')}>GPS</Button>
+          <Button variant={variant2} disabled={props.file === ''} onClick={() => setSelected('Hut')}>Hut</Button>
+          <Button variant={variant3} disabled={props.file === ''} onClick={() => setSelected('Parking Lot')}>P. Lot</Button>
         </InputGroup>
 
 

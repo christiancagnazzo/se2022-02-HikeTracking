@@ -13,7 +13,7 @@ async function createHike(hike_description, hike_file, token) {
       },
     })
 
-    if (response.status == '200') {
+    if (response.status === 200) {
       response = await response.json()
       let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
         method: 'PUT',
@@ -23,7 +23,7 @@ async function createHike(hike_description, hike_file, token) {
         },
       })
 
-      if (second_response.status == '200')
+      if (second_response.status === 200)
         return { msg: "Hike Creato" };
 
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -40,7 +40,7 @@ async function createHike(hike_description, hike_file, token) {
 
 
 
-async function deleteHike(title, token){
+async function deleteHike(title, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
     let response = await fetch(URL + 'hikes/' + title, {
@@ -49,18 +49,18 @@ async function deleteHike(title, token){
         'Authorization': valid_token
       }
     })
-    if(response.status == 200){
+    if (response.status === 200) {
       return true
     }
 
-  } catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
 
-async function getHike(title,  token) {
-  
+async function getHike(title, token) {
+
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
@@ -70,19 +70,19 @@ async function getHike(title,  token) {
       }
     })
 
-    if(response.status == 200){
+    if (response.status === 200) {
       const hike = await response.json()
       return hike
-   }
+    }
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
   }
 }
 
 async function createHut(hut_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-
+  console.log(hut_description)
   try {
     let response = await fetch(URL + 'hut/', {
       method: 'POST',
@@ -92,8 +92,8 @@ async function createHut(hut_description, token) {
         'Authorization': valid_token
       },
     })
-  
-    if (response.status == '200')
+
+    if (response.status === 200)
       return { msg: "Hut created" };
 
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -116,7 +116,7 @@ async function createParkingLot(parking_lot_description, token) {
         'Authorization': valid_token
       },
     })
-    if (response.status == '201')
+    if (response.status === 201)
       return { msg: "Parking Lot created" };
     else
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
@@ -136,7 +136,7 @@ async function login(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong in the login. Please try again" }
@@ -152,10 +152,10 @@ async function signin(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Something went wrong with the recording.  Please try again" }
+    return { error: 'Error', msg: "Something went wrong during the registration. This email is associated with an existing account." }
   }
 
 }
@@ -171,7 +171,6 @@ async function logout(token) {
 }
 
 async function getAllHikes(token, filters, userPower) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 
@@ -206,13 +205,13 @@ async function getAllHikes(token, filters, userPower) {
     },
   });
 
-  if (response.status == '200') {
+  if (response.status === 200) {
     let hikes = await response.json();
     if (userPower === "hiker") {
       for (let i = 0; i < hikes.length; i++) {
         const h = hikes[i]
-        h['file'] = await getHikeFile(h['hike_id'],token);
-        }
+        h['file'] = await getHikeFile(h['id'], token);
+      }
     };
     return { msg: hikes }
   }
@@ -222,24 +221,20 @@ async function getAllHikes(token, filters, userPower) {
 }
 
 
-async function getHikeFile(hike_id, token){
-  console.log("fille")
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+async function getHikeFile(hike_id, token) {
   let response = await fetch(URL + 'hike/file/' + hike_id, {
     method: 'GET',
     headers: {
-      'Authorization': valid_token
+      //'Authorization': valid_token
     },
   });
   if (response.status === 200) {
-    console.log(response)
     const text = new TextDecoder().decode((await response.body.getReader().read()).value);
     return text
   }
 }
 
 async function getAllHuts(token, filters) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 
@@ -265,7 +260,7 @@ async function getAllHuts(token, filters) {
       //'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -280,7 +275,7 @@ async function checkAuth(token) {
       'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -288,7 +283,6 @@ async function checkAuth(token) {
 }
 
 async function getAllParkingLots(token, filters) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   let query = ''
 
@@ -304,7 +298,7 @@ async function getAllParkingLots(token, filters) {
       //'Authorization': valid_token
     },
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
@@ -312,13 +306,11 @@ async function getAllParkingLots(token, filters) {
 }
 
 async function getFacilities() {
-
-
   let response = await fetch(URL + 'facilities/', {
     method: 'GET',
 
   });
-  if (response.status == '200')
+  if (response.status === 200)
     return { msg: await response.json() }
 
   else {
@@ -326,43 +318,26 @@ async function getFacilities() {
   }
 }
 
-async function getCitiesByProvince(token, type, province) {
-  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-
-  let response = await fetch(URL + 'province?prov=' + province & "type?t=" + type, {
-    method: 'GET',
-    headers: {
-      'Authorization': valid_token
-    },
-  });
-  if (response.status == '200')
-    return { msg: await response.json() }
-
-  else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
-  }
-}
-
-async function createRecord(record_description, token) {
+async function setProfile(preferences, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
     let response = await fetch(URL + 'profile/', {
-      method: 'POST',
-      body: JSON.stringify(record_description),
+      method: 'PUT',
+      body: JSON.stringify(preferences),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': valid_token
       },
     })
-    if (response.status == '200')
-      return { msg: "Record Creato" };
-
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    if (response.status === 200)
+      return { msg: "Profile updated!"}
+    else {
+      return { error: 'Error', msg: "Something went wrong. Please try again" }
+    }
   }
-
-  catch (e) {
-    console.log(e) // TODO
+  catch(e) {
+    console.log(e)
   }
 }
 
@@ -374,91 +349,108 @@ async function getProfile(token) {
       'Authorization': valid_token
     },
   });
-  if (response.status == '200') {
-    let records = await response.json();
-    for (let i = 0; i < records.length; i++) {
-      const h = records[i]
-      let response = await fetch(URL + 'profile/file/' + h["id"], {
-        method: 'GET',
-        headers: {
-          'Authorization': valid_token
-        },
-      });
-      if (response.status === 200) {
-        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
-        h['file'] = text;
-      }
-    };
-    return { msg: records }
+  if (response.status === 200) {
+    return { msg: await response.json() }
   }
   else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
+    return { error: "Something went wrong. Please try again" }
   }
 }
-async function getPreferences(token) {
+
+async function getRecommendedHikes(token){
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'preferences/', {
-    method: 'GET',
-    headers: {
+  let response = await fetch(URL + 'hikes/recommended/',{
+    headers:{
       'Authorization': valid_token
     },
-  });
-  if (response.status == '200') {
-    let preferences = await response.json();
-    for (let i = 0; i < preferences.length; i++) {
-      const h = preferences[i]
-      let response = await fetch(URL + 'profile/file/' + h["id"], {
-        method: 'GET',
-        headers: {
-          'Authorization': valid_token
-        },
-      });
-      if (response.status === 200) {
-        const text = new TextDecoder().decode((await response.body.getReader().read()).value);
-        h['file'] = text;
-      }
-    };
-    return { msg: preferences }
-  }
-  else {
-    return { error: 'Error', msg: "Something went wrong. Please try again" }
+  })
+  if (response.status === 200){
+    return {msg: await response.json()}
+  } else {
+    return {error: "Something went wrong. Please try again"}
   }
 }
-async function createPreferences(preferences_description, preferences_file, token) {
+
+async function getAccountsToValidate(token){
+  const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
+  let response = await fetch(URL + 'users/validate/',{
+    headers:{
+      'Authorization': valid_token
+    },
+  })
+  if (response.status === 200){
+    return {msg: await response.json()}
+  } else {
+    return {error: "Error", msg: "Something went wrong. Please try again"}
+  }
+}
+
+async function activateAccount(params, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
-    let response = await fetch(URL + 'preferences/', {
+    let response = await fetch(URL + 'users/validate/', {
       method: 'POST',
-      body: JSON.stringify(preferences_description),
+      body: JSON.stringify(params),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': valid_token
       },
     })
-    if (response.status == '200') {
-      response = await response.json()
-      let second_response = await fetch(URL + 'preferences/file/' + response['preferences_id'], {
-        method: 'PUT',
-        body: preferences_file,
-        headers: {
-          'Authorization': valid_token
-        },
-      })
-
-      if (second_response.status == '200')
-        return { msg: "Preference Creato" };
-
-      return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    if (response.status === 200)
+      return { msg: "Updated!"}
+    else {
+      return { error: 'Error', msg: "Something went wrong. Please try again" }
     }
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
   }
-
-  catch (e) {
-    console.log(e) // TODO
+  catch(e) {
+    console.log(e)
   }
 }
 
-const API = {createPreferences, getPreferences, getProfile, createRecord, getCitiesByProvince, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile };
+async function getHutWorkerHikes(token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    const response = await fetch(URL + "worker/hikes/", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+    if (response.status === 200) {
+      return ({msg : await response.json()})
+    }
+    else {
+      return ({err: await response.json()})
+    }
+  }
+  catch(e) {
+    console.log(e)
+  }
+}
 
+async function updateCondition(condition, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  try {
+    let response = await fetch(URL + 'worker/hikes/', {
+      method: 'PUT',
+      body: JSON.stringify(condition),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+    })
+
+    if (response.status === 200)
+      return { msg: "Condition updated" };
+    
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  }
+  catch(e){
+    console.log(e)
+  }
+}
+
+const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition };
 export default API;

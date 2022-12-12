@@ -1,20 +1,9 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import {  Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import API from '../API';
-import Map from './map'
-import { Icon } from 'leaflet'
 import Multiselect from "multiselect-react-dropdown";
-import GeographicalFilter from "./geographicalfilter";
-const myIconSp = new Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+
 
 
 
@@ -28,7 +17,7 @@ function FilterFormHuts(props) {
   const [village, setVillage] = useState("")
   const [radius, setRadius] = useState(50)
   const [position, setPosition] = useState("")*/
-  let [errorMessage, setErrorMessage] = useState('')
+  let [_, setErrorMessage] = useState('')
 
   let token = localStorage.getItem("token");
 
@@ -61,7 +50,13 @@ function FilterFormHuts(props) {
     }
 
     getFacilities()
-  }, [])
+  }, [token])
+
+  const clearState = () =>{
+    setMinBed('')
+    setMaxFee('')
+    
+  }
 
   return (
     <Card body>
@@ -119,6 +114,10 @@ function FilterFormHuts(props) {
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Apply
         </Button>
+        &nbsp;
+    <Button variant = "danger" onClick = {clearState}>
+      Reset
+    </Button>
       </Form>
     </Card>
   )

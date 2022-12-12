@@ -1,133 +1,9 @@
-import { Container, Form, Row, Button, Card, InputGroup, Col, Alert } from "react-bootstrap"
-import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import {  Form, Row, Button, Card, InputGroup, Col } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from "react";
-import API from '../API';
-import Map from './map'
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline,Circle } from 'react-leaflet'
-import { Icon } from 'leaflet'
+import {  useState } from "react";
 import GeographicalFilter from "./geographicalfilter";
-const myIconSp = new Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-const  province_dic = { 
-    '-'  : "-",    
-    'AG' : 'Agrigento',
-    'AL' : 'Alessandria',
-    'AN' : 'Ancona',
-    'AO' : 'Aosta',
-    'AR' : 'Arezzo',
-    'AP' : 'Ascoli Piceno',
-    'AT' : 'Asti',
-    'AV' : 'Avellino',
-    'BA' : 'Bari',
-    'BT' : 'Barletta-Andria-Trani',
-    'BL' : 'Belluno',
-    'BN' : 'Benevento',
-    'BG' : 'Bergamo',
-    'BI' : 'Biella',
-    'BO' : 'Bologna',
-    'BZ' : 'Bolzano',
-    'BS' : 'Brescia',
-    'BR' : 'Brindisi',
-    'CA' : 'Cagliari',
-    'CL' : 'Caltanissetta',
-    'CB' : 'Campobasso',
-    'CI' : 'Carbonia-Iglesias',
-    'CE' : 'Caserta',
-    'CT' : 'Catania',
-    'CZ' : 'Catanzaro',
-    'CH' : 'Chieti',
-    'CO' : 'Como',
-    'CS' : 'Cosenza',
-    'CR' : 'Cremona',
-    'KR' : 'Crotone',
-    'CN' : 'Cuneo',
-    'EN' : 'Enna',
-    'FM' : 'Fermo',
-    'FE' : 'Ferrara',
-    'FI' : 'Firenze',
-    'FG' : 'Foggia',
-    'FC' : 'Forlì-Cesena',
-    'FR' : 'Frosinone',
-    'GE' : 'Genova',
-    'GO' : 'Gorizia',
-    'GR' : 'Grosseto',
-    'IM' : 'Imperia',
-    'IS' : 'Isernia',
-    'SP' : 'La Spezia',
-    'AQ' : 'L\'Aquila',
-    'LT' : 'Latina',
-    'LE' : 'Lecce',
-    'LC' : 'Lecco',
-    'LI' : 'Livorno',
-    'LO' : 'Lodi',
-    'LU' : 'Lucca',
-    'MC' : 'Macerata',
-    'MN' : 'Mantova',
-    'MS' : 'Massa-Carrara',
-    'MT' : 'Matera',
-    'ME' : 'Messina',
-    'MI' : 'Milano',
-    'MO' : 'Modena',
-    'MB' : 'Monza e della Brianza',
-    'NA' : 'Napoli',
-    'NO' : 'Novara',
-    'NU' : 'Nuoro',
-    'OT' : 'Olbia-Tempio',
-    'OR' : 'Oristano',
-    'PD' : 'Padova',
-    'PA' : 'Palermo',
-    'PR' : 'Parma',
-    'PV' : 'Pavia',
-    'PG' : 'Perugia',
-    'PU' : 'Pesaro e Urbino',
-    'PE' : 'Pescara',
-    'PC' : 'Piacenza',
-    'PI' : 'Pisa',
-    'PT' : 'Pistoia',
-    'PN' : 'Pordenone',
-    'PZ' : 'Potenza',
-    'PO' : 'Prato',
-    'RG' : 'Ragusa',
-    'RA' : 'Ravenna',
-    'RC' : 'Reggio Calabria',
-    'RE' : 'Reggio Emilia',
-    'RI' : 'Rieti',
-    'RN' : 'Rimini',
-    'RM' : 'Roma',
-    'RO' : 'Rovigo',
-    'SA' : 'Salerno',
-    'VS' : 'Medio Campidano',
-    'SS' : 'Sassari',
-    'SV' : 'Savona',
-    'SI' : 'Siena',
-    'SR' : 'Siracusa',
-    'SO' : 'Sondrio',
-    'TA' : 'Taranto',
-    'TE' : 'Teramo',
-    'TR' : 'Terni',
-    'TO' : 'Torino',
-    'OG' : 'Ogliastra',
-    'TP' : 'Trapani',
-    'TN' : 'Trento',
-    'TV' : 'Treviso',
-    'TS' : 'Trieste',
-    'UD' : 'Udine',
-    'VA' : 'Varese',
-    'VE' : 'Venezia',
-    'VB' : 'Verbano-Cusio-Ossola',
-    'VC' : 'Vercelli',
-    'VR' : 'Verona',
-    'VV' : 'Vibo Valentia',
-    'VI' : 'Vicenza',
-    'VT' : 'Viterbo',
-  };
+
+
   
 
 function FilterForm(props) {
@@ -147,7 +23,6 @@ function FilterForm(props) {
   const[radius, setRadius] = useState(50)
   const [position, setPosition] = useState("")
   
-  let token = localStorage.getItem("token");
   const navigate = useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -165,7 +40,8 @@ function FilterForm(props) {
         radius: radius
     }
     props.applyFilter(filter)
-    navigate("hikes")
+    props.setFiltered(true)
+    navigate("/hikes")
     
   }
 
@@ -174,6 +50,20 @@ function FilterForm(props) {
       return callback(num);
     }
     return false
+  }
+
+  const clearState = () =>{
+    setMinLength('')
+    setMaxLength('')
+    setMinTime('')
+    setMaxTime('')
+    setMinAscent('')
+    setMaxAscent('')
+    setDifficulty("All")
+    setProvince('-')
+    setVillage("")
+    setRadius(50)
+    setPosition("")
   }
   
 
@@ -294,6 +184,10 @@ function FilterForm(props) {
     <Button variant="primary" type="submit" onClick={handleSubmit}>
         Apply
     </Button>
+    &nbsp;
+    <Button variant = "danger" onClick = {clearState}>
+      Reset
+    </Button>
     </Form>
     </Card>
   )
@@ -301,41 +195,7 @@ function FilterForm(props) {
 }
 
 
-function MapFunction(props) {
-  const map = useMapEvents({
-    click: (e) => {
-      props.setPosition(e.latlng)
-    },
-    locationfound: (e) => {
-      props.setCenter(e.latlng)
-      map.flyTo(e.latlng)
-    }
-  })
-  useEffect(() => {
-    map.locate()
-    
-  },[]) 
-  return null
-}
 
-function FilterMap(props){
-  const [center, setCenter] = useState([45.07104275068942, 7.677664908245942])
-  
-  return(
-    <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} onClick={(e) => console.log(e) }>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {props.position !==""?<Circle center={props.position}  radius={props.radius}/>:''}  
-            <MapFunction setCenter={setCenter} setPosition={props.setPosition}/>
-            {/*position !==""?<Marker position={position} icon={myIconSp}>
-            <Popup>
-                Reference Point: {"ok"}
-            </Popup>
-  </Marker> : ''*/}
-    </MapContainer>
-  )
-}
+
 
 export default FilterForm

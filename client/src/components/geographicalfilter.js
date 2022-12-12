@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline, Circle } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker,  useMapEvents, Circle } from 'react-leaflet'
 import { Row, Col, Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { Icon } from 'leaflet';
@@ -206,9 +206,7 @@ function MapFunction(props) {
   })
   useEffect(() => {
     map.locate()
-
-
-  }, [props.position])
+  }, [props.position, map])
   return null
 }
 

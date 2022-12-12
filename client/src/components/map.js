@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
 import GpxParser from 'gpxparser';
@@ -42,7 +42,7 @@ const myIconTp = new Icon({
 
 function Map(props){
     const [positions, setPositions] = useState([])
-    
+    const gpxFile = props.gpxFile
     const rpList = props.rpList.map((pos,idx) => {
         return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp} key={idx}>
             <Popup>
@@ -93,11 +93,9 @@ function Map(props){
 
             }
         }
-    },[props.gpxFile])
-    
-    const center = props.sp !== ["",""] ? props.sp : [45.07104275068942, 7.677664908245942]
+    },[gpxFile])
     return (
-        <MapContainer center={[45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
+        <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
             <Click sp={props.sp}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -122,6 +120,8 @@ function Click(props){
         
         
       })
-      return null
+    if(props.sp[0] && props.sp[1])
+    map.flyTo(props.sp)
+    return null
 }
 export default Map

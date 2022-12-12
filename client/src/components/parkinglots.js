@@ -1,29 +1,30 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import Map from './map'
-import API from '../API';
-import FilterForm from './filterformhikes';
+import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+import UTILS from '../utils/utils';
+
   
 function displayParkingLotsUtil(parkinglots, userPower){
   let parkinglotscards =  parkinglots.map((h,idx) => 
       <Col className="pb-4 px-0" key={idx}>
         <ParkingLotCard userPower={userPower} parkinglot={h} key={idx}/>
       </Col>)
-    let rows = []
-    for(let i = 0; i < Math.ceil(parkinglots.length/3);i++){
-      let cols = []
-      let j
-      for(j = 0; j < 3 && parkinglotscards.length; j++){
-        cols.push(parkinglotscards.pop())
-      }
-      for(;j<3;j++){
-        cols.push(<Col className="pb-4 px-0" key={j}></Col>)
-      }
-      rows.push(<Row className='px-0' key ={i}>{cols}</Row>)
-    }
-    return <>{rows}</>
+    let rows = UTILS.createRows(parkinglots, parkinglotscards)
+    return (
+      <>
+        <Container>
+          <Row>
+            <Col xs={10}>
+              <h1>All Parking Lots</h1>
+            </Col>
+          </Row>
+        </Container>
+        <div>
+          {rows}
+        </div>
+      </>
+    )
 }
 
 function ParkingLots(props){

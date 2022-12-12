@@ -11,7 +11,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hiketracking.models import CustomUser, CustomerProfile
+from hiketracking.models import CustomUser, CustomerProfile, Hut, HutWorker
 from hiketracking.serilizers.serilizer_user import UserSerializer, RegisterSerializer, AuthTokenCustomSerializer, \
     CustomerProfileSerializer
 from hiketracking.tokens import account_activation_token
@@ -32,11 +32,14 @@ class RegisterAPI( generics.GenericAPIView ):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
+        working_hut = request.data.pop('working_hut',None)
         serializer = self.get_serializer( data=request.data )
         serializer.is_valid( raise_exception=True )
         serializer.is_active = False
         user = serializer.save()
         current_site = get_current_site( request )
+        print("okk")
         mail_subject = 'Activation link has been sent to your email id'
         message = render_to_string( './acc_active_email.html', {
             'user': user,
@@ -50,6 +53,9 @@ class RegisterAPI( generics.GenericAPIView ):
         )
         try:
             email.send()
+            if request.data['role'] == 'Hut Worker' and working_hut:
+                hut = Hut.objects.get(name=working_hut)
+                HutWorker.objects.create(hutworker = user, hut= hut)
             return Response( status=status.HTTP_200_OK, data={
                 "message": 'Please confirm your email address to complete the registration'} )
         except Exception as e:
@@ -97,7 +103,7 @@ class LoginAPI( KnoxLoginView ):
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )
         return Response( status=status.HTTP_200_OK,
-                         data={"user": user.email, "role": user_role,
+                         data={"id":user.id, "user": user.email, "role": user_role,
                                "token": result.data['token']} )
 
 
@@ -105,7 +111,7 @@ class Sessions( generics.RetrieveAPIView ):
     def get(self, request):
         user = CustomUser.objects.get( email=request.user )
         return Response( status=status.HTTP_200_OK,
-                         data={"user": user.email, "role": user.role.lower().replace( " ", "" )} )
+                         data={"id":user.id, "user": user.email, "role": user.role.lower().replace( " ", "" )} )
 
 
 class AccountConfirmation( APIView ):
@@ -133,11 +139,21 @@ class AccountConfirmation( APIView ):
 
 
 class Profile( generics.RetrieveUpdateAPIView ):
-    permission_classes = (permissions.AllowAny,)
     serializer_class = CustomerProfileSerializer
 
+    def get(self, request):
+        try:
+            user_id = request.user.id
+            profile = CustomerProfile.objects.filter(user_id=user_id).values()
+            if profile:
+                return Response(status=status.HTTP_200_OK, data=profile)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR )
+
     def get_queryset(self):
-        print( self.kwargs.get( 'pk' ) )
         try:
             profile = CustomerProfile.objects.get_or( user_id__exact=self.kwargs.get( 'pk' ) )
         except Exception:
@@ -145,13 +161,15 @@ class Profile( generics.RetrieveUpdateAPIView ):
         return profile
 
     def put(self, request, *args, **kwargs):
-        user = CustomUser.objects.get( id=self.kwargs.get( 'pk' ) )
-        if user.role == "Hiker" and user.is_active and user.is_confirmed:
-            try:
-                Customer_profile = CustomerProfile.objects.get( user=user )
-            except Exception:
-                Customer_profile = None
+        user_id = request.user.id
+        request.data['user'] = user_id
+        user = CustomUser.objects.get( id=user_id)
+        try:
+            Customer_profile = CustomerProfile.objects.get( user=user )
+        except Exception:
+            Customer_profile = None
 
+        try: 
             if Customer_profile:
                 serializer = self.serializer_class( instance=Customer_profile, data={**request.data} )
             else:
@@ -160,7 +178,8 @@ class Profile( generics.RetrieveUpdateAPIView ):
                 serializer.save()
                 return Response( data=serializer.data, status=status.HTTP_200_OK )
             else:
+                print(serializer.errors)
                 return Response( data=serializer.errors, status=status.HTTP_400_BAD_REQUEST )
-
-        return Response( data={'message': " the user is authorized  "},
-                         status=status.HTTP_400_BAD_REQUEST )
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR )

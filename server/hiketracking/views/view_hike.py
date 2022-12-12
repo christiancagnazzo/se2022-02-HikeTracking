@@ -9,6 +9,8 @@ from hiketracking.utility import get_province_and_village
 
 
 class HikeFile( APIView ):
+    permission_classes = (permissions.AllowAny,)
+    
     def get(self, request, hike_id):
         try:
             track = Hike.objects.get( id=hike_id ).track_file
@@ -140,77 +142,77 @@ class Hikes( APIView ):
             hike = Hike.objects.get(title=data['title'])
             hike.track_file.delete()
             hike.delete()
-            
-        finally:
-            try:
-                sp = get_province_and_village(
-                    data['start_point_lat'], data['start_point_lng'] )
-                start_point_type = 'none'
+        except:
+            pass
 
-                start_point = Point.objects.get_or_create(
-                    latitude=data['start_point_lat'],
-                    longitude=data['start_point_lng'],
+        try:
+            sp = get_province_and_village(
+                data['start_point_lat'], data['start_point_lng'] )
+            start_point_type = 'none'
+
+            start_point = Point.objects.get_or_create(
+                latitude=data['start_point_lat'],
+                longitude=data['start_point_lng'],
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': data['start_point_address'],
+                    'type': start_point_type
+                }
+            )
+
+            ep = get_province_and_village(
+                data['end_point_lat'], data['end_point_lng'] )
+            end_point_type = 'none'
+
+            end_point = Point.objects.get_or_create(
+                latitude=data['end_point_lat'],
+                longitude=data['end_point_lng'],
+                defaults={
+                    'province': ep['province'],
+                    'village': ep['village'],
+                    'address': data['end_point_address'],
+                    'type': end_point_type
+                }
+            )
+            hike = Hike.objects.create(
+                title=data['title'],
+                length=data['length'],
+                expected_time=data['expected_time'],
+                ascent=data['ascent'],
+                difficulty=data['difficulty'],
+                description=data['description'],
+                local_guide=user_id,
+                start_point=start_point[0],
+                end_point=end_point[0] )
+            hike.save()
+            
+            for rp in data['rp_list']:
+                rp_cp = get_province_and_village(
+                    rp['reference_point_lat'], rp['reference_point_lng'] )
+                ref_point_type = 'none'
+                ref_point = Point.objects.get_or_create(
+                    latitude=rp['reference_point_lat'],
+                    longitude=rp['reference_point_lng'],
                     defaults={
-                        'province': sp['province'],
-                        'village': sp['village'],
-                        'address': data['start_point_address'],
-                        'type': start_point_type
+                        'province': rp_cp['province'],
+                        'village': rp_cp['village'],
+                        'address': rp['reference_point_address'],
+                        'type': ref_point_type
                     }
                 )
 
-                ep = get_province_and_village(
-                    data['end_point_lat'], data['end_point_lng'] )
-                end_point_type = 'none'
-
-                end_point = Point.objects.get_or_create(
-                    latitude=data['end_point_lat'],
-                    longitude=data['end_point_lng'],
-                    defaults={
-                        'province': ep['province'],
-                        'village': ep['village'],
-                        'address': data['end_point_address'],
-                        'type': end_point_type
-                    }
+                rp_hike = HikeReferencePoint.objects.get_or_create(
+                    hike=hike,
+                    point=ref_point[0]
                 )
                 
-                hike = Hike.objects.create(
-                    title=data['title'],
-                    length=data['length'],
-                    expected_time=data['expected_time'],
-                    ascent=data['ascent'],
-                    difficulty=data['difficulty'],
-                    description=data['description'],
-                    local_guide=user_id,
-                    start_point=start_point[0],
-                    end_point=end_point[0] )
+                rp_hike[0].save()
 
-                hike.save()
-
-                for rp in data['rp_list']:
-                    rp_cp = get_province_and_village(
-                        rp['reference_point_lat'], rp['reference_point_lng'] )
-                    ref_point_type = 'none'
-                    ref_point = Point.objects.get_or_create(
-                        latitude=rp['reference_point_lat'],
-                        longitude=rp['reference_point_lng'],
-                        defaults={
-                            'province': rp_cp['province'],
-                            'village': rp_cp['village'],
-                            'address': rp['reference_point_address'],
-                            'type': ref_point_type
-                        }
-                    )
-
-                    rp_hike = HikeReferencePoint.objects.get_or_create(
-                        hike=hike,
-                        point=ref_point[0]
-                    )
-                    rp_hike.save()
-
-                return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
-            except Exception as e:
-                print( e )
-                return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
+            return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
+        except Exception as e:
+            print(e)
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
 class Hike_( APIView ):
     def get(self, request,title):
@@ -239,6 +241,7 @@ class Hike_( APIView ):
                 h['end_point_lat'] = endP.latitude
                 h['end_point_lng'] = endP.longitude
                 h['end_point_address'] = endP.address
+                
                 return Response(status=status.HTTP_200_OK, data={"hike" : h})
         except Exception as e:
             print(e)
@@ -247,8 +250,8 @@ class Hike_( APIView ):
     def delete(self, request, title):
         try:
             hike = Hike.objects.get(title=title)
-            hike.delete()
             hike.track_file.delete()
+            hike.delete()
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -257,18 +260,27 @@ class Recommended( APIView ):
 
     def get(self, request):
         user_id = request.user.id
-
+    
         try:
             profile = CustomerProfile.objects.get( user=user_id )
-            hikes = Hike.objects.all() \
-                .filter( length__gte=profile.min_length ) \
-                .filter( length__lte=profile.max_length ) \
-                .filter( expected_time__gte=profile.min_time ) \
-                .filter( expected_time__lte=profile.max_time ) \
-                .filter( ascent__gte=profile.min_altitude ) \
-                .filter( ascent__lte=profile.max_altitude ) \
-                .filter( difficulty=profile.difficulty ) \
-                .values()
+            hikes = Hike.objects.all()
+           
+            if profile.min_length:
+                hikes = hikes.filter( length__gte=profile.min_length ) 
+            if profile.max_length:
+                hikes = hikes.filter( length__lte=profile.max_length )
+            if profile.min_time:
+                hikes = hikes.filter( expected_time__gte=profile.min_time )
+            if profile.max_time:
+                hikes = hikes.filter( expected_time__lte=profile.max_time )
+            if profile.min_altitude:
+                hikes = hikes.filter( ascent__gte=profile.min_altitude )
+            if profile.max_altitude:
+                hikes = hikes.filter( ascent__lte=profile.max_altitude )
+            if profile.difficulty:
+                hikes = hikes.filter( difficulty=profile.difficulty )
+
+            hikes = hikes.values()
 
             result = {}
             for h in hikes:
@@ -295,5 +307,6 @@ class Recommended( APIView ):
 
             return Response( hikes, status=status.HTTP_200_OK )
 
-        except Exception:
+        except Exception as e:
+            print(e)
             return Response( status=status.HTTP_400_BAD_REQUEST )

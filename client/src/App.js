@@ -7,12 +7,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import { useEffect, useState } from 'react';
 import { LoginForm } from './components/login';
 import MyNavbar from './components/navbarlogin';
-import Hike from './components/hikes';
-import LocalGuide from './components/localguide'
-import { Helmet } from "react-helmet";
 import RegistrationForm from './components/registration';
-import { createTheme } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
+import LocalGuide from './components/localguide'
+import PlatformManager from './components/platformManager';
+import { Helmet } from "react-helmet";
+
+
+import HutWorker from './components/hutworker';
 
 
 function App() {
@@ -33,14 +34,12 @@ function App() {
 function App2() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState('');
+  const [userId, setUserId] = useState('');
   const [message, setMessage] = useState('');
-  const [dirty, setDirty] = useState(true);
   const [userPower, setUserPower] = useState("")
   const [filter, setFilter] = useState("all")
 
-  function handleError(err) {
-    console.log(err);
-  }
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +55,7 @@ function App2() {
         setLoggedIn(true);
         setUser(result.msg.user);
         setUserPower(result.msg.role)
+        setUserId(result.msg.id)
         //setDirty(true);
         setMessage('');
         //navigate('/'+result.msg.role);
@@ -87,6 +87,7 @@ function App2() {
       } else {
         setLoggedIn(true);
         setUser(result.msg.user);
+        setUserId(result.msg.id);
         setUserPower(result.msg.role)
         //setDirty(true);
         localStorage.setItem('token', JSON.stringify(result.msg.token));
@@ -108,11 +109,14 @@ function App2() {
       <Container fluid className="flex-grow-1">
         <Row className = "h-100">
           <Routes>
-            <Route path='/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
-            <Route path='/hiker/*' element={(<VisitorPage userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
+            <Route path='/hutworker/*' element={<HutWorker userPower={userPower}/>}/>
+            <Route path='/hiker/*' element={(<VisitorPage userId={userId} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>)}/>
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
-            <Route path='/localguide/*' element={ <LocalGuide userPower={userPower}/>}/>
+            <Route path='/localguide/*' element={ <LocalGuide userId={userId} userPower={userPower}/>}/>
             <Route path='/registration' element={<RegistrationForm />}></Route>
+            <Route path='/platformmanager/*' element={userPower === 'platformmanager' ? < PlatformManager/>: <Navigate replace to={'/login'}></Navigate>}></Route>
+            <Route path='/*' element={userPower !== 'hutworker' ? (<VisitorPage userId={userId} user={user} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>) : <HutWorker userPower={userPower}/>}/>
+            
           </Routes>
         </Row>
       </Container>

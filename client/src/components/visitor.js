@@ -1,29 +1,30 @@
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import {  ListGroup, Row, Col, Modal, Alert } from 'react-bootstrap';
+import {   Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import Map from './map'
 import API from '../API';
 import FilterFormHikes from './filterformhikes';
 import Sidebar from './sidebar';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Hikes from './hikes';
 import FilterFormHuts from './filterformhuts';
 import Huts from './huts';
 import ParkingLots from './parkinglots';
-import Profile from './profile';
 import Preferences from './preferences';
-import FormProfile from './formProfile';
+import RecommendedHikes from './RecomHikes';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
-  const [profile, setProfile] = useState([]);
-  const [preferences, setPreferences] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
-  const [errorMessage, setErrorMessage] = useState('')
+  const [recommendedhikes,setRecommendedhikes] = useState([])
+  const [filtered, setFiltered] = useState(false)
+  const [_, setErrorMessage] = useState('')
+  const [dirty, setDirty] = useState(false)
   let token = localStorage.getItem("token");
   
+  const updateDirty = () => {
+    const flag = dirty
+    setDirty(!flag)
+  }
 
   useEffect(() => {
     const getHikes = async () => {
@@ -38,7 +39,7 @@ function VisitorPage(props) {
       }
     }
     getHikes()
-  }, [props.userPower]);
+  }, [props.userPower, token]);
 
   
   const applyFilterHikes = (filter) => {
@@ -70,7 +71,7 @@ function VisitorPage(props) {
         
       }
       getHuts()
-    }, [props.userPower]);
+    }, [props.userPower,token]);
 
     useEffect(() => {
       const getParkingLots = async function () {
@@ -83,7 +84,7 @@ function VisitorPage(props) {
       }
 
       getParkingLots()
-    }, [props.userPower])
+    }, [props.userPower,token])
   
     
     const applyFilterHuts = (filter) => {
@@ -102,49 +103,43 @@ function VisitorPage(props) {
       }
 
 
-    useEffect(() => {
-      const getProfile = async () => {
-        try {
-          const profile = await API.getProfile(token);
-          if (profile.error)
-            setErrorMessage(profile.msg)
-          else
-            setProfile(profile.msg);
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      getProfile()
-    }, []);
     
-    useEffect(() => {
-      const getPreferences = async () => {
-        try {
-          const preferences = await API.getPreferences(token);
-          if (preferences.error)
-            setErrorMessage(preferences.msg)
+    
+    
+  // create a function and use effect and use preferences in existing api of filtering hikes but mapping dekhni parhni 
+
+
+  useEffect(() => {
+    const getRecommendedHikes = async() =>{
+      try{
+        const r_hikes = await API.getRecommendedHikes(token)
+        if(r_hikes.error)
+          setErrorMessage(r_hikes.msg)
           else
-            setPreferences(preferences.msg);
-        } catch (err) {
-          console.log(err)
-        }
+            setRecommendedhikes(r_hikes.msg);
+      } catch(err){
+        console.log(err)
       }
-      getPreferences()
-    }, []);
-  
+    }
+    if(props.userPower === 'hiker')
+      getRecommendedHikes()
+  }, [props.userPower, token, dirty])
+    
+
   return (
     <>
       <Sidebar userPower={props.userPower} />
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-            <Route path="*" element={<Hikes userPower={props.userPower} hikes={hikes} />}/>
-            <Route path="filterhikes" element={<FilterFormHikes   applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
+            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} />}/>
+            <Route path="filterhikes" element={<FilterFormHikes  setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
+            <Route path= "recommendedhikes" element ={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes}/>}/>
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>
-            {/*<Route path="preferences" element={<Preferences setPreferences={setPreferences}/>}/>*/}
+            {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
+            <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
           </Routes>
         </Row>
       </Col>
