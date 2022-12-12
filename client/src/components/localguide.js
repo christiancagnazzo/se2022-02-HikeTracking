@@ -83,7 +83,7 @@ function LocalGuide(props){
     <Row className="p-4">
     <Routes>
         <Route path="edithike/:hiketitle" element={<HikeForm updateDirty={updateDirty}/>}/>
-        <Route path="addhike" element={<HikeForm/>}/>
+        <Route path="addhike" element={<HikeForm updateDirty={updateDirty}/>}/>
         <Route path="addhut" element={<HutForm updateDirty={updateDirty}/>}/>
         <Route path="addparkinglot" element={<ParkingLotForm updateDirty={updateDirty}/>}/>
         <Route path="*" element={<Hikes userId={props.userId} userPower={props.userPower} hikes={hikes} />}/>

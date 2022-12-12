@@ -186,7 +186,7 @@ class Hikes( APIView ):
                 start_point=start_point[0],
                 end_point=end_point[0] )
             hike.save()
-
+            
             for rp in data['rp_list']:
                 rp_cp = get_province_and_village(
                     rp['reference_point_lat'], rp['reference_point_lng'] )
@@ -206,10 +206,12 @@ class Hikes( APIView ):
                     hike=hike,
                     point=ref_point[0]
                 )
-                rp_hike.save()
+                
+                rp_hike[0].save()
 
             return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
         except Exception as e:
+            print(e)
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
 class Hike_( APIView ):

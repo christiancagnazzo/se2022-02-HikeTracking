@@ -1179,7 +1179,7 @@
   },
   {
     "model": "hiketracking.hike",
-    "pk": 1,
+    "pk": 300,
     "fields": {
       "title": "Sentiero per il ROCCIAMELONE",
       "length": 9,
@@ -1822,7 +1822,7 @@
     "pk": 145,
     "fields": {
       "title": "Belvedere Murgia",
-      "length": 4283,
+      "length": 4,
       "expected_time": 120,
       "ascent": 412,
       "difficulty": "Tourist",
@@ -1838,7 +1838,7 @@
     "pk": 146,
     "fields": {
       "title": "Cave di Murgia",
-      "length": 4203,
+      "length": 4,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1854,7 +1854,7 @@
     "pk": 147,
     "fields": {
       "title": "Pietrapertosa",
-      "length": 10303,
+      "length": 1,
       "expected_time": 240,
       "ascent": 1005,
       "difficulty": "Tourist",
@@ -1870,7 +1870,7 @@
     "pk": 148,
     "fields": {
       "title": "Parco Radogna",
-      "length": 8220,
+      "length": 8,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1886,7 +1886,7 @@
     "pk": 149,
     "fields": {
       "title": "Piano del Pollino",
-      "length": 14227,
+      "length": 12,
       "expected_time": 240,
       "ascent": 1971,
       "difficulty": "Tourist",
@@ -1902,7 +1902,7 @@
     "pk": 150,
     "fields": {
       "title": "Ferrata Marciosa",
-      "length": 7675,
+      "length": 7,
       "expected_time": 240,
       "ascent": 989,
       "difficulty": "Tourist",
@@ -1918,7 +1918,7 @@
     "pk": 151,
     "fields": {
       "title": "Sentiero CAI del Bosco Favino",
-      "length": 12710,
+      "length": 12,
       "expected_time": 240,
       "ascent": 1823,
       "difficulty": "Tourist",
@@ -1934,7 +1934,7 @@
     "pk": 152,
     "fields": {
       "title": "Colle Impiso",
-      "length": 14277,
+      "length": 14,
       "expected_time": 240,
       "ascent": 1967,
       "difficulty": "Tourist",
@@ -1950,7 +1950,7 @@
     "pk": 153,
     "fields": {
       "title": "Parco delle Murgie",
-      "length": 6823,
+      "length": 6,
       "expected_time": 240,
       "ascent": 422,
       "difficulty": "Tourist",
@@ -1966,7 +1966,7 @@
     "pk": 154,
     "fields": {
       "title": "Picciano Tappa 77",
-      "length": 29704,
+      "length": 29,
       "expected_time": 240,
       "ascent": 438,
       "difficulty": "Tourist",
@@ -2085,7 +2085,7 @@
     "model": "hiketracking.huthike",
     "pk": 1,
     "fields": {
-      "hike": 1,
+      "hike": 300,
       "hut": 1
     }
   },

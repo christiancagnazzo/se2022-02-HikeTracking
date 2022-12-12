@@ -57,6 +57,7 @@ function HikeForm(props) {
       setErrorMessage(req.msg)
     } else {
       props.updateDirty()
+      console.log("sss")
       navigate('/')
     }
 
