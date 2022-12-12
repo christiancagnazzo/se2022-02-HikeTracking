@@ -122,17 +122,18 @@ function HikeForm(props) {
   const setRPoint = (point) => {
     if (!isNaN(point[0]) && !isNaN(point[1])) {
       setRp(point)
-
     }
   }
 
   const addRPoint = () => {
-    if (rp[0] === '' || rp[1] === '') return
+    
+    if (rp['lat'] === '' || rp['lng'] === '') return
     const point = {
       reference_point_lat: rp[0],
       reference_point_lng: rp[1],
       reference_point_address: addressRp
     }
+    
     setRPoint(['', ''])
     setAddressRp('')
     setRpList([...rpList, point])
@@ -260,7 +261,7 @@ function HikeForm(props) {
         <RefPoint file={file} point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
           <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength} updateTrackPoints={updateTrackPoints}
-            setTrackPoints={setTrackPoints} trackPoints={trackPoints} />
+            setTrackPoints={setTrackPoints} trackPoints={trackPoints} addRPoint={setRp}/>
         </Card>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>

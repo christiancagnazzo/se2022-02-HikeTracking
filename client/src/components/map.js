@@ -86,7 +86,7 @@ function Map(props){
                 props.setLength(parseInt(distance))
                 props.setAscent(parseInt(elevation))
                 let rp = [];
-                for (var i = 1; i < gpx.tracks[0].points.length - 1; i+=2) {
+                for (var i = 1; i < gpx.tracks[0].points.length - 1; i+=4) {
                     rp[i - 1] = gpx.tracks[0].points[i];
                 }
                 props.setTrackPoints(rp)
@@ -96,7 +96,7 @@ function Map(props){
     },[gpxFile])
     return (
         <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
-            <Click sp={props.sp}></Click>
+            <Click sp={props.sp} addRPoint={props.addRPoint}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -104,7 +104,7 @@ function Map(props){
             {spMarker}
             {epMarker}
             {rpList}
-            {trackPoints}
+            {}
             <Polyline
                 pathOptions={{ fillColor: 'red', color: 'blue' }}
                 positions={
@@ -117,11 +117,11 @@ function Map(props){
 
 function Click(props){
     const map = useMapEvents({
-        
+        'click': (e) => {console.log(e.latlng);props.addRPoint(e.latlng)}
         
       })
     if(props.sp[0] && props.sp[1])
-    map.flyTo(props.sp)
+    map.flyTo(props.sp, undefined, {animate: false})
     return null
 }
 export default Map

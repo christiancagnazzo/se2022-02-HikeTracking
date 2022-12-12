@@ -87,7 +87,7 @@ function HikeCard(props) {
             )}
           </ul>
   
-          {props.condition !== "Open"?<>
+          {props.condition !== "Open" && props.condition?<>
           <h4>
             Condition description: </h4>
             <p>
