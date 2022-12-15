@@ -12,9 +12,9 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done - 10 / 9
-- Total points committed vs done - 67 / 59 
-- Nr of hours planned vs spent (as a team) -  71h:30m / 73h 30min
+- Number of stories committed vs done - 10 - 9
+- Total points committed vs done - 67 - 59 
+- Nr of hours planned vs spent (as a team) -  71h:30m - 73h 30min
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -40,11 +40,11 @@ sections:
 
 \* already done in the previous sprint
 
-Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is not possible to insert an issue as a subtask of several stories, but only to link them.
+Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is not possible to insert an issue as a subtask of several stories, They can only be linked.
 
 
 - Hours per task (average): estimate 71.5/41=1.74  spent 73.5/41= 1.79
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1 = 0.02
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = 0.02
 
   
 ## QUALITY MEASURES 
@@ -67,35 +67,35 @@ Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is 
   - Hours spent on remediation 6h15m
   - debt ratio (as reported by SonarQube under "Measures-Maintainability") 0.0% overal code,  0,9% new code
   - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 
-  RELIABLITY A SECURITY A MAINTAINABILITY A
+  RELIABLITY - A; SECURITY-A; MAINTAINABILITY-A;
   
 
-In general, after analyzing the results of SonarCloud's analysis we have reviewed the code, fixed bugs, fixed security issues and removed numerous critical smells, thus reducing the impact of technical debts by more than one day.
-In addition, we have passed the sonar cloud quality gate with grade A.
+In general, after analyzing the results of SonarCloud's analysis we reviewed the code, fixed bugs, security issues, and neutralized numerous critical smells, thus reducing the impact of technical debts by more than one day.
+Additionally, we have passed the sonar cloud quality gate with grade A.
 
 
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
 
- We did a good estimation since the actual time spent is near the time budget.
+ We did a good estimation since the actual time spent is more or less around the designated time budget.
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
- We need to split similar tasks related to different user story with more precision. Sonar cloud analyse improved our code quality
+ We need to split similar tasks related to different user story with more precision. Sonar cloud analysis improved the quality of our code. 
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
- We separate the integration tests from the unit test and better communication
+ We separated the integration tests from the unit test. Improving communication has always been a key goal, and we did further improvements in communication than last time.
 
 - Which ones you were not able to achieve? Why?
 
- We didn't improved the quality of the code as much as we expected, because we ran out of time
+ Due to time constraints, we could not achieve the quality of code we wanted and expected to. 
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
- We have to be more precise in assigning technical debt tasks, and all of us have to avoid creating technical debt.  
+ Be more precise in assigning technical debt tasks. Individually, all of us aim to minimize the creation of techincal debt.  
 
 - One thing you are proud of as a Team!!
 
- We have implemented many user stories than the previous sprints
+ Compared to previous sprints, the number of user stories we implemented in this sprint is the most.
