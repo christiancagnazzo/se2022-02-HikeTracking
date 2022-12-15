@@ -77,19 +77,25 @@ In addition, we have passed the sonar cloud quality gate with grade A.
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-We did a good estimation since the actual time spent is near the time budget.
+
+ We did a good estimation since the actual time spent is near the time budget.
 
 - What lessons did you learn (both positive and negative) in this sprint?
-We need to split similar tasks related to different user story with more precision. Sonar cloud analyse improved our code quality
+
+ We need to split similar tasks related to different user story with more precision. Sonar cloud analyse improved our code quality
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-We separate the integration tests from the unit test and better communication
+
+ We separate the integration tests from the unit test and better communication
 
 - Which ones you were not able to achieve? Why?
-We didn't improved the quality of the code as much as we expected, because we ran out of time
+
+ We didn't improved the quality of the code as much as we expected, because we ran out of time
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-We have to be more precise in assigning technical debt tasks, and all of us have to avoid creating technical debt.  
+
+ We have to be more precise in assigning technical debt tasks, and all of us have to avoid creating technical debt.  
 
 - One thing you are proud of as a Team!!
-We have implemented many user stories than the previous sprints
+
+ We have implemented many user stories than the previous sprints
