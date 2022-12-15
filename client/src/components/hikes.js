@@ -6,7 +6,7 @@ import UTILS from '../utils/utils';
 
 function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId) {
   let hikescard = hikes.map((h, idx) =>
-    <Col className="pb-4 px-0" key={h.id}>
+    <Col className="pb-4 px-0" key={idx}>
       <HikeCard userId={userId} userPower={userPower} hike={h} />
     </Col>)
   let rows = UTILS.createRows(hikes, hikescard)
