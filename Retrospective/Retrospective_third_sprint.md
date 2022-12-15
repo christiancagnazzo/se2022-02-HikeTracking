@@ -65,8 +65,8 @@ Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is 
   - Hours estimated for remediation by SonarQube 4
   - Hours estimated for remediation by SonarQube only for the selected and planned issues 2
   - Hours spent on remediation 6h15m
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 0.0% overal code,  0,9% new code
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability") 0.0% overal code,  0,9% new code
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 
   RELIABLITY A SECURITY A MAINTAINABILITY A
   
 
