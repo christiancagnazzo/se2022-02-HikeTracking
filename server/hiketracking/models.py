@@ -180,7 +180,9 @@ class UserHikeLog( models.Model ):
     counter = models.IntegerField()  # useful to differentiate different run of the same hike
     point = models.ForeignKey( Point, on_delete=models.CASCADE )
     timestamp = models.DateTimeField( auto_now_add=True )
-    end = models.BooleanField( default=False )
+    #end = models.BooleanField( default=False )
 
     def __str__(self):
         return "user:" + str( self.user ) + " hike:" + str( self.hike )
+
+

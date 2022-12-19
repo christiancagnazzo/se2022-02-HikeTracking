@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'django_filters',
+    'django_nose'
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'hiketrack2022@gmail.com'
 EMAIL_HOST_PASSWORD = key
 EMAIL_PORT = 587
+
