@@ -88,7 +88,6 @@ function OnGoingHike(props){
           lng: h.end_point_lng,
           addr: h.end_point_address
         })
-        console.log(rp)
         setRpList(rp)
         let file = await API.getHikeFile(h.id, token)
         setFileMap(file)
@@ -102,7 +101,7 @@ function OnGoingHike(props){
       <Card>
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
-          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} sp={sp} ep={ep} curr={curr}/>
+          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/>
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
@@ -142,7 +141,11 @@ function Map(props){
     return (
     <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} 
     icon={props.curr !== pos['reference_point_address'] ? myIconRp : myIconRpCurr} 
-    key={idx}>
+    key={idx}
+    eventHandlers={{
+      click: () =>  {
+        props.setCurr(pos['reference_point_address'])
+      }}}>
         <Popup>
             Reference Point: {pos['reference_point_address']}
         </Popup>
@@ -202,8 +205,7 @@ function Map(props){
 function Click(props){
   const [sp, setSp] = useState([])
   const map = useMapEvents({
-      'click': (e) => {   
-      }
+      
   })
   if(props.sp.lat && props.sp.lng && sp[0] !== props.sp.lat && sp[1] !== props.sp.lng){
     setSp([props.sp.lat, props.sp.lng])
