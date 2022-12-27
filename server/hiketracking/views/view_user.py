@@ -39,7 +39,6 @@ class RegisterAPI( generics.GenericAPIView ):
         serializer.is_active = False
         user = serializer.save()
         current_site = get_current_site( request )
-        print("okk")
         mail_subject = 'Activation link has been sent to your email id'
         message = render_to_string( './acc_active_email.html', {
             'user': user,
@@ -96,9 +95,9 @@ class LoginAPI( KnoxLoginView ):
         user = serializer.validated_data['user']
         user_role = user.role.lower().replace( " ", "" )
         if not user.is_active:
-            return Response( status=status.HTTP_401_UNAUTHORIZED )
+            return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error": 0} )
         if (user_role == 'localguide' or user_role == 'hutworker') and not user.is_confirmed:
-            return Response( status=status.HTTP_401_UNAUTHORIZED )
+            return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 1} )
 
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )

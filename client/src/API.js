@@ -139,7 +139,16 @@ async function login(credentials) {
   if (response.status === 200)
     return { msg: await response.json() }
   else {
-    return { error: 'Error', msg: "Something went wrong in the login. Please try again" }
+    let msg = "Email and/or password are not correct, please try again"
+    const err = await response.json()
+    console.log(err)
+    if(err.error){
+      if(err.error === 0)
+        msg = "Please confirm your email"
+      if(err.error === 1)
+        msg = "Your account has not been confirmed by the platform manager yet, please try again"
+    }
+    return { error: 'Error', msg: msg }
   }
 }
 

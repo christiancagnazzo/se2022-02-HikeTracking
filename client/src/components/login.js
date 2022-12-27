@@ -20,9 +20,9 @@ function LoginForm(props) {
     const credentials = { email: username, password };
 
     if (username.trim().length === 0 || password.trim().length === 0)
-      setErrorMessage('Compilare tutti i campi correttamente. ')
+      setErrorMessage('Please insert your email and password')
     else if (!validateEmail(username)) {
-      setErrorMessage('Formato email non valido')
+      setErrorMessage('Email not valid')
     }
     else {
       props.login(credentials)

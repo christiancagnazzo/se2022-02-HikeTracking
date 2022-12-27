@@ -42,6 +42,7 @@ const myIconTp = new Icon({
 
 function Map(props){
     const [positions, setPositions] = useState([])
+    const [currPoint, setCurrPoint] = useState([])
     const gpxFile = props.gpxFile
     const rpList = props.rpList.map((pos,idx) => {
         return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp} key={idx}>
@@ -50,14 +51,12 @@ function Map(props){
             </Popup>
         </Marker>
     })
-    const trackPoints = props.trackPoints? props.trackPoints.map((pos,idx) => {
-        return <Marker position={[pos['lat'],pos['lon']]} icon={myIconTp} key={idx}  eventHandlers={{
-            click: (e) => {
-              props.updateTrackPoints(idx)
-            },
-          }}>
-        </Marker>
-    }) : ''
+    let pointMarker = null
+    if(currPoint.length !== 0){
+        console.log("sss")
+        pointMarker =(<Marker position={currPoint} icon={myIconTp} >
+        </Marker>)
+    }
     let spMarker = null
     if(props.sp[0]!=='' && props.sp[1]!=='')
         spMarker =(<Marker position={props.sp} icon={myIconSp} >
@@ -86,7 +85,7 @@ function Map(props){
                 props.setLength(parseInt(distance))
                 props.setAscent(parseInt(elevation))
                 let rp = [];
-                for (var i = 1; i < gpx.tracks[0].points.length - 1; i+=4) {
+                for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
                     rp[i - 1] = gpx.tracks[0].points[i];
                 }
                 props.setTrackPoints(rp)
@@ -96,7 +95,8 @@ function Map(props){
     },[gpxFile])
     return (
         <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
-            <Click sp={props.sp} addRPoint={props.addRPoint}></Click>
+            <Click sp={props.sp} setRPoint={props.setRPoint} trackPoints={props.trackPoints} currPoint={currPoint} 
+            setCurrPoint={setCurrPoint}></Click>
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -104,7 +104,7 @@ function Map(props){
             {spMarker}
             {epMarker}
             {rpList}
-            {}
+            {pointMarker}
             <Polyline
                 pathOptions={{ fillColor: 'red', color: 'blue' }}
                 positions={
@@ -117,11 +117,28 @@ function Map(props){
 
 function Click(props){
     const map = useMapEvents({
-        'click': (e) => {console.log(e.latlng);props.addRPoint(e.latlng)}
+        'click': (e) => {
+            const distances = []
+            for(let i = 0; i < props.trackPoints.length; i++) {
+                distances.push(map.distance(e.latlng, props.trackPoints[i]))
+            }
+            const min = Math.min(...distances)
+            const idx = distances.indexOf(min)
+            if(min < 50){
+                props.setCurrPoint([props.trackPoints[idx].lat, props.trackPoints[idx].lon])
+                props.setRPoint([props.trackPoints[idx].lat, props.trackPoints[idx].lon])
+            }
+            else
+            {
+                props.setRPoint(['',''])
+            }
+        }
+            
         
       })
     if(props.sp[0] && props.sp[1])
-    map.flyTo(props.sp, undefined, {animate: false})
+        map.flyTo(props.sp, undefined, {animate: false})
+
     return null
 }
 export default Map
