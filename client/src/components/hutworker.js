@@ -21,6 +21,7 @@ function HutWorker(props) {
   useEffect(() => {
     const getHikes = async () => {
       try {
+
         const hikes = await API.getHutWorkerHikes(token);
         if (hikes.err)
           setErrorMessage(hikes.msg)
