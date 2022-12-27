@@ -10,7 +10,7 @@ import Huts from './huts';
 import ParkingLots from './parkinglots';
 import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
-
+import OnGoingHike from './onGoingHike';
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
@@ -140,6 +140,7 @@ function VisitorPage(props) {
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike/>}/>
           </Routes>
         </Row>
       </Col>

@@ -141,7 +141,6 @@ async function login(credentials) {
   else {
     let msg = "Email and/or password are not correct, please try again"
     const err = await response.json()
-    console.log(err)
     if(err.error){
       if(err.error === 0)
         msg = "Please confirm your email"
@@ -240,6 +239,9 @@ async function getHikeFile(hike_id, token) {
   if (response.status === 200) {
     const text = new TextDecoder().decode((await response.body.getReader().read()).value);
     return text
+  }
+  else {
+    return {err: "File error"}
   }
 }
 

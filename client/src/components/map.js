@@ -53,7 +53,7 @@ function Map(props){
     })
     let pointMarker = null
     if(currPoint.length !== 0){
-        console.log("sss")
+        
         pointMarker =(<Marker position={currPoint} icon={myIconTp} >
         </Marker>)
     }
@@ -116,6 +116,7 @@ function Map(props){
 }
 
 function Click(props){
+    const [sp, setSp] = useState([])
     const map = useMapEvents({
         'click': (e) => {
             const distances = []
@@ -136,9 +137,10 @@ function Click(props){
             
         
       })
-    if(props.sp[0] && props.sp[1])
+    if(props.sp[0] && props.sp[1] && sp[0] != props.sp[0] && sp[1] != props.sp[1]){
+        setSp(props.sp)
         map.flyTo(props.sp, undefined, {animate: false})
-
+    }
     return null
 }
 export default Map

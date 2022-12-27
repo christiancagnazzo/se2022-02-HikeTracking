@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import { useParams } from "react-router-dom";
+import { map } from "leaflet";
 
 function HikeForm(props) {
   const { hiketitle } = useParams()
@@ -27,7 +28,7 @@ function HikeForm(props) {
   let navigate = useNavigate();
   let [huts, setHuts] = useState([])
   let [parkingLots, setParkingLots] = useState([])
-
+  let [mapErr, setMapErr] = useState("Upload a gpx track file to modify the fields")
   let token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
@@ -94,9 +95,15 @@ function HikeForm(props) {
         setDesc(hike.description)
         const filename = hike.track_file.split('/')[1]
         let file = await API.getHikeFile(hike.id, token)
-        const blob = new Blob([file], { type: 'text/plain' })
-        const newFile = new File([blob], filename)
-        setFile(newFile)
+        if(file.err){
+          console.log("okkk")
+          setMapErr("Please upload a new GPX file, the old one seems lost")
+        }
+        else{
+          const blob = new Blob([file], { type: 'text/plain' })
+          const newFile = new File([blob], filename)
+          setFile(newFile)
+        }
       } catch (e) {
         console.log(e)
       }
@@ -257,7 +264,7 @@ function HikeForm(props) {
             setFile(e.target.files[0]);
 
           }}></input>
-          {file === '' ? <Alert style={{ "marginTop": "10px" }} variant="secondary">Upload a gpx track file to modify the fields</Alert> : ''}
+          {file === '' ? <Alert style={{ "marginTop": "10px" }} variant="secondary">{mapErr}</Alert> : ''}
         </Form.Group>
         <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setSp} id="startPoint" label="Start Point" point={sp} setPoint={setPoint} which={0} address={addressSp} setAddress={setAddressSp} />
         <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
