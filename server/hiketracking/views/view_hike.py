@@ -4,17 +4,18 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile
+from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile, UserHikeLog
+from hiketracking.serilizers import HikeSerializer
 from hiketracking.utility import get_province_and_village
 
 
 class HikeFile( APIView ):
     permission_classes = (permissions.AllowAny,)
-    
+
     def get(self, request, hike_id):
         try:
             track = Hike.objects.get( id=hike_id ).track_file
-            response =  FileResponse( open( str( track ), 'rb' ) )
+            response = FileResponse( open( str( track ), 'rb' ) )
             response['Content-Language'] = 'attachment; filename=' + track.name
             return response
         except Exception as e:
@@ -24,7 +25,7 @@ class HikeFile( APIView ):
     def put(self, request, hike_id):
         try:
             hikeFile = request.FILES['File']
-        except Exception :
+        except Exception:
             Hike.objects.filter( id=hike_id ).delete()
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "File Requested"} )
 
@@ -33,7 +34,7 @@ class HikeFile( APIView ):
             hike.track_file = hikeFile
             hike.save()
             return Response( status=status.HTTP_200_OK )
-        except Exception :
+        except Exception:
             Hike.objects.filter( id=hike_id ).delete()
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )
 
@@ -139,7 +140,7 @@ class Hikes( APIView ):
         user_id = CustomUser.objects.get( email=request.user )
         data = request.data
         try:
-            hike = Hike.objects.get(title=data['title'])
+            hike = Hike.objects.get( title=data['title'] )
             hike.track_file.delete()
             hike.delete()
         except:
@@ -186,7 +187,7 @@ class Hikes( APIView ):
                 start_point=start_point[0],
                 end_point=end_point[0] )
             hike.save()
-            
+
             for rp in data['rp_list']:
                 rp_cp = get_province_and_village(
                     rp['reference_point_lat'], rp['reference_point_lng'] )
@@ -206,20 +207,21 @@ class Hikes( APIView ):
                     hike=hike,
                     point=ref_point[0]
                 )
-                
+
                 rp_hike[0].save()
 
             return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
         except Exception as e:
-            print(e)
+            print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
+
 class Hike_( APIView ):
-    def get(self, request,title):
-        
+    def get(self, request, title):
+
         try:
-            hike = Hike.objects.filter(title=title).values()
-            for h in hike: 
+            hike = Hike.objects.filter( title=title ).values()
+            for h in hike:
                 result = HikeReferencePoint.objects.filter(
                     hike_id=h['id'] ).values()
                 reference_list = []
@@ -241,32 +243,33 @@ class Hike_( APIView ):
                 h['end_point_lat'] = endP.latitude
                 h['end_point_lng'] = endP.longitude
                 h['end_point_address'] = endP.address
-                
-                return Response(status=status.HTTP_200_OK, data={"hike" : h})
+
+                return Response( status=status.HTTP_200_OK, data={"hike": h} )
         except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            print( e )
+            return Response( status=status.HTTP_404_NOT_FOUND )
 
     def delete(self, request, title):
         try:
-            hike = Hike.objects.get(title=title)
+            hike = Hike.objects.get( title=title )
             hike.track_file.delete()
             hike.delete()
-            return Response(status=status.HTTP_200_OK)
+            return Response( status=status.HTTP_200_OK )
         except Exception as e:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response( status=status.HTTP_404_NOT_FOUND )
+
 
 class Recommended( APIView ):
 
     def get(self, request):
         user_id = request.user.id
-    
+
         try:
             profile = CustomerProfile.objects.get( user=user_id )
             hikes = Hike.objects.all()
-           
+
             if profile.min_length:
-                hikes = hikes.filter( length__gte=profile.min_length ) 
+                hikes = hikes.filter( length__gte=profile.min_length )
             if profile.max_length:
                 hikes = hikes.filter( length__lte=profile.max_length )
             if profile.min_time:
@@ -308,5 +311,37 @@ class Recommended( APIView ):
             return Response( hikes, status=status.HTTP_200_OK )
 
         except Exception as e:
-            print(e)
+            print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST )
+
+
+class Hiking( APIView ):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = HikeSerializer
+
+    def get(self, request, pk):
+        try:
+
+            user = CustomUser.objects.get( pk=pk )
+            user_log = UserHikeLog.objects.filter( user=user ).values()
+            display_hikes = []
+            filters = request.GET.get( 'done', None )
+            for log in user_log:
+
+                hike = Hike.objects.get( id=log['hike_id'] )
+
+                if filters == "true" and (hike.end_point.id == log['point_id'] or log['end'] == True):
+                    display_hikes.append( hike )
+
+                elif hike.end_point.id != log['point_id'] and log['end'] == False:
+                    display_hikes.append( hike )
+            #    remove repeated hikes
+
+            return Response( self.serializer_class( display_hikes, many=True ).data, status=status.HTTP_200_OK )
+        except Exception as e:
+            print( e )
+            return Response( status=status.HTTP_404_NOT_FOUND )
+
+    def post(self, request):
+
+        pass
