@@ -115,6 +115,7 @@ class Hut( models.Model ):
     web_site = models.CharField( max_length=50, blank=True, default='' )
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
+    picture = models.FileField( upload_to='huts_picture' )
 
     def __str__(self):
         return self.name
@@ -123,10 +124,11 @@ class HutWorker(models.Model):
     hutworker = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
 
+"""
 class HutPhoto( models.Model ):
     hut = models.ForeignKey( Hut, on_delete=models.CASCADE )
     track_file = models.FileField( upload_to='hutimages' )
-
+"""
 
 class Facility( models.Model ):
     name = models.CharField( max_length=100, unique=True )

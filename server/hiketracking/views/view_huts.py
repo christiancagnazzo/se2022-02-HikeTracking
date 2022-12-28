@@ -1,8 +1,11 @@
+import json
+from django.http import FileResponse, HttpResponse
 import geopy.distance
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from hiketracking.models import Hut, HutFacility, Point, Facility, HutHike, Hike
 from hiketracking.serilizers.serilizer_huts import HuntsSerializer, FacilitySerializer
@@ -127,21 +130,38 @@ class Huts( ListCreateAPIView ):
 
                 result.append( h )
 
-            return Response( result, status=status.HTTP_200_OK )
+            return Response( result, content_type="multipart/form-data" ,status=status.HTTP_200_OK )
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR )
 
     def post(self, request, *args, **kwargs):
-        pointSerializer = PointSerializer( data=request.data['position'] )
+        pointSerializer = PointSerializer( data=json.loads(request.POST['position']) )
         if pointSerializer.is_valid():
             point = insert_point( pointSerializer, 'hut' )
-            serializer = self.serializer_class( data={**request.data, 'point': point.id} )
+            serializer = self.serializer_class( data={
+                'name':request.POST['name'],
+                'n_beds':request.POST['n_beds'],
+                'fee':request.POST['fee'],
+                'ascent':request.POST['ascent'],
+                'phone':request.POST['phone'],
+                'email':request.POST['email'],
+                'web_site':request.POST['web_site'],
+                'desc':request.POST['desc'], 
+                'point': point.id} )
             if serializer.is_valid():
                 hut = serializer.save()
-                for hike in self.request.data['relatedHike']:
+                try:
+                    hut.picture = request.FILES['File']
+                    hut.save()
+                except:
+                    pass
+
+                hike_list = self.request.POST['relatedHike'].split(",")
+                for hike in hike_list:
                     link_hike_to_hut( hike, hut )
-                for service in request.data['services']:
+                    service_list = self.request.POST['services'].split(",")
+                for service in service_list:
                     try:
                         obj, created = Facility.objects.get_or_create( name=service )
                         HutFacility.objects.get_or_create( hut=hut, facility=obj )
@@ -155,7 +175,23 @@ class Huts( ListCreateAPIView ):
                 print(serializer.errors)
                 return Response( serializer.errors, status=status.HTTP_400_BAD_REQUEST )
         else:
+            print(pointSerializer.errors)
             return Response( pointSerializer.errors, status=status.HTTP_400_BAD_REQUEST )
+
+
+
+class HutFile( APIView ):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, hut_id):
+        try:
+            picture = Hut.objects.get( id=hut_id ).picture
+            response = FileResponse( open( str( picture ), 'rb' ) )
+            response['Content-Language'] = 'attachment; filename=' + picture.name
+            return response
+        except Exception as e:
+            print( e )
+            return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR )
 
 
 class Facilities( ListAPIView ):

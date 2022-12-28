@@ -4,7 +4,7 @@ from knox import views as knox_views
 from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI, HikesHutWorker,
                     Facilities, AccountConfirmation, HutHikeView,
                     UserDetail, UserList, Sessions, Huts, ActivateAccount,
-                    ParkingLotAPI, Recommended, Profile,Hike_, Weather
+                    ParkingLotAPI, Recommended, Profile,Hike_, Weather, HutFile
                     ,Hiking)
 
 app_name = 'hiketracking'
@@ -29,6 +29,7 @@ urlpatterns = [
     path( 'profile/', Profile.as_view() ),
     path( 'worker/hikes/', HikesHutWorker.as_view() ),
     path( 'platformmanager/weatheralert/', Weather.as_view()),
-    path( 'hiking/<int:pk>/', Hiking.as_view() )
+    path( 'hiking/<int:pk>/', Hiking.as_view() ),
+    path( 'hut/file/<str:hut_id>', HutFile.as_view() ),
 
 ]
