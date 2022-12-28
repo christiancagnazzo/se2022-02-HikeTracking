@@ -343,5 +343,8 @@ class Hiking( APIView ):
             return Response( status=status.HTTP_404_NOT_FOUND )
 
     def post(self, request):
-
-        pass
+        try:
+            return Response( status=status.HTTP_200_OK )
+        except Exception as e:
+            print( e )
+            return Response( status=status.HTTP_404_NOT_FOUND )
