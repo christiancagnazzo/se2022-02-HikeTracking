@@ -28,7 +28,6 @@ urlpatterns = [
     path( 'hikes/recommended/', Recommended.as_view() ),
     path( 'profile/', Profile.as_view() ),
     path( 'worker/hikes/', HikesHutWorker.as_view() ),
-    path( 'platformmanager/weatheralert/', Weather.as_view())
-    path( 'hiking/<int:pk>/', Hiking.as_view() ),
-
+    path( 'platformmanager/weatheralert/', Weather.as_view()),
+    path( 'hiking/<int:pk>/', Hiking.as_view() )
 ]
