@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge } from "react-bootstrap";
 import Map from "./map";
+import hike1 from '../img/hike1.jpg'
 function HikeCard(props) {
     const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
@@ -74,8 +75,11 @@ function HikeCard(props) {
           <Modal.Title id="contained-modal-title-vcenter">
             {props.title}
           </Modal.Title>
+          
         </Modal.Header>
         <Modal.Body>
+        <img src={hike1} alt='' class=''/>
+
           <h4>Description</h4>
           <p>
             {props.description}

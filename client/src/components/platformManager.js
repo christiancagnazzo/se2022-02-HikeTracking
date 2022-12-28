@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import API from '../API';
 import { useState, useEffect } from 'react';
+import WeatherAlert from './weatherAlert';
 //platform manager dont need to show hikes so i just develop the page to confirm accounts
 
 
@@ -21,7 +22,7 @@ useEffect(() => {
         if (dirty) 
         try {
         setDirty(false)
-        const requests = await API.getRequests(token);
+        const requests = await API.getAccountsToValidate(token);
         if (requests.error)
           setErrorMessage(requests.msg)
         else
@@ -44,6 +45,7 @@ useEffect(() => {
     <Row className="p-4">
     <Routes>
         <Route path="*" element={<ConfirmAccount setDirty={setDirty} req={req} />}/>
+        <Route path="weatheralert" element={<WeatherAlert/>}/>
     </Routes>
     </Row>
     </Col>

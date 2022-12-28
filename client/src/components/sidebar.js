@@ -1,6 +1,6 @@
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, HolidayVillage, LocalParking, ManageAccounts } from '@mui/icons-material'
+import { Hiking, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -125,6 +125,7 @@ function PlatformManagerMenu(props){
   const parkingLot = <LocalParking></LocalParking>
   const hutIcon = <HolidayVillage></HolidayVillage>
   const profileIcon = <ManageAccounts></ManageAccounts>
+  const weatherIcon = <Cloud/>
   const navigate = useNavigate()
   const updateActive = (idx, relocation) => {
     UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
@@ -148,6 +149,9 @@ function PlatformManagerMenu(props){
           </SubMenu>
           <SubMenu icon={profileIcon} label='Requests'>
             <MenuItem onClick={() => updateActive(4,"/platformmanager/confirmAccount")} active={"confirmAccount"===route}>Account to confirm</MenuItem>      
+          </SubMenu>
+          <SubMenu icon={weatherIcon}label='Weather'>
+            <MenuItem onClick={() => updateActive(3,"/platformmanager/weatheralert")} active={"weatheralert"===route}>Alert</MenuItem>
           </SubMenu>
         </Menu>
       </Sidebar>

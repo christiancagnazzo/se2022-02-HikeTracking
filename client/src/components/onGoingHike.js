@@ -106,8 +106,8 @@ function OnGoingHike(props){
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
             <Form.Select value={curr} onChange={e => setCurr(e.target.value)}>
-              <option value ="-">-</option>
-              {rpList.map((r,idx) => <option value={r.reference_point_address}>{r.reference_point_address}</option>)}
+              <option value ="-" key="-">-</option>
+              {rpList.map((r,idx) => <option value={r.reference_point_address} key={r.reference_point_address}>{r.reference_point_address}</option>)}
             </Form.Select>
             </Form.Group>
             <Form.Group className="mb-2" controlId="datetime">

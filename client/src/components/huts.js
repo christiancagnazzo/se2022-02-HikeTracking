@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import UTILS from '../utils/utils';
+import hike1 from '../img/hike.jpg'
 
 function displayHutsUtil(huts) {
   let hutscard = huts.map((h, idx) =>
@@ -89,6 +90,7 @@ function HutModalDescription(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+      <img src={hike1} alt='' class=''/>
         <h4>Description</h4>
         <p>
           {props.desc}

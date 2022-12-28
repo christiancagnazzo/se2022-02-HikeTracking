@@ -178,7 +178,7 @@ function GeographicalFilter(props) {
             </Col>
             <Col>
               <InputGroup>
-                <InputGroup.Text>Range - {radius} km</InputGroup.Text>
+                <InputGroup.Text>Range - {radius*5} km</InputGroup.Text>
                 <Button variant="danger" onClick={() => setPosition('')}>Reset</Button>
               </InputGroup>
 
@@ -222,7 +222,7 @@ function FilterMap(props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {props.position !== "" ?
-        <Circle center={props.position} radius={props.radius * 1000} />
+        <Circle  center={props.position} radius={props.radius * 5000} />
         :
         ''}
       <MapFunction setCenter={setCenter} setPosition={props.setPosition} position={position} />

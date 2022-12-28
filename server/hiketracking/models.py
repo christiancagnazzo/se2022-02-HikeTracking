@@ -84,7 +84,7 @@ class Hike( models.Model ):
     condition = models.CharField(blank=True, max_length=30, choices=Condition.choices)
     condition_description = models.CharField(blank=True, max_length=100)
     condition = models.CharField( max_length=30, choices=Condition.choices, default=Condition.OPEN )
-    condition_description = models.CharField( max_length=100, default=" " )
+    condition_description = models.CharField( max_length=100, default="Open" )
 
     def __str__(self):
         return self.title
@@ -186,3 +186,14 @@ class UserHikeLog( models.Model ):
         return "user:" + str( self.user ) + " hike:" + str( self.hike )
 
 
+class WeatherAlert(models.Model):
+    class Condition( models.TextChoices ):
+        SNOW = "Snow"
+        STORM = "Storm"
+        STRONG_WIND = "Strong wind"
+        RAIN = "Rain"
+        HAIL = "Hail"
+    condition = models.CharField(choices=Condition.choices, max_length=30)
+    weather_lat = models.FloatField()
+    weather_lon = models.FloatField()
+    radius = models.IntegerField()

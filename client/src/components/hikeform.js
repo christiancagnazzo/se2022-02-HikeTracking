@@ -23,6 +23,7 @@ function HikeForm(props) {
   let [trackPoints, setTrackPoints] = useState([])
   let [desc, setDesc] = useState('First hike to be uploaded')
   let [file, setFile] = useState('')
+  const [image, setImage] = useState('')
   let [readFile, setReadFile] = useState('')
   let [errorMessage, setErrorMessage] = useState('')
   let navigate = useNavigate();
@@ -33,7 +34,7 @@ function HikeForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     let formData = new FormData()
     formData.append('File', file)
     let hikeDescription = {
@@ -278,6 +279,10 @@ function HikeForm(props) {
           <Form.Control as="textarea" rows={2} value={desc} onChange={e => setDesc(e.target.value)} />
         </Form.Group>
         {' '}
+        <Form.Group controlId="formFile" className="mb-3">
+        <Form.Label>Upload a picture of this hike</Form.Label>
+        <Form.Control onChange={(e) => setImage(e.target.value)} type="file" accept="image/png, image/jpeg" />
+        </Form.Group>
         {action}
       </Form>
       {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}

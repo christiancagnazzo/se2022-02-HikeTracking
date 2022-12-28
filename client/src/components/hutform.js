@@ -17,6 +17,7 @@ function HikeForm(props) {
   const [phone, setPhone] = useState("3333333331")
   const [email, setEmail] = useState("hut@mail.com")
   const [webSite, setWebSite] = useState("www.hut.com")
+  const [image, setImage] = useState("")
   let [errorMessage, setErrorMessage] = useState('')
   let navigate = useNavigate();
   const [servicesList, setServicesList] = useState([])
@@ -146,6 +147,10 @@ function HikeForm(props) {
             onRemove={(e) => { setHikesChoosen(e) }} // Function will trigger on remove event
             displayValue="title" // Property name to display in the dropdown options
           />
+        </Form.Group>
+        <Form.Group controlId="formFile" className="mb-3">
+        <Form.Label>Upload a picture of this hut</Form.Label>
+        <Form.Control onChange={(e) => setImage(e.target.value)} type="file" accept="image/png, image/jpeg" />
         </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>

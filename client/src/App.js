@@ -36,7 +36,7 @@ function App2() {
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [message, setMessage] = useState('');
-  const [userPower, setUserPower] = useState("")
+  const [userPower, setUserPower] = useState("platformmanager")
   const [filter, setFilter] = useState("all")
 
   

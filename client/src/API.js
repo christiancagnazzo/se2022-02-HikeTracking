@@ -463,5 +463,63 @@ async function updateCondition(condition, token){
   }
 }
 
-const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition };
+
+async function getAlerts(token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    let response = await fetch(URL + 'platformmanager/weatheralert/',{
+      headers:{
+        'Authorization': valid_token
+      }
+    })
+
+    if(response.ok)
+      return {msg: await response.json()};
+    return { error: true, msg: "Something went wrong. Not able to get the alerts" };
+  }
+  catch(e){
+    console.log(e)
+  }
+}
+
+async function postAlert(alert, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try{
+    let response = await fetch(URL + 'platformmanager/weatheralert/',{
+      method: "POST",
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+      body: JSON.stringify(alert)
+    })
+
+    if(response.ok)
+      return {msg: "Alert created"}
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  } catch(e){
+    console.log(e)
+  }
+}
+
+async function deleteAlerts(token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    let response = await fetch(URL + 'platformmanager/weatheralert/',{
+      method: "DELETE",
+      headers:{
+        'Authorization': valid_token
+      }
+    })
+
+    if(response.ok)
+      return {msg: "All the alerts were deleted"};
+    return { error: true, msg: "Something went wrong. Not able to delete the alerts" };
+  }
+  catch(e){
+    console.log(e)
+  }
+}
+
+const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts };
 export default API;
