@@ -30,5 +30,4 @@ urlpatterns = [
     path( 'worker/hikes/', HikesHutWorker.as_view() ),
     path( 'platformmanager/weatheralert/', Weather.as_view()),
     path( 'hiking/<int:pk>/', Hiking.as_view() )
-
 ]
