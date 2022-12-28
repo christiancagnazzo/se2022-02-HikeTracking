@@ -3,16 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge } from "react-bootstrap";
 import Map from "./map";
 import hike1 from '../img/hike1.jpg'
+import TimeModal from "./timeModal";
+import dayjs from "dayjs";
 function HikeCard(props) {
     const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
+    const [modalTime, setModalTime] = useState(false)
+    const [time, setTime] = useState(dayjs())
+    const [errorMessageTime, setErrorMessageTime] = useState('')
     const isHiker = props.userPower === 'hiker'
     const isLocalGuide = props.userPower === 'localguide'
     const isHutWoker = props.userPower === 'hutworker'
     const canModify = props.userId && props.userId === props.hike.local_guide_id
     const navigate = useNavigate()
+    const handleSubmit = async(e) => {
+      e.preventDefault()
+    }
     return (<>
-      <Card style={{ width: '22rem' }} key={0} title={props.hike.title}>
+      <Card style={{ width: '21rem' }} key={0} title={props.hike.title}>
         <Card.Body>
           <Card.Title>{props.hike.title}</Card.Title>
   
@@ -33,6 +41,8 @@ function HikeCard(props) {
             {(isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker) ? <Badge bg="secondary">No Track Available</Badge> : ''}
             {isLocalGuide && canModify ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
             {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
+            {' '}
+            {isHiker? <Button variant="success" onClick={() => setModalTime(true)}>Start</Button>: ''}
             
           </Card.Text>
         </Card.Body>
@@ -56,6 +66,16 @@ function HikeCard(props) {
         ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
         rpList={props.hike.rp}
       /> : ''}
+      {isHiker ? <TimeModal
+            type={"start"}
+            show={modalTime}
+            time={time}
+            updateTime={setTime}
+            onHide={() => setModalTime(false)}
+            errorMessage={errorMessageTime}
+            setErrorMessage={setErrorMessageTime}
+            handleSubmit={handleSubmit}
+            />:''}
       
     </>
     );

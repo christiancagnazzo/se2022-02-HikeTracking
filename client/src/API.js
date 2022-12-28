@@ -521,5 +521,41 @@ async function deleteAlerts(token){
   }
 }
 
-const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts };
+async function postReachedReferencePoint(referencePoint, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    let response = await fetch(URL + '', {
+      method: "POST",
+      headers: {
+        'Authorization': valid_token
+      },
+      body: JSON.stringify(referencePoint)
+    })
+    if(response.ok)
+      return {msg: "Position updated"};
+    return {error: true, msg:"Something went wrong. Try later"}
+  } catch(e){
+    console.log(e)
+  }
+}
+
+async function postTerminatedHike(token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    let response = await fetch(URL + '', {
+      method: "POST",
+      headers: {
+        'Authorization': valid_token
+      },
+    })
+    if(response.ok)
+      return {msg: "Position updated"};
+    return {error: true, msg:"Something went wrong. Try later"}
+  } catch(e){
+    console.log(e)
+  }
+}
+
+
+const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint };
 export default API;
