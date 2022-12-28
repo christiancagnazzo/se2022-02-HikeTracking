@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from hiketracking.form import CustomUserCreationForm, CustomUserChangeForm
 from hiketracking.models import Hike, HikeReferencePoint, CustomUser, Point, Hut, Facility, HutFacility, ParkingLot, \
-    CustomerProfile, HutPhoto, HutHike, UserHikeLog
+    CustomerProfile, HutHike, UserHikeLog
 
 # Register your models here.
 admin.site.register( CustomerProfile )
@@ -11,7 +11,6 @@ admin.site.register( Point )
 admin.site.register( Hike )
 admin.site.register( HikeReferencePoint )
 admin.site.register( Hut )
-admin.site.register( HutPhoto )
 admin.site.register( Facility )
 admin.site.register( HutFacility )
 admin.site.register( ParkingLot )

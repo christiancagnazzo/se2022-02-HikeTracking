@@ -12,7 +12,7 @@ async function createHike(hike_description, hike_file, token) {
         'Authorization': valid_token
       },
     })
-
+    
     if (response.status === 200) {
       response = await response.json()
       let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
@@ -82,13 +82,26 @@ async function getHike(title, token) {
 
 async function createHut(hut_description, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-  console.log(hut_description)
+  let formData = new FormData()
+  formData.append("name", hut_description['name'])
+  formData.append("ascent", hut_description['ascent'])
+  formData.append("desc", hut_description['desc'])
+  formData.append("email", hut_description['email'])
+  formData.append("fee", hut_description['fee'])
+  formData.append("n_beds", hut_description['n_beds'])
+  formData.append("phone", hut_description['phone'])
+  formData.append("position", JSON.stringify(hut_description['position']))
+  formData.append("relatedHike",hut_description['relatedHike'])
+  formData.append("services", hut_description['services'])
+  formData.append("web_site", hut_description['web_site'])
+  formData.append("File", hut_description['picture'])
+  console.log(hut_description['picture'])
   try {
     let response = await fetch(URL + 'hut/', {
       method: 'POST',
-      body: JSON.stringify(hut_description),
+      body: formData,
       headers: {
-        'Content-Type': 'application/json',
+       
         'Authorization': valid_token
       },
     })
@@ -245,6 +258,32 @@ async function getHikeFile(hike_id, token) {
   }
 }
 
+function _arrayBufferToBase64( buffer ) {
+  var binary = '';
+  var bytes = new Uint8Array( buffer );
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+  }
+  return window.btoa( binary );
+}
+
+async function getHutFile(hut_id, token) {
+  let response = await fetch(URL + 'hut/file/' + hut_id, {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
+  if (response.status === 200) {
+    const img = await response.arrayBuffer()
+    return _arrayBufferToBase64(img)
+  }
+  else {
+    return ""
+  }
+}
+
 async function getAllHuts(token, filters) {
 
   let query = ''
@@ -271,9 +310,17 @@ async function getAllHuts(token, filters) {
       //'Authorization': valid_token
     },
   });
-  if (response.status === 200)
-    return { msg: await response.json() }
-  else {
+  
+  if (response.status === 200){
+    let huts = await response.json();
+      for (let i = 0; i < huts.length; i++) {
+        const h = huts[i]
+        h['picture'] = await getHutFile(h['id'], token);
+    };
+
+    return { msg: huts}
+  }
+   else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }

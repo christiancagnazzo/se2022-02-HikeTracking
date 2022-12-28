@@ -55,7 +55,7 @@ function HutCard(props) {
         <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>
         <ListGroup.Item>Phone number: {props.hut.phone}</ListGroup.Item>
         <ListGroup.Item>Email: {props.hut.email}</ListGroup.Item>
-        <ListGroup.Item>Web Site: {props.hut.website}</ListGroup.Item>
+        <ListGroup.Item>Web Site: {props.hut.web_site}</ListGroup.Item>
       </ListGroup>
       <Card.Body>
         <Card.Text>
@@ -71,12 +71,14 @@ function HutCard(props) {
       onHide={() => setModalDescriptionShow(false)}
       name={props.hut.name}
       desc={props.hut.desc}
+      picture={props.hut.picture}
     />
 
   </>
   );
 }
 function HutModalDescription(props) {
+  console.log(props)
   return (
     <Modal
       {...props}
@@ -90,7 +92,7 @@ function HutModalDescription(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <img src={hike1} alt='' class=''/>
+      { props.picture !== "" ? <img src={"data:image/png;base64,"+props.picture}></img>: ""}
         <h4>Description</h4>
         <p>
           {props.desc}

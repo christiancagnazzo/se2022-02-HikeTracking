@@ -28,6 +28,7 @@ function HikeForm(props) {
   let token = localStorage.getItem("token");
 
   const handleSubmit = async (event) => {
+    console.log(image)
     event.preventDefault();
     let hutDescription = {
       'name': name,
@@ -40,7 +41,8 @@ function HikeForm(props) {
       'ascent': ascent,
       'phone': phone,
       'email': email,
-      'web_site': webSite
+      'web_site': webSite,
+      'picture': image
     }
     let req = await API.createHut(hutDescription, token)
     if (req.error) {
@@ -150,7 +152,9 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Upload a picture of this hut</Form.Label>
-        <Form.Control onChange={(e) => setImage(e.target.value)} type="file" accept="image/png, image/jpeg" />
+        <input className="form-control" type="file" id="formFile" accept=".png, .jpeg" onChange={(e) => {
+            setImage(e.target.files[0]);
+          }}></input>
         </Form.Group>
         {' '}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
