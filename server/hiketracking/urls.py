@@ -31,5 +31,4 @@ urlpatterns = [
     path( 'platformmanager/weatheralert/', Weather.as_view()),
     path( 'hiking/<int:pk>/', Hiking.as_view() ),
     path( 'hut/file/<str:hut_id>', HutFile.as_view() ),
-
 ]

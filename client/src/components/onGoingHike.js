@@ -1,17 +1,20 @@
 import { useEffect,useState } from "react"
-import { Card, Button, Form } from "react-bootstrap"
+import { Card, Button, Form, Alert } from "react-bootstrap"
 import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
 import { Icon } from 'leaflet'
 import { DateTime } from 'react-datetime-bootstrap';
 import dayjs, { Dayjs } from 'dayjs';
 import API from "../API"
+import { useNavigate } from "react-router-dom";
 import GpxParser from 'gpxparser';
 import { Flag } from "@mui/icons-material"
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
+import UTILS from "../utils/utils";
+import { Last } from "react-bootstrap/esm/PageItem";
+import TimeModal from "./timeModal";
 const myIconSp = new Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -66,16 +69,107 @@ function OnGoingHike(props){
     const [ep, setEp] = useState({})
     const [curr, setCurr] = useState("-")
     const [time, setTime] =useState(dayjs())
+    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessageModal, setErrorMessageModal] = useState('')
+    const [errorMessageEndModal, setErrorMessageEndModal] = useState('')
+    const [successMessage, setSuccessMessage] =useState('')
     const [reachedPoints, setReacheadPoints] = useState([])
+    const [last, setLast] = useState(dayjs())
+    const [modal, setModalShow] = useState(false);
+    const [modalEnd, setModalEndShow] = useState(false)
     const token = localStorage.getItem("token")
+    const navigate = useNavigate()
+
+    const updateRpList = (orderedRpList) => {
+      let reversed = orderedRpList.reverse()
+      let reachFlag = false
+      setRpList(reversed.map((h,idx) => {
+        if (idx === 3)
+          h.reached = true
+        if(h.reached)
+          reachFlag = true
+        h.reached = reachFlag
+        return h
+      }).reverse())
+    }
+
+    const showModal = () => {
+      if(curr==="-"){
+        setErrorMessage("Please select a reference point")
+        return
+      }
+      setModalShow(true)
+    }
+    const  handleSubmit = async (e) => {
+      e.preventDefault()
+      if(curr==="-"){
+        setErrorMessage("Please select a reference point")
+        return
+      }
+      
+      if(time.isBefore(last) || time.isSame(last)){
+        setErrorMessage("Please insert a valid datetime")
+        return
+      }
+      const index = rpList.findIndex((rp) => rp.reference_point_address === curr)
+      const point = rpList[index]
+      const body = {
+        point : point, 
+        time: time
+      }
+      
+    
+      try {
+        const resp = {msg:"ok"}//await API.postReachedReferencePoint(body, token)
+        if(resp.error)
+          setErrorMessage(resp.msg)
+        else{
+          updateRpList(rpList.map((r,idx)=> {
+            if(idx === index)
+              r.reached = true
+            return r
+          }))
+          setCurr("-")
+          setSuccessMessage("Your position has been updated")
+
+        }
+    } catch(e){
+      setErrorMessage("Something went wrong. Please try later")
+    }
+  }
+
+  const handleTerminate = async (e) => {
+    e.preventDefault()
+    if(time.isBefore(last) || time.isSame(last)){
+      setErrorMessage("Please insert a valid datetime")
+      return
+    }
+    try {
+      const resp = {msg:'ok'}
+      if(resp.error)
+          setErrorMessage(resp.msg)
+        else{
+          navigate("recordpage")
+      }
+    }
+      catch(e){
+        setErrorMessage("Something went wrong. Please try later")
+        setErrorMessageEndModal("Something went wrong. Please try later")
+      } 
+  }
     useEffect(() => {
       async function getHike() {
-        const t = "Sentiero per il ROCCIAMELONE"
-        const h = (await API.getHike(t, token)).hike
+        const t = "Picciano Tappa 77"        
+        let h = (await API.getHike(t, token)).hike
         setHike(h)
         setTitle(h.title)
+        h.reached = [{}]
         const rp = []
         for(let i = 0; i < h.rp.length; i++){
+          let flag = h.reached.includes((r) => 
+          r.reference_point_lat===h.rp[i].reference_point_lat &&
+          r.reference_point_lng===h.rp[i].reference_point_lng);
+          h.rp[i].reached = flag
           rp.push(h.rp[i])
         }
         setSp({
@@ -88,42 +182,68 @@ function OnGoingHike(props){
           lng: h.end_point_lng,
           addr: h.end_point_address
         })
+
         setRpList(rp)
+        setReacheadPoints(h.reached)
         let file = await API.getHikeFile(h.id, token)
         setFileMap(file)
       }
       getHike()
     },[])
+
     
+    const updateTime = (curr) => {
+      if(last.isBefore(curr))
+        setTime(curr)
+      else {
+
+        setErrorMessageModal("Select a valid datetime")
+        return false
+      }
+    }
     return (
       <>
       <h1>Current Hike</h1>
       <Card>
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
-          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/>
+          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/>
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
             <Form.Select value={curr} onChange={e => setCurr(e.target.value)}>
               <option value ="-" key="-">-</option>
-              {rpList.map((r,idx) => <option value={r.reference_point_address} key={r.reference_point_address}>{r.reference_point_address}</option>)}
+              {rpList.filter((r) => !r.reached)
+              .map((r,idx) => <option value={r.reference_point_address} key={r.reference_point_address}>{r.reference_point_address}</option>)}
             </Form.Select>
             </Form.Group>
             <Form.Group className="mb-2" controlId="datetime">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                renderInput={(props) => <TextField {...props} />}
-                label=""
-                value={time}
-                onChange={(newValue) => {
-                setTime(newValue);
-            }}
-            />
-            </LocalizationProvider>
+            
+            {errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
+            {successMessage ? <Alert variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
             </Form.Group>
-            <Button>Update Position</Button> {' '}
-            <Button variant="danger">Terminate the hike</Button>
+            <Button onClick={() => showModal()}>Update Position</Button> {' '}
+            <Button variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
+            <TimeModal
+            type={"reference"}
+            show={modal}
+            time={time}
+            updateTime={updateTime}
+            onHide={() => setModalShow(false)}
+            errorMessage={errorMessageModal}
+            setErrorMessage={setErrorMessageModal}
+            handleSubmit={handleSubmit}
+            />
+            <TimeModal
+            type={"end"}
+            show={modalEnd}
+            time={time}
+            updateTime={updateTime}
+            onHide={() => setModalEndShow(false)}
+            errorMessage={errorMessageModal}
+            setErrorMessage={setErrorMessageEndModal}
+            handleSubmit={handleTerminate}
+            />
 
           </Form>
       </Card.Body>
@@ -140,10 +260,13 @@ function Map(props){
 
     return (
     <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} 
-    icon={props.curr !== pos['reference_point_address'] ? myIconRp : myIconRpCurr} 
+    icon={props.curr !== pos['reference_point_address'] ? 
+      (!pos.reached? myIconRp: myIconTp): 
+      myIconRpCurr} 
     key={idx}
     eventHandlers={{
       click: () =>  {
+        if(!pos.reached)
         props.setCurr(pos['reference_point_address'])
       }}}>
         <Popup>
@@ -173,7 +296,18 @@ function Map(props){
     if(props.gpxFile !== ''){
         const gpx = new GpxParser()
         gpx.parse(props.gpxFile)
-        const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
+        let idx = 0
+        let orderedRpList = []
+        const pos = gpx.tracks[0].points.map(p => {
+            if(idx < props.rpList.length && 
+              p.lat === props.rpList[idx].reference_point_lat && 
+              p.lon===props.rpList[idx].reference_point_lng){
+              orderedRpList.push(props.rpList[idx])
+              idx++
+            }
+            
+            return [p.lat, p.lon]})
+        props.setRpList(orderedRpList)
         setPositions(pos)
     }
     }
