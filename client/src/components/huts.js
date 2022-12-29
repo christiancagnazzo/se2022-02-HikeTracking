@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import UTILS from '../utils/utils';
 import hike1 from '../img/hike.jpg'
 import API from '../API';
-
+import TheSpinner from './spinner';
 function displayHutsUtil(huts) {
   let hutscard = huts.map((h, idx) =>
     <Col className="pb-4 px-0" key={idx}>
@@ -105,7 +105,7 @@ function HutModalDescription(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      { image !== "" ? <img src={"data:image/png;base64," + image }></img>: ""}
+      { image !== "" ? <img src={"data:image/png;base64," + image }></img>: <TheSpinner/>}
         <h4>Description</h4>
         <p>
           {props.desc}

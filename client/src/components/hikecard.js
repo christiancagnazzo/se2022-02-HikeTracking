@@ -150,13 +150,21 @@ function HikeCard(props) {
   
   function HikeModalTrack(props) {
     const [file, setFile] = useState('')
+    const [error, setError] = useState(false)
     const token = localStorage.getItem("token")
     useEffect(() => {
       async function getFile(){
+      try{
         const track = await API.getHikeFile(props.id, token)
+        if(track.err){
+          setError(true)
+          return
+        }
         setFile(track)
+        } catch(e){
+        setError(true)
+        } 
       }
-      
       if(props.visible && !file){
         getFile()
       }
@@ -164,7 +172,7 @@ function HikeCard(props) {
   
   
     return (
-      file ?
+      !error ?
         <Modal
           {...props}
           size="lg"
@@ -178,7 +186,7 @@ function HikeCard(props) {
           </Modal.Header>
           <Modal.Body>
             <h4>Track</h4>
-            <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} />
+            {file ? <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} /> : <TheSpinner/>}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.onHide}>Close</Button>
@@ -186,7 +194,7 @@ function HikeCard(props) {
         </Modal>
         :
   
-        <Modal
+         <Modal
           {...props}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
