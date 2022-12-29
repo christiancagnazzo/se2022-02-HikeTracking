@@ -5,7 +5,7 @@ from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI, HikesHutWorker,
                     Facilities, AccountConfirmation, HutHikeView,
                     UserDetail, UserList, Sessions, Huts, ActivateAccount,
                     ParkingLotAPI, Recommended, Profile,Hike_, Weather, HutFile
-                    ,Hiking)
+                    ,Hiking, HikePicture)
 
 app_name = 'hiketracking'
 urlpatterns = [
@@ -30,5 +30,6 @@ urlpatterns = [
     path( 'worker/hikes/', HikesHutWorker.as_view() ),
     path( 'platformmanager/weatheralert/', Weather.as_view()),
     path( 'hiking/<int:pk>/', Hiking.as_view() ),
-    path( 'hut/file/<str:hut_id>', HutFile.as_view() ),
+    path( 'hut/picture/<str:hut_id>', HutFile.as_view() ),
+    path( 'hike/picture/<str:hike_id>', HikePicture.as_view() ),
 ]

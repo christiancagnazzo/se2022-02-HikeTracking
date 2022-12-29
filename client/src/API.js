@@ -12,10 +12,12 @@ async function createHike(hike_description, hike_file, token) {
         'Authorization': valid_token
       },
     })
-    
+
     if (response.status === 200) {
       response = await response.json()
-      let second_response = await fetch(URL + 'hike/file/' + response['hike_id'], {
+      let hike_id = response['hike_id']
+
+      let second_response = await fetch(URL + 'hike/file/' + hike_id, {
         method: 'PUT',
         body: hike_file,
         headers: {
@@ -23,8 +25,19 @@ async function createHike(hike_description, hike_file, token) {
         },
       })
 
-      if (second_response.status === 200)
+      if (second_response.status === 200) {
+        let picture = new FormData()
+        picture.append('Picture', hike_description['picture'])
+        await fetch(URL + 'hike/picture/' + hike_id, {
+          method: 'PUT',
+          body: picture,
+          headers: {
+            'Authorization': valid_token
+          },
+        })
         return { msg: "Hike Creato" };
+      }
+
 
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
     }
@@ -91,7 +104,7 @@ async function createHut(hut_description, token) {
   formData.append("n_beds", hut_description['n_beds'])
   formData.append("phone", hut_description['phone'])
   formData.append("position", JSON.stringify(hut_description['position']))
-  formData.append("relatedHike",hut_description['relatedHike'])
+  formData.append("relatedHike", hut_description['relatedHike'])
   formData.append("services", hut_description['services'])
   formData.append("web_site", hut_description['web_site'])
   formData.append("File", hut_description['picture'])
@@ -101,7 +114,7 @@ async function createHut(hut_description, token) {
       method: 'POST',
       body: formData,
       headers: {
-       
+
         'Authorization': valid_token
       },
     })
@@ -154,10 +167,10 @@ async function login(credentials) {
   else {
     let msg = "Email and/or password are not correct, please try again"
     const err = await response.json()
-    if(err.error){
-      if(err.error === 0)
+    if (err.error) {
+      if (err.error === 0)
         msg = "Please confirm your email"
-      if(err.error === 1)
+      if (err.error === 1)
         msg = "Your account has not been confirmed by the platform manager yet, please try again"
     }
     return { error: 'Error', msg: msg }
@@ -189,6 +202,22 @@ async function logout(token) {
       'Authorization': valid_token
     },
   });
+}
+
+async function getHikePicture(hut_id, token) {
+  let response = await fetch(URL + 'hike/picture/' + hut_id, {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
+  if (response.status === 200) {
+    const img = await response.arrayBuffer()
+    return _arrayBufferToBase64(img)
+  }
+  else {
+    return ""
+  }
 }
 
 async function getAllHikes(token, filters, userPower) {
@@ -228,12 +257,14 @@ async function getAllHikes(token, filters, userPower) {
 
   if (response.status === 200) {
     let hikes = await response.json();
-    if (userPower === "hiker") {
-      for (let i = 0; i < hikes.length; i++) {
-        const h = hikes[i]
+    for (let i = 0; i < hikes.length; i++) {
+      const h = hikes[i]
+      h['picture'] = await getHikePicture(h['id'], token);
+      if (userPower === "hiker") {
         h['file'] = await getHikeFile(h['id'], token);
       }
     };
+
     return { msg: hikes }
   }
   else {
@@ -254,22 +285,24 @@ async function getHikeFile(hike_id, token) {
     return text
   }
   else {
-    return {err: "File error"}
+    return { err: "File error" }
   }
 }
 
-function _arrayBufferToBase64( buffer ) {
+function _arrayBufferToBase64(buffer) {
   var binary = '';
-  var bytes = new Uint8Array( buffer );
+  var bytes = new Uint8Array(buffer);
   var len = bytes.byteLength;
   for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode( bytes[ i ] );
+    binary += String.fromCharCode(bytes[i]);
   }
-  return window.btoa( binary );
+  return window.btoa(binary);
 }
 
-async function getHutFile(hut_id, token) {
-  let response = await fetch(URL + 'hut/file/' + hut_id, {
+
+
+async function getHutPicture(hut_id, token) {
+  let response = await fetch(URL + 'hut/picture/' + hut_id, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -310,17 +343,17 @@ async function getAllHuts(token, filters) {
       //'Authorization': valid_token
     },
   });
-  
-  if (response.status === 200){
+
+  if (response.status === 200) {
     let huts = await response.json();
-      for (let i = 0; i < huts.length; i++) {
-        const h = huts[i]
-        h['picture'] = await getHutFile(h['id'], token);
+    for (let i = 0; i < huts.length; i++) {
+      const h = huts[i]
+      h['picture'] = await getHutPicture(h['id'], token);
     };
 
-    return { msg: huts}
+    return { msg: huts }
   }
-   else {
+  else {
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
@@ -389,12 +422,12 @@ async function setProfile(preferences, token) {
       },
     })
     if (response.status === 200)
-      return { msg: "Profile updated!"}
+      return { msg: "Profile updated!" }
     else {
       return { error: 'Error', msg: "Something went wrong. Please try again" }
     }
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
   }
 }
@@ -415,31 +448,31 @@ async function getProfile(token) {
   }
 }
 
-async function getRecommendedHikes(token){
+async function getRecommendedHikes(token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'hikes/recommended/',{
-    headers:{
+  let response = await fetch(URL + 'hikes/recommended/', {
+    headers: {
       'Authorization': valid_token
     },
   })
-  if (response.status === 200){
-    return {msg: await response.json()}
+  if (response.status === 200) {
+    return { msg: await response.json() }
   } else {
-    return {error: "Something went wrong. Please try again"}
+    return { error: "Something went wrong. Please try again" }
   }
 }
 
-async function getAccountsToValidate(token){
+async function getAccountsToValidate(token) {
   const valid_token = token = ('Token ' + token).replace('"', '').slice(0, -1)
-  let response = await fetch(URL + 'users/validate/',{
-    headers:{
+  let response = await fetch(URL + 'users/validate/', {
+    headers: {
       'Authorization': valid_token
     },
   })
-  if (response.status === 200){
-    return {msg: await response.json()}
+  if (response.status === 200) {
+    return { msg: await response.json() }
   } else {
-    return {error: "Error", msg: "Something went wrong. Please try again"}
+    return { error: "Error", msg: "Something went wrong. Please try again" }
   }
 }
 
@@ -456,12 +489,12 @@ async function activateAccount(params, token) {
       },
     })
     if (response.status === 200)
-      return { msg: "Updated!"}
+      return { msg: "Updated!" }
     else {
       return { error: 'Error', msg: "Something went wrong. Please try again" }
     }
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
   }
 }
@@ -476,18 +509,18 @@ async function getHutWorkerHikes(token) {
       },
     })
     if (response.status === 200) {
-      return ({msg : await response.json()})
+      return ({ msg: await response.json() })
     }
     else {
-      return ({err: await response.json()})
+      return ({ err: await response.json() })
     }
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
   }
 }
 
-async function updateCondition(condition, token){
+async function updateCondition(condition, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
   try {
@@ -502,73 +535,73 @@ async function updateCondition(condition, token){
 
     if (response.status === 200)
       return { msg: "Condition updated" };
-    
+
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
   }
-  catch(e){
+  catch (e) {
     console.log(e)
   }
 }
 
 
-async function getAlerts(token){
+async function getAlerts(token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
-    let response = await fetch(URL + 'platformmanager/weatheralert/',{
-      headers:{
+    let response = await fetch(URL + 'platformmanager/weatheralert/', {
+      headers: {
         'Authorization': valid_token
       }
     })
 
-    if(response.ok)
-      return {msg: await response.json()};
+    if (response.ok)
+      return { msg: await response.json() };
     return { error: true, msg: "Something went wrong. Not able to get the alerts" };
   }
-  catch(e){
+  catch (e) {
     console.log(e)
   }
 }
 
-async function postAlert(alert, token){
+async function postAlert(alert, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-  try{
-    let response = await fetch(URL + 'platformmanager/weatheralert/',{
+  try {
+    let response = await fetch(URL + 'platformmanager/weatheralert/', {
       method: "POST",
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
         'Authorization': valid_token
       },
       body: JSON.stringify(alert)
     })
 
-    if(response.ok)
-      return {msg: "Alert created"}
+    if (response.ok)
+      return { msg: "Alert created" }
     return { error: true, msg: "Something went wrong. Please check all fields and try again" };
-  } catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
-async function deleteAlerts(token){
+async function deleteAlerts(token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
-    let response = await fetch(URL + 'platformmanager/weatheralert/',{
+    let response = await fetch(URL + 'platformmanager/weatheralert/', {
       method: "DELETE",
-      headers:{
+      headers: {
         'Authorization': valid_token
       }
     })
 
-    if(response.ok)
-      return {msg: "All the alerts were deleted"};
+    if (response.ok)
+      return { msg: "All the alerts were deleted" };
     return { error: true, msg: "Something went wrong. Not able to delete the alerts" };
   }
-  catch(e){
+  catch (e) {
     console.log(e)
   }
 }
 
-async function postReachedReferencePoint(referencePoint, token){
+async function postReachedReferencePoint(referencePoint, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
     let response = await fetch(URL + '', {
@@ -578,15 +611,15 @@ async function postReachedReferencePoint(referencePoint, token){
       },
       body: JSON.stringify(referencePoint)
     })
-    if(response.ok)
-      return {msg: "Position updated"};
-    return {error: true, msg:"Something went wrong. Try later"}
-  } catch(e){
+    if (response.ok)
+      return { msg: "Position updated" };
+    return { error: true, msg: "Something went wrong. Try later" }
+  } catch (e) {
     console.log(e)
   }
 }
 
-async function postTerminatedHike(token){
+async function postTerminatedHike(token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
     let response = await fetch(URL + '', {
@@ -595,10 +628,10 @@ async function postTerminatedHike(token){
         'Authorization': valid_token
       },
     })
-    if(response.ok)
-      return {msg: "Position updated"};
-    return {error: true, msg:"Something went wrong. Try later"}
-  } catch(e){
+    if (response.ok)
+      return { msg: "Position updated" };
+    return { error: true, msg: "Something went wrong. Try later" }
+  } catch (e) {
     console.log(e)
   }
 }

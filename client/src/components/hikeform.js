@@ -50,7 +50,8 @@ function HikeForm(props) {
       'end_point_lng': ep[1],
       'end_point_address': addressEp,
       'description': desc,
-      'rp_list': rpList
+      'rp_list': rpList,
+      'picture': image
     }
 
     let req = await API.createHike(hikeDescription, formData, token)
@@ -281,7 +282,9 @@ function HikeForm(props) {
         {' '}
         <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Upload a picture of this hike</Form.Label>
-        <Form.Control onChange={(e) => setImage(e.target.value)} type="file" accept="image/png, image/jpeg" />
+        <input className="form-control" type="file" id="formFile" accept=".png, .jpeg" onChange={(e) => {
+            setImage(e.target.files[0]);
+          }}></input>
         </Form.Group>
         {action}
       </Form>
