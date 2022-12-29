@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile, UserHikeLog
-from hiketracking.serilizers import HikeSerializer
+from hiketracking.serilizers import UserHikeLogSerializer, HikeCounterIncludeSerializer
 from hiketracking.utility import get_province_and_village
 
 
@@ -317,7 +317,7 @@ class Recommended( APIView ):
 
 class Hiking( APIView ):
     permission_classes = (permissions.AllowAny,)
-    serializer_class = HikeSerializer
+    serializer_class = HikeCounterIncludeSerializer
 
     def get(self, request, pk):
         try:
@@ -329,22 +329,47 @@ class Hiking( APIView ):
             for log in user_log:
 
                 hike = Hike.objects.get( id=log['hike_id'] )
+                hike.counter = log['counter']
+                if filters == "true" and hike.end_point.id == log['point_id']:
+                    display_hikes.append( self.serializer_class( hike ).data )
 
-                if filters == "true" and (hike.end_point.id == log['point_id'] or log['end'] == True):
-                    display_hikes.append( hike )
-
-                elif hike.end_point.id != log['point_id'] and log['end'] == False:
-                    display_hikes.append( hike )
+                elif filters == "false" and hike.end_point.id != log['point_id']:
+                    display_hikes.append( self.serializer_class( hike ).data )
             #    remove repeated hikes
 
-            return Response( self.serializer_class( display_hikes, many=True ).data, status=status.HTTP_200_OK )
+            return Response( data=display_hikes,
+                        status = status.HTTP_200_OK )
         except Exception as e:
             print( e )
-            return Response( status=status.HTTP_404_NOT_FOUND )
+            return Response(data=e, status=status.HTTP_404_NOT_FOUND )
 
-    def post(self, request):
+    def post(self, request, pk):
         try:
-            return Response( status=status.HTTP_200_OK )
+            filters = request.GET.get( 'state', None )
+            data = request.data
+            # hike_id = data['hike']
+            hike = Hike.objects.get( id=data['hike'] )
+            user = CustomUser.objects.get( pk=pk )
+
+            if filters == 'start':
+                userHikeLogCount = UserHikeLog.objects.filter( hike=hike, user=user ).count()+1
+                userHikelogSerializer = UserHikeLogSerializer( data={
+                    'user': user.id,
+                    'hike': hike.id,
+                    'counter': userHikeLogCount,
+                    'point': hike.start_point.id
+                } )
+                if userHikelogSerializer.is_valid():
+                    userHikelogSerializer.save()
+                    return Response( data=userHikelogSerializer.data,
+                                     status=status.HTTP_200_OK )
+                else:
+                    Response( data=userHikelogSerializer.errors,
+                              status=status.HTTP_400_BAD_REQUEST )
+            # elif filters=='end':
+
+
+            return Response( status=status.HTTP_400_BAD_REQUEST )
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_404_NOT_FOUND )
@@ -372,5 +397,5 @@ class HikePicture( APIView ):
             return Response( status=status.HTTP_200_OK )
 
         except Exception as e:
-            print(e)
+            print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )

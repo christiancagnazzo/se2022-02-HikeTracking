@@ -74,7 +74,7 @@ class Hike( models.Model ):
     start_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="start_point" )
     end_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="end_point" )
     local_guide = models.ForeignKey( CustomUser, on_delete=models.CASCADE )
-    picture = models.FileField( upload_to='hikes_picture' )
+    picture = models.FileField( default='./hikePictures/defultImage.jpg' , upload_to='hikePictures' )
 
     class Condition( models.TextChoices ):
         OPEN = "Open"
@@ -82,10 +82,11 @@ class Hike( models.Model ):
         PARTLY_BLOCKED = "Partly blocked"
         SPECIAL_GEAR = "Requires special gear"
 
-    condition = models.CharField(blank=True, max_length=30, choices=Condition.choices)
-    condition_description = models.CharField(blank=True, max_length=100)
+    condition = models.CharField( blank=True, max_length=30, choices=Condition.choices )
+    condition_description = models.CharField( blank=True, max_length=100 )
     condition = models.CharField( max_length=30, choices=Condition.choices, default=Condition.OPEN )
     condition_description = models.CharField( max_length=100, default="Open" )
+
 
     def __str__(self):
         return self.title
@@ -116,20 +117,23 @@ class Hut( models.Model ):
     web_site = models.CharField( max_length=50, blank=True, default='' )
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
-    picture = models.FileField( upload_to='huts_picture' )
+    picture = models.FileField( default=',/hutsPicture/defultHut.jpg',upload_to='hutsPicture' )
 
     def __str__(self):
         return self.name
 
-class HutWorker(models.Model):
-    hutworker = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    hut = models.ForeignKey(Hut, on_delete=models.CASCADE)
+
+class HutWorker( models.Model ):
+    hutworker = models.OneToOneField( CustomUser, on_delete=models.CASCADE )
+    hut = models.ForeignKey( Hut, on_delete=models.CASCADE )
+
 
 """
 class HutPhoto( models.Model ):
     hut = models.ForeignKey( Hut, on_delete=models.CASCADE )
     track_file = models.FileField( upload_to='hutimages' )
 """
+
 
 class Facility( models.Model ):
     name = models.CharField( max_length=100, unique=True )
@@ -147,7 +151,7 @@ class HutFacility( models.Model ):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['hut', 'facility'], name='hutfac')
+            models.UniqueConstraint( fields=['hut', 'facility'], name='hutfac' )
         ]
 
 
@@ -155,8 +159,8 @@ class ParkingLot( models.Model ):
     name = models.CharField( max_length=50, unique=True )
     fee = models.FloatField()
     n_cars = models.IntegerField()
-    desc = models.TextField(blank=True, default="")
-    point = models.OneToOneField(Point, on_delete=models.CASCADE)
+    desc = models.TextField( blank=True, default="" )
+    point = models.OneToOneField( Point, on_delete=models.CASCADE )
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
 
@@ -170,8 +174,8 @@ class HutHike( models.Model ):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['hut','hike'], name='huthike')
-            ]
+            models.UniqueConstraint( fields=['hut', 'hike'], name='huthike' )
+        ]
 
     def __str__(self):
         return "hut:" + str( self.hut ) + " hike:" + str( self.hike )
@@ -183,20 +187,22 @@ class UserHikeLog( models.Model ):
     counter = models.IntegerField()  # useful to differentiate different run of the same hike
     point = models.ForeignKey( Point, on_delete=models.CASCADE )
     timestamp = models.DateTimeField( auto_now_add=True )
-    #end = models.BooleanField( default=False )
+
+    # end = models.BooleanField( default=False )
 
     def __str__(self):
         return "user:" + str( self.user ) + " hike:" + str( self.hike )
 
 
-class WeatherAlert(models.Model):
+class WeatherAlert( models.Model ):
     class Condition( models.TextChoices ):
         SNOW = "Snow"
         STORM = "Storm"
         STRONG_WIND = "Strong wind"
         RAIN = "Rain"
         HAIL = "Hail"
-    condition = models.CharField(choices=Condition.choices, max_length=30)
+
+    condition = models.CharField( choices=Condition.choices, max_length=30 )
     weather_lat = models.FloatField()
     weather_lon = models.FloatField()
     radius = models.IntegerField()
