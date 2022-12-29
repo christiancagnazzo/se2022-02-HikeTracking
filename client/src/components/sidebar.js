@@ -49,6 +49,7 @@ function HikerMenu(props){
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
     const profileIcon = <ManageAccounts></ManageAccounts>
+    const weatherIcon = <Cloud/>
     const updateActive = (idx, relocation) => {
       UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
@@ -71,9 +72,13 @@ function HikerMenu(props){
           <MenuItem onClick={() => updateActive(4,"parkinglots")}active={"parkinglots"===route}>Browse</MenuItem>
         </SubMenu>
         {props.hiker ?
+        <>
           <SubMenu icon={profileIcon} label='My profile'>
           <MenuItem onClick={() => updateActive(5,"preferences") }active={"preferences"===route}>Profile</MenuItem>
-        </SubMenu>:""
+        </SubMenu>
+         <SubMenu icon={weatherIcon} label='Weather'>
+         <MenuItem onClick={() => updateActive(6,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
+       </SubMenu></>:""
         }
       </Menu>
 
@@ -151,7 +156,7 @@ function PlatformManagerMenu(props){
             <MenuItem onClick={() => updateActive(4,"/platformmanager/confirmAccount")} active={"confirmAccount"===route}>Account to confirm</MenuItem>      
           </SubMenu>
           <SubMenu icon={weatherIcon}label='Weather'>
-            <MenuItem onClick={() => updateActive(3,"/platformmanager/weatheralert")} active={"weatheralert"===route}>Alert</MenuItem>
+            <MenuItem onClick={() => updateActive(3,"/platformmanager/weatheralert")} active={"weatheralert"===route}>Alerts</MenuItem>
           </SubMenu>
         </Menu>
       </Sidebar>

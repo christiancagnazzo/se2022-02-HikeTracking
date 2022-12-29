@@ -626,6 +626,24 @@ async function postTerminatedHike(token) {
   }
 }
 
+async function getHikeAlerts(token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture };
+  let response = await fetch(URL + 'hike/alert/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  
+  if (response.status === 200) {
+    return { msg : await response.json() }
+  }
+  else {
+    return { error: "Something was wrong"}
+  }
+}
+
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture };
+
 export default API;
