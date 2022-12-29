@@ -11,12 +11,14 @@ import ParkingLots from './parkinglots';
 import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
+import WeatherHikeAlert from './hikeAlert';
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [recommendedhikes,setRecommendedhikes] = useState([])
   const [filtered, setFiltered] = useState(false)
+  const [hikesAlert, setHikesAlert] = useState([])
   const [_, setErrorMessage] = useState('')
   const [dirty, setDirty] = useState(false)
   let token = localStorage.getItem("token");
@@ -124,6 +126,25 @@ function VisitorPage(props) {
     if(props.userPower === 'hiker')
       getRecommendedHikes()
   }, [props.userPower, token, dirty])
+
+
+  useEffect(() => {
+    const getHikeAlerts = async() =>{
+      try{
+        const alerts = await API.getHikeAlerts(token)
+        if(alerts.error)
+          setErrorMessage(alerts.msg)
+          else
+            setHikesAlert(alerts.msg);
+      } catch(err){
+        console.log(err)
+      }
+    }
+    if (props.userPower === 'hiker')
+      getHikeAlerts()
+   
+   
+  }, [props.userPower, token, dirty])
     
 
   return (
@@ -141,6 +162,7 @@ function VisitorPage(props) {
             {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike/>}/>
+            <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>
           </Routes>
         </Row>
       </Col>
