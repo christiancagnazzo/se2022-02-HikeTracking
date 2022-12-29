@@ -348,3 +348,29 @@ class Hiking( APIView ):
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_404_NOT_FOUND )
+
+
+class HikePicture( APIView ):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, hike_id):
+        try:
+            picture = Hike.objects.get( id=hike_id ).picture
+            response = FileResponse( open( str( picture ), 'rb' ) )
+            response['Content-Language'] = 'attachment; filename=' + picture.name
+            return response
+        except Exception as e:
+            print( e )
+            return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR )
+
+    def put(self, request, hike_id):
+        try:
+            hikePicture = request.FILES['Picture']
+            hike = Hike.objects.get( id=hike_id )
+            hike.picture = hikePicture
+            hike.save()
+            return Response( status=status.HTTP_200_OK )
+
+        except Exception as e:
+            print(e)
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )

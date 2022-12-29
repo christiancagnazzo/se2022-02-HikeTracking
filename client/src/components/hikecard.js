@@ -56,6 +56,7 @@ function HikeCard(props) {
         rpList={props.hike.rp}
         condition = {props.hike.condition}
         condition_description = {props.hike.condition_description}
+        picture={props.hike.picture}
       />
       {isHiker ? <HikeModalTrack
         show={modalMapShow}
@@ -98,7 +99,7 @@ function HikeCard(props) {
           
         </Modal.Header>
         <Modal.Body>
-        <img src={hike1} alt='' class=''/>
+        { props.picture !== "" ? <img src={"data:image/png;base64,"+props.picture}></img>: ""}
 
           <h4>Description</h4>
           <p>

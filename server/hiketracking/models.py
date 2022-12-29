@@ -74,6 +74,7 @@ class Hike( models.Model ):
     start_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="start_point" )
     end_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="end_point" )
     local_guide = models.ForeignKey( CustomUser, on_delete=models.CASCADE )
+    picture = models.FileField( upload_to='hikes_picture' )
 
     class Condition( models.TextChoices ):
         OPEN = "Open"
