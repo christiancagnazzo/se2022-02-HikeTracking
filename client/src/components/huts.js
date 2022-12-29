@@ -1,9 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UTILS from '../utils/utils';
 import hike1 from '../img/hike.jpg'
+import API from '../API';
 
 function displayHutsUtil(huts) {
   let hutscard = huts.map((h, idx) =>
@@ -69,6 +70,8 @@ function HutCard(props) {
     <HutModalDescription
       show={modalDescriptionShow}
       onHide={() => setModalDescriptionShow(false)}
+      id={props.hut.id}
+      visible={modalDescriptionShow}
       name={props.hut.name}
       desc={props.hut.desc}
       picture={props.hut.picture}
@@ -78,7 +81,17 @@ function HutCard(props) {
   );
 }
 function HutModalDescription(props) {
-  console.log(props)
+  const [image, setImage] = useState('')
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    async function getImage(){
+      const img = await API.getHutPicture(props.id, token)
+      setImage(img)
+    }
+    if(props.visible && !image)
+    getImage()
+  },[props.visible])
   return (
     <Modal
       {...props}
@@ -92,7 +105,7 @@ function HutModalDescription(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      { props.picture !== "" ? <img src={"data:image/png;base64,"+props.picture}></img>: ""}
+      { image !== "" ? <img src={"data:image/png;base64," + image }></img>: ""}
         <h4>Description</h4>
         <p>
           {props.desc}
