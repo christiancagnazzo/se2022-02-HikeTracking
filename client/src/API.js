@@ -12,7 +12,7 @@ async function createHike(hike_description, hike_file, token) {
         'Authorization': valid_token
       },
     })
-
+    
     if (response.status === 200) {
       response = await response.json()
       let hike_id = response['hike_id']
@@ -114,7 +114,6 @@ async function createHut(hut_description, token) {
       method: 'POST',
       body: formData,
       headers: {
-
         'Authorization': valid_token
       },
     })
@@ -317,6 +316,32 @@ async function getHutPicture(hut_id, token) {
   }
 }
 
+function _arrayBufferToBase64( buffer ) {
+  var binary = '';
+  var bytes = new Uint8Array( buffer );
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+  }
+  return window.btoa( binary );
+}
+
+async function getHutFile(hut_id, token) {
+  let response = await fetch(URL + 'hut/file/' + hut_id, {
+    method: 'GET',
+    headers: {
+      //'Authorization': valid_token
+    },
+  });
+  if (response.status === 200) {
+    const img = await response.arrayBuffer()
+    return _arrayBufferToBase64(img)
+  }
+  else {
+    return ""
+  }
+}
+
 async function getAllHuts(token, filters) {
 
   let query = ''
@@ -354,6 +379,7 @@ async function getAllHuts(token, filters) {
     return { msg: huts }
   }
   else {
+
     return { error: 'Error', msg: "Something went wrong. Please try again" }
   }
 }
