@@ -74,7 +74,7 @@ class Hike( models.Model ):
     start_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="start_point" )
     end_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="end_point" )
     local_guide = models.ForeignKey( CustomUser, on_delete=models.CASCADE )
-    picture = models.FileField( upload_to='hikes_picture' )
+    picture = models.FileField( upload_to='hikes_picture', null=True )
 
     class Condition( models.TextChoices ):
         OPEN = "Open"
@@ -116,7 +116,7 @@ class Hut( models.Model ):
     web_site = models.CharField( max_length=50, blank=True, default='' )
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
-    picture = models.FileField( upload_to='huts_picture' )
+    picture = models.FileField( upload_to='huts_picture', null=True )
 
     def __str__(self):
         return self.name
