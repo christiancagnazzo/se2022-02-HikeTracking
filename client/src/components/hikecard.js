@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card,ListGroup, Button,Modal, Badge } from "react-bootstrap";
+import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
 import Map from "./map";
 import hike1 from '../img/hike1.jpg'
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
+import API from "../API";
+import TheSpinner from "./spinner";
 function HikeCard(props) {
     const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
@@ -19,6 +21,7 @@ function HikeCard(props) {
     const handleSubmit = async(e) => {
       e.preventDefault()
     }
+    
     return (<>
       <Card style={{ width: '21rem' }} key={0} title={props.hike.title}>
         <Card.Body>
@@ -49,7 +52,9 @@ function HikeCard(props) {
   
       </Card>
       <HikeModalDescription
+        id={props.hike.id}
         show={modalDescriptionShow}
+        visible={modalDescriptionShow}
         onHide={() => setModalDescriptionShow(false)}
         title={props.hike.title}
         description={props.hike.description}
@@ -59,10 +64,11 @@ function HikeCard(props) {
         picture={props.hike.picture}
       />
       {isHiker ? <HikeModalTrack
+        id={props.hike.id}
         show={modalMapShow}
+        visible={modalMapShow}
         onHide={() => setModalMapShow(false)}
         title={props.hike.title}
-        file={props.hike.file}
         sp={[props.hike.start_point_lat, props.hike.start_point_lng]}
         ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
         rpList={props.hike.rp}
@@ -85,6 +91,17 @@ function HikeCard(props) {
   
   
   function HikeModalDescription(props) {
+    const [image, setImage] = useState('')
+    const token = localStorage.getItem("token")
+
+    useEffect(() => {
+      async function getImage(){
+        const img = await API.getHikePicture(props.id, token)
+        setImage(img)
+      }
+      if(props.visible && !image)
+      getImage()
+    },[props.visible])
     return (
       <Modal
         {...props}
@@ -99,9 +116,10 @@ function HikeCard(props) {
           
         </Modal.Header>
         <Modal.Body>
-        { props.picture !== "" ? <img src={"data:image/png;base64,"+props.picture}></img>: ""}
+        
+        { image !== "" ? <img src={"data:image/png;base64,"+image}></img>: <TheSpinner/>}
 
-          <h4>Description</h4>
+          <h4 className="mt-3">Description</h4>
           <p>
             {props.description}
           </p>
@@ -131,11 +149,30 @@ function HikeCard(props) {
   
   
   function HikeModalTrack(props) {
-  
+    const [file, setFile] = useState('')
+    const [error, setError] = useState(false)
+    const token = localStorage.getItem("token")
+    useEffect(() => {
+      async function getFile(){
+      try{
+        const track = await API.getHikeFile(props.id, token)
+        if(track.err){
+          setError(true)
+          return
+        }
+        setFile(track)
+        } catch(e){
+        setError(true)
+        } 
+      }
+      if(props.visible && !file){
+        getFile()
+      }
+    },[props.visible])
   
   
     return (
-      props.file ?
+      !error ?
         <Modal
           {...props}
           size="lg"
@@ -149,7 +186,7 @@ function HikeCard(props) {
           </Modal.Header>
           <Modal.Body>
             <h4>Track</h4>
-            <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={props.file} />
+            {file ? <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} /> : <TheSpinner/>}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.onHide}>Close</Button>
@@ -157,7 +194,7 @@ function HikeCard(props) {
         </Modal>
         :
   
-        <Modal
+         <Modal
           {...props}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"

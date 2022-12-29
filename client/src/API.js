@@ -203,8 +203,8 @@ async function logout(token) {
   });
 }
 
-async function getHikePicture(hut_id, token) {
-  let response = await fetch(URL + 'hike/picture/' + hut_id, {
+async function getHikePicture(hike_id, token) {
+  let response = await fetch(URL + 'hike/picture/' + hike_id, {
     method: 'GET',
     headers: {
       //'Authorization': valid_token
@@ -256,14 +256,6 @@ async function getAllHikes(token, filters, userPower) {
 
   if (response.status === 200) {
     let hikes = await response.json();
-    for (let i = 0; i < hikes.length; i++) {
-      const h = hikes[i]
-      h['picture'] = await getHikePicture(h['id'], token);
-      if (userPower === "hiker") {
-        h['file'] = await getHikeFile(h['id'], token);
-      }
-    };
-
     return { msg: hikes }
   }
   else {
@@ -345,10 +337,8 @@ async function getAllHuts(token, filters) {
 
   if (response.status === 200) {
     let huts = await response.json();
-    for (let i = 0; i < huts.length; i++) {
-      const h = huts[i]
-      h['picture'] = await getHutPicture(h['id'], token);
-    };
+    
+    
 
     return { msg: huts }
   }
@@ -636,6 +626,24 @@ async function postTerminatedHike(token) {
   }
 }
 
+async function getHikeAlerts(token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
 
-const API = { activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint };
+  let response = await fetch(URL + 'hike/alert/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  
+  if (response.status === 200) {
+    return { msg : await response.json() }
+  }
+  else {
+    return { error: "Something was wrong"}
+  }
+}
+
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture };
+
 export default API;
