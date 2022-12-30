@@ -1,9 +1,9 @@
 # Create your tests here.
 from django.contrib.auth import get_user_model, authenticate
 from django.test import Client
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility, CustomerProfile, CustomUser, HutWorker, HutHike
+from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility, CustomerProfile, CustomUser, HutWorker, HutHike, WeatherAlert
 from hiketracking.tests.test_utilty import CreateTestUser
 from hiketracking.views.view_hike import Recommended
 
@@ -479,3 +479,39 @@ class AccountConfirmationTest(TestCase):
         cust_upd = CustomUser.objects.all()
         self.assert_util(cust_upd)
         self.assertEqual(cust_upd[0].is_confirmed, 0)
+
+
+class WeatherAlertModelTest(TestCase):
+
+    def setUp(self):
+        c1 = CustomUser(email="test@test.com", role="Platform Manager",
+                        is_staff=0, is_confirmed=1, is_active=1)
+        c1.save()
+
+        weath = WeatherAlert.objects.create(condition = "Snow", weather_lat = 2.3, weather_lon = 2.4, radius = 6)
+
+
+    def assert_util(self, weather):
+
+        self.assertEqual(weather[0].condition, "Snow")
+        self.assertEqual(weather[0].weather_lat, 2.3)
+        self.assertEqual(weather[0].weather_lon, 2.4)
+        self.assertEqual(weather[0].radius, 6)
+
+    def test_weather_alert_model(self):
+
+        w_all = WeatherAlert.objects.all()
+        self.assert_util(w_all)
+
+    def test_wrong_lat_lon(self):
+
+        with self.assertRaises(ValueError):
+            WeatherAlert.objects.filter(id=1).update(weather_lat="a")
+        with self.assertRaises(ValueError):
+            WeatherAlert.objects.filter(id=1).update(weather_lon="a")
+
+    def test_wrong_Radius(self):
+        with self.assertRaises(ValueError):
+            WeatherAlert.objects.filter(id=1).update(radius="b")
+
+    #wct
