@@ -383,7 +383,7 @@ class Hiking( APIView ):
                         'user': user.id,
                         'hike': hike.id,
                         'counter': data['counter'],
-                        'point': hike.start_point.id
+                        'point': point.id
                     } )
                     if self.userHikelogSerializer.is_valid():
                         self.userHikelogSerializer.save()
