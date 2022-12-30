@@ -487,6 +487,9 @@ class WeatherAlertModelTest(TestCase):
         c1 = CustomUser(email="test@test.com", role="Platform Manager",
                         is_staff=0, is_confirmed=1, is_active=1)
         c1.save()
+        c2 = CustomUser(email="test@atest.com",
+                        role="Hiker", is_staff=0, is_confirmed=1, is_active=1)
+        c2.save()
 
         weath = WeatherAlert.objects.create(condition = "Snow", weather_lat = 2.3, weather_lon = 2.4, radius = 6)
 
@@ -517,6 +520,15 @@ class WeatherAlertModelTest(TestCase):
     #wct
 
     def test_update_weather(self):
-        WeatherAlert.objects.filter(id=1).update(condition="Storm")
+        u_all = CustomUser.objects.all()
+        if u_all[0].role == "Platform Manager":
+            WeatherAlert.objects.filter(id=1).update(condition="Storm")
         weath = WeatherAlert.objects.all()
         self.assertEqual(weath[0].condition, "Storm")
+
+    def test_get_alert(self):
+        u_all = CustomUser.objects.all()
+        if u_all[0].role == "Hiker":
+            cond = WeatherAlert.objects.get(id=1['condition'])
+
+            self.assertEqual(cond, "Snow")
