@@ -63,7 +63,8 @@ REST_FRAMEWORK = {
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'

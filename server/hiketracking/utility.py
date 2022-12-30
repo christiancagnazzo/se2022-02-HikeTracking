@@ -4,19 +4,26 @@ from geopy.geocoders import Nominatim
 
 from hiketracking.models import Point
 from hiketracking.serilizers import HikeHutSerializer
+import gpxpy
+import gpxpy.gpx
 
 geolocator = Nominatim( user_agent="hiketracking" )
 
 
-def get_province_and_village(lat, lon):
+def get_province_and_village(lat, lon, address=False):
     try:
         reverse = partial( geolocator.reverse, language="it" )
         location = reverse( str( lat ) + ", " + str( lon ) )
         province = location.raw['address']['county']
         village = location.raw['address']['village']
-        return {'province': province, 'village': village}
+        if address:
+            return {'province': province, 'village': village,'address':location.adress}
+        else:
+            return {'province': province, 'village': village}
     except Exception :
-        return {'province': "", 'village': ""}
+        if address:
+            return {'province': " ", 'village': " ", 'address': " "}
+        return {'province': " ", 'village': " "}
 
 
 def insert_point(pointSerializer, pointType="none"):
@@ -34,7 +41,19 @@ def insert_point(pointSerializer, pointType="none"):
     )
     return point
 
-
+def findcoordinateInGpx(lat, long, address):
+    try:
+        gpx_file = open("./"+str(address), 'r')
+        gpx = gpxpy.parse(gpx_file)
+        for track in gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    if point.latitude==lat and point.longitude == long:
+                        return True
+        return False
+    except Exception as e :
+        print(e)
+        return False
 def link_hike_to_hut(hike, hut):
     if hike:
         hike_hut = {'hike': hike, 'hut': hut.id}
