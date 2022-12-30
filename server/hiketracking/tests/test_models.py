@@ -515,3 +515,8 @@ class WeatherAlertModelTest(TestCase):
             WeatherAlert.objects.filter(id=1).update(radius="b")
 
     #wct
+
+    def test_update_weather(self):
+        WeatherAlert.objects.filter(id=1).update(condition="Storm")
+        weath = WeatherAlert.objects.all()
+        self.assertEqual(weath[0].condition, "Storm")
