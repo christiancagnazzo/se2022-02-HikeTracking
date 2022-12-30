@@ -352,12 +352,25 @@ class Hiking( APIView ):
             return Response( data=self.userHikelogSerializer.errors,
                              status=status.HTTP_400_BAD_REQUEST )
 
+    def startHikeSerilizer(self, hike, user):
+        userHikeLogCount = UserHikeLog.objects.filter(
+            hike=hike,
+            user=user ).count() + 1
+        userHikelogSerializer = UserHikeLogSerializer( data={
+            'user': user.id,
+            'hike': hike.id,
+            'counter': userHikeLogCount,
+            'point': hike.start_point.id
+        } )
+        return userHikelogSerializer
+
     def post(self, request):
         try:
             filters = request.data.get( 'state', None )
             data = request.data
             hike = Hike.objects.get( id=data['hike'] )
-            user = CustomUser.objects.get( request.user.id )
+            user = CustomUser.objects.get( id=data['user'] )
+            # user = CustomUser.objects.get( request.user.id )
             if filters == 'start':
                 self.userHikelogSerializer = self.startHikeSerilizer( hike, user )
                 return self.checkStartVslidation()
@@ -384,19 +397,6 @@ class Hiking( APIView ):
 
         except Exception as e:
             return Response( status=status.HTTP_404_NOT_FOUND )
-
-    def put(self, request):
-        try:
-            filters = request.data.get( 'state', None )
-            data = request.data
-            hike = Hike.objects.get( id=data['hike'] )
-            user = CustomUser.objects.get( request.user.id )
-            if filters == 'end':
-                return self.endValidation( data, hike, user )
-            else:
-                return Response( status=status.HTTP_400_BAD_REQUEST )
-        except Exception as e:
-            return Response( status=status.HTTP_400_BAD_REQUEST )
 
     def createPointHandler(self, pointData, hike, user, data):
 
@@ -434,6 +434,19 @@ class Hiking( APIView ):
         else:
             return Response( data={"massege": "the latitude and longitude are not on the track "},
                              status=status.HTTP_400_BAD_REQUEST )
+
+    def put(self, request):
+        try:
+            filters = request.data.get( 'state', None )
+            data = request.data
+            hike = Hike.objects.get( id=data['hike'] )
+            user = CustomUser.objects.get( request.user.id )
+            if filters == 'end':
+                return self.endValidation( data, hike, user )
+            else:
+                return Response( status=status.HTTP_400_BAD_REQUEST )
+        except Exception as e:
+            return Response( status=status.HTTP_400_BAD_REQUEST )
 
     def endValidation(self, data, hike, user):
         if UserHikeLog.objects.filter( user=user,
@@ -486,18 +499,6 @@ class Hiking( APIView ):
             'hike': hike.id,
             'counter': data['counter'],
             'point': hike.end_point.id
-        } )
-        return userHikelogSerializer
-
-    def startHikeSerilizer(self, hike, user):
-        userHikeLogCount = UserHikeLog.objects.filter(
-            hike=hike,
-            user=user ).count() + 1
-        userHikelogSerializer = UserHikeLogSerializer( data={
-            'user': user.id,
-            'hike': hike.id,
-            'counter': userHikeLogCount,
-            'point': hike.start_point.id
         } )
         return userHikelogSerializer
 
