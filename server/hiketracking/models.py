@@ -42,16 +42,16 @@ class CustomerProfile( models.Model ):
 class Point( models.Model ):
     latitude = models.FloatField()
     longitude = models.FloatField()
-    province = models.CharField( max_length=100 )
-    village = models.CharField( max_length=30 )
-    address = models.CharField( max_length=100 )
+    province = models.CharField( max_length=100,null=True,blank=True )
+    village = models.CharField( max_length=30 , null=True,blank=True)
+    address = models.CharField( max_length=100,null=True ,blank=True)
 
     class Type( models.TextChoices ):
         NONE = "none"
         HUT = "hut"
         PARKING_LOT = "parking_lot"
 
-    type = models.CharField( max_length=15, choices=Type.choices )
+    type = models.CharField( max_length=15, choices=Type.choices,null=True )
 
     class Meta:
         constraints = [
