@@ -2,6 +2,7 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import geopy.distance
+from django.db.models import Sum
 from hiketracking.models import WeatherAlert, CustomUser, UserHikeLog, Hike, Point, HikeReferencePoint
 
 class Weather(APIView):
@@ -53,7 +54,13 @@ class Alert(APIView):
     def get(self, request):
         try:
             user_id = CustomUser.objects.get( email=request.user )
-            active_hikes = UserHikeLog.objects.filter(user_id=user_id).filter(end=False).values()
+            active_hikes = UserHikeLog.objects \
+                            .filter(user_id=user_id) \
+                            .values('hike_id', 'counter') \
+                            .order_by('hike_id', 'counter') \
+                            .annotate(is_end=Sum('end')) \
+                            .filter(is_end=0)
+
             alerts = []
             
             if len(active_hikes) == 1:
