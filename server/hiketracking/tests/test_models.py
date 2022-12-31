@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.test import Client
 from django.test import TestCase, TransactionTestCase
 
-from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility, CustomerProfile, CustomUser, HutWorker, HutHike, WeatherAlert
+from hiketracking.models import Hike, Point, Hut, ParkingLot, Facility, HutFacility, CustomerProfile, CustomUser, HutWorker, HutHike, WeatherAlert, UserHikeLog
 from hiketracking.tests.test_utilty import CreateTestUser
 from hiketracking.views.view_hike import Recommended
 
@@ -532,3 +532,86 @@ class WeatherAlertModelTest(TestCase):
             cond = WeatherAlert.objects.get(id=1['condition'])
 
             self.assertEqual(cond, "Snow")
+
+class CompletedHikeTest(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        # c3 = User.objects.create_user(email='meepo@user.com', password='foo', role='Hiker')
+        c1 = CustomUser(email="meepo@test.com", role="Hiker",
+                        is_staff=0, is_confirmed=1, is_active=1)
+
+        c1.save()
+        c2 = CustomUser(email="cm@test.com", role="Local Guide", is_staff=0, is_confirmed=1, is_active=1)
+        c2.save()
+        # User.objects.create_user(email='test@user.com', password='foo', role='smth')
+        # user_id = User.objects.get(email='test@user.com')
+        p1 = Point(latitude=0.06, longitude=0.06, province="test1 province", village="test1 village",
+                   address="test1 address", type="Hut")
+        p1.save()
+        h1 = Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy',
+                                 start_point=p1, end_point=p1, local_guide=c2)
+        h2 = Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0, difficulty='medium',
+                                 start_point=p1, end_point=p1, local_guide=c2)
+        h3 = Hike.objects.create(title='Trek', length=3, expected_time=2, ascent=0, difficulty='medium',
+                                 start_point=p1, end_point=p1, local_guide=c2)
+        log1 = UserHikeLog.objects.create(user=c1, hike=h1, counter=2, point=p1, end=True)
+        log2 = UserHikeLog.objects.create(user=c1, hike=h2, counter=1, point=p1, end=True)
+        log3 = UserHikeLog.objects.create(user=c1, hike=h3, counter=1, point=p1, end=False)
+    def assert_util(self, log):
+        c1 = CustomUser.objects.all()
+        h1 = Hike.objects.all()
+        p1 = Point.objects.all()
+        self.assertEqual(log[0].user, c1[0])
+        self.assertEqual(log[0].hike, h1[0])
+        self.assertEqual(log[0].counter, 2)
+        self.assertEqual(log[0].point, p1[0])
+        self.assertEqual(log[0].end, True)
+        self.assertEqual(log[1].user, c1[0])
+        self.assertEqual(log[1].hike, h1[1])
+        self.assertEqual(log[1].counter, 1)
+        self.assertEqual(log[1].point, p1[0])
+        self.assertEqual(log[1].end, True)
+        self.assertEqual(log[2].user, c1[0])
+        self.assertEqual(log[2].hike, h1[2])
+        self.assertEqual(log[2].counter, 1)
+        self.assertEqual(log[2].point, p1[0])
+        self.assertEqual(log[2].end, False)
+
+    def test_get_all_hikes(self):
+
+        log = UserHikeLog.objects.all()
+        self.assert_util(log)
+
+    def test_only_completed_hikes(self):
+        c1 = CustomUser.objects.all()
+        h1 = Hike.objects.all()
+        p1 = Point.objects.all()
+        log = UserHikeLog.objects.filter(end = True)
+        self.assertEqual(log[0].user, c1[0])
+        self.assertEqual(log[0].hike, h1[0])
+        self.assertEqual(log[0].counter, 2)
+        self.assertEqual(log[0].point, p1[0])
+        self.assertEqual(log[0].end, True)
+        self.assertEqual(log[1].user, c1[0])
+        self.assertEqual(log[1].hike, h1[1])
+        self.assertEqual(log[1].counter, 1)
+        self.assertEqual(log[1].point, p1[0])
+        self.assertEqual(log[1].end, True)
+
+    def test_wrong_wrong_user(self):
+        with self.assertRaises(ValueError):
+            UserHikeLog.objects.filter(id=1).update(user="b")
+
+    def test_wrong_hike(self):
+        with self.assertRaises(ValueError):
+            UserHikeLog.objects.filter(id=1).update(hike="bingo")
+
+    def test_wrong_counter(self):
+        with self.assertRaises(ValueError):
+            UserHikeLog.objects.filter(id=1).update(counter="wrong")
+
+    def test_wrong_pt(self):
+        with self.assertRaises(ValueError):
+            UserHikeLog.objects.filter(id=1).update(point="d")
+
