@@ -2,7 +2,7 @@ from django.urls import path
 from knox import views as knox_views
 
 from .views import (HikeFile, Hikes, LoginAPI, RegisterAPI, HikesHutWorker,
-                    Facilities, AccountConfirmation, HutHikeView,
+                    Facilities, AccountConfirmation, HutHikeView, Statistics,
                     UserDetail, UserList, Sessions, Huts, ActivateAccount, Alert,
                     ParkingLotAPI, Recommended, Profile,Hike_, Weather, HutFile, Hiking, HikePicture)
 
@@ -33,4 +33,5 @@ urlpatterns = [
     path( 'hut/picture/<str:hut_id>', HutFile.as_view() ),
     path( 'hike/picture/<str:hike_id>', HikePicture.as_view() ),
     path( 'hike/alert/', Alert.as_view() ),
+    path( 'hike/statistics/', Statistics.as_view() )
 ]

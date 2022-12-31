@@ -3,7 +3,7 @@ from django.http import FileResponse
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.db.models import Sum
 from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile, UserHikeLog
 from hiketracking.serilizers import HikeCounterIncludeSerializer, UserHikeLogSerializer, PointSerializerWithaddress
 from hiketracking.utility import get_province_and_village, findcoordinateInGpx
@@ -527,3 +527,66 @@ class HikePicture( APIView ):
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )
+
+
+class Statistics(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        user_id = CustomUser.objects.get( email=request.user )
+        statistics = {}
+
+        finished_log = UserHikeLog.objects.filter(user_id=user_id).filter(end=True)
+        finished_hikes = Hike.objects.filter(id__in=finished_log)
+        
+        statistics['finished_hikes'] = finished_log.count()
+
+        km_tot = 0
+        time_spent = {}
+
+        for f in finished_log:
+
+            # Total Km
+            km_tot += Hike.objects.get(id=f.hike.id).length
+
+            # Longest / Shortest (hours)
+            logs = UserHikeLog.objects\
+                .filter(user_id=user_id)\
+                .filter(hike_id=f.hike) \
+                .filter(counter=f.counter)\
+                .order_by('timestamp')
+            start = logs.first()
+            end = logs.last()
+            time = end.timestamp - start.timestamp
+            time_spent[(f.hike, f.counter)] = time
+
+        statistics['km_walked'] = km_tot
+
+        max_hike_time = (max(time_spent, key=time_spent.get), max(time_spent.values()))
+        min_hike_time = (min(time_spent, key=time_spent.get), min(time_spent.values()))
+        statistics['longest_hike_hours'] = {'title': max_hike_time[0][0].title, 'time': str(max_hike_time[1])}
+        statistics['shortest_hike_hours'] = {'title': min_hike_time[0][0].title, 'time': str(min_hike_time[1])}
+                
+        hike_length =  finished_hikes.order_by('length')  
+        longest_hike = hike_length.first()
+        shortest_hike = hike_length.last()
+        statistics['longest_hike_km'] = {'title': longest_hike.title, 'length': longest_hike.length}
+        statistics['shortest_hike_km'] = {'title': shortest_hike.title, 'length': shortest_hike.length}
+
+
+        return Response(status=status.HTTP_200_OK, data=statistics)
+
+
+"""
+total nr of hikes finished ---------DONE
+total nr of kms walked  ---------DONE
+highest altitude reached
+highest altitude range done
+longest (km) hike completed  ---------DONE
+longest (hours) hike completed  ---------DONE
+shortest (km) hike completed  ---------DONE
+shortest (hours) hike completed  ---------DONE
+average pace (min/km)
+fastest paced hike (min/km)
+average vertical ascent speed (m/hour)
+"""
