@@ -3,10 +3,10 @@ from django.http import FileResponse
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.db.models import Sum
 from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, CustomerProfile, UserHikeLog
-from hiketracking.serilizers import HikeCounterIncludeSerializer, UserHikeLogSerializer
-from hiketracking.utility import get_province_and_village
+from hiketracking.serilizers import HikeCounterIncludeSerializer, UserHikeLogSerializer, PointSerializerWithaddress
+from hiketracking.utility import get_province_and_village, findcoordinateInGpx
 
 
 class HikeFile( APIView ):
@@ -319,10 +319,10 @@ class Hiking( APIView ):
     permission_classes = (permissions.AllowAny,)
     serializer_class = HikeCounterIncludeSerializer
 
-    def get(self, request, pk):
+    def get(self, request):
         try:
-
-            user = CustomUser.objects.get( pk=pk )
+            # don't forget to test it christian
+            user = CustomUser.objects.get( request.user.id )
             user_log = UserHikeLog.objects.filter( user=user ).values()
             display_hikes = []
             filters = request.GET.get( 'done', None )
@@ -343,77 +343,164 @@ class Hiking( APIView ):
             print( e )
             return Response( data=e, status=status.HTTP_404_NOT_FOUND )
 
-    def post(self, request, pk):
+    def checkStartVslidation(self):
+        if self.userHikelogSerializer.is_valid():
+            self.userHikelogSerializer.save()
+            return Response( data=self.userHikelogSerializer.data,
+                             status=status.HTTP_200_OK )
+        else:
+            return Response( data=self.userHikelogSerializer.errors,
+                             status=status.HTTP_400_BAD_REQUEST )
+
+    def startHikeSerilizer(self, hike, user):
+        userHikeLogCount = UserHikeLog.objects.filter(
+            hike=hike,
+            user=user ).count() + 1
+        userHikelogSerializer = UserHikeLogSerializer( data={
+            'user': user.id,
+            'hike': hike.id,
+            'counter': userHikeLogCount,
+            'point': hike.start_point.id
+        } )
+        return userHikelogSerializer
+
+    def post(self, request):
         try:
-            filters = request.GET.get( 'state', None )
+            filters = request.data.get( 'state', None )
             data = request.data
             hike = Hike.objects.get( id=data['hike'] )
-            user = CustomUser.objects.get( pk=pk )
+            user = CustomUser.objects.get( id=data['user'] )
+            # user = CustomUser.objects.get( request.user.id )
             if filters == 'start':
-                userHikeLogCount = UserHikeLog.objects.filter(
-                    hike=hike,
-                    user=user ).count() + 1
-                userHikelogSerializer = UserHikeLogSerializer( data={
+                self.userHikelogSerializer = self.startHikeSerilizer( hike, user )
+                return self.checkStartVslidation()
+            elif filters == 'reachpoint':
+                pointData = data['point']
+                try:
+                    point = Point.objects.get( latitude=pointData['latitude'],
+                                               longitude=pointData['longitude'] )
+                    self.userHikelogSerializer = UserHikeLogSerializer( data={
+                        'user': user.id,
+                        'hike': hike.id,
+                        'counter': data['counter'],
+                        'point': point.id
+                    } )
+                    if self.userHikelogSerializer.is_valid():
+                        self.userHikelogSerializer.save()
+                        return Response( data=self.userHikelogSerializer.data, status=status.HTTP_200_OK )
+                    else:
+                        return Response( status=status.HTTP_400_BAD_REQUEST )
+                except Exception as e:
+                    return self.createPointHandler( pointData, hike, user, data )
+            else:
+                return Response( status=status.HTTP_400_BAD_REQUEST )
+
+        except Exception as e:
+            return Response( status=status.HTTP_404_NOT_FOUND )
+
+    def createPointHandler(self, pointData, hike, user, data):
+
+        if findcoordinateInGpx(
+                lat=pointData['latitude'],
+                long=pointData['longitude'],
+                address=hike.track_file
+        ):
+
+            info = get_province_and_village( pointData['latitude'], pointData['longitude'], True )
+            pointserilizer = PointSerializerWithaddress( data={
+                'latitude': pointData['latitude'],
+                'longitude': pointData['longitude'],
+                'province': info['province'],
+                'village': info['village'],
+                'address': info['address'],
+                'type': "none"
+
+            } )
+            if pointserilizer.is_valid():
+                pointserilizer.save()
+                self.userHikelogSerializer = UserHikeLogSerializer( data={
                     'user': user.id,
                     'hike': hike.id,
-                    'counter': userHikeLogCount,
-                    'point': hike.start_point.id
+                    'counter': data['counter'],
+                    'point': pointserilizer.data['id']
                 } )
-                if userHikelogSerializer.is_valid():
+                if self.userHikelogSerializer.is_valid():
+                    self.userHikelogSerializer.save()
+                    return Response( data=self.userHikelogSerializer.data, status=status.HTTP_200_OK )
+                else:
+                    return Response( status=status.HTTP_400_BAD_REQUEST )
+            else:
+                return Response( status=status.HTTP_400_BAD_REQUEST )
+        else:
+            return Response( data={"massege": "the latitude and longitude are not on the track "},
+                             status=status.HTTP_400_BAD_REQUEST )
+
+    def put(self, request):
+        try:
+            filters = request.data.get( 'state', None )
+            data = request.data
+            hike = Hike.objects.get( id=data['hike'] )
+            user = CustomUser.objects.get( request.user.id )
+            if filters == 'end':
+                return self.endValidation( data, hike, user )
+            else:
+                return Response( status=status.HTTP_400_BAD_REQUEST )
+        except Exception as e:
+            return Response( status=status.HTTP_400_BAD_REQUEST )
+
+    def endValidation(self, data, hike, user):
+        if UserHikeLog.objects.filter( user=user,
+                                       hike=hike,
+                                       counter=data['counter'] ).exists():
+            userHikelogSerializer = self.endSerilizer( data, hike, user )
+            if userHikelogSerializer.is_valid():
+                if not self.endHikePointExsistes( data, hike, user ):
                     userHikelogSerializer.save()
                     return Response( data=userHikelogSerializer.data,
                                      status=status.HTTP_200_OK )
                 else:
-                    Response( data=userHikelogSerializer.errors,
-                              status=status.HTTP_400_BAD_REQUEST )
-            elif filters == 'end':
-                if UserHikeLog.objects.filter( user=user,
-                                               hike=hike,
-                                               counter=data['counter'] ).exists():
-                    userHikelogSerializer = UserHikeLogSerializer( data={
-                        'user': user.id,
-                        'hike': hike.id,
-                        'counter': data['counter'],
-                        'point': hike.end_point.id
-                    } )
-                    if userHikelogSerializer.is_valid():
-                        if not UserHikeLog.objects.filter( user=user,
-                                                           hike=hike,
-                                                           counter=data['counter'],
-                                                           point=hike.end_point.id ).exists():
-                            userHikelogSerializer.save()
-                            return Response( data=userHikelogSerializer.data,
-                                             status=status.HTTP_200_OK )
-                        else:
-                            respData = UserHikeLog.objects.filter(
-                                user=user,
-                                hike=hike,
-                                counter=data['counter'],
-                                point=hike.end_point.id ).all()[0]
-                            responseData = UserHikeLogSerializer(
-                                data={
-                                    'user': respData.user.id,
-                                    'hike' :respData.hike.id,
-                                    'counter' :respData.counter,
-                                    'point':respData.point.id,
-                                    'timestamp':str(respData.timestamp)
-
-                            } )
-                            if responseData.is_valid():
-                                return Response( data={**responseData.data,"timestamp":str(respData.timestamp)},
-                                                 status=status.HTTP_200_OK )
-                            else:
-                                return Response( status=status.HTTP_400_BAD_REQUEST )
+                    respData, responseData = self.endOutputSerilizer( data, hike, user )
+                    if responseData.is_valid():
+                        return Response( data={**responseData.data, "timestamp": str( respData.timestamp )},
+                                         status=status.HTTP_200_OK )
                     else:
                         return Response( status=status.HTTP_400_BAD_REQUEST )
-                else:
-                    return Response( status=status.HTTP_400_BAD_REQUEST )
-
             else:
                 return Response( status=status.HTTP_400_BAD_REQUEST )
-        except Exception as e:
-            print( e )
-            return Response( status=status.HTTP_404_NOT_FOUND )
+        else:
+            return Response( status=status.HTTP_400_BAD_REQUEST )
+
+    def endOutputSerilizer(self, data, hike, user):
+        respData = UserHikeLog.objects.filter(
+            user=user,
+            hike=hike,
+            counter=data['counter'],
+            point=hike.end_point.id ).all()[0]
+        responseData = UserHikeLogSerializer(
+            data={
+                'user': respData.user.id,
+                'hike': respData.hike.id,
+                'counter': respData.counter,
+                'point': respData.point.id,
+                'timestamp': str( respData.timestamp )
+
+            } )
+        return respData, responseData
+
+    def endHikePointExsistes(self, data, hike, user):
+        UserHikeLog.objects.filter( user=user,
+                                    hike=hike,
+                                    counter=data['counter'],
+                                    point=hike.end_point.id ).exists()
+
+    def endSerilizer(self, data, hike, user):
+        userHikelogSerializer = UserHikeLogSerializer( data={
+            'user': user.id,
+            'hike': hike.id,
+            'counter': data['counter'],
+            'point': hike.end_point.id
+        } )
+        return userHikelogSerializer
 
 
 class HikePicture( APIView ):
@@ -440,3 +527,66 @@ class HikePicture( APIView ):
         except Exception as e:
             print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Hike not found"} )
+
+
+class Statistics(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        user_id = CustomUser.objects.get( email=request.user )
+        statistics = {}
+
+        finished_log = UserHikeLog.objects.filter(user_id=user_id).filter(end=True)
+        finished_hikes = Hike.objects.filter(id__in=finished_log)
+        
+        statistics['finished_hikes'] = finished_log.count()
+
+        km_tot = 0
+        time_spent = {}
+
+        for f in finished_log:
+
+            # Total Km
+            km_tot += Hike.objects.get(id=f.hike.id).length
+
+            # Longest / Shortest (hours)
+            logs = UserHikeLog.objects\
+                .filter(user_id=user_id)\
+                .filter(hike_id=f.hike) \
+                .filter(counter=f.counter)\
+                .order_by('timestamp')
+            start = logs.first()
+            end = logs.last()
+            time = end.timestamp - start.timestamp
+            time_spent[(f.hike, f.counter)] = time
+
+        statistics['km_walked'] = km_tot
+
+        max_hike_time = (max(time_spent, key=time_spent.get), max(time_spent.values()))
+        min_hike_time = (min(time_spent, key=time_spent.get), min(time_spent.values()))
+        statistics['longest_hike_hours'] = {'title': max_hike_time[0][0].title, 'time': str(max_hike_time[1])}
+        statistics['shortest_hike_hours'] = {'title': min_hike_time[0][0].title, 'time': str(min_hike_time[1])}
+                
+        hike_length =  finished_hikes.order_by('length')  
+        longest_hike = hike_length.first()
+        shortest_hike = hike_length.last()
+        statistics['longest_hike_km'] = {'title': longest_hike.title, 'length': longest_hike.length}
+        statistics['shortest_hike_km'] = {'title': shortest_hike.title, 'length': shortest_hike.length}
+
+
+        return Response(status=status.HTTP_200_OK, data=statistics)
+
+
+"""
+total nr of hikes finished ---------DONE
+total nr of kms walked  ---------DONE
+highest altitude reached
+highest altitude range done
+longest (km) hike completed  ---------DONE
+longest (hours) hike completed  ---------DONE
+shortest (km) hike completed  ---------DONE
+shortest (hours) hike completed  ---------DONE
+average pace (min/km)
+fastest paced hike (min/km)
+average vertical ascent speed (m/hour)
+"""
