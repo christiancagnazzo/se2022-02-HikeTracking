@@ -15,7 +15,6 @@ class UserHikeLogSerializer( serializers.ModelSerializer ):
         fields = '__all__'
 
 class HikeCounterIncludeSerializer( serializers.ModelSerializer ):
-    counter = serializers.IntegerField()
     class Meta:
         model = Hike
         fields = '__all__'

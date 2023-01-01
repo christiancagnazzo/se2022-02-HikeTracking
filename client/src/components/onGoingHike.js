@@ -170,25 +170,31 @@ function OnGoingHike(props){
     useEffect(() => {
       async function getHike() {
         try {
-        
-        const t = "Picciano Tappa 77"      
-        let h = (await API.getHike(t, token)).hike
+        const currentHike = await API.getCurrentHike(token)   
+        if(!currentHike.error) {
+        console.log(currentHike)
+        let h = currentHike.msg.hike
+        let logs = currentHike.msg.logs
         setHike(h)
         setTitle(h.title)
-        h.reached = [{}]
         const rp = []
         for(let i = 0; i < h.rp.length; i++){
-          let flag = h.reached.includes((r) => 
-          r.reference_point_lat===h.rp[i].reference_point_lat &&
-          r.reference_point_lng===h.rp[i].reference_point_lng);
+          let flag = logs.some((r) => {
+            console.log("zio epra")
+            return r.point_id===h.rp[i].reference_point_id
+        })
+          
           h.rp[i].reached = flag
           rp.push(h.rp[i])
         }
+
         setSp({
           lat: h.start_point_lat,
           lng: h.start_point_lng,
           addr: h.start_point_address
         })
+
+
         setEp({
           lat: h.end_point_lat,
           lng: h.end_point_lng,
@@ -199,9 +205,11 @@ function OnGoingHike(props){
         setReacheadPoints(h.reached)
         let file = await API.getHikeFile(h.id, token)
         setFileMap(file)
-      } catch(e){
+      } 
+      }catch(e){
         setErrorMessage("Something went wrong ")
       }
+        
       }
       getHike()
     },[])

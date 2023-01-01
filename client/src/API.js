@@ -276,6 +276,8 @@ async function getHikeFile(hike_id, token) {
     return text
   }
   else {
+    console.log("file")
+
     return { err: "File error" }
   }
 }
@@ -592,6 +594,25 @@ async function deleteAlerts(token) {
   }
 }
 
+async function getCurrentHike(token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try{
+    let response = await fetch(URL + 'hiking/current', {
+      method: 'GET',
+      headers: {
+        'Authorization': valid_token,
+      },
+    })
+    if(response.ok){
+      return {msg: await response.json()}
+    } else {
+      return {error:true, msg: "There is not an ongoing hike"}
+    }
+  } catch(e){
+  console.log(e)
+  }
+} 
+
 async function postStartHike(body, token){
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try{
@@ -669,6 +690,6 @@ async function getHikeAlerts(token) {
   }
 }
 
-const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike };
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike };
 
 export default API;
