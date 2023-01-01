@@ -627,7 +627,7 @@ async function postStartHike(body, token){
     if(response.ok)
       return {msg: "Hike started"}
     else {
-      return { error: true, msg: "Something went wrong. Try later" }
+      return { error: true, msg: "There is another ongoing hike! Please terminate it, to start a new one" }
     }
   }
   catch(e){

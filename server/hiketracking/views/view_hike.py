@@ -411,8 +411,13 @@ class Hiking( APIView ):
         try:
             data = request.data
             user = request.user
+            user_log = UserHikeLog.objects.filter( user=user ).values()
+            all_run = user_log.values('counter', 'hike_id').distinct()
+            hikes_done = user_log.filter(end = True).values('counter', 'hike_id')
+            current_hike = all_run.difference(hikes_done)
+            if  current_hike.exists():
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'There is another ongoing hike! Please terminate it, to start a new one '})
             try:
-                
                 hike = Hike.objects.get( id=data['hike_id'] )
             except:
                 
