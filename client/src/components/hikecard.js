@@ -18,8 +18,25 @@ function HikeCard(props) {
     const isHutWoker = props.userPower === 'hutworker'
     const canModify = props.userId && props.userId === props.hike.local_guide_id
     const navigate = useNavigate()
+    const token = localStorage.getItem('token')
     const handleSubmit = async(e) => {
       e.preventDefault()
+      const datetime = time.format('MM/DD/YYYY HH:mm:ss')
+      const hike_id = props.hike.id
+      const body = {
+        datetime : datetime,
+        hike_id : hike_id
+      }
+      try {
+        const response = await API.postStartHike(body, token)
+        if(!response.error){
+          //navigate()
+        } else {
+          setErrorMessageTime(response.msg)
+        }
+      } catch(e){
+        setErrorMessageTime(e)
+      }
     }
     
     return (<>

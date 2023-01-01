@@ -1,11 +1,13 @@
+
 from functools import partial
 
 from geopy.geocoders import Nominatim
 
 from hiketracking.models import Point
 from hiketracking.serilizers import HikeHutSerializer
-import gpxpy
-import gpxpy.gpx
+
+#import gpxpy
+#import gpxpy.gpx
 
 geolocator = Nominatim( user_agent="hiketracking" )
 
@@ -42,6 +44,8 @@ def insert_point(pointSerializer, pointType="none"):
     return point
 
 def findcoordinateInGpx(lat, long, address):
+    return
+    """
     try:
         gpx_file = open("./"+str(address), 'r')
         gpx = gpxpy.parse(gpx_file)
@@ -54,6 +58,7 @@ def findcoordinateInGpx(lat, long, address):
     except Exception as e :
         print(e)
         return False
+    """
 def link_hike_to_hut(hike, hut):
     if hike:
         hike_hut = {'hike': hike, 'hut': hut.id}

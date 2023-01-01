@@ -114,13 +114,16 @@ function OnGoingHike(props){
       const index = rpList.findIndex((rp) => rp.reference_point_address === curr)
       const point = rpList[index]
       const body = {
+        state: 'reference',
         point : point, 
-        time: time
+        datetime: time.format('MM/DD/YYYY HH:mm:ss'),
+        hike: hike.id,
+        counter: 1
       }
       
     
       try {
-        const resp = {msg:"ok"}//await API.postReachedReferencePoint(body, token)
+        const resp = await API.postReachedReferencePoint(body, token)
         if(resp.error)
           setErrorMessage(resp.msg)
         else{
@@ -145,11 +148,18 @@ function OnGoingHike(props){
       return
     }
     try {
-      const resp = {msg:'ok'}
+      const body = {
+        counter: 1,
+        state: 'end',
+        datetime: time.format('MM/DD/YYYY HH:mm:ss'),
+        hike: hike.id
+
+      }
+      const resp = await API.postTerminatedHike(body, token)
       if(resp.error)
           setErrorMessage(resp.msg)
         else{
-          navigate("recordpage")
+          //navigate("recordpage")
       }
     }
       catch(e){
@@ -159,7 +169,9 @@ function OnGoingHike(props){
   }
     useEffect(() => {
       async function getHike() {
-        const t = "Picciano Tappa 77"        
+        try {
+        
+        const t = "Picciano Tappa 77"      
         let h = (await API.getHike(t, token)).hike
         setHike(h)
         setTitle(h.title)
@@ -187,6 +199,9 @@ function OnGoingHike(props){
         setReacheadPoints(h.reached)
         let file = await API.getHikeFile(h.id, token)
         setFileMap(file)
+      } catch(e){
+        setErrorMessage("Something went wrong ")
+      }
       }
       getHike()
     },[])

@@ -2,7 +2,7 @@ const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-
+  console.log(JSON.stringify(hike_description))
   try {
     let response = await fetch(URL + 'hikes/', {
       method: 'PUT',
@@ -578,7 +578,8 @@ async function deleteAlerts(token) {
     let response = await fetch(URL + 'platformmanager/weatheralert/', {
       method: "DELETE",
       headers: {
-        'Authorization': valid_token
+        'Authorization': valid_token,
+        'Content-Type': 'application/json',
       }
     })
 
@@ -591,13 +592,35 @@ async function deleteAlerts(token) {
   }
 }
 
+async function postStartHike(body, token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try{
+    let response = await fetch(URL + 'hiking/', {
+      method: 'POST',
+      headers: {
+        'Authorization': valid_token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+    if(response.ok)
+      return {msg: "Hike started"}
+    else {
+      return { error: true, msg: "Something went wrong. Try later" }
+    }
+  }
+  catch(e){
+    console.log(e)
+  }
+}
 async function postReachedReferencePoint(referencePoint, token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
-    let response = await fetch(URL + '', {
-      method: "POST",
+    let response = await fetch(URL + 'hiking/', {
+      method: "PUT",
       headers: {
-        'Authorization': valid_token
+        'Authorization': valid_token,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(referencePoint)
     })
@@ -609,17 +632,19 @@ async function postReachedReferencePoint(referencePoint, token) {
   }
 }
 
-async function postTerminatedHike(token) {
+async function postTerminatedHike(body,token) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try {
-    let response = await fetch(URL + '', {
-      method: "POST",
+    let response = await fetch(URL + 'hiking/', {
+      method: "PUT",
       headers: {
-        'Authorization': valid_token
+        'Authorization': valid_token,
+        'Content-Type': 'application/json'
       },
-    })
+      body: JSON.stringify(body)
+      })
     if (response.ok)
-      return { msg: "Position updated" };
+      return { msg: "Hike terminated" };
     return { error: true, msg: "Something went wrong. Try later" }
   } catch (e) {
     console.log(e)
@@ -644,6 +669,6 @@ async function getHikeAlerts(token) {
   }
 }
 
-const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture };
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike };
 
 export default API;
