@@ -1,3 +1,5 @@
+import UTILS from "./utils/utils"
+
 const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token) {
@@ -594,6 +596,26 @@ async function deleteAlerts(token) {
   }
 }
 
+async function getCompletedHikes(token){
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try{
+    let response = await fetch(URL + 'hiking/done', {
+      method: 'GET',
+      headers: {
+        'Authorization': valid_token,
+      },
+    })
+    if(response.ok){
+      return {msg: UTILS.adjustAllRecords((await response.json()))}
+    } else {
+      return {error:true, msg: "Something went wrong"}
+    }
+  } catch(e){
+  console.log(e)
+  }
+} 
+
+
 async function getCurrentHike(token){
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   try{
@@ -690,6 +712,6 @@ async function getHikeAlerts(token) {
   }
 }
 
-const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike };
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike, getCompletedHikes };
 
 export default API;

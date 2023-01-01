@@ -6,21 +6,26 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 function TimeModal(props){
     let button = ""
     if(props.type === "reference"){
-        button = <Button onClick={(e) => {
+        button = <Button onClick={async(e) => {
+            if(await props.handleSubmit(e))
             props.onHide();
-            props.handleSubmit(e);
+
         }}>Update Position</Button>
     }
     else if(props.type === "end"){
-        button = <Button variant = "danger" onClick={(e) => {
+        button = <Button variant = "danger" onClick={async (e) => {
+            if(await props.handleSubmit(e)){
+              console.log("okkk")
             props.onHide();
-            props.handleSubmit(e);
+            }
+
         }}>Terminate Hike</Button>
     }
     else {
-        button = <Button  variant="success" onClick={(e) => {
-            props.onHide();
-            props.handleSubmit(e);
+        button = <Button  variant="success" onClick={async (e) => {
+            if(await props.handleSubmit(e))
+            props.onHide()
+            
         }}>Start Hike</Button>
     }
     return (

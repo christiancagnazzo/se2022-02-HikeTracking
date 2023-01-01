@@ -30,12 +30,15 @@ function HikeCard(props) {
       try {
         const response = await API.postStartHike(body, token)
         if(!response.error){
-          //navigate()
+          navigate("/hiker/ongoinghike")
+          return true
         } else {
           setErrorMessageTime(response.msg)
+          return false
         }
       } catch(e){
         setErrorMessageTime(e)
+        return false
       }
     }
     

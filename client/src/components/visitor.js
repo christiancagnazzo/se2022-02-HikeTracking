@@ -12,6 +12,7 @@ import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
+import UTILS from '../utils/utils';
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
@@ -28,6 +29,7 @@ function VisitorPage(props) {
     setDirty(!flag)
   }
 
+  
   useEffect(() => {
     const getHikes = async () => {
       try {

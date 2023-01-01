@@ -8,6 +8,7 @@ from hiketracking.models import Hike, Point, HikeReferencePoint, CustomUser, Cus
 from hiketracking.serilizers import HikeCounterIncludeSerializer, UserHikeLogSerializer, PointSerializerWithaddress
 from hiketracking.utility import get_province_and_village
 from datetime import datetime
+from django.db.models import Max
 class HikeFile( APIView ):
     permission_classes = (permissions.AllowAny,)
 
@@ -325,19 +326,45 @@ class Hiking( APIView ):
             if state == "done":
                 display_hikes = []
                 hikes_done = user_log.filter(end = True).values()
-                for h in hikes_done:
-                    hike = Hike.objects.get(id = h['hike_id'])
+                for hl in hikes_done:
+                    h = Hike.objects.filter(id = hl['hike_id']).values()[0]
+                    result = HikeReferencePoint.objects.filter(
+                    hike_id=h['id'] ).values()
+                    reference_list = []
+                    for r in result:
+                        
+
+                        refer_p = Point.objects.get( id=r['point_id'] )
+                        reference_list.append( {
+                            'reference_point_id':refer_p.id,
+                            'reference_point_lat': refer_p.latitude,
+                            'reference_point_lng': refer_p.longitude,
+                            'reference_point_address': refer_p.address} )
+
+                    h['rp'] = reference_list
+
+                    startP = Point.objects.get( id=h['start_point_id'] )
+                    endP = Point.objects.get( id=h['end_point_id'] )
+                    h['start_point_lat'] = startP.latitude
+                    h['start_point_lng'] = startP.longitude
+                    h['start_point_address'] = startP.address
+                    h['end_point_lat'] = endP.latitude
+                    h['end_point_lng'] = endP.longitude
+                    h['end_point_address'] = endP.address
                     hike_logs = user_log.filter(
-                        counter = h['counter'],
-                        hike_id = h['hike_id']
-                    ).values()
+                            counter = hl['counter'],
+                            hike_id = hl['hike_id']
+                        ).values()
+                    
                     run_log ={
-                        'hike' : self.serializer_class(hike).data,
+                        'hike' : h,
                         'logs' : hike_logs
                     }
                     display_hikes.append(run_log)
                 return Response( data=display_hikes,
                              status=status.HTTP_200_OK )
+
+                        
             if state == "current":
                 all_run = user_log.values('counter', 'hike_id').distinct()
                 hikes_done = user_log.filter(end = True).values('counter', 'hike_id')
@@ -363,7 +390,6 @@ class Hiking( APIView ):
 
                 startP = Point.objects.get( id=h['start_point_id'] )
                 endP = Point.objects.get( id=h['end_point_id'] )
-
                 h['start_point_lat'] = startP.latitude
                 h['start_point_lng'] = startP.longitude
                 h['start_point_address'] = startP.address
@@ -397,7 +423,8 @@ class Hiking( APIView ):
     def startHikeSerializer(self, hike, user, dt):
         userHikeLogCount = UserHikeLog.objects.filter(
             hike=hike,
-            user=user ).count() + 1
+            user=user,
+            end=True ).count() + 1
         userHikelogSerializer = UserHikeLogSerializer( data={
             'user': user.id,
             'hike': hike.id,

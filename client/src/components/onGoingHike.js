@@ -15,6 +15,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import UTILS from "../utils/utils";
 import { Last } from "react-bootstrap/esm/PageItem";
 import TimeModal from "./timeModal";
+import TheSpinner from "./spinner";
 const myIconSp = new Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -61,6 +62,7 @@ const myIconTp = new Icon({
 });
 
 function OnGoingHike(props){
+    const [no, setNo] = useState("loading")
     const [hike, setHike] = useState({})
     const [fileMap, setFileMap] = useState('')
     const [title, setTitle] = useState('')
@@ -74,7 +76,7 @@ function OnGoingHike(props){
     const [errorMessageEndModal, setErrorMessageEndModal] = useState('')
     const [successMessage, setSuccessMessage] =useState('')
     const [reachedPoints, setReacheadPoints] = useState([])
-    const [last, setLast] = useState(dayjs())
+    const [last, setLast] = useState("")
     const [modal, setModalShow] = useState(false);
     const [modalEnd, setModalEndShow] = useState(false)
     const token = localStorage.getItem("token")
@@ -84,8 +86,6 @@ function OnGoingHike(props){
       let reversed = orderedRpList.reverse()
       let reachFlag = false
       setRpList(reversed.map((h,idx) => {
-        if (idx === 3)
-          h.reached = true
         if(h.reached)
           reachFlag = true
         h.reached = reachFlag
@@ -103,22 +103,22 @@ function OnGoingHike(props){
     const  handleSubmit = async (e) => {
       e.preventDefault()
       if(curr==="-"){
-        setErrorMessage("Please select a reference point")
-        return
+        setErrorMessageModal("Please select a reference point")
+        return false
       }
       
       if(time.isBefore(last) || time.isSame(last)){
-        setErrorMessage("Please insert a valid datetime")
-        return
+        setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+        return false
       }
       const index = rpList.findIndex((rp) => rp.reference_point_address === curr)
+      rpList[index].datetime = time
       const point = rpList[index]
       const body = {
         state: 'reference',
         point : point, 
         datetime: time.format('MM/DD/YYYY HH:mm:ss'),
-        hike: hike.id,
-        counter: 1
+        
       }
       
     
@@ -134,37 +134,40 @@ function OnGoingHike(props){
           }))
           setCurr("-")
           setSuccessMessage("Your position has been updated")
-
+          return true
         }
     } catch(e){
+
       setErrorMessage("Something went wrong. Please try later")
+      return false
     }
   }
 
   const handleTerminate = async (e) => {
     e.preventDefault()
+    
     if(time.isBefore(last) || time.isSame(last)){
-      setErrorMessage("Please insert a valid datetime")
-      return
+      setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+      return false
     }
     try {
       const body = {
-        counter: 1,
         state: 'end',
         datetime: time.format('MM/DD/YYYY HH:mm:ss'),
-        hike: hike.id
-
       }
       const resp = await API.postTerminatedHike(body, token)
-      if(resp.error)
+      if(resp.error){
           setErrorMessage(resp.msg)
+          return false
+      }
         else{
-          //navigate("recordpage")
+          navigate("/hiker/hikes")
+          return true
       }
     }
       catch(e){
         setErrorMessage("Something went wrong. Please try later")
-        setErrorMessageEndModal("Something went wrong. Please try later")
+        return true
       } 
   }
     useEffect(() => {
@@ -172,40 +175,41 @@ function OnGoingHike(props){
         try {
         const currentHike = await API.getCurrentHike(token)   
         if(!currentHike.error) {
-        console.log(currentHike)
-        let h = currentHike.msg.hike
-        let logs = currentHike.msg.logs
-        setHike(h)
-        setTitle(h.title)
-        const rp = []
-        for(let i = 0; i < h.rp.length; i++){
-          let flag = logs.some((r) => {
-            console.log("zio epra")
-            return r.point_id===h.rp[i].reference_point_id
-        })
-          
-          h.rp[i].reached = flag
-          rp.push(h.rp[i])
-        }
+          setNo("loaded")
+          const res =  UTILS.adjustRecord(currentHike.msg)
+          console.log(res)
+          const h = res[0]
+          const rp = res[1]
+          const lastDt = res[2]
+          console.log(h, rp, lastDt)
 
-        setSp({
-          lat: h.start_point_lat,
-          lng: h.start_point_lng,
-          addr: h.start_point_address
-        })
+          setHike(h)
+          setTitle(h.title)
+          setLast(lastDt)
+          setSp({
+            lat: h.start_point_lat,
+            lng: h.start_point_lng,
+            addr: h.start_point_address,
+            datetime: h.start_point_datetime
+          })
 
 
-        setEp({
-          lat: h.end_point_lat,
-          lng: h.end_point_lng,
-          addr: h.end_point_address
-        })
+          setEp({
+            lat: h.end_point_lat,
+            lng: h.end_point_lng,
+            addr: h.end_point_address,
+            datetime: h.end_point_datetime
+          })
 
-        setRpList(rp)
-        setReacheadPoints(h.reached)
-        let file = await API.getHikeFile(h.id, token)
-        setFileMap(file)
-      } 
+          setRpList(rp)
+          setReacheadPoints(h.reached)
+          let file = await API.getHikeFile(h.id, token)
+          setFileMap(file)
+        } 
+      else {
+          console.log("okk")
+          setNo("")
+      }
       }catch(e){
         setErrorMessage("Something went wrong ")
       }
@@ -216,21 +220,18 @@ function OnGoingHike(props){
 
     
     const updateTime = (curr) => {
-      if(last.isBefore(curr))
         setTime(curr)
-      else {
-
-        setErrorMessageModal("Select a valid datetime")
-        return false
-      }
+      
     }
     return (
       <>
-      <h1>Current Hike</h1>
+      {!no ? <h2>There isn't an ongoing hike</h2>
+      :
+      <><h1>Current Hike</h1>
       <Card>
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
-          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/>
+          {fileMap? <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/> : <TheSpinner/>}
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
@@ -270,7 +271,7 @@ function OnGoingHike(props){
 
           </Form>
       </Card.Body>
-    </Card>
+    </Card></>}
     </>
     )
 }
@@ -293,7 +294,9 @@ function Map(props){
         props.setCurr(pos['reference_point_address'])
       }}}>
         <Popup>
-            Reference Point: {pos['reference_point_address']}
+            Reference Point: <>{pos['reference_point_address']}{
+            pos.datetime?<div>Reached at: {
+            pos.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
         </Popup>
     </Marker>)
   })
@@ -303,7 +306,9 @@ function Map(props){
         spMarker =(
         <Marker position={[props.sp.lat,props.sp.lng]} icon={myIconSp} >
           <Popup>
-              Start point: {props.sp.addr}
+              Start point: <>{props.sp.addr}{
+            props.sp.datetime?<div>Reached at: {
+            props.sp.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
           </Popup>
         </Marker>)
   }
@@ -312,7 +317,9 @@ function Map(props){
         epMarker =(
         <Marker position={[props.ep.lat,props.ep.lng]} icon={myIconEp} >
           <Popup>
-              End point: {props.ep.addr}
+              End point: <>{props.ep.addr}{
+            props.ep.datetime?<div>Reached at: {
+            props.ep.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
           </Popup>
         </Marker>)
   useEffect(() => {
