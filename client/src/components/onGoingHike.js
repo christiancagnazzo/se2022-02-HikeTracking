@@ -220,7 +220,11 @@ function OnGoingHike(props){
 
     
     const updateTime = (curr) => {
+      if(!curr instanceof String)
         setTime(curr)
+      else{
+        setTime(dayjs(curr,"MM/DD/YYYY hh:mm A"))
+      }
       
     }
     return (
@@ -235,7 +239,7 @@ function OnGoingHike(props){
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
-            <Form.Select value={curr} onChange={e => setCurr(e.target.value)}>
+            <Form.Select id="referencePoints" value={curr} onChange={e => setCurr(e.target.value)}>
               <option value ="-" key="-">-</option>
               {rpList.filter((r) => !r.reached)
               .map((r,idx) => <option value={r.reference_point_address} key={r.reference_point_address}>{r.reference_point_address}</option>)}
@@ -244,10 +248,10 @@ function OnGoingHike(props){
             <Form.Group className="mb-2" controlId="datetime">
             
             {errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
-            {successMessage ? <Alert variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
+            {successMessage ? <Alert id="success" variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
             </Form.Group>
-            <Button onClick={() => showModal()}>Update Position</Button> {' '}
-            <Button variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
+            <Button id="updatePosition" onClick={() => showModal()}>Update Position</Button> {' '}
+            <Button id="endHike" variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
             <TimeModal
             type={"reference"}
             show={modal}

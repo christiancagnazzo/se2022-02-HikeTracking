@@ -13,12 +13,12 @@ function MyNavbar2(props){
     <Navbar  bg="success" variant="dark">
         <Container fluid>
              <Nav   className="d-flex justify-content-between w-100">
-              <Navbar.Brand onClick={() => navigate("/")}>
+              <Navbar.Brand  onClick={() => navigate("/")}>
                 <SvgIcon sx={{ fontSize: 30 }}component={Landscape}/>
                 {' '}Hike Adventures
               </Navbar.Brand> 
               <Nav.Item className="navbar-brand">
-                <Button onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
+                <Button id="login" onClick={()=> props.login()} as="input" type="button" value="Login" variant='dark' size='sm'/>{' '}   
                 <Button onClick={()=> props.signIn()} as="input" type="button" value="Sign Up" variant='dark' size='sm'/>{' '}
               </Nav.Item>
             </Nav>   
