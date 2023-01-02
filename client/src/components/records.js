@@ -77,7 +77,10 @@ function Record(props) {
     const handleSubmit = async(e) => {
       e.preventDefault()
     }
-    
+    let dataInizio=hike.hike.start_point_datetime.split("T")[0]
+    let oraInizio=hike.hike.start_point_datetime.split("T")[1].split(".000Z")
+    let dataFine=hike.hike.end_point_datetime.split("T")[0]
+    let oraFine=hike.hike.end_point_datetime.split("T")[1].split(".000Z")
     return (<>
       <Card style={{ width: '21rem' }} key={0} title={hike.hike.title}>
         <Card.Body>
@@ -85,11 +88,11 @@ function Record(props) {
   
         </Card.Body>
         <ListGroup className="list-group-flush">
+          <ListGroup.Item>Starting Date: {dataInizio} </ListGroup.Item>
+          <ListGroup.Item>Starting Time: {oraInizio} min</ListGroup.Item>
+          <ListGroup.Item>Ending Date: {dataFine} </ListGroup.Item>
+          <ListGroup.Item>Ending Time: {oraFine} min</ListGroup.Item>
           <ListGroup.Item>Length: {hike.hike.length}km</ListGroup.Item>
-          <ListGroup.Item>Start point: {hike.hike.start_point_address}</ListGroup.Item>
-          <ListGroup.Item>Starting: {hike.hike.start_point_datetime}min</ListGroup.Item>
-          <ListGroup.Item>End point: {hike.hike.end_point_address}</ListGroup.Item>
-          <ListGroup.Item>Ending: {hike.hike.end_point_datetime}min</ListGroup.Item>
           <ListGroup.Item>Ascent: {hike.hike.ascent}m</ListGroup.Item>
           <ListGroup.Item>Difficulty: {hike.hike.difficulty}</ListGroup.Item>  
         </ListGroup>
