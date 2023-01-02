@@ -557,7 +557,7 @@ class CompletedHikeTest(TestCase):
                                  start_point=p1, end_point=p1, local_guide=c2)
         log1 = UserHikeLog.objects.create(user=c1, hike=h1, counter=2, point=p1, end=True)
         log2 = UserHikeLog.objects.create(user=c1, hike=h2, counter=1, point=p1, end=True)
-        log3 = UserHikeLog.objects.create(user=c1, hike=h3, counter=1, point=p1, end=False)
+        log3 = UserHikeLog.objects.create(user=c1, hike=h3, counter=1, point=p1,  end=False)
     def assert_util(self, log):
         c1 = CustomUser.objects.all()
         h1 = Hike.objects.all()
@@ -614,4 +614,21 @@ class CompletedHikeTest(TestCase):
     def test_wrong_pt(self):
         with self.assertRaises(ValueError):
             UserHikeLog.objects.filter(id=1).update(point="d")
+
+    def test_start_and_terminate_hike(self):
+        points = Point.objects.all()
+        hikes = Hike.objects.all()
+        user = CustomUser.objects.all()
+        log = UserHikeLog.objects.create(user=user[0], hike=hikes[0], counter=1, point=points[0], end=False)
+        allLog = UserHikeLog.objects.all()
+        self.assertEqual(allLog[3].user.role, "Hiker")
+        self.assertEqual(allLog[3].end, False)
+        self.assertEqual(allLog[3].counter, 1)
+        self.assertEqual(allLog[3].hike.title, "Climbing")
+        self.assertEqual(allLog[3].point.type, "Hut")
+
+        UserHikeLog.objects.filter(id=4).update(end = True)
+        self.assertEqual(allLog[3].end, True)
+
+
 
