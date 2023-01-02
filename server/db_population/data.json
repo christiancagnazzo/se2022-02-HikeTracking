@@ -1176,7 +1176,8 @@
       "address": "Lombardo 13",
       "type": "none"
     }
-  },
+  }
+  ,
   {
     "model": "hiketracking.hike",
     "pk": 300,
@@ -2103,6 +2104,26 @@
     "fields": {
       "hutworker": 4,
       "hut": 1
+    }
+  },
+  {
+    "model": "hiketracking.point",
+    "pk" : 176,
+    "fields": {
+      
+      "latitude": 45.188244,
+      "longitude": 7.0768,
+      "province": "Torino",
+      "village": "Mompantero",
+      "address": "Nice view",
+      "type": "none"
+    }
+  },
+  {
+    "model": "hiketracking.hikereferencepoint",
+    "fields": {
+      "hike": 300,
+      "point": 176
     }
   }
 ]
