@@ -2,78 +2,128 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
 import Map from "./map";
-import hike1 from '../img/hike1.jpg'
+
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
 import API from "../API";
 import TheSpinner from "./spinner";
-function HikeCard(props) {
+/// tramite props passo il file
+function Record(props) {
+    const [hike,setHike]= useState({
+        "hike": {
+            "id": 154,
+            "title": "Picciano Tappa 77",
+            "length": 29704,
+            "expected_time": 240,
+            "ascent": 438,
+            "difficulty": "Tourist",
+            "description": "Prova questo sentiero da punto a punto di 29,8-km vicino a Matera, Basilicata. Un percorso generalmente considerato impegnativo che richiede una media di 7 o 26 min per essere completato",
+            "track_file": "tracks/Via_Peuceta_Tappa_7__Picciano_-_Matera.gpx",
+            "start_point_id": 174,
+            "end_point_id": 175,
+            "local_guide_id": 1,
+            "picture": "./hikePictures/defultImage.jpg",
+            "condition": "Open",
+            "condition_description": "Open",
+            "rp": [
+                {
+                    "reference_point_id": 176,
+                    "reference_point_lat": 40.68417,
+                    "reference_point_lng": 16.49451,
+                    "reference_point_address": "primo",
+                    "reached": false
+                },
+                {
+                    "reference_point_id": 177,
+                    "reference_point_lat": 40.67229,
+                    "reference_point_lng": 16.5118,
+                    "reference_point_address": "secondo",
+                    "reached": false
+                }
+            ],
+            "start_point_lat": 40.69908,
+            "start_point_lng": 16.47273,
+            "start_point_address": "Via Marco polo 12",
+            "end_point_lat": 40.66681,
+            "end_point_lng": 16.61095,
+            "end_point_address": "Lombardo 13",
+            "start_point_datetime": "2023-01-01T22:38:04.000Z",
+            "end_point_datetime": "2023-01-01T22:42:01.000Z"
+        },
+        "rp": [
+            {
+                "reference_point_id": 176,
+                "reference_point_lat": 40.68417,
+                "reference_point_lng": 16.49451,
+                "reference_point_address": "primo",
+                "reached": false
+            },
+            {
+                "reference_point_id": 177,
+                "reference_point_lat": 40.67229,
+                "reference_point_lng": 16.5118,
+                "reference_point_address": "secondo",
+                "reached": false
+            }
+        ]
+    })
     const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
     const [modalTime, setModalTime] = useState(false)
     const [time, setTime] = useState(dayjs())
     const [errorMessageTime, setErrorMessageTime] = useState('')
     const isHiker = props.userPower === 'hiker'
-    const isLocalGuide = props.userPower === 'localguide'
-    const isHutWoker = props.userPower === 'hutworker'
-    const canModify = props.userId && props.userId === props.hike.local_guide_id
     const navigate = useNavigate()
     const handleSubmit = async(e) => {
       e.preventDefault()
     }
     
     return (<>
-      <Card style={{ width: '21rem' }} key={0} title={props.hike.title}>
+      <Card style={{ width: '21rem' }} key={0} title={hike.hike.title}>
         <Card.Body>
-          <Card.Title>{props.hike.title}</Card.Title>
+          <Card.Title>{hike.hike.title}</Card.Title>
   
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item>Length: {props.hike.length}km</ListGroup.Item>
-          <ListGroup.Item>Estimated time: {props.hike.expected_time}min</ListGroup.Item>
-          <ListGroup.Item>Ascent: {props.hike.ascent}m</ListGroup.Item>
-          <ListGroup.Item>Difficulty: {props.hike.difficulty}</ListGroup.Item>
-          <ListGroup.Item>Start point: {props.hike.start_point_address}</ListGroup.Item>
-          <ListGroup.Item>End point: {props.hike.end_point_address}</ListGroup.Item>
-          {isHiker || isHutWoker ?<ListGroup.Item>Condition: {props.hike.condition? props.hike.condition: 'Open'}</ListGroup.Item>:''}
+          <ListGroup.Item>Length: {hike.hike.length}km</ListGroup.Item>
+          <ListGroup.Item>Start point: {hike.hike.start_point_address}</ListGroup.Item>
+          <ListGroup.Item>Starting: {hike.hike.start_point_datetime}min</ListGroup.Item>
+          <ListGroup.Item>End point: {hike.hike.end_point_address}</ListGroup.Item>
+          <ListGroup.Item>Ending: {hike.hike.end_point_datetime}min</ListGroup.Item>
+          <ListGroup.Item>Ascent: {hike.hike.ascent}m</ListGroup.Item>
+          <ListGroup.Item>Difficulty: {hike.hike.difficulty}</ListGroup.Item>  
         </ListGroup>
         <Card.Body>
           <Card.Text>
             <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
             {' '}
-            {(isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker) ? <Badge bg="secondary">No Track Available</Badge> : ''}
-            {isLocalGuide && canModify ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
-            {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
-            {' '}
-            {isHiker? <Button variant="success" onClick={() => setModalTime(true)}>Start</Button>: ''}
-            
+            {(hike.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display Your Track</Button> : ""}
           </Card.Text>
         </Card.Body>
-  
       </Card>
       <HikeModalDescription
-        id={props.hike.id}
+        id={hike.hike.id}
         show={modalDescriptionShow}
         visible={modalDescriptionShow}
         onHide={() => setModalDescriptionShow(false)}
-        title={props.hike.title}
-        description={props.hike.description}
-        rpList={props.hike.rp}
-        condition = {props.hike.condition}
-        condition_description = {props.hike.condition_description}
-        picture={props.hike.picture}
+        title={hike.hike.title}
+        description={hike.hike.description}
+        rpList={hike.hike.rp}
+        condition = {hike.hike.condition}
+        condition_description = {hike.hike.condition_description}
+        picture={hike.hike.picture}
       />
-      {isHiker ? <HikeModalTrack
-        id={props.hike.id}
+      <HikeModalTrack
+        id={hike.hike.id}
         show={modalMapShow}
         visible={modalMapShow}
         onHide={() => setModalMapShow(false)}
-        title={props.hike.title}
-        sp={[props.hike.start_point_lat, props.hike.start_point_lng]}
-        ep={[props.hike.end_point_lat, props.hike.end_point_lng]}
-        rpList={props.hike.rp}
-      /> : ''}
-      {isHiker ? <TimeModal
+        title={hike.hike.title}
+        sp={[hike.hike.start_point_lat, hike.hike.start_point_lng]}
+        ep={[hike.hike.end_point_lat, hike.hike.end_point_lng]}
+        rpList={hike.hike.rp}
+      /> 
+      <TimeModal
             type={"start"}
             show={modalTime}
             time={time}
@@ -82,7 +132,7 @@ function HikeCard(props) {
             errorMessage={errorMessageTime}
             setErrorMessage={setErrorMessageTime}
             handleSubmit={handleSubmit}
-            />:''}
+            />
       
     </>
     );
@@ -96,6 +146,7 @@ function HikeCard(props) {
 
     useEffect(() => {
       async function getImage(){
+        console.log(props.id)
         const img = await API.getHikePicture(props.id, token)
         setImage(img)
       }
@@ -152,11 +203,9 @@ function HikeCard(props) {
     const [file, setFile] = useState('')
     const [error, setError] = useState(false)
     const token = localStorage.getItem("token")
-    console.log(props.id)
     useEffect(() => {
       async function getFile(){
       try{
-        
         const track = await API.getHikeFile(props.id, token)
         if(track.err){
           setError(true)
@@ -218,5 +267,5 @@ function HikeCard(props) {
     )
   }
   
-export default HikeCard
+export default Record
   

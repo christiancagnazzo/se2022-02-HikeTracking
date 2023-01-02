@@ -12,6 +12,10 @@ import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
+import Record from './records';
+
+
+
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
@@ -159,7 +163,7 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
+            <Route path="records" element={<Record/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>

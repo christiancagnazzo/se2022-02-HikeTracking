@@ -159,8 +159,9 @@ function OnGoingHike(props){
   }
     useEffect(() => {
       async function getHike() {
-        const t = "Picciano Tappa 77"        
+        const t = "Sentiero per il ROCCIAMELONE"        
         let h = (await API.getHike(t, token)).hike
+        console.log(h)
         setHike(h)
         setTitle(h.title)
         h.reached = [{}]

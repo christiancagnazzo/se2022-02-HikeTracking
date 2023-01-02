@@ -74,10 +74,11 @@ function HikerMenu(props){
         {props.hiker ?
         <>
           <SubMenu icon={profileIcon} label='My profile'>
-          <MenuItem onClick={() => updateActive(5,"preferences") }active={"preferences"===route}>Profile</MenuItem>
-        </SubMenu>
+          <MenuItem onClick={() => updateActive(5,"preferences") }active={"preferences"===route}>Preferences</MenuItem>
+          <MenuItem onClick={() => updateActive(6,"records") }active={"records"===route}>Records</MenuItem>
+          </SubMenu>
          <SubMenu icon={weatherIcon} label='Weather'>
-         <MenuItem onClick={() => updateActive(6,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
+         <MenuItem onClick={() => updateActive(7,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
        </SubMenu></>:""
         }
       </Menu>
