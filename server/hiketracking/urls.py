@@ -30,6 +30,7 @@ urlpatterns = [
     path( 'worker/hikes/', HikesHutWorker.as_view() ),
     path( 'platformmanager/weatheralert/', Weather.as_view()),
     path( 'hiking/', Hiking.as_view() ),
+    path( 'hiking/<str:state>', Hiking.as_view() ),
     path( 'hut/picture/<str:hut_id>', HutFile.as_view() ),
     path( 'hike/picture/<str:hike_id>', HikePicture.as_view() ),
     path( 'hike/alert/', Alert.as_view() ),

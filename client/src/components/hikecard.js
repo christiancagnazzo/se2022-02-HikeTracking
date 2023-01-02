@@ -18,8 +18,28 @@ function HikeCard(props) {
     const isHutWoker = props.userPower === 'hutworker'
     const canModify = props.userId && props.userId === props.hike.local_guide_id
     const navigate = useNavigate()
+    const token = localStorage.getItem('token')
     const handleSubmit = async(e) => {
       e.preventDefault()
+      const datetime = time.format('MM/DD/YYYY HH:mm:ss')
+      const hike_id = props.hike.id
+      const body = {
+        datetime : datetime,
+        hike_id : hike_id
+      }
+      try {
+        const response = await API.postStartHike(body, token)
+        if(!response.error){
+          navigate("/hiker/ongoinghike")
+          return true
+        } else {
+          setErrorMessageTime(response.msg)
+          return false
+        }
+      } catch(e){
+        setErrorMessageTime(e)
+        return false
+      }
     }
     
     return (<>
@@ -45,7 +65,8 @@ function HikeCard(props) {
             {isLocalGuide && canModify ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
             {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
             {' '}
-            {isHiker? <Button variant="success" onClick={() => setModalTime(true)}>Start</Button>: ''}
+            {isHiker? <Button variant="success" id={"start-"+props.hike.title.replaceAll(' ','') }
+            onClick={() => setModalTime(true)}>Start</Button>: ''}
             
           </Card.Text>
         </Card.Body>

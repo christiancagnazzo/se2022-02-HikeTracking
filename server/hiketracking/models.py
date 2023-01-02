@@ -32,6 +32,7 @@ class CustomerProfile( models.Model ):
     max_altitude = models.IntegerField( null=True )
 
     class Difficulty( models.TextChoices ):
+        ALL = "All"
         TOURIST = "Tourist"
         HIKER = "Hiker"
         PRO_HIKER = "Pro Hiker"
@@ -186,7 +187,7 @@ class UserHikeLog( models.Model ):
     hike = models.ForeignKey( Hike, on_delete=models.CASCADE )
     counter = models.IntegerField()  # useful to differentiate different run of the same hike
     point = models.ForeignKey( Point, on_delete=models.CASCADE )
-    timestamp = models.DateTimeField( auto_now_add=True )
+    datetime = models.DateTimeField( )
     end = models.BooleanField( default=False )
 
     def __str__(self):
