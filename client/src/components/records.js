@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
-import MapRecord from "./mapRecord";
-
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
 import API from "../API";
 import TheSpinner from "./spinner";
+
+import UTILS from "../utils/utils";
 /// tramite props passo il file
 function Record(props) {
-    const [hike,setHike]= useState({
+    const [hike,setHike]= useState( {
         "hike": {
             "id": 154,
             "title": "Picciano Tappa 77",
@@ -52,7 +52,7 @@ function Record(props) {
         },
         "rp": [
             {
-                "reference_point_id": 176,
+                "reference_point_id": 175,
                 "reference_point_lat": 40.68417,
                 "reference_point_lng": 16.49451,
                 "reference_point_address": "primo",
@@ -66,7 +66,7 @@ function Record(props) {
                 "reached": false
             }
         ]
-    })
+    });
     const [modalMapShow, setModalMapShow] = useState(false);
     const [modalTime, setModalTime] = useState(false)
     const [time, setTime] = useState(dayjs())
@@ -121,8 +121,14 @@ function Record(props) {
         visible={modalMapShow}
         onHide={() => setModalMapShow(false)}
         title={hike.hike.title}
-        sp={[hike.hike.start_point_lat, hike.hike.start_point_lng]}
-        ep={[hike.hike.end_point_lat, hike.hike.end_point_lng]}
+        sp={{
+          lat: hike.hike.start_point_lat,
+          lng: hike.hike.start_point_lng
+        }}
+        ep={{
+          lat: hike.hike.end_point_lat, 
+          lng: hike.hike.end_point_lng
+        }}
         rpList={hike.hike.rp}
         oraFine={oraFine}
         oraInizio={oraInizio}
