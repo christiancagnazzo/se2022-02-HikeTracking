@@ -12,12 +12,9 @@ import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
-<<<<<<< HEAD
 import Record from './records';
 
 
-=======
->>>>>>> 5d8bee1f2ed7927265d9fd330effc9046c6418ba
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
@@ -188,7 +185,6 @@ function VisitorPage(props) {
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-<<<<<<< HEAD
             <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} />}/>
             <Route path="filterhikes" element={<FilterFormHikes  setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
             <Route path= "recommendedhikes" element ={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes}/>}/>
@@ -198,19 +194,7 @@ function VisitorPage(props) {
             <Route path="records" element={<Record/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike/>}/>
-            <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>
-=======
-            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} />} />
-            <Route path="filterhikes" element={<FilterFormHikes setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage} />} />
-            <Route path="recommendedhikes" element={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes} />} />
-            <Route path="huts" element={<Huts huts={huts} />} />
-            <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage} />} />
-            <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />
-            {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
-            <Route path="preferences" element={<Preferences updateDirty={updateDirty} />} />
-            <Route path="ongoinghike" element={<OnGoingHike />} />
-            <Route path="weatherhikealert" element={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert} />} />
->>>>>>> 5d8bee1f2ed7927265d9fd330effc9046c6418ba
+            <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
           </Routes>
         </Row>
       </Col>

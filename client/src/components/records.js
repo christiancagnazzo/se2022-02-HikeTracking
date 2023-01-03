@@ -223,7 +223,7 @@ function Record(props) {
         getFile()
       }
     },[props.visible])
-  
+  console.log(file)
   
     return (
       !error ?

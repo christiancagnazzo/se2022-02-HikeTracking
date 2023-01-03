@@ -172,32 +172,6 @@ function OnGoingHike(props){
   }
     useEffect(() => {
       async function getHike() {
-<<<<<<< HEAD
-        const t = "Sentiero per il ROCCIAMELONE"        
-        let h = (await API.getHike(t, token)).hike
-        console.log(h)
-        setHike(h)
-        setTitle(h.title)
-        h.reached = [{}]
-        const rp = []
-        for(let i = 0; i < h.rp.length; i++){
-          let flag = h.reached.includes((r) => 
-          r.reference_point_lat===h.rp[i].reference_point_lat &&
-          r.reference_point_lng===h.rp[i].reference_point_lng);
-          h.rp[i].reached = flag
-          rp.push(h.rp[i])
-        }
-        setSp({
-          lat: h.start_point_lat,
-          lng: h.start_point_lng,
-          addr: h.start_point_address
-        })
-        setEp({
-          lat: h.end_point_lat,
-          lng: h.end_point_lng,
-          addr: h.end_point_address
-        })
-=======
         try {
         const currentHike = await API.getCurrentHike(token)   
         if(!currentHike.error) {
@@ -219,7 +193,6 @@ function OnGoingHike(props){
             datetime: h.start_point_datetime
           })
 
->>>>>>> 5d8bee1f2ed7927265d9fd330effc9046c6418ba
 
           setEp({
             lat: h.end_point_lat,
