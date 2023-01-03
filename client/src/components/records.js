@@ -6,9 +6,10 @@ import dayjs from "dayjs";
 import API from "../API";
 import TheSpinner from "./spinner";
 import MapRecord from "./MapRecord";
+import UTILS from "../utils/utils";
 /// tramite props passo il file
 function Record(props) {
-    const [hike,setHike]= useState({
+    const [hike,setHike]= useState(( {
         "hike": {
             "id": 154,
             "title": "Picciano Tappa 77",
@@ -66,19 +67,11 @@ function Record(props) {
                 "reached": false
             }
         ]
-    })
+    }))
 
-    const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
-    const [modalTime, setModalTime] = useState(false)
-    const [time, setTime] = useState(dayjs())
-    const [errorMessageTime, setErrorMessageTime] = useState('')
 
-    const isHiker = props.userPower === 'hiker'
-    const navigate = useNavigate()
-    const handleSubmit = async(e) => {
-      e.preventDefault()
-    }
+    
     let dataInizio=hike.hike.start_point_datetime.split("T")[0]
     let oraInizio=hike.hike.start_point_datetime.split("T")[1].split(".000Z")
     let dataFine=hike.hike.end_point_datetime.split("T")[0]
@@ -100,8 +93,6 @@ function Record(props) {
         </ListGroup>
         <Card.Body>
           <Card.Text>
-            <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
-            {' '}
             {(hike.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display Your Track</Button> : ""}
           </Card.Text>
         </Card.Body>
@@ -136,6 +127,7 @@ function HikeModalTrack(props) {
   const [file, setFile] = useState('')
   const [error, setError] = useState(false)
   const token = localStorage.getItem("token")
+  console.log(props.rpList)
   useEffect(() => {
     async function getFile(){
     try{
