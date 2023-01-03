@@ -173,7 +173,7 @@ function HikeCard(props) {
     const [file, setFile] = useState('')
     const [error, setError] = useState(false)
     const token = localStorage.getItem("token")
-    console.log(props.id)
+    
     useEffect(() => {
       async function getFile(){
       try{

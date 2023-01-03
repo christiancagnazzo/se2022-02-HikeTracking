@@ -191,7 +191,7 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="records" element={<Record/>}/>
+            <Route path="records" element={<Record userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     

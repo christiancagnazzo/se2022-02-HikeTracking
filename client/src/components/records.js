@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
-import Map from "./map";
+import MapRecord from "./mapRecord";
 
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
@@ -31,7 +31,7 @@ function Record(props) {
                     "reference_point_lat": 40.68417,
                     "reference_point_lng": 16.49451,
                     "reference_point_address": "primo",
-                    "reached": false
+                    "reached": "22:38:04.000"
                 },
                 {
                     "reference_point_id": 177,
@@ -56,7 +56,7 @@ function Record(props) {
                 "reference_point_lat": 40.68417,
                 "reference_point_lng": 16.49451,
                 "reference_point_address": "primo",
-                "reached": false
+                "reached": "22:38:04.000"
             },
             {
                 "reference_point_id": 177,
@@ -67,7 +67,6 @@ function Record(props) {
             }
         ]
     })
-    const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
     const [modalTime, setModalTime] = useState(false)
     const [time, setTime] = useState(dayjs())
@@ -77,45 +76,45 @@ function Record(props) {
     const handleSubmit = async(e) => {
       e.preventDefault()
     }
+    useEffect(() => {
+      async function hiker(){
+    
+      if(!isHiker){
+        navigate("/")
+      }
+    }
+    hiker()
+  },[isHiker])
+
     let dataInizio=hike.hike.start_point_datetime.split("T")[0]
-    let oraInizio=hike.hike.start_point_datetime.split("T")[1].split(".000Z")
-    let dataFine=hike.hike.end_point_datetime.split("T")[0]
-    let oraFine=hike.hike.end_point_datetime.split("T")[1].split(".000Z")
+    let oraInizio=hike.hike.start_point_datetime.split("T")[1].split("Z")
+    
+    let oraFine=hike.hike.end_point_datetime.split("T")[1].split("Z")
+    
+  
+    
+    
+    
     return (<>
       <Card style={{ width: '21rem' }} key={0} title={hike.hike.title}>
         <Card.Body>
           <Card.Title>{hike.hike.title}</Card.Title>
+          <h6>Starting Date: {dataInizio} </h6>
   
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item>Starting Date: {dataInizio} </ListGroup.Item>
           <ListGroup.Item>Starting Time: {oraInizio} min</ListGroup.Item>
-          <ListGroup.Item>Ending Date: {dataFine} </ListGroup.Item>
           <ListGroup.Item>Ending Time: {oraFine} min</ListGroup.Item>
           <ListGroup.Item>Length: {hike.hike.length}km</ListGroup.Item>
           <ListGroup.Item>Ascent: {hike.hike.ascent}m</ListGroup.Item>
-          <ListGroup.Item>Difficulty: {hike.hike.difficulty}</ListGroup.Item>  
+          <ListGroup.Item>Difficulty: {hike.hike.difficulty}</ListGroup.Item>
         </ListGroup>
         <Card.Body>
-          <Card.Text>
-            <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
-            {' '}
-            {(hike.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display Your Track</Button> : ""}
-          </Card.Text>
+        
+        <Button onClick={() => setModalMapShow(true)}>Display track</Button>
+        
         </Card.Body>
       </Card>
-      <HikeModalDescription
-        id={hike.hike.id}
-        show={modalDescriptionShow}
-        visible={modalDescriptionShow}
-        onHide={() => setModalDescriptionShow(false)}
-        title={hike.hike.title}
-        description={hike.hike.description}
-        rpList={hike.hike.rp}
-        condition = {hike.hike.condition}
-        condition_description = {hike.hike.condition_description}
-        picture={hike.hike.picture}
-      />
       <HikeModalTrack
         id={hike.hike.id}
         show={modalMapShow}
@@ -125,6 +124,8 @@ function Record(props) {
         sp={[hike.hike.start_point_lat, hike.hike.start_point_lng]}
         ep={[hike.hike.end_point_lat, hike.hike.end_point_lng]}
         rpList={hike.hike.rp}
+        oraFine={oraFine}
+        oraInizio={oraInizio}
       /> 
       <TimeModal
             type={"start"}
@@ -136,74 +137,14 @@ function Record(props) {
             setErrorMessage={setErrorMessageTime}
             handleSubmit={handleSubmit}
             />
-      
     </>
     );
-  }
-  
-  
-  
-  function HikeModalDescription(props) {
-    const [image, setImage] = useState('')
-    const token = localStorage.getItem("token")
-
-    useEffect(() => {
-      async function getImage(){
-        console.log(props.id)
-        const img = await API.getHikePicture(props.id, token)
-        setImage(img)
-      }
-      if(props.visible && !image)
-      getImage()
-    },[props.visible])
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            {props.title}
-          </Modal.Title>
-          
-        </Modal.Header>
-        <Modal.Body>
-        
-        { image !== "" ? <img src={"data:image/png;base64,"+image}></img>: <TheSpinner/>}
-
-          <h4 className="mt-3">Description</h4>
-          <p>
-            {props.description}
-          </p>
-          {props.rpList.length ? <h5>Reference Points</h5> : ''}
-          <ul>
-            {props.rpList.map((rp) =>
-              <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
-            )}
-          </ul>
-  
-          {props.condition !== "Open" && props.condition?<>
-          <h4>
-            Condition description: </h4>
-            <p>
-            {props.condition_description}
-              </p></>
-          :''}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-  
+  } 
   
   
   
   function HikeModalTrack(props) {
-    const [file, setFile] = useState('')
+    let [file, setFile] = useState('')
     const [error, setError] = useState(false)
     const token = localStorage.getItem("token")
     useEffect(() => {
@@ -217,16 +158,16 @@ function Record(props) {
         setFile(track)
         } catch(e){
         setError(true)
+        console.log(error)
         } 
       }
-      if(props.visible && !file){
+      if(!file){
         getFile()
       }
-    },[props.visible])
-  console.log(file)
-  
+    },[file])
+    
     return (
-      !error ?
+      !props.error ?
         <Modal
           {...props}
           size="lg"
@@ -240,7 +181,7 @@ function Record(props) {
           </Modal.Header>
           <Modal.Body>
             <h4>Track</h4>
-            {file ? <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} /> : <TheSpinner/>}
+            {file ? <MapRecord rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} spTime={props.oraInizio} epTime={props.oraFine}/> : <TheSpinner/>}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.onHide}>Close</Button>
@@ -269,6 +210,8 @@ function Record(props) {
         </Modal>
     )
   }
-  
+
+
+
 export default Record
   
