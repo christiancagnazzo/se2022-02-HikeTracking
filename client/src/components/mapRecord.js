@@ -45,10 +45,11 @@ function MapRecord(props){
     const [currPoint, setCurrPoint] = useState([])
     const gpxFile = props.gpxFile
     const rpList = props.rpList.map((rp) => {
-        console.log(rp['reached'])
+        
          return <Marker position={[rp['reference_point_lat'],rp['reference_point_lng']]} icon={myIconRp} key={rp['reference_point_id']}>
             <Popup>
-                Reference Point: {rp['reference_point_address']} {rp['reached']!==false ? 'Reached at:' + rp['reached'] : ""}
+                Reference Point: {rp['reference_point_address']} 
+                <div>{rp['reached']!==false ? 'Reached at:' + rp['reached'] : ""}</div>
             </Popup>
         </Marker>
     })
@@ -62,14 +63,16 @@ function MapRecord(props){
     if(props.sp[0]!=='' && props.sp[1]!=='')
         spMarker =(<Marker position={props.sp} icon={myIconSp} >
         <Popup>
-            Start point: {props.spAddress}, Time: {props.spTime}
+            Start point: {props.spAddress}
+            <div>Time: {props.spTime}</div>
         </Popup>
         </Marker>)
     let epMarker = null
     if(props.ep[0]!=='' && props.ep[1]!=='')
         epMarker =(<Marker position={props.ep} icon={myIconEp} >
         <Popup>
-            End point: {props.epAddress}, Time: {props.epTime}
+            End point: {props.epAddress} 
+            <div>Time: {props.epTime}</div>
         </Popup>
         </Marker>)
     useEffect(() => {
