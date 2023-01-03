@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
-import Map from "./map";
-
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
 import API from "../API";
 import TheSpinner from "./spinner";
+import MapRecord from "./MapRecord";
 /// tramite props passo il file
 function Record(props) {
     const [hike,setHike]= useState({
@@ -52,11 +51,12 @@ function Record(props) {
         },
         "rp": [
             {
-                "reference_point_id": 176,
+                "reference_point_id": 175,
                 "reference_point_lat": 40.68417,
                 "reference_point_lng": 16.49451,
                 "reference_point_address": "primo",
-                "reached": false
+                "datetime": "2023-01-01T22:38:04.000Z",
+                "reached": true
             },
             {
                 "reference_point_id": 177,
@@ -67,11 +67,13 @@ function Record(props) {
             }
         ]
     })
+
     const [modalDescriptionShow, setModalDescriptionShow] = useState(false);
     const [modalMapShow, setModalMapShow] = useState(false);
     const [modalTime, setModalTime] = useState(false)
     const [time, setTime] = useState(dayjs())
     const [errorMessageTime, setErrorMessageTime] = useState('')
+
     const isHiker = props.userPower === 'hiker'
     const navigate = useNavigate()
     const handleSubmit = async(e) => {
@@ -104,38 +106,23 @@ function Record(props) {
           </Card.Text>
         </Card.Body>
       </Card>
-      <HikeModalDescription
-        id={hike.hike.id}
-        show={modalDescriptionShow}
-        visible={modalDescriptionShow}
-        onHide={() => setModalDescriptionShow(false)}
-        title={hike.hike.title}
-        description={hike.hike.description}
-        rpList={hike.hike.rp}
-        condition = {hike.hike.condition}
-        condition_description = {hike.hike.condition_description}
-        picture={hike.hike.picture}
-      />
+      
       <HikeModalTrack
         id={hike.hike.id}
         show={modalMapShow}
         visible={modalMapShow}
         onHide={() => setModalMapShow(false)}
         title={hike.hike.title}
-        sp={[hike.hike.start_point_lat, hike.hike.start_point_lng]}
-        ep={[hike.hike.end_point_lat, hike.hike.end_point_lng]}
+        sp={{
+          lat: hike.hike.start_point_lat,
+          lng: hike.hike.start_point_lng
+        }}
+        ep={{
+          lat: hike.hike.end_point_lat, 
+          lng: hike.hike.end_point_lng
+        }}
         rpList={hike.hike.rp}
       /> 
-      <TimeModal
-            type={"start"}
-            show={modalTime}
-            time={time}
-            updateTime={setTime}
-            onHide={() => setModalTime(false)}
-            errorMessage={errorMessageTime}
-            setErrorMessage={setErrorMessageTime}
-            handleSubmit={handleSubmit}
-            />
       
     </>
     );
@@ -143,20 +130,32 @@ function Record(props) {
   
   
   
-  function HikeModalDescription(props) {
-    const [image, setImage] = useState('')
-    const token = localStorage.getItem("token")
-
-    useEffect(() => {
-      async function getImage(){
-        console.log(props.id)
-        const img = await API.getHikePicture(props.id, token)
-        setImage(img)
+ 
+  
+function HikeModalTrack(props) {
+  const [file, setFile] = useState('')
+  const [error, setError] = useState(false)
+  const token = localStorage.getItem("token")
+  useEffect(() => {
+    async function getFile(){
+    try{
+      const track = await API.getHikeFile(props.id, token)
+      if(track.err){
+        setError(true)
+        return
       }
-      if(props.visible && !image)
-      getImage()
-    },[props.visible])
-    return (
+      setFile(track)
+      } catch(e){
+      setError(true)
+      } 
+    }
+    if(props.visible && !file){
+      getFile()
+    }
+  },[props.visible])
+
+  return (
+    !error ?
       <Modal
         {...props}
         size="lg"
@@ -167,108 +166,38 @@ function Record(props) {
           <Modal.Title id="contained-modal-title-vcenter">
             {props.title}
           </Modal.Title>
-          
         </Modal.Header>
         <Modal.Body>
-        
-        { image !== "" ? <img src={"data:image/png;base64,"+image}></img>: <TheSpinner/>}
-
-          <h4 className="mt-3">Description</h4>
-          <p>
-            {props.description}
-          </p>
-          {props.rpList.length ? <h5>Reference Points</h5> : ''}
-          <ul>
-            {props.rpList.map((rp) =>
-              <li>Address: {rp.reference_point_address} - Lan: {rp.reference_point_lat} - Lon: {rp.reference_point_lng}</li>
-            )}
-          </ul>
-  
-          {props.condition !== "Open" && props.condition?<>
-          <h4>
-            Condition description: </h4>
-            <p>
-            {props.condition_description}
-              </p></>
-          :''}
+          <h4>Track</h4>
+          {file ? <MapRecord rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} /> : <TheSpinner/>}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
-    );
-  }
-  
-  
-  
-  
-  function HikeModalTrack(props) {
-    const [file, setFile] = useState('')
-    const [error, setError] = useState(false)
-    const token = localStorage.getItem("token")
-    useEffect(() => {
-      async function getFile(){
-      try{
-        const track = await API.getHikeFile(props.id, token)
-        if(track.err){
-          setError(true)
-          return
-        }
-        setFile(track)
-        } catch(e){
-        setError(true)
-        } 
-      }
-      if(props.visible && !file){
-        getFile()
-      }
-    },[props.visible])
-  console.log(file)
-  
-    return (
-      !error ?
+      :
+
         <Modal
-          {...props}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              {props.title}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>Track</h4>
-            {file ? <Map rpList={props.rpList} sp={props.sp} ep={props.ep} gpxFile={file} /> : <TheSpinner/>}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={props.onHide}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-        :
-  
-         <Modal
-          {...props}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              {props.title}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>No track available</h4>
-  
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={props.onHide}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-    )
-  }
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {props.title}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>No track available</h4>
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+  )
+}
   
 export default Record
   
