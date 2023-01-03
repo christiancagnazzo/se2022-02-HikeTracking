@@ -6,21 +6,26 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 function TimeModal(props){
     let button = ""
     if(props.type === "reference"){
-        button = <Button onClick={(e) => {
+        button = <Button id="confirmUpdate" onClick={async(e) => {
+            if(await props.handleSubmit(e))
             props.onHide();
-            props.handleSubmit(e);
+
         }}>Update Position</Button>
     }
     else if(props.type === "end"){
-        button = <Button variant = "danger" onClick={(e) => {
+        button = <Button id="confirmEnd" variant = "danger" onClick={async (e) => {
+            if(await props.handleSubmit(e)){
+              console.log("okkk")
             props.onHide();
-            props.handleSubmit(e);
+            }
+
         }}>Terminate Hike</Button>
     }
     else {
-        button = <Button  variant="success" onClick={(e) => {
-            props.onHide();
-            props.handleSubmit(e);
+        button = <Button  variant="success" id="confirmStart" onClick={async (e) => {
+            if(await props.handleSubmit(e))
+            props.onHide()
+            
         }}>Start Hike</Button>
     }
     return (
@@ -37,8 +42,8 @@ function TimeModal(props){
                 </Modal.Title>
                 
               </Modal.Header>
-              <Modal.Body className="">
-              {props.errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => props.setErrorMessage('')} dismissible >{props.errorMessage}</Alert> : ''}
+              <Modal.Body className="" id="datetimePicker">
+              {props.errorMessage ? <Alert id="error" variant='danger' className="mt-2" onClose={() => props.setErrorMessage('')} dismissible >{props.errorMessage}</Alert> : ''}
               <Row>
                 <div align="center">
               <LocalizationProvider dateAdapter={AdapterDayjs}>

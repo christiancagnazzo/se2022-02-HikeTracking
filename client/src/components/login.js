@@ -31,7 +31,7 @@ function LoginForm(props) {
 
   return (
     <Container className="">
-      <Card body className = "body-interface">
+      <Card body className = "m-4">
         <Row className='justify-content-center '>
           <Col>
             <h2 className='text-center'>Login</h2>
@@ -46,8 +46,8 @@ function LoginForm(props) {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} />
               </Form.Group>
-              <div align="center"> <Button className="mt-3" type="submit" variant="success" onClick={handleSubmit}>Login</Button>&nbsp; &nbsp;
-              <Button className="mt-3" variant="danger" onClick={() => navigate(`/`)}>Go back</Button></div>
+              <div align="center"> <Button id="loginSubmit" className="mt-3" type="submit" variant="success" onClick={handleSubmit}>Login</Button>&nbsp; &nbsp;
+              <Button  className="mt-3" variant="danger" onClick={() => navigate(`/`)}>Go back</Button></div>
             </Form>
           </Col>
         </Row>

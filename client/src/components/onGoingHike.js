@@ -15,6 +15,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import UTILS from "../utils/utils";
 import { Last } from "react-bootstrap/esm/PageItem";
 import TimeModal from "./timeModal";
+import TheSpinner from "./spinner";
 const myIconSp = new Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -61,6 +62,7 @@ const myIconTp = new Icon({
 });
 
 function OnGoingHike(props){
+    const [no, setNo] = useState("loading")
     const [hike, setHike] = useState({})
     const [fileMap, setFileMap] = useState('')
     const [title, setTitle] = useState('')
@@ -74,7 +76,7 @@ function OnGoingHike(props){
     const [errorMessageEndModal, setErrorMessageEndModal] = useState('')
     const [successMessage, setSuccessMessage] =useState('')
     const [reachedPoints, setReacheadPoints] = useState([])
-    const [last, setLast] = useState(dayjs())
+    const [last, setLast] = useState("")
     const [modal, setModalShow] = useState(false);
     const [modalEnd, setModalEndShow] = useState(false)
     const token = localStorage.getItem("token")
@@ -84,8 +86,6 @@ function OnGoingHike(props){
       let reversed = orderedRpList.reverse()
       let reachFlag = false
       setRpList(reversed.map((h,idx) => {
-        if (idx === 3)
-          h.reached = true
         if(h.reached)
           reachFlag = true
         h.reached = reachFlag
@@ -103,24 +103,27 @@ function OnGoingHike(props){
     const  handleSubmit = async (e) => {
       e.preventDefault()
       if(curr==="-"){
-        setErrorMessage("Please select a reference point")
-        return
+        setErrorMessageModal("Please select a reference point")
+        return false
       }
       
       if(time.isBefore(last) || time.isSame(last)){
-        setErrorMessage("Please insert a valid datetime")
-        return
+        setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+        return false
       }
       const index = rpList.findIndex((rp) => rp.reference_point_address === curr)
+      rpList[index].datetime = time
       const point = rpList[index]
       const body = {
+        state: 'reference',
         point : point, 
-        time: time
+        datetime: time.format('MM/DD/YYYY HH:mm:ss'),
+        
       }
       
     
       try {
-        const resp = {msg:"ok"}//await API.postReachedReferencePoint(body, token)
+        const resp = await API.postReachedReferencePoint(body, token)
         if(resp.error)
           setErrorMessage(resp.msg)
         else{
@@ -131,34 +134,45 @@ function OnGoingHike(props){
           }))
           setCurr("-")
           setSuccessMessage("Your position has been updated")
-
+          return true
         }
     } catch(e){
+
       setErrorMessage("Something went wrong. Please try later")
+      return false
     }
   }
 
   const handleTerminate = async (e) => {
     e.preventDefault()
+    
     if(time.isBefore(last) || time.isSame(last)){
-      setErrorMessage("Please insert a valid datetime")
-      return
+      setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+      return false
     }
     try {
-      const resp = {msg:'ok'}
-      if(resp.error)
+      const body = {
+        state: 'end',
+        datetime: time.format('MM/DD/YYYY HH:mm:ss'),
+      }
+      const resp = await API.postTerminatedHike(body, token)
+      if(resp.error){
           setErrorMessage(resp.msg)
+          return false
+      }
         else{
-          navigate("recordpage")
+          navigate("/hiker/hikes")
+          return true
       }
     }
       catch(e){
         setErrorMessage("Something went wrong. Please try later")
-        setErrorMessageEndModal("Something went wrong. Please try later")
+        return true
       } 
   }
     useEffect(() => {
       async function getHike() {
+<<<<<<< HEAD
         const t = "Sentiero per il ROCCIAMELONE"        
         let h = (await API.getHike(t, token)).hike
         console.log(h)
@@ -183,36 +197,76 @@ function OnGoingHike(props){
           lng: h.end_point_lng,
           addr: h.end_point_address
         })
+=======
+        try {
+        const currentHike = await API.getCurrentHike(token)   
+        if(!currentHike.error) {
+          setNo("loaded")
+          const res =  UTILS.adjustRecord(currentHike.msg)
+          console.log(res)
+          const h = res[0]
+          const rp = res[1]
+          const lastDt = res[2]
+          console.log(h, rp, lastDt)
 
-        setRpList(rp)
-        setReacheadPoints(h.reached)
-        let file = await API.getHikeFile(h.id, token)
-        setFileMap(file)
+          setHike(h)
+          setTitle(h.title)
+          setLast(lastDt)
+          setSp({
+            lat: h.start_point_lat,
+            lng: h.start_point_lng,
+            addr: h.start_point_address,
+            datetime: h.start_point_datetime
+          })
+
+>>>>>>> 5d8bee1f2ed7927265d9fd330effc9046c6418ba
+
+          setEp({
+            lat: h.end_point_lat,
+            lng: h.end_point_lng,
+            addr: h.end_point_address,
+            datetime: h.end_point_datetime
+          })
+
+          setRpList(rp)
+          setReacheadPoints(h.reached)
+          let file = await API.getHikeFile(h.id, token)
+          setFileMap(file)
+        } 
+      else {
+          console.log("okk")
+          setNo("")
+      }
+      }catch(e){
+        setErrorMessage("Something went wrong ")
+      }
+        
       }
       getHike()
     },[])
 
     
     const updateTime = (curr) => {
-      if(last.isBefore(curr))
+      if(!curr instanceof String)
         setTime(curr)
-      else {
-
-        setErrorMessageModal("Select a valid datetime")
-        return false
+      else{
+        setTime(dayjs(curr,"MM/DD/YYYY hh:mm A"))
       }
+      
     }
     return (
       <>
-      <h1>Current Hike</h1>
+      {!no ? <h2>There isn't an ongoing hike</h2>
+      :
+      <><h1>Current Hike</h1>
       <Card>
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
-          <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/>
+          {fileMap? <Map  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/> : <TheSpinner/>}
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
-            <Form.Select value={curr} onChange={e => setCurr(e.target.value)}>
+            <Form.Select id="referencePoints" value={curr} onChange={e => setCurr(e.target.value)}>
               <option value ="-" key="-">-</option>
               {rpList.filter((r) => !r.reached)
               .map((r,idx) => <option value={r.reference_point_address} key={r.reference_point_address}>{r.reference_point_address}</option>)}
@@ -221,10 +275,10 @@ function OnGoingHike(props){
             <Form.Group className="mb-2" controlId="datetime">
             
             {errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
-            {successMessage ? <Alert variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
+            {successMessage ? <Alert id="success" variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
             </Form.Group>
-            <Button onClick={() => showModal()}>Update Position</Button> {' '}
-            <Button variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
+            <Button id="updatePosition" onClick={() => showModal()}>Update Position</Button> {' '}
+            <Button id="endHike" variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
             <TimeModal
             type={"reference"}
             show={modal}
@@ -248,7 +302,7 @@ function OnGoingHike(props){
 
           </Form>
       </Card.Body>
-    </Card>
+    </Card></>}
     </>
     )
 }
@@ -271,7 +325,9 @@ function Map(props){
         props.setCurr(pos['reference_point_address'])
       }}}>
         <Popup>
-            Reference Point: {pos['reference_point_address']}
+            Reference Point: <>{pos['reference_point_address']}{
+            pos.datetime?<div>Reached at: {
+            pos.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
         </Popup>
     </Marker>)
   })
@@ -281,7 +337,9 @@ function Map(props){
         spMarker =(
         <Marker position={[props.sp.lat,props.sp.lng]} icon={myIconSp} >
           <Popup>
-              Start point: {props.sp.addr}
+              Start point: <>{props.sp.addr}{
+            props.sp.datetime?<div>Reached at: {
+            props.sp.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
           </Popup>
         </Marker>)
   }
@@ -290,7 +348,9 @@ function Map(props){
         epMarker =(
         <Marker position={[props.ep.lat,props.ep.lng]} icon={myIconEp} >
           <Popup>
-              End point: {props.ep.addr}
+              End point: <>{props.ep.addr}{
+            props.ep.datetime?<div>Reached at: {
+            props.ep.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
           </Popup>
         </Marker>)
   useEffect(() => {
