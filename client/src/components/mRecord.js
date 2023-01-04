@@ -40,16 +40,20 @@ const myIconTp = new Icon({
     shadowSize: [41, 41]
 });
 
-function MapRecord(props){
+function MRecord(props){
+    
     const [positions, setPositions] = useState([])
     const [currPoint, setCurrPoint] = useState([])
     const gpxFile = props.gpxFile
     const rpList = props.rpList.map((rp) => {
-        
+        let x=rp['reached']
+        if (x!==false)
+            x="Reached at:" + x.split('T')[1].split('Z');
+        else x= ""
          return <Marker position={[rp['reference_point_lat'],rp['reference_point_lng']]} icon={myIconRp} key={rp['reference_point_id']}>
             <Popup>
                 Reference Point: {rp['reference_point_address']} 
-                <div>{rp['reached']!==false ? 'Reached at:' + rp['reached'] : ""}</div>
+                <div>{x}</div>
             </Popup>
         </Marker>
     })
@@ -147,4 +151,4 @@ function Click(props){
     }
     return null
 }
-export default MapRecord
+export default MRecord

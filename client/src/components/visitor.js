@@ -12,13 +12,14 @@ import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
-import Record from './records';
+import Records from './records';
 
 
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
+  const [records, setRecords] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [recommendedhikes, setRecommendedhikes] = useState([])
   const [filtered, setFiltered] = useState(false)
@@ -191,7 +192,7 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="records" element={<Record userPower={props.userPower}/>}/>
+            <Route path="records" element={<Records records={records}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
