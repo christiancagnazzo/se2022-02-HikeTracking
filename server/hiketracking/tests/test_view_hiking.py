@@ -9,3 +9,4 @@ from hiketracking.tests.test_utilty import CreateTestUser
 class HikingAPItest(TestCase):
 
     def setUp(self):
+        pass

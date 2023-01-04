@@ -1,6 +1,6 @@
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, BarChartIcon, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
+import { Hiking, BarChart, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -50,7 +50,7 @@ function HikerMenu(props){
     const hutIcon = <HolidayVillage></HolidayVillage>
     const profileIcon = <ManageAccounts></ManageAccounts>
     const weatherIcon = <Cloud/>
-    const barchartIcon = <BarChartIcon></BarChartIcon>
+    //const barchartIcon = <BarChart></BarChart>
     const updateActive = (idx, relocation) => {
       UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
@@ -80,9 +80,9 @@ function HikerMenu(props){
          <SubMenu icon={weatherIcon} label='Weather'>
          <MenuItem onClick={() => updateActive(6,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
        </SubMenu>
-          <SubMenu icon={barchartIcon} label ='Statistics'>
+          {/*<SubMenu icon={barchartIcon} label ='Statistics'>
           <MenuItem onClick={() => updateActive(7,"performancestats")}active={"performancestats"===route}>Statistics</MenuItem>
-       </SubMenu>
+        </SubMenu>*/}
        </>:""
         }
       </Menu>
