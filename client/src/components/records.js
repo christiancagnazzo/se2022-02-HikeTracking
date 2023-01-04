@@ -22,7 +22,7 @@ function displayHikesUtil(hikes) {
 
 
 function Hikes(props) {
-   console.log(props.length)
+  
   if (props.records.length === 0) {
     return (
       <Container>

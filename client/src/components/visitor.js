@@ -36,6 +36,23 @@ function VisitorPage(props) {
     setDirty(!flag)
   }
 
+  useEffect(() => {
+    if(userPower==="Hiker"){
+      const getProf = async () => {
+        try {
+          const hikes = await API.getProfile(token);
+          if (hikes.error)
+            setErrorMessage(hikes.msg)
+          else
+            setRecords(hikes.msg);
+          } catch (err) {
+          console.log(err)
+          }
+        }
+    getProf()
+  }
+  }, [props.userPower, token]);
+
 
   useEffect(() => {
     const getHikes = async () => {
