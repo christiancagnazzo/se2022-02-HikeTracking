@@ -53,8 +53,8 @@ function HikeForm(props) {
       'rp_list': rpList,
       'picture': image
     }
-
-    let req = await API.createHike(hikeDescription, formData, token)
+    const method = hiketitle? 'PUT': 'POST'
+    let req = await API.createHike(hikeDescription, formData, token, method)
 
     if (req.error) {
       setErrorMessage(req.msg)

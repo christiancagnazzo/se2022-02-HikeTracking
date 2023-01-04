@@ -1,23 +1,11 @@
 
 
 import { useEffect,useState } from "react"
-import { Card, Button, Form, Alert } from "react-bootstrap"
-import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
+import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup, Circle } from "react-leaflet"
 import { Icon } from 'leaflet'
-import { DateTime } from 'react-datetime-bootstrap';
-import dayjs, { Dayjs } from 'dayjs';
-import API from "../API"
-import { useNavigate } from "react-router-dom";
+
 import GpxParser from 'gpxparser';
-import { Flag } from "@mui/icons-material"
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import UTILS from "../utils/utils";
-import { Last } from "react-bootstrap/esm/PageItem";
-import TimeModal from "./timeModal";
-import TheSpinner from "./spinner";
+
 
 const myIconSp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -64,10 +52,18 @@ const myIconSp = new Icon({
     shadowSize: [41, 41]
   });
 
+  const myIconWeather = new Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [20, 35],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
 function MapRecord(props){
     const [positions, setPositions] = useState([])
     const gpxFile = props.gpxFile
-    console.log(props.rpList)
     const rpList = props.rpList.map((pos,idx) => {
       
       return (
@@ -110,6 +106,17 @@ function MapRecord(props){
               props.ep.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
             </Popup>
           </Marker>)
+    const alertsMarker = props.showAlerts? props.alerts.map((alert) => {
+      console.log(alert)
+      return <>
+      <Circle center={[alert.weather_lat,alert.weather_lon]} radius={alert.radius} />
+      <Marker position={[alert.weather_lat,alert.weather_lon]} icon={myIconWeather} >
+            <Popup>
+                {alert.condition}
+            </Popup>
+          </Marker>
+      </>
+    }):''
     useEffect(() => {
       if(props.gpxFile !== ''){
       
@@ -152,6 +159,7 @@ function MapRecord(props){
           {rpList}
           {spMarker}
           {epMarker}
+          {alertsMarker}
       </MapContainer>
   )
   }

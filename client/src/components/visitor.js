@@ -13,6 +13,7 @@ import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
 import Record from './records';
+import HikeRecords from './HikeRecords';
 
 
 
@@ -27,6 +28,7 @@ function VisitorPage(props) {
   const [dirty, setDirty] = useState(false)
   const [show, setShow] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
+  const [records, setRecords] = useState([])
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
 
@@ -137,6 +139,22 @@ function VisitorPage(props) {
 
 
   useEffect(() => {
+    const getRecords = async() => {
+      try {
+        const records = await API.getCompletedHikes(token)
+        if(records.error)
+          setErrorMessage(records.msg)
+        else
+          setRecords(records.msg)
+      } catch(err){
+        console.log(err)
+      }
+    }
+    if (props.userPower === 'hiker')
+      getRecords()
+  },[props.userPower, token, dirty])
+
+  useEffect(() => {
     const getHikeAlerts = async () => {
       try {
         const alerts = await API.getHikeAlerts(token)
@@ -191,9 +209,9 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="records" element={<Record userPower={props.userPower}/>}/>
+            <Route path="records" element={<HikeRecords records={records} userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
-            <Route path="ongoinghike" element={<OnGoingHike/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike alerts={hikesAlert}/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
           </Routes>
         </Row>

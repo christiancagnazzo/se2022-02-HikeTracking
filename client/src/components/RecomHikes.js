@@ -14,7 +14,7 @@ function displayRecommendedHikesUtil(hikes, userPower) {
   return (
     <Container>
     <Row>
-      <Col xs={10}>
+      <Col xs={10} md={5}>
         <h1>Recommended Hikes</h1>
       </Col>
       <Col>
