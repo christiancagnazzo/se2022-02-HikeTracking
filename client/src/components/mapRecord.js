@@ -1,7 +1,23 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
-import { useEffect, useState } from 'react'
+
+
+import { useEffect,useState } from "react"
+import { Card, Button, Form, Alert } from "react-bootstrap"
+import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
 import { Icon } from 'leaflet'
+import { DateTime } from 'react-datetime-bootstrap';
+import dayjs, { Dayjs } from 'dayjs';
+import API from "../API"
+import { useNavigate } from "react-router-dom";
 import GpxParser from 'gpxparser';
+import { Flag } from "@mui/icons-material"
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import UTILS from "../utils/utils";
+import { Last } from "react-bootstrap/esm/PageItem";
+import TimeModal from "./timeModal";
+import TheSpinner from "./spinner";
 
 const myIconSp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -10,141 +26,147 @@ const myIconSp = new Icon({
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-});
-
-
-const myIconEp = new Icon({
+  });
+  
+  
+  const myIconEp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-});
-
-const myIconRp = new Icon({
+  });
+  
+  const myIconRp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [20, 35],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-});
-
-const myIconTp = new Icon({
+  });
+  const myIconRpCurr = new Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [20, 35],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+  
+  const myIconTp = new Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [20, 35],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-});
+  });
 
 function MapRecord(props){
     const [positions, setPositions] = useState([])
-    const [currPoint, setCurrPoint] = useState([])
     const gpxFile = props.gpxFile
-    const rpList = props.rpList.map((rp) => {
-        
-         return <Marker position={[rp['reference_point_lat'],rp['reference_point_lng']]} icon={myIconRp} key={rp['reference_point_id']}>
-            <Popup>
-                Reference Point: {rp['reference_point_address']} 
-                <div>{rp['reached']!==false ? 'Reached at:' + rp['reached'] : ""}</div>
-            </Popup>
-        </Marker>
+    console.log(props.rpList)
+    const rpList = props.rpList.map((pos,idx) => {
+      
+      return (
+      <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} 
+      icon={props.curr !== pos['reference_point_address'] ? 
+        (!pos.reached? myIconRp: myIconTp): 
+        myIconRpCurr} 
+      key={idx}
+      eventHandlers={{
+        click: () =>  {
+          if(!pos.reached)
+          props.setCurr(pos['reference_point_address'])
+        }}}>
+          <Popup>
+              Reference Point: <>{pos['reference_point_address']}{
+              pos.datetime?<div>Reached at: {
+              pos.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
+          </Popup>
+      </Marker>)
     })
-    let pointMarker = null
-    if(currPoint.length !== 0){
-        
-        pointMarker =(<Marker position={currPoint} icon={myIconTp} >
-        </Marker>)
-    }
+    
     let spMarker = null
-    if(props.sp[0]!=='' && props.sp[1]!=='')
-        spMarker =(<Marker position={props.sp} icon={myIconSp} >
-        <Popup>
-            Start point: {props.spAddress}
-            <div>Time: {props.spTime}</div>
-        </Popup>
-        </Marker>)
+    if(props.sp.lat && props.sp.lng){
+          spMarker =(
+          <Marker position={[props.sp.lat,props.sp.lng]} icon={myIconSp} >
+            <Popup>
+                Start point: <>{props.sp.addr}{
+              props.sp.datetime?<div>Reached at: {
+              props.sp.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
+            </Popup>
+          </Marker>)
+    }
     let epMarker = null
-    if(props.ep[0]!=='' && props.ep[1]!=='')
-        epMarker =(<Marker position={props.ep} icon={myIconEp} >
-        <Popup>
-            End point: {props.epAddress} 
-            <div>Time: {props.epTime}</div>
-        </Popup>
-        </Marker>)
+    if(props.ep.lat && props.ep.lng)
+          epMarker =(
+          <Marker position={[props.ep.lat,props.ep.lng]} icon={myIconEp} >
+            <Popup>
+                End point: <>{props.ep.addr}{
+              props.ep.datetime?<div>Reached at: {
+              props.ep.datetime.format("HH:mm:ss DD/MM/YYYY")}</div>:''}</>
+            </Popup>
+          </Marker>)
     useEffect(() => {
-        if (props.gpxFile !== ''){ 
-            const gpx = new GpxParser()
-            gpx.parse(props.gpxFile)
-            const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
-            setPositions(pos)
-            if(props.setLength){
-                const elevation = gpx.tracks[0].elevation.max
-                const distance = gpx.tracks[0].distance.total
-                props.setSp(pos[0])
-                props.setEp(pos[pos.length-1])
-                props.setLength(parseInt(distance))
-                props.setAscent(parseInt(elevation))
-                let rp = [];
-                for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
-                    rp[i - 1] = gpx.tracks[0].points[i];
-                }
-                props.setTrackPoints(rp)
-
-            }
-        }
-    },[gpxFile])
+      if(props.gpxFile !== ''){
+      
+          const gpx = new GpxParser()
+          gpx.parse(props.gpxFile)
+          let idx = 0
+          let orderedRpList = []
+          const pos = gpx.tracks[0].points.map(p => {
+              if(idx < props.rpList.length && 
+                p.lat === props.rpList[idx].reference_point_lat && 
+                p.lon===props.rpList[idx].reference_point_lng){
+                orderedRpList.push(props.rpList[idx])
+                idx++
+              }
+              
+              return [p.lat, p.lon]}
+          )
+          if (props.setRpList)
+            props.setRpList(orderedRpList)
+          setPositions(pos)
+      }
+      }
+    ,[gpxFile])
+  
     return (
-        <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
-            <Click sp={props.sp} setRPoint={props.setRPoint} trackPoints={props.trackPoints} currPoint={currPoint} 
-            setCurrPoint={setCurrPoint}></Click>
-            <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {spMarker}
-            {epMarker}
-            {rpList}
-            {pointMarker}
-            <Polyline
-                pathOptions={{ fillColor: 'red', color: 'blue' }}
-                positions={
-                positions
-            }
-            />
-        </MapContainer>
-    )
-}
-
+      <MapContainer 
+          center={[45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}}>
+          <Click sp={props.sp}/>
+          <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          
+          <Polyline
+              pathOptions={{ fillColor: 'red', color: 'blue' }}
+              positions={
+              positions
+          }
+          />
+          {rpList}
+          {spMarker}
+          {epMarker}
+      </MapContainer>
+  )
+  }
+  
+  
 function Click(props){
     const [sp, setSp] = useState([])
     const map = useMapEvents({
-        'click': (e) => {
-            const distances = []
-            for(let i = 0; i < props.trackPoints.length; i++) {
-                distances.push(map.distance(e.latlng, props.trackPoints[i]))
-            }
-            const min = Math.min(...distances)
-            const idx = distances.indexOf(min)
-            if(min < 50){
-                props.setCurrPoint([props.trackPoints[idx].lat, props.trackPoints[idx].lon])
-                props.setRPoint([props.trackPoints[idx].lat, props.trackPoints[idx].lon])
-            }
-            else
-            {
-                props.setRPoint(['',''])
-            }
-        }
-            
         
-      })
-    if(props.sp[0] && props.sp[1] && sp[0] != props.sp[0] && sp[1] != props.sp[1]){
-        setSp(props.sp)
-        map.flyTo(props.sp, undefined, {animate: false})
+    })
+    if(props.sp.lat && props.sp.lng && sp[0] !== props.sp.lat && sp[1] !== props.sp.lng){
+      setSp([props.sp.lat, props.sp.lng])
+      map.flyTo([props.sp.lat, props.sp.lng], undefined, {animate: false})
     }
     return null
 }
+
 export default MapRecord
