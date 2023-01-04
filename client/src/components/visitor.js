@@ -16,6 +16,7 @@ import Record from './records';
 import HikeRecords from './HikeRecords';
 
 
+import Stats from './Stats';
 
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
@@ -29,6 +30,7 @@ function VisitorPage(props) {
   const [show, setShow] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
   const [records, setRecords] = useState([])
+  const [stat, setStat] = useState([])
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
 
@@ -177,6 +179,23 @@ function VisitorPage(props) {
   
   }, [props.userPower, token, dirty])
 
+  useEffect(() => {
+    const getPerformanceStats = async() =>{
+      try{
+        const stats = await API.getStatistics(token)
+        if(stats.error)
+          setErrorMessage(stats.msg)
+          else
+            setStat(stats.msg);
+      } catch(err){
+        console.log(err)
+      }
+    }
+    if (props.userPower === 'hiker')
+      getPerformanceStats()
+   
+   
+  }, [props.userPower, token, dirty])
   //
 
   const handleClose = () => setShow(false);
@@ -213,6 +232,11 @@ function VisitorPage(props) {
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
             <Route path="ongoinghike" element={<OnGoingHike alerts={hikesAlert}/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
+            
+            <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />
+            {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
+            
+            <Route path= "performancestats" element ={<Stats userPower={props.userPower} stat={stat}/>}/>
           </Routes>
         </Row>
       </Col>

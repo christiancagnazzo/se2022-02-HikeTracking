@@ -2,10 +2,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from unittest import mock
-from django.db import models
-
-from hiketracking.models import Hike, Point, CustomerProfile, CustomUser, WeatherAlert, UserHikeLog
-
+from datetime import datetime
+from hiketracking.models import Hike, Point,CustomerProfile,CustomUser,WeatherAlert,UserHikeLog
 
 def util_assertion(self, hike1):
     self.assertEqual(hike1[1].title, "Trekking")
@@ -192,23 +190,23 @@ class RecordPointTest(TestCase):
 
         p1.save()
 
-        Hike.objects.create(title='Climbing',
-                            length=1,
-                            expected_time=1,
-                            ascent=1,
-                            difficulty='easy',
-                            start_point=p1,
-                            end_point=p1,
-                            local_guide=user_id)
+        Hike.objects.create(title='Climbing', 
+        length=1, 
+        expected_time=1, 
+        ascent=1,
+        difficulty='easy',
+        start_point=p1,
+        end_point=p1,
+        local_guide=user_id)
 
-        hike1 = Hike.objects.get(title="Climbing")
-        time1 = models.DateTimeField()
-        UserHikeLog.objects.create(user=user_id,
-                                   hike=hike1,
-                                   counter=1,
-                                   point=p1,
-                                   datetime='2023-01-01',
-                                   end=True)
+        hike1 = Hike.objects.get(title = "Climbing")
+
+        UserHikeLog.objects.create( user = user_id,
+        hike = hike1,
+        counter = 1,
+        point = p1,
+        datetime = datetime.now(),
+        end = True)
 
         User.objects.create_user(email='test2@user.com',
                                  password='foo2',
@@ -234,12 +232,13 @@ class RecordPointTest(TestCase):
 
         hike2 = Hike.objects.get(title="Trekking")
 
-        UserHikeLog.objects.create(user=user_id_2,
-                                   hike=hike2,
-                                   counter=2,
-                                   point=p2,
-                                   datetime='2023-01-01',
-                                   end=False)
+        UserHikeLog.objects.create( user = user_id_2,
+            hike = hike2,
+            counter = 2,
+            point = p2,
+            datetime = datetime.now(),
+
+            end = False)
 
         return super().setUp()
 

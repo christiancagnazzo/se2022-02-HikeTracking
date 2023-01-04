@@ -19,6 +19,7 @@ class HutTest( TestCase ):
             "email": "test@g.com",
             "web_site": "www.google.com",
             "desc": "",
+            "picture":"hikePictures/defultImage.jpg",
             "position": {
                 "latitude": 45.1352,
                 "longitude": 7.0852,
@@ -51,7 +52,6 @@ class HutTest( TestCase ):
 
     def testAddHutBadcordination(self):
         self.data['position']['longitude'] = 'two'
-
         response = self.client.post( self.url,
                                      json.dumps( self.data ),
                                      content_type=self.context_type
@@ -60,7 +60,12 @@ class HutTest( TestCase ):
         self.assertEqual( response.status_code, HTTPStatus.BAD_REQUEST )
 
     def testAddHutEmptyAdress(self):
-        self.data['position']['adress'] = ""
+        self.data['position'] = {
+                "latitude": 45.1352,
+                "longitude": 7.0852,
+                "address": "First Hut  to be uploaded"
+            }  
+        self.data['position']['address'] = ""
         response = self.client.post( self.url,
                                      json.dumps( self.data ),
                                      content_type=self.context_type
@@ -77,7 +82,7 @@ class HutTest( TestCase ):
 
         self.assertEqual( response.status_code, HTTPStatus.BAD_REQUEST )
 
-    def testemptyrelatedHike(self):
+    def testEmptyRelatedHike(self):
         self.data['relatedHike'] = []
         response = self.client.post( self.url,
                                      json.dumps( self.data ),
