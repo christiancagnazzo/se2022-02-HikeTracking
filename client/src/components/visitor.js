@@ -21,7 +21,6 @@ import Stats from './Stats';
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
-  const [records, setRecords] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [recommendedhikes, setRecommendedhikes] = useState([])
   const [filtered, setFiltered] = useState(false)
@@ -39,24 +38,6 @@ function VisitorPage(props) {
     const flag = dirty
     setDirty(!flag)
   }
-
-  useEffect(() => {
-    if(userPower==="Hiker"){
-      const getProf = async () => {
-        try {
-          const hikes = await API.getProfile(token);
-          if (hikes.error)
-            setErrorMessage(hikes.msg)
-          else
-            setRecords(hikes.msg);
-          } catch (err) {
-          console.log(err)
-          }
-        }
-    getProf()
-  }
-  }, [props.userPower, token]);
-
 
   useEffect(() => {
     const getHikes = async () => {
@@ -248,7 +229,7 @@ function VisitorPage(props) {
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             <Route path="records" element={<Records records={records} userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
-            <Route path="ongoinghike" element={<OnGoingHike alerts={hikesAlert}/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike updateDirty={updateDirty} alerts={hikesAlert}/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
             
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />
