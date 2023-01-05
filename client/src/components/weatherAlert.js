@@ -105,14 +105,14 @@ function WeatherAlert(props){
         <Card body>
             <Card.Title>Waether Alert</Card.Title>
             {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
-            {successMessage ? <Alert variant='success' onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
+            {successMessage ? <Alert id="success" variant='success' onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
 
             <Form>
                 <FilterMap alertsMarker={alertsMarker} position={position} setPosition={setPosition} radius={radius} className="mb-2"/>
                 <Form.Group className='mt-2'>
                 <Row>
                     <Col>
-                    <Form.Range value={radius} onChange={(e) => setRadius(e.target.value)} />
+                    <Form.Range id="radiusInput" value={radius} onChange={(e) => setRadius(e.target.value)} />
                     {' '}
                     </Col>
 
@@ -128,13 +128,38 @@ function WeatherAlert(props){
                     <Form.Label>
                         Weather condition
                     </Form.Label>
-                    <Form.Select value={weather} onChange={(e) => {setWeather(e.target.value)}}>
+                    <Form.Select id="conditionInput" value={weather} onChange={(e) => {setWeather(e.target.value)}}>
                         {weatherOption.map((c,idx) => 
                         <option value={c} key={idx} >{c}</option>)}
                     </Form.Select>
                 </Form.Group>
-                
-                <Button onClick={handleSubmit}>Update weather condition</Button>
+                <Row>
+                <Col>
+        <InputGroup size="sm" >
+          
+          <Form.Control hidden
+          id='latitudeInput'
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={position[0]}
+            onChange={(e) => setPosition([e.target.value, props.point[1]])}
+          />
+        </InputGroup>
+      </Col>
+      <Col>
+        <InputGroup size="sm" className="">
+          
+          <Form.Control hidden
+            id='longitudeInput'
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={position[1]}
+            onChange={(e) => setPosition([props.point[0], e.target.value])}
+          />
+        </InputGroup>
+      </Col>
+                </Row>
+                <Button id="updateAlerts" onClick={handleSubmit}>Update weather condition</Button>
                 {' '}
                 <Button onClick={handleDelete} variant="danger">Delete all weather conditions</Button>
 

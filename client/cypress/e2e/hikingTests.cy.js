@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-describe('Start hike tests',() => {
+describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     it('T1: Successfull starting', () => {
         
         cy.visit("http://localhost:3000/")
@@ -71,7 +71,7 @@ describe('Start hike tests',() => {
 
     })
 
-    it('T3: Successfull ending', () => {
+    it('T6: Successfull ending', () => {
 
         cy.visit("http://localhost:3000/")
         cy.get("#login").click()

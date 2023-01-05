@@ -202,7 +202,7 @@ function VisitorPage(props) {
   return (
     <>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal id="modalAlert" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Attention!</Modal.Title>
         </Modal.Header>
