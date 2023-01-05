@@ -726,7 +726,7 @@ class Statistics(APIView):
             if (minutes / 60 > 0):
                 tot_speed += (hike.length * 1000) / (minutes / 60)
             
-        statistics['Total nr of kms walked'] = km_tot
+        statistics['Total nr of kms walked'] = str(km_tot) + " kms"
         
         fastes_pace_hike = (min(pace, key=pace.get), min(pace.values()))
         statistics['Fastest paced hike (min/km)'] = {'title': fastes_pace_hike[0][0].title, 'time': str(round(fastes_pace_hike[1], 3)) + " min/km"}
@@ -746,8 +746,8 @@ class Statistics(APIView):
         hike_length =  finished_hikes.order_by('length')  
         longest_hike = hike_length.last()
         shortest_hike = hike_length.first()
-        statistics['Longest (km) hike completed'] = {'title': longest_hike.title, 'length': longest_hike.length}
-        statistics['Shortest (km) hike completed'] = {'title': shortest_hike.title, 'length': shortest_hike.length}
+        statistics['Longest (km) hike completed'] = {'title': longest_hike.title, 'length': str(longest_hike.length) + " km"}
+        statistics['Shortest (km) hike completed'] = {'title': shortest_hike.title, 'length': str(shortest_hike.length) + " km"}
 
         hike_ascent =  finished_hikes.order_by('ascent')  
         longest_hike = hike_ascent.last()

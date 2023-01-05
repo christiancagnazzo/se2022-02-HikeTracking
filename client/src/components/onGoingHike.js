@@ -2,7 +2,7 @@ import { useEffect,useState } from "react"
 import { Card, Button, Form, Alert } from "react-bootstrap"
 import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
 import { Icon } from 'leaflet'
-import MapRecord from './MapRecord'
+import MapRecord from "./MapRecords"
 import dayjs, { Dayjs } from 'dayjs';
 import API from "../API"
 import { useNavigate } from "react-router-dom";
@@ -116,6 +116,7 @@ function OnGoingHike(props){
           return false
       }
         else{
+          props.updateDirty()
           navigate("/hiker/hikes")
           return true
       }

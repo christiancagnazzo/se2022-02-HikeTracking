@@ -12,8 +12,8 @@ import Preferences from './preferences';
 import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
-import Record from './records';
-import HikeRecords from './HikeRecords';
+import Records from './records';
+
 
 
 import Stats from './Stats';
@@ -38,7 +38,6 @@ function VisitorPage(props) {
     const flag = dirty
     setDirty(!flag)
   }
-
 
   useEffect(() => {
     const getHikes = async () => {
@@ -228,9 +227,9 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="records" element={<HikeRecords records={records} userPower={props.userPower}/>}/>
+            <Route path="records" element={<Records records={records} userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
-            <Route path="ongoinghike" element={<OnGoingHike alerts={hikesAlert}/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike updateDirty={updateDirty} alerts={hikesAlert}/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
             
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />
