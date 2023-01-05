@@ -72,26 +72,33 @@ function Map(props){
         </Popup>
         </Marker>)
     useEffect(() => {
-        if (props.gpxFile !== ''){ 
-            const gpx = new GpxParser()
-            gpx.parse(props.gpxFile)
-            const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
-            setPositions(pos)
-            if(props.setLength){
-                const elevation = gpx.tracks[0].elevation.max
-                const distance = gpx.tracks[0].distance.total
-                props.setSp(pos[0])
-                props.setEp(pos[pos.length-1])
-                props.setLength(parseInt(distance))
-                props.setAscent(parseInt(elevation))
-                let rp = [];
-                for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
-                    rp[i - 1] = gpx.tracks[0].points[i];
-                }
-                props.setTrackPoints(rp)
+        function parseTrack(){
+            if (props.gpxFile !== ''){ 
+                const gpx = new GpxParser()
+                gpx.parse(props.gpxFile)
+                const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
 
+                setPositions(pos)
+                if(props.setLength){
+                    const lowestElevation = gpx.tracks[0].elevation.min
+                    const elevation = gpx.tracks[0].elevation.max
+                    const distance = gpx.tracks[0].distance.total
+                    props.setSp(pos[0])
+                    props.setEp(pos[pos.length-1])
+                    props.setLength(parseInt(distance))
+                    props.setAscent(parseInt(elevation - lowestElevation))
+                    props.setAltitude(parseInt(elevation))
+                    let rp = [];
+                    for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
+                        rp[i - 1] = gpx.tracks[0].points[i];
+                    }
+                    props.setTrackPoints(rp)
+
+                }
             }
         }
+        console.log(gpxFile.length)
+        parseTrack()
     },[gpxFile])
     return (
         <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >

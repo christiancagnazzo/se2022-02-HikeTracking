@@ -69,6 +69,7 @@ class Hike( models.Model ):
     length = models.IntegerField()
     expected_time = models.IntegerField()
     ascent = models.IntegerField()
+    altitude = models.IntegerField(default=1000)
     difficulty = models.CharField( max_length=100 )
     description = models.CharField( max_length=200 )
     track_file = models.FileField( upload_to='tracks' )
