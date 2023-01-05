@@ -40,14 +40,20 @@ const myIconTp = new Icon({
     shadowSize: [41, 41]
 });
 
-function Map(props){
+function MRecord(props){
+    
     const [positions, setPositions] = useState([])
     const [currPoint, setCurrPoint] = useState([])
     const gpxFile = props.gpxFile
-    const rpList = props.rpList.map((pos,idx) => {
-        return <Marker position={[pos['reference_point_lat'],pos['reference_point_lng']]} icon={myIconRp} key={idx}>
+    const rpList = props.rpList.map((rp) => {
+        let x=rp['reached']
+        if (x!==false)
+            x="Reached at:" + x.split('T')[1].split('Z');
+        else x= ""
+         return <Marker position={[rp['reference_point_lat'],rp['reference_point_lng']]} icon={myIconRp} key={rp['reference_point_id']}>
             <Popup>
-                Reference Point: {pos['reference_point_address']}
+                Reference Point: {rp['reference_point_address']} 
+                <div>{x}</div>
             </Popup>
         </Marker>
     })
@@ -62,43 +68,38 @@ function Map(props){
         spMarker =(<Marker position={props.sp} icon={myIconSp} >
         <Popup>
             Start point: {props.spAddress}
+            <div>Time: {props.spTime}</div>
         </Popup>
         </Marker>)
     let epMarker = null
     if(props.ep[0]!=='' && props.ep[1]!=='')
         epMarker =(<Marker position={props.ep} icon={myIconEp} >
         <Popup>
-            End point: {props.epAddress}
+            End point: {props.epAddress} 
+            <div>Time: {props.epTime}</div>
         </Popup>
         </Marker>)
     useEffect(() => {
-        function parseTrack(){
-            if (props.gpxFile !== ''){ 
-                const gpx = new GpxParser()
-                gpx.parse(props.gpxFile)
-                const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
-
-                setPositions(pos)
-                if(props.setLength){
-                    const lowestElevation = gpx.tracks[0].elevation.min
-                    const elevation = gpx.tracks[0].elevation.max
-                    const distance = gpx.tracks[0].distance.total
-                    props.setSp(pos[0])
-                    props.setEp(pos[pos.length-1])
-                    props.setLength(parseInt(distance))
-                    props.setAscent(parseInt(elevation - lowestElevation))
-                    props.setAltitude(parseInt(elevation))
-                    let rp = [];
-                    for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
-                        rp[i - 1] = gpx.tracks[0].points[i];
-                    }
-                    props.setTrackPoints(rp)
-
+        if (props.gpxFile !== ''){ 
+            const gpx = new GpxParser()
+            gpx.parse(props.gpxFile)
+            const pos = gpx.tracks[0].points.map(p => [p.lat, p.lon])
+            setPositions(pos)
+            if(props.setLength){
+                const elevation = gpx.tracks[0].elevation.max
+                const distance = gpx.tracks[0].distance.total
+                props.setSp(pos[0])
+                props.setEp(pos[pos.length-1])
+                props.setLength(parseInt(distance))
+                props.setAscent(parseInt(elevation))
+                let rp = [];
+                for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
+                    rp[i - 1] = gpx.tracks[0].points[i];
                 }
+                props.setTrackPoints(rp)
+
             }
         }
-        console.log(gpxFile.length)
-        parseTrack()
     },[gpxFile])
     return (
         <MapContainer center={props.sp? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
@@ -150,4 +151,4 @@ function Click(props){
     }
     return null
 }
-export default Map
+export default MRecord

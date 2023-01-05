@@ -1,3 +1,4 @@
+
 import Card from "react-bootstrap/Card";
 import { Container, ListGroup, Row, Col, Modal } from "react-bootstrap";
 import UTILS from "../utils/utils";
@@ -43,6 +44,7 @@ function displayStats(stats) {
     </>
   );
 }
+
 
 // to-do modify the card
 function StatCard(props) {
@@ -199,7 +201,6 @@ function StatCard(props) {
     </>
   );
 }
-
 export default Stats;
 
 /*<ListGroup className="list-group-flush">

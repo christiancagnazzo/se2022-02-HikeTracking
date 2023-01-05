@@ -136,15 +136,10 @@ class Hikes( APIView ):
             hikes = Hike.objects.values()
         return hikes
 
-    def put(self, request, format=None):
+    def post(self, request, format=None):
         user_id = CustomUser.objects.get( email=request.user )
         data = request.data
-        try:
-            hike = Hike.objects.get( title=data['title'] )
-            hike.track_file.delete()
-            hike.delete()
-        except:
-            pass
+
 
         try:
             sp = get_province_and_village(
@@ -181,6 +176,7 @@ class Hikes( APIView ):
                 length=data['length'],
                 expected_time=data['expected_time'],
                 ascent=data['ascent'],
+                altitude=data['altitude'],
                 difficulty=data['difficulty'],
                 description=data['description'],
                 local_guide=user_id,
@@ -215,6 +211,81 @@ class Hikes( APIView ):
             print( e )
             return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
+    def put(self, request, format=None):
+        user_id = CustomUser.objects.get( email=request.user )
+        data = request.data
+
+
+        try:
+            sp = get_province_and_village(
+                data['start_point_lat'], data['start_point_lng'] )
+            start_point_type = 'none'
+
+            start_point = Point.objects.get_or_create(
+                latitude=data['start_point_lat'],
+                longitude=data['start_point_lng'],
+                defaults={
+                    'province': sp['province'],
+                    'village': sp['village'],
+                    'address': data['start_point_address'],
+                    'type': start_point_type
+                }
+            )
+
+            ep = get_province_and_village(
+                data['end_point_lat'], data['end_point_lng'] )
+            end_point_type = 'none'
+
+            end_point = Point.objects.get_or_create(
+                latitude=data['end_point_lat'],
+                longitude=data['end_point_lng'],
+                defaults={
+                    'province': ep['province'],
+                    'village': ep['village'],
+                    'address': data['end_point_address'],
+                    'type': end_point_type
+                }
+            )
+            hike = Hike.objects.update_or_create(
+                {
+                    'length':data['length'],
+                    'expected_time':data['expected_time'],
+                    'ascent':data['ascent'],
+                    'altitude': data['altitude'],
+                    'difficulty':data['difficulty'],
+                    'description':data['description'],
+                    'local_guide':user_id,
+                    'start_point':start_point[0],
+                    'end_point':end_point[0]
+                },title=data['title'], )[0]
+            hike.save()
+
+            for rp in data['rp_list']:
+                rp_cp = get_province_and_village(
+                    rp['reference_point_lat'], rp['reference_point_lng'] )
+                ref_point_type = 'none'
+                ref_point = Point.objects.get_or_create(
+                    latitude=rp['reference_point_lat'],
+                    longitude=rp['reference_point_lng'],
+                    defaults={
+                        'province': rp_cp['province'],
+                        'village': rp_cp['village'],
+                        'address': rp['reference_point_address'],
+                        'type': ref_point_type
+                    }
+                )
+
+                rp_hike = HikeReferencePoint.objects.get_or_create(
+                    hike=hike,
+                    point=ref_point[0]
+                )
+
+                rp_hike[0].save()
+
+            return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
+        except Exception as e:
+            print( e )
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
 
 class Hike_( APIView ):
     def get(self, request, title):
@@ -622,64 +693,71 @@ class Statistics(APIView):
 
         finished_log = UserHikeLog.objects.filter(user_id=user_id).filter(end=True)
         
-        statistics['Total nr of hikes finished'] = finished_log.count()
-        
-        km_tot = 0
-        ascent_tot = 0
-        tot_pace = 0
-        tot_speed = 0
-        time_spent = {}
-        pace = {}
-        highest = { 'hike': None, 'max': 0 }
+        if (finished_log.count() > 0):
+            statistics['Total nr of hikes finished'] = finished_log.count()
+            statistics['Different hikes finished'] = finished_log.values('hike_id').distinct().count()
 
-        for f in finished_log:
-
-            # Total Km
-            hike = Hike.objects.get(id=f.hike.id)
-            km_tot += hike.length 
-            ascent_tot += hike.ascent
-
-            # Longest / Shortest (hours)
-            logs = UserHikeLog.objects\
-                .filter(user_id=user_id)\
-                .filter(hike_id=f.hike) \
-                .filter(counter=f.counter)\
-                .order_by('datetime')
-            start = logs.first()
-            end = logs.last()
-            time = end.datetime - start.datetime
-            time_spent[(f.hike, f.counter)] = time
-            minutes = int(time.total_seconds()/60)
-            pace[(f.hike, f.counter)] = minutes / hike.length
-            tot_pace += minutes / hike.length
-            if (minutes / 60 > 0):
-                tot_speed += (hike.length * 1000) / (minutes / 60)
+            km_tot = 0
+            ascent_tot = 0
+            tot_pace = 0
+            tot_speed = 0
+            time_spent = {}
+            pace = {}
             
-        statistics['Total nr of kms walked'] = km_tot
-        
-        fastes_pace_hike = (min(pace, key=pace.get), min(pace.values()))
-        statistics['Fastest paced hike (min/km)'] = {'title': fastes_pace_hike[0][0].title, 'time': str(round(fastes_pace_hike[1], 3)) + " min/km"}
-        
-        statistics['Average pace (min/km)'] = str(round(tot_pace / finished_log.count(), 3))+" min/km"
-        statistics['Average vertical ascent speed (m/hour)'] = str(round(tot_speed / finished_log.count(), 3))+" m/hour"
-        
-        max_hike_time = (max(time_spent, key=time_spent.get), max(time_spent.values()))
-        min_hike_time = (min(time_spent, key=time_spent.get), min(time_spent.values()))
-        statistics['Longest (hours) hike completed'] = {'title': max_hike_time[0][0].title, 'time': str(max_hike_time[1])}
-        statistics['Shortest (hours) hike completed'] = {'title': min_hike_time[0][0].title, 'time': str(min_hike_time[1])}
 
-        hikes_id = finished_log.values('hike_id').distinct()
-        hikes_id_list = [h['hike_id'] for h in hikes_id ]
-        finished_hikes = Hike.objects.filter(id__in=hikes_id_list)  
+            for f in finished_log:
 
-        hike_length =  finished_hikes.order_by('length')  
-        longest_hike = hike_length.last()
-        shortest_hike = hike_length.first()
-        statistics['Longest (km) hike completed'] = {'title': longest_hike.title, 'length': longest_hike.length}
-        statistics['Shortest (km) hike completed'] = {'title': shortest_hike.title, 'length': shortest_hike.length}
+                # Total Km
+                hike = Hike.objects.get(id=f.hike.id)
+                km_tot += hike.length 
+                ascent_tot += hike.ascent
 
-        hike_ascent =  finished_hikes.order_by('ascent')  
-        longest_hike = hike_ascent.last()
-        statistics['Highest altitude reached'] = {'title': longest_hike.title, 'altitude': str(longest_hike.ascent) + " meters"}
+                # Longest / Shortest (hours)
+                logs = UserHikeLog.objects\
+                    .filter(user_id=user_id)\
+                    .filter(hike_id=f.hike) \
+                    .filter(counter=f.counter)\
+                    .order_by('datetime')
+                start = logs.first()
+                end = logs.last()
+                time = end.datetime - start.datetime
+                time_spent[(f.hike, f.counter)] = time
+                minutes = int(time.total_seconds()/60)
+                pace[(f.hike, f.counter)] = minutes / hike.length
+                tot_pace += minutes / hike.length
+                if (minutes / 60 > 0):
+                    tot_speed += (hike.length * 1000) / (minutes / 60)
+                
+            statistics['Total nr of kms walked'] = str(km_tot) + " kms"
+            
+            fastest_pace_hike = (min(pace, key=pace.get), min(pace.values()))
+            statistics['Fastest paced hike (min/km)'] = {'title': fastest_pace_hike[0][0].title, 'time': str(round(fastest_pace_hike[1], 3)) + " min/km"}
+            
+            statistics['Average pace (min/km)'] = str(round(tot_pace / finished_log.count(), 3))+" min/km"
+            statistics['Average vertical ascent speed (m/hour)'] = str(round(tot_speed / finished_log.count(), 3))+" m/hour"
+            
+            max_hike_time = (max(time_spent, key=time_spent.get), max(time_spent.values()))
+            min_hike_time = (min(time_spent, key=time_spent.get), min(time_spent.values()))
+            statistics['Longest (hours) hike completed'] = {'title': max_hike_time[0][0].title, 'time': str(max_hike_time[1])}
+            statistics['Shortest (hours) hike completed'] = {'title': min_hike_time[0][0].title, 'time': str(min_hike_time[1])}
 
+            hikes_id = finished_log.values('hike_id').distinct()
+            hikes_id_list = [h['hike_id'] for h in hikes_id ]
+            finished_hikes = Hike.objects.filter(id__in=hikes_id_list)  
+
+            hike_length =  finished_hikes.order_by('length')  
+            longest_hike = hike_length.last()
+            shortest_hike = hike_length.first()
+            statistics['Longest (km) hike completed'] = {'title': longest_hike.title, 'length': str(longest_hike.length) + " km"}
+            statistics['Shortest (km) hike completed'] = {'title': shortest_hike.title, 'length': str(shortest_hike.length) + " km"}
+
+            hike_ascent =  finished_hikes.order_by('altitude')  
+            longest_hike = hike_ascent.last()
+            statistics['Highest altitude reached'] = {'title': longest_hike.title, 'altitude': str(longest_hike.altitude) + " meters"}
+
+            hike_ascent =  finished_hikes.order_by('ascent')  
+            longest_hike = hike_ascent.last()
+            statistics['Highest altitude range done'] = {'title': longest_hike.title, 'ascent': str(longest_hike.ascent) + " meters"}
+
+            
         return Response(status=status.HTTP_200_OK, data=statistics)

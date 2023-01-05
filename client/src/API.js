@@ -2,12 +2,12 @@ import UTILS from "./utils/utils"
 
 const URL = "http://localhost:8000/hiketracking/"
 
-async function createHike(hike_description, hike_file, token) {
+async function createHike(hike_description, hike_file, token, method) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   console.log(JSON.stringify(hike_description))
   try {
     let response = await fetch(URL + 'hikes/', {
-      method: 'PUT',
+      method: method,
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
@@ -274,7 +274,8 @@ async function getHikeFile(hike_id, token) {
     },
   });
   if (response.status === 200) {
-    const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+    const readable = await response.arrayBuffer()
+    const text = new TextDecoder().decode(readable);
     return text
   }
   else {

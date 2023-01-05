@@ -52,6 +52,7 @@ function App2() {
         //setMessage(result.msg)
         navigate('')
       } else {
+        console.log(result.msg.role)
         setLoggedIn(true);
         setUser(result.msg.user);
         setUserPower(result.msg.role)
@@ -114,7 +115,7 @@ function App2() {
             <Route path='/login' element={<LoginForm login={doLogin} loginError={message} setLoginError={setMessage} />} />
             <Route path='/localguide/*' element={ <LocalGuide userId={userId} userPower={userPower}/>}/>
             <Route path='/registration' element={<RegistrationForm />}></Route>
-            <Route path='/platformmanager/*' element={userPower === 'platformmanager' ? < PlatformManager/>: <Navigate replace to={'/login'}></Navigate>}></Route>
+            <Route path='/platformmanager/*' element={<PlatformManager userPower={userPower}/>}/>
             <Route path='/*' element={userPower !== 'hutworker' ? (<VisitorPage userId={userId} user={user} userPower={userPower} filter={filter} setFilter={setFilter} ></VisitorPage>) : <HutWorker userPower={userPower}/>}/>
             
           </Routes>

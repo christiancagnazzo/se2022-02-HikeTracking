@@ -173,9 +173,11 @@ function HikeCard(props) {
     const [file, setFile] = useState('')
     const [error, setError] = useState(false)
     const token = localStorage.getItem("token")
+    
     useEffect(() => {
       async function getFile(){
       try{
+        
         const track = await API.getHikeFile(props.id, token)
         if(track.err){
           setError(true)

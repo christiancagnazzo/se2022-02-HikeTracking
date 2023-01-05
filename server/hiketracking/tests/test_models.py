@@ -123,9 +123,9 @@ def setup_utils_hike():
     p1 = Point(latitude=0.01, longitude=0.01, province="test province", village="test village",
                address="test address")
     p1.save()
-    Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, difficulty='easy', start_point=p1,
+    Hike.objects.create(title='Climbing', length=2, expected_time=1, ascent=1, altitude=1000, difficulty='easy', start_point=p1,
                         end_point=p1, local_guide=user_id)
-    Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0, difficulty='medium', start_point=p1,
+    Hike.objects.create(title='Trekking', length=3, expected_time=2, ascent=0, altitude=1000,difficulty='medium', start_point=p1,
                         end_point=p1, local_guide=user_id)
 
 

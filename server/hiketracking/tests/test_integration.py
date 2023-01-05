@@ -6,10 +6,10 @@ from datetime import datetime
 from hiketracking.models import Hike, Point,CustomerProfile,CustomUser,WeatherAlert,UserHikeLog
 
 def util_assertion(self, hike1):
-    self.assertEqual(hike1[1].title,"Trekking")
-    self.assertEqual(hike1[1].length , 3)
+    self.assertEqual(hike1[1].title, "Trekking")
+    self.assertEqual(hike1[1].length, 3)
     self.assertEqual(hike1[1].expected_time, 2)
-    self.assertEqual(hike1[1].ascent , 0)
+    self.assertEqual(hike1[1].ascent, 0)
     self.assertEqual(hike1[1].difficulty, 'medium')
     self.assertEqual(hike1[1].start_point.latitude, 0.01)
     self.assertEqual(hike1[1].start_point.longitude, 0.01)
@@ -27,44 +27,46 @@ def set_up():
     User = get_user_model()
 
     User.objects.create_user(email='test@user.com',
-    password='foo',
-    role='smth')
+                             password='foo',
+                             role='smth')
 
     user_id = User.objects.get(email='test@user.com')
     p1 = Point(latitude=0.01,
-    longitude=0.01,
-    province="test province",
-    village="test village",
-    address="test address")
+               longitude=0.01,
+               province="test province",
+               village="test village",
+               address="test address")
 
     p1.save()
 
-    Hike.objects.create(title='Climbing', 
-    length=2, 
-    expected_time=1, 
-    ascent=1,
-    difficulty='easy',
-    start_point=p1,
-    end_point=p1,
-    local_guide=user_id)
+    Hike.objects.create(title='Climbing',
+                        length=2,
+                        expected_time=1,
+                        ascent=1,
+                        difficulty='easy',
+                        start_point=p1,
+                        end_point=p1,
+                        local_guide=user_id)
 
-    Hike.objects.create(title='Trekking', 
-    length=3, 
-    expected_time=2, 
-    ascent=0,
-    difficulty='medium',
-    start_point=p1,
-    end_point=p1,
-    local_guide=user_id)
+    Hike.objects.create(title='Trekking',
+                        length=3,
+                        expected_time=2,
+                        ascent=0,
+                        difficulty='medium',
+                        start_point=p1,
+                        end_point=p1,
+                        local_guide=user_id)
+
 
 class recommendedHikeTest(TestCase):
     def setUp(self) -> None:
         set_up()
         return super().setUp()
+
     def test_Hike(self):
         hike1 = Hike.objects.all()
         util_assertion(self, hike1)
-        
+
 
 class modifyHikeTest(TestCase):
     def setUp(self) -> None:
@@ -72,25 +74,24 @@ class modifyHikeTest(TestCase):
         return super().setUp()
 
     def test_modifyHike(self):
-        hike1 = Hike.objects.get(title = "Climbing")
-        hike1.title="modifyTest"
-        hike1.length=10
-        hike1.expected_time=10
-        hike1.ascent=10
-        hike1.difficulty="hard"
-        hike1.start_point.latitude=0.1
-        hike1.start_point.province="modifyTestProvince"
-        hike1.start_point.village="modifyTestVillage"
-        hike1.start_point.address="modifyTestAddress"
-        hike1.end_point.latitude=0.1
-        hike1.end_point.province="modifyTestProvince"
-        hike1.end_point.village="modifyTestVillage"
-        hike1.end_point.address="modifyTestAddress"
+        hike1 = Hike.objects.get(title="Climbing")
+        hike1.title = "modifyTest"
+        hike1.length = 10
+        hike1.expected_time = 10
+        hike1.ascent = 10
+        hike1.difficulty = "hard"
+        hike1.start_point.latitude = 0.1
+        hike1.start_point.province = "modifyTestProvince"
+        hike1.start_point.village = "modifyTestVillage"
+        hike1.start_point.address = "modifyTestAddress"
+        hike1.end_point.latitude = 0.1
+        hike1.end_point.province = "modifyTestProvince"
+        hike1.end_point.village = "modifyTestVillage"
+        hike1.end_point.address = "modifyTestAddress"
         hike1.save()
         hike1 = Hike.objects.all()
-    
-        util_assertion(self, hike1)
 
+        util_assertion(self, hike1)
 
 
 class deleteHikeTest(TestCase):
@@ -99,7 +100,7 @@ class deleteHikeTest(TestCase):
         return super().setUp()
 
     def test_deleteHikeById(self):
-        obj = Hike.objects.get(title = "Trekking")
+        obj = Hike.objects.get(title="Trekking")
         obj.delete()
         hike2 = Hike.objects.all()
         self.assertTrue(hike2.exists())
@@ -112,15 +113,15 @@ class deleteHikeTest(TestCase):
 
 class CustomerProfileTest(TestCase):
     def setUp(self) -> None:
-        c1 = CustomUser(email = "test@test.com",role = "Testrole")
+        c1 = CustomUser(email="test@test.com", role="Testrole")
         c1.save()
-        CustomerProfile.objects.create(user =c1,
-        min_length = 0.01,
-        max_length = 0.01,
-        min_time = 1,
-        max_time = 1,
-        min_altitude = 1,
-        max_altitude = 1)
+        CustomerProfile.objects.create(user=c1,
+                                       min_length=0.01,
+                                       max_length=0.01,
+                                       min_time=1,
+                                       max_time=1,
+                                       min_altitude=1,
+                                       max_altitude=1)
 
         return super().setUp()
 
@@ -136,12 +137,12 @@ class CustomerProfileTest(TestCase):
         self.assertEqual(cp1[0].max_altitude, 1)
 
     def test_modifyProfile(self):
-        p1 = CustomerProfile.objects.get(min_length = 0.01)
+        p1 = CustomerProfile.objects.get(min_length=0.01)
         p1.min_altitude = 2
-        p1.min_length =  0.02
+        p1.min_length = 0.02
         p1.min_time = 2
         p1.max_altitude = 2
-        p1.max_length =  0.02
+        p1.max_length = 0.02
         p1.max_time = 2
         p1.save()
         cp1 = CustomerProfile.objects.all()
@@ -152,40 +153,40 @@ class CustomerProfileTest(TestCase):
         self.assertEqual(cp1[0].min_altitude, 2)
         self.assertEqual(cp1[0].max_altitude, 2)
 
-
     def test_deleteAllProfile(self):
         CustomerProfile.objects.all().delete()
         p2 = CustomerProfile.objects.all()
         self.assertFalse(p2.exists())
 
 
-
-
 class PerformanceStatsTest(TestCase):
     def setUp(self) -> None:
         pass
+
     def test_PerformanceStats(self):
         pass
+
     def test_modifyPerformanceStates(self):
         pass
+
     def test_deletePerformanceStates(self):
         pass
 
- 
+
 class RecordPointTest(TestCase):
     def setUp(self) -> None:
         User = get_user_model()
 
         User.objects.create_user(email='test@user.com',
-        password='foo',
-        role='smth')
+                                 password='foo',
+                                 role='smth')
 
         user_id = User.objects.get(email='test@user.com')
         p1 = Point(latitude=0.01,
-        longitude=0.01,
-        province="test province",
-        village="test village",
-        address="test address")
+                   longitude=0.01,
+                   province="test province",
+                   village="test village",
+                   address="test address")
 
         p1.save()
 
@@ -208,38 +209,39 @@ class RecordPointTest(TestCase):
         end = True)
 
         User.objects.create_user(email='test2@user.com',
-        password='foo2',
-        role='smth2')
+                                 password='foo2',
+                                 role='smth2')
 
         user_id_2 = User.objects.get(email='test2@user.com')
         p2 = Point(latitude=0.02,
-        longitude=0.02,
-        province="test province 2",
-        village="test village 2",
-        address="test address 2")
+                   longitude=0.02,
+                   province="test province 2",
+                   village="test village 2",
+                   address="test address 2")
 
         p2.save()
 
-        Hike.objects.create(title='Trekking', 
-        length=2, 
-        expected_time=2, 
-        ascent=2,
-        difficulty='normal',
-        start_point=p2,
-        end_point=p2,
-        local_guide=user_id_2)
+        Hike.objects.create(title='Trekking',
+                            length=2,
+                            expected_time=2,
+                            ascent=2,
+                            difficulty='normal',
+                            start_point=p2,
+                            end_point=p2,
+                            local_guide=user_id_2)
 
-        hike2 = Hike.objects.get(title = "Trekking")
+        hike2 = Hike.objects.get(title="Trekking")
 
         UserHikeLog.objects.create( user = user_id_2,
-        hike = hike2,
-        counter = 2,
-        point = p2,
-        datetime = datetime.now(),
+            hike = hike2,
+            counter = 2,
+            point = p2,
+            datetime = datetime.now(),
 
-        end = False)
+            end = False)
 
         return super().setUp()
+
     def test_PerformanceStats(self):
         u1 = UserHikeLog.objects.all()
         self.assertEqual(u1[0].user.email, 'test@user.com')
@@ -298,7 +300,7 @@ class RecordPointTest(TestCase):
 
     def test_modifyPerformanceStates(self):
         u1 = UserHikeLog.objects.get(counter=1)
-        u1.end=False
+        u1.end = False
         u1.counter = 3
         u1.save()
         u1 = UserHikeLog.objects.all()
@@ -313,16 +315,17 @@ class RecordPointTest(TestCase):
 
 class WeatherAlertTest(TestCase):
     def setUp(self) -> None:
-        WeatherAlert.objects.create(condition = "Snow",
-        weather_lat = 0.01,
-        weather_lon = 0.01,
-        radius = 1)
-       
-        WeatherAlert.objects.create(condition = "Rain",
-        weather_lat = 0.02,
-        weather_lon = 0.02,
-        radius = 2)
+        WeatherAlert.objects.create(condition="Snow",
+                                    weather_lat=0.01,
+                                    weather_lon=0.01,
+                                    radius=1)
+
+        WeatherAlert.objects.create(condition="Rain",
+                                    weather_lat=0.02,
+                                    weather_lon=0.02,
+                                    radius=2)
         return super().setUp()
+
     def test_WeatherAlert(self):
         p1 = WeatherAlert.objects.all()
         self.assertEqual(p1[0].condition, "Snow")
@@ -334,8 +337,9 @@ class WeatherAlertTest(TestCase):
         self.assertEqual(p1[1].weather_lon, 0.02)
         self.assertEqual(p1[1].radius, 2)
         pass
+
     def test_modifyWeatherAlert(self):
-        alert1=WeatherAlert.objects.get(condition = "Snow")
+        alert1 = WeatherAlert.objects.get(condition="Snow")
         alert1.weather_lat = 0.03
         alert1.weather_lon = 0.03
         alert1.radius = 3
@@ -346,10 +350,8 @@ class WeatherAlertTest(TestCase):
         self.assertEqual(alert2.weather_lon, 0.03)
         self.assertEqual(alert2.radius, 3)
         pass
+
     def test_deleteWeatherAlert(self):
         WeatherAlert.objects.all().delete()
         w = CustomerProfile.objects.all()
         self.assertFalse(w.exists())
-
-
-

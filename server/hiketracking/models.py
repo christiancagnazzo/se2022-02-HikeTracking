@@ -69,13 +69,14 @@ class Hike( models.Model ):
     length = models.IntegerField()
     expected_time = models.IntegerField()
     ascent = models.IntegerField()
+    altitude = models.IntegerField(default=1000)
     difficulty = models.CharField( max_length=100 )
     description = models.CharField( max_length=200 )
     track_file = models.FileField( upload_to='tracks' )
     start_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="start_point" )
     end_point = models.ForeignKey( Point, on_delete=models.CASCADE, related_name="end_point" )
     local_guide = models.ForeignKey( CustomUser, on_delete=models.CASCADE )
-    picture = models.FileField( default='./hikePictures/defultImage.jpg' , upload_to='hikePictures' )
+    picture = models.FileField( default='hikePictures/defultImage.jpg' , upload_to='hikePictures' )
 
     class Condition( models.TextChoices ):
         OPEN = "Open"
@@ -118,7 +119,7 @@ class Hut( models.Model ):
     web_site = models.CharField( max_length=50, blank=True, default='' )
     desc = models.TextField( blank=True, default=" " )
     point = models.OneToOneField( Point, on_delete=models.CASCADE )
-    picture = models.FileField( default=',/hutsPicture/defultHut.jpg',upload_to='hutsPicture' )
+    picture = models.FileField( default='hutsPicture/defultImage.jpg',upload_to='hutsPicture' )
 
     def __str__(self):
         return self.name

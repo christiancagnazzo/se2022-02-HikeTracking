@@ -8,30 +8,31 @@ import { map } from "leaflet";
 
 function HikeForm(props) {
   const { hiketitle } = useParams()
-  let [title, setTitle] = useState('Sentiero per il ROCCIAMELONE')
-  let [length, setLength] = useState(9)
-  let [time, setTime] = useState(240)
-  let [ascent, setAscent] = useState(3538)
-  let [difficulty, setDifficulty] = useState("Tourist")
-  let [sp, setSp] = useState(["", ""])
-  let [addressSp, setAddressSp] = useState('')
-  let [ep, setEp] = useState(["", ""])
-  let [addressEp, setAddressEp] = useState('')
-  let [rp, setRp] = useState(['', ''])
-  let [addressRp, setAddressRp] = useState('')
-  let [rpList, setRpList] = useState([])
-  let [trackPoints, setTrackPoints] = useState([])
-  let [desc, setDesc] = useState('First hike to be uploaded')
-  let [file, setFile] = useState('')
+  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE')
+  const [length, setLength] = useState(9)
+  const [time, setTime] = useState(240)
+  const [ascent, setAscent] = useState(3538)
+  const [difficulty, setDifficulty] = useState("Tourist")
+  const [sp, setSp] = useState(["", ""])
+  const [addressSp, setAddressSp] = useState('')
+  const [ep, setEp] = useState(["", ""])
+  const [addressEp, setAddressEp] = useState('')
+  const [rp, setRp] = useState(['', ''])
+  const [addressRp, setAddressRp] = useState('')
+  const [rpList, setRpList] = useState([])
+  const [trackPoints, setTrackPoints] = useState([])
+  const [desc, setDesc] = useState('First hike to be uploaded')
+  const [file, setFile] = useState('')
   const [image, setImage] = useState('')
-  let [readFile, setReadFile] = useState('')
-  let [errorMessage, setErrorMessage] = useState('')
-  let navigate = useNavigate();
-  let [huts, setHuts] = useState([])
-  let [parkingLots, setParkingLots] = useState([])
-  let [mapErr, setMapErr] = useState("Upload a gpx track file to modify the fields")
-  let token = localStorage.getItem("token");
-
+  const [readFile, setReadFile] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate();
+  const [huts, setHuts] = useState([])
+  const [parkingLots, setParkingLots] = useState([])
+  const [altitude, setAltitude] = useState([])
+  const [mapErr, setMapErr] = useState("Upload a gpx track file to modify the fields")
+  const token = localStorage.getItem("token");
+   
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -42,6 +43,7 @@ function HikeForm(props) {
       'length': length,
       'expected_time': time,
       'ascent': ascent,
+      'altitude': altitude,
       'difficulty': difficulty,
       'start_point_lat': sp[0],
       'start_point_lng': sp[1],
@@ -53,8 +55,8 @@ function HikeForm(props) {
       'rp_list': rpList,
       'picture': image
     }
-
-    let req = await API.createHike(hikeDescription, formData, token)
+    const method = hiketitle? 'PUT': 'POST'
+    let req = await API.createHike(hikeDescription, formData, token, method)
 
     if (req.error) {
       setErrorMessage(req.msg)
@@ -95,6 +97,7 @@ function HikeForm(props) {
         setAddressEp(hike.end_point_address)
         setRpList(hike.rp)
         setDesc(hike.description)
+        setAltitude(hike.altitude)
         const filename = hike.track_file.split('/')[1]
         let file = await API.getHikeFile(hike.id, token)
         if(file.err){
@@ -272,7 +275,7 @@ function HikeForm(props) {
         <PointInput file={file} parkingLots={parkingLots} huts={huts} setFormP={setEp} id="endPoint" label="End Point" point={ep} setPoint={setPoint} which={1} address={addressEp} setAddress={setAddressEp} />
         <RefPoint file={file} point={rp} setPoint={setRPoint} address={addressRp} setAddress={setAddressRp} addPoint={addRPoint} removeAll={cleanRPoint} />
         <Card>
-          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength} updateTrackPoints={updateTrackPoints}
+          <Map setSp={setSp} setEp={setEp} sp={sp} ep={ep} spAddress={addressSp} epAddress={addressEp} rpList={rpList} gpxFile={readFile} setAscent={setAscent} setLength={setLength} updateTrackPoints={updateTrackPoints} setAltitude={setAltitude}
             setTrackPoints={setTrackPoints} trackPoints={trackPoints} setRPoint={setRPoint}/>
         </Card>
         <Form.Group className="mb-3" controlId="description">
