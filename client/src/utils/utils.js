@@ -1,17 +1,18 @@
 import { Col, Row } from "react-bootstrap"
 import dayjs from "dayjs"
 function createRows(objects, cards){
-    let rows = []
-  for (let i = 0; i < Math.ceil(objects.length / 3); i++) {
+  const nCol = cards.length
+  let rows = []
+  for (let i = 0; i < Math.ceil(objects.length); i++) {
     let cols = []
     let j
-    for (j = 0; j < 3 && cards.length; j++) {
+    for (j = 0; j < nCol && cards.length; j++) {
       cols.push(cards.pop())
     }
-    for (; j < 3; j++) {
-      cols.push(<Col className="pb-4 px-0" key={j}></Col>)
+    for (; j < nCol; j++) {
+      cols.push(<Col className="pb-4 " key={j}></Col>)
     }
-    rows.push(<Row className='px-0' key={i}>{cols}</Row>)
+    rows.push(<Row xl={3} sm={2} xs={1} cols className='px-0' key={i}>{cols}</Row>)
   }
   return rows
 }

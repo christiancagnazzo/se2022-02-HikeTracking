@@ -21,15 +21,7 @@ function Record(props) {
       e.preventDefault()
     }
   
-    useEffect(() => {
-      async function hiker(){
     
-      if(!isHiker){
-        navigate("/")
-      }
-    }
-    hiker()
-  },[isHiker])
 
   if (hike.length == 0)
     return <h1>No completed hikes</h1> 

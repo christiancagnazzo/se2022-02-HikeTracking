@@ -170,18 +170,15 @@ function GeographicalFilter(props) {
         </Card>
         <Form.Group className='mb-2'>
           <Row>
-
-
-            <Col>
+            <Col sm={8}>
               <Form.Range value={radius} onChange={(e) => setRadius(e.target.value)} />
               {' '}
             </Col>
-            <Col>
+            <Col sm={4}>
               <InputGroup>
                 <InputGroup.Text>Range - {radius*5} km</InputGroup.Text>
                 <Button variant="danger" onClick={() => setPosition('')}>Reset</Button>
               </InputGroup>
-
             </Col>
 
 

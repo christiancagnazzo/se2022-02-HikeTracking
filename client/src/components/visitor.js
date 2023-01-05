@@ -13,9 +13,6 @@ import RecommendedHikes from './RecomHikes';
 import OnGoingHike from './onGoingHike';
 import WeatherHikeAlert from './hikeAlert';
 import Records from './records';
-
-
-
 import Stats from './Stats';
 
 function VisitorPage(props) {
@@ -202,13 +199,13 @@ function VisitorPage(props) {
   return (
     <>
 
-      <Modal id="modalAlert" show={show} onHide={handleClose}>
+      <Modal id="modalAlerts" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Attention!</Modal.Title>
         </Modal.Header>
         <Modal.Body>You have {alertCount} new weather alerts about your ongoing hike!</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button id="closeAlerts" variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={()=> {setShow(false); navigate('/weatherhikealert')}}>
@@ -221,7 +218,7 @@ function VisitorPage(props) {
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} />}/>
+            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} updateDirty={updateDirty}/>}/>
             <Route path="filterhikes" element={<FilterFormHikes  setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
             <Route path= "recommendedhikes" element ={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes}/>}/>
             <Route path="huts" element={<Huts huts={huts}/>}/>
@@ -229,7 +226,7 @@ function VisitorPage(props) {
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
             <Route path="records" element={<Records records={records} userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
-            <Route path="ongoinghike" element={<OnGoingHike updateDirty={updateDirty} alerts={hikesAlert}/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike updateDirty={updateDirty} alerts={hikesAlert} />}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
             
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />

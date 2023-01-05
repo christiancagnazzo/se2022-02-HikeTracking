@@ -4,10 +4,10 @@ import {  Row, Col,  Container } from 'react-bootstrap';
 import HikeCard from './hikecard';
 import UTILS from '../utils/utils';
 
-function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId) {
+function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId, updateDirty) {
   let hikescard = hikes.map((h, idx) =>
-    <Col className="pb-4 px-0" key={idx}>
-      <HikeCard userId={userId} userPower={userPower} hike={h} />
+    <Col  className="pb-4 px-0" key={idx}>
+      <HikeCard userId={userId} userPower={userPower} hike={h} updateDirty={updateDirty} />
     </Col>)
   let rows = UTILS.createRows(hikes, hikescard)
   return (
@@ -25,9 +25,9 @@ function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId) {
           </Col>
         </Row>
       </Container>
-      <div>
+      
         {rows}
-      </div>
+      
     </>
   )
 }
@@ -52,7 +52,7 @@ function Hikes(props) {
     )
   }
   else {
-    return displayHikesUtil(props.hikes, props.userPower, props.filtered, props.setFiltered, props.userId)
+    return displayHikesUtil(props.hikes, props.userPower, props.filtered, props.setFiltered, props.userId,props.updateDirty)
   }
 
 }

@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react"
-import { Card, Button, Form, Alert } from "react-bootstrap"
+import { Card, Button, Form, Alert, Row, Col } from "react-bootstrap"
 import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
 import { Icon } from 'leaflet'
 import MapRecord from "./MapRecord"
@@ -63,7 +63,7 @@ function OnGoingHike(props){
       }
       
       if(time.isBefore(last) || time.isSame(last)){
-        setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+        setErrorMessageModal("The last point was reached at " + last.format("HH:mm on DD/MM/YYYY") + ". Please insert a valid datetime")
         return false
       }
       const index = rpList.findIndex((rp) => rp.reference_point_address === curr)
@@ -102,7 +102,7 @@ function OnGoingHike(props){
     e.preventDefault()
     
     if(time.isBefore(last) || time.isSame(last)){
-      setErrorMessageModal("The last point was reached at " + time.format("HH:mm:ss on DD/MM/YYYY") + ". Please insert a valid datetime")
+      setErrorMessageEndModal("The last point was reached at " + last.format("HH:mm on DD/MM/YYYY") + ". Please insert a valid datetime")
       return false
     }
     try {
@@ -117,7 +117,7 @@ function OnGoingHike(props){
       }
         else{
           props.updateDirty()
-          navigate("/hiker/hikes")
+          navigate("/hiker/records")
           return true
       }
     }
@@ -192,8 +192,8 @@ function OnGoingHike(props){
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
           {fileMap? <MapRecord  showAlerts={showAlerts} alerts={props.alerts} className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/> : <TheSpinner/>}
-          {props.alerts? <div className="mt-3 text-danger">Weather conditions: {alertsConditions.join(', ') +'.'}</div>:''}
-          {showAlerts !== undefined ?(<><Button className="mt-3" id="showAlerts" variant="warning" onClick={() => {setShowAlerts(!showAlerts)}}>{!showAlerts?'Display alerts':'Hide alerts'}</Button>{' '}</>):''}
+          {props.alerts.length? <div className="mt-3 text-danger">Weather conditions: {alertsConditions.join(', ') +'.'}</div>:''}
+          {showAlerts !== undefined && props.alerts.length?(<><Button className="mt-3" id="showAlerts" variant="warning" onClick={() => {setShowAlerts(!showAlerts)}}>{!showAlerts?'Display alerts':'Hide alerts'}</Button>{' '}</>):''}
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
@@ -208,9 +208,16 @@ function OnGoingHike(props){
             {errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
             {successMessage ? <Alert id="success" variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
             </Form.Group>
+            <Row xs={1} auto>
+              <Col sm={2} className="mb-2" >
+                <Button id="updatePosition" onClick={() => showModal()}>Update Position</Button> {' '}
+              </Col>
+              <Col sm={2}>
+                <Button id="endHike" variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
+              </Col>
+
+            </Row>
             
-            <Button id="updatePosition" onClick={() => showModal()}>Update Position</Button> {' '}
-            <Button id="endHike" variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
             <TimeModal
             type={"reference"}
             show={modal}
@@ -227,7 +234,7 @@ function OnGoingHike(props){
             time={time}
             updateTime={updateTime}
             onHide={() => setModalEndShow(false)}
-            errorMessage={errorMessageModal}
+            errorMessage={errorMessageEndModal}
             setErrorMessage={setErrorMessageEndModal}
             handleSubmit={handleTerminate}
             />

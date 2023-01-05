@@ -30,6 +30,7 @@ function HikeCard(props) {
       try {
         const response = await API.postStartHike(body, token)
         if(!response.error){
+          props.updateDirty()
           navigate("/hiker/ongoinghike")
           return true
         } else {
@@ -95,6 +96,7 @@ function HikeCard(props) {
         rpList={props.hike.rp}
       /> : ''}
       {isHiker ? <TimeModal
+            
             type={"start"}
             show={modalTime}
             time={time}

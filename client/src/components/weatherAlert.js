@@ -25,7 +25,9 @@ const weatherOption = ["Storm", "Snow", "Hail", "Strong wind"]
 
 function WeatherAlert(props){
     const [radius, setRadius] = useState(0)
-    const [position, setPosition] = useState("")
+    const [position, setPosition] = useState({
+        lat: "", lng:""
+    })
     const [weather, setWeather] = useState("Storm")
     const [alerts, setAlerts] = useState([])
     const [errorMessage, setErrorMessage] = useState("")
@@ -104,7 +106,7 @@ function WeatherAlert(props){
     return (
         <Card body>
             <Card.Title>Waether Alert</Card.Title>
-            {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
+            {errorMessage ? <Alert id="error"variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
             {successMessage ? <Alert id="success" variant='success' onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
 
             <Form>
@@ -112,7 +114,7 @@ function WeatherAlert(props){
                 <Form.Group className='mt-2'>
                 <Row>
                     <Col>
-                    <Form.Range id="radiusInput" value={radius} onChange={(e) => setRadius(e.target.value)} />
+                    <Form.Range  value={radius} onChange={(e) => setRadius(e.target.value)} />
                     {' '}
                     </Col>
 
@@ -137,24 +139,45 @@ function WeatherAlert(props){
                 <Col>
         <InputGroup size="sm" >
           
-          <Form.Control hidden
+          <Form.Control 
+          hidden
           id='latitudeInput'
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
-            value={position[0]}
-            onChange={(e) => setPosition([e.target.value, props.point[1]])}
+            value={position.lat}
+            onChange={(e) => setPosition({
+                lat: e.target.value,
+                lng: position.lng
+            })}
           />
         </InputGroup>
       </Col>
       <Col>
         <InputGroup size="sm" className="">
           
-          <Form.Control hidden
+          <Form.Control 
+            hidden
             id='longitudeInput'
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
-            value={position[1]}
-            onChange={(e) => setPosition([props.point[0], e.target.value])}
+            value={position.lng}
+            onChange={(e) => setPosition({
+                lat: position.lat,
+                lng: e.target.value
+            })}
+          />
+        </InputGroup>
+      </Col>
+      <Col>
+        <InputGroup size="sm" className="">
+          
+          <Form.Control 
+            hidden
+            id='radiusInput'
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            value={radius}
+            onChange={(e) => setRadius(e.target.value)}
           />
         </InputGroup>
       </Col>
@@ -174,6 +197,7 @@ function WeatherAlert(props){
 function MapFunction(props) {
     const map = useMapEvents({
       click: (e) => {
+        console.log(e.latlng)
         props.setPosition(e.latlng)
       }
       

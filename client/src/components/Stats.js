@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import { Container, ListGroup, Row, Col, Modal, Toast} from 'react-bootstrap';
 import UTILS from '../utils/utils';
-
+import dayjs from 'dayjs';
 function Stats(props){
     return (
         showStats(props.stat)
@@ -19,12 +19,14 @@ function showStats(Stats){
 }
 
 function displayObj(obj){
-  if (obj.time)
-    return obj.title + ", " + obj.time
+  if (obj.time){
+    
+    return dayjs(obj.time, "HH:mm:ss").format("HH:mm")  + ", " +  obj.title 
+  }
   else if (obj.length)
-    return obj.title + ", " + obj.length
+    return  obj.length + ", " +  obj.title 
   else 
-    return obj.title + ", " + obj.altitude
+    return obj.altitude  + ", " +  obj.title 
 }
 
 

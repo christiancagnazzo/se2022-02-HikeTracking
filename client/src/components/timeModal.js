@@ -15,7 +15,6 @@ function TimeModal(props){
     else if(props.type === "end"){
         button = <Button id="confirmEnd" variant = "danger" onClick={async (e) => {
             if(await props.handleSubmit(e)){
-              console.log("okkk")
             props.onHide();
             }
 
@@ -43,12 +42,12 @@ function TimeModal(props){
                 
               </Modal.Header>
               <Modal.Body className="" id="datetimePicker">
-              {props.errorMessage ? <Alert id="error" variant='danger' className="mt-2" onClose={() => props.setErrorMessage('')} dismissible >{props.errorMessage}</Alert> : ''}
+              {props.errorMessage ? <Alert id="error" variant='danger' className="mt-2" onClose={() =>{ props.setErrorMessage('')}} dismissible >{props.errorMessage}</Alert> : ''}
               <Row>
                 <div align="center">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                
+                inputFormat="DD/MM/YYYY HH:mm"
                 renderInput={(props) => <TextField {...props} />}
                 label=""
                 value={props.time}
