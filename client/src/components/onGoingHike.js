@@ -30,9 +30,13 @@ function OnGoingHike(props){
     const [last, setLast] = useState("")
     const [modal, setModalShow] = useState(false);
     const [modalEnd, setModalEndShow] = useState(false)
+    const [showAlerts, setShowAlerts] = useState(false)
     const token = localStorage.getItem("token")
     const navigate = useNavigate()
 
+    const alertsConditions = props.alerts.map((a) => {
+      return a.condition
+    })
     const updateRpList = (orderedRpList) => {
       let reversed = orderedRpList.reverse()
       let reachFlag = false
@@ -186,7 +190,9 @@ function OnGoingHike(props){
       <Card>
       <Card.Body>
           <Card.Title><h4>{title}</h4></Card.Title>
-          {fileMap? <MapRecord  className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/> : <TheSpinner/>}
+          {fileMap? <MapRecord  showAlerts={showAlerts} alerts={props.alerts} className="mb-4" gpxFile={fileMap} rpList={rpList} setRpList={updateRpList} sp={sp} ep={ep} curr={curr} setCurr={setCurr}/> : <TheSpinner/>}
+          {props.alerts? <div className="mt-3 text-danger">Weather conditions: {alertsConditions.join(', ') +'.'}</div>:''}
+          {showAlerts !== undefined ?(<><Button className="mt-3" id="showAlerts" variant="warning" onClick={() => {setShowAlerts(!showAlerts)}}>{!showAlerts?'Display alerts':'Hide alerts'}</Button>{' '}</>):''}
           <Form className="my-4">
             <Form.Group className="mb-2" controlId="position">
             <Form.Label>Track your position</Form.Label>
@@ -201,6 +207,7 @@ function OnGoingHike(props){
             {errorMessage ? <Alert variant='danger' className="mt-2" onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : ''}
             {successMessage ? <Alert id="success" variant='success' className="mt-2" onClose={() => setSuccessMessage('')} dismissible >{successMessage}</Alert> : ''}
             </Form.Group>
+            
             <Button id="updatePosition" onClick={() => showModal()}>Update Position</Button> {' '}
             <Button id="endHike" variant="danger" onClick={() => setModalEndShow(true)}>Terminate the hike</Button>
             <TimeModal

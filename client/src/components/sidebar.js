@@ -1,6 +1,6 @@
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
+import { Hiking, BarChart, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -42,14 +42,15 @@ function initFlagArray(length){
 }
 
 function HikerMenu(props){
-    const lengthOption = 5
-    const [active, setActive] = useState(initFlagArray(5))
+    const lengthOption = 6
+    const [active, setActive] = useState(initFlagArray(6))
     const navigate = useNavigate()
     const hikingIcon = <Hiking></Hiking>
     const parkingLot = <LocalParking></LocalParking>
     const hutIcon = <HolidayVillage></HolidayVillage>
     const profileIcon = <ManageAccounts></ManageAccounts>
     const weatherIcon = <Cloud/>
+    //const barchartIcon = <BarChart></BarChart>
     const updateActive = (idx, relocation) => {
       UTILS.updateActive(idx, relocation, lengthOption, setActive, navigate)
 
@@ -78,8 +79,12 @@ function HikerMenu(props){
           <MenuItem onClick={() => updateActive(6,"records") }active={"records"===route}>Records</MenuItem>
           </SubMenu>
          <SubMenu icon={weatherIcon} label='Weather'>
-         <MenuItem onClick={() => updateActive(7,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
-       </SubMenu></>:""
+         <MenuItem onClick={() => updateActive(6,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
+       </SubMenu>
+          {/*<SubMenu icon={barchartIcon} label ='Statistics'>
+          <MenuItem onClick={() => updateActive(7,"performancestats")}active={"performancestats"===route}>Statistics</MenuItem>
+        </SubMenu>*/}
+       </>:""
         }
       </Menu>
 

@@ -16,6 +16,8 @@ import Records from './records';
 
 
 
+import Stats from './Stats';
+
 function VisitorPage(props) {
   const [hikes, setHikes] = useState([]);
   const [huts, setHuts] = useState([]);
@@ -28,6 +30,8 @@ function VisitorPage(props) {
   const [dirty, setDirty] = useState(false)
   const [show, setShow] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
+  const [records, setRecords] = useState([])
+  const [stat, setStat] = useState([])
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
 
@@ -155,6 +159,22 @@ function VisitorPage(props) {
 
 
   useEffect(() => {
+    const getRecords = async() => {
+      try {
+        const records = await API.getCompletedHikes(token)
+        if(records.error)
+          setErrorMessage(records.msg)
+        else
+          setRecords(records.msg)
+      } catch(err){
+        console.log(err)
+      }
+    }
+    if (props.userPower === 'hiker')
+      getRecords()
+  },[props.userPower, token, dirty])
+
+  useEffect(() => {
     const getHikeAlerts = async () => {
       try {
         const alerts = await API.getHikeAlerts(token)
@@ -177,6 +197,23 @@ function VisitorPage(props) {
   
   }, [props.userPower, token, dirty])
 
+  useEffect(() => {
+    const getPerformanceStats = async() =>{
+      try{
+        const stats = await API.getStatistics(token)
+        if(stats.error)
+          setErrorMessage(stats.msg)
+          else
+            setStat(stats.msg);
+      } catch(err){
+        console.log(err)
+      }
+    }
+    if (props.userPower === 'hiker')
+      getPerformanceStats()
+   
+   
+  }, [props.userPower, token, dirty])
   //
 
   const handleClose = () => setShow(false);
@@ -209,10 +246,15 @@ function VisitorPage(props) {
             <Route path="huts" element={<Huts huts={huts}/>}/>
             <Route path="filterhuts" element={<FilterFormHuts applyFilter={applyFilterHuts} setErrorMessage={setErrorMessage}/>}/> 
             <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots}/>}/>
-            <Route path="records" element={<Records records={records}/>}/>
+            <Route path="records" element={<Records records={records} userPower={props.userPower}/>}/>
             <Route path="preferences" element={<Preferences updateDirty={updateDirty}/>}/>
-            <Route path="ongoinghike" element={<OnGoingHike/>}/>
+            <Route path="ongoinghike" element={<OnGoingHike alerts={hikesAlert}/>}/>
             <Route path= "weatherhikealert" element ={<WeatherHikeAlert userPower={props.userPower} alerts={hikesAlert}/>}/>     
+            
+            <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} />} />
+            {/*<Route path="profile" element={<Preferences profile={profile} setProfile={setProfile}/>}/>*/}
+            
+            <Route path= "performancestats" element ={<Stats userPower={props.userPower} stat={stat}/>}/>
           </Routes>
         </Row>
       </Col>

@@ -2,12 +2,12 @@ import UTILS from "./utils/utils"
 
 const URL = "http://localhost:8000/hiketracking/"
 
-async function createHike(hike_description, hike_file, token) {
+async function createHike(hike_description, hike_file, token, method) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
   console.log(JSON.stringify(hike_description))
   try {
     let response = await fetch(URL + 'hikes/', {
-      method: 'PUT',
+      method: method,
       body: JSON.stringify(hike_description),
       headers: {
         'Content-Type': 'application/json',
@@ -712,6 +712,24 @@ async function getHikeAlerts(token) {
   }
 }
 
-const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike, getCompletedHikes };
+async function getStatistics(token) {
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+
+  let response = await fetch(URL + 'hike/statistics/', {
+    method: 'GET',
+    headers: {
+      'Authorization': valid_token
+    },
+  });
+  
+  if (response.status === 200) {
+    return { msg : await response.json() }
+  }
+  else {
+    return { error: "Something was wrong"}
+  }
+}
+
+const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike, getCompletedHikes, getStatistics };
 
 export default API;
