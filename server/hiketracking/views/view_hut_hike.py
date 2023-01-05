@@ -58,7 +58,6 @@ class HikesHutWorker( APIView ):
             return Response( status=status.HTTP_400_BAD_REQUEST )
 
     def put(self, request):
-        print( request.data )
         if request.data and \
                 'condition' in request.data and \
                 'condition_description' in request.data and \

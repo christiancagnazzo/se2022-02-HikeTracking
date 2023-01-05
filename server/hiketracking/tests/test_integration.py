@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from unittest import mock
-
+from datetime import datetime
 from hiketracking.models import Hike, Point,CustomerProfile,CustomUser,WeatherAlert,UserHikeLog
 
 def util_assertion(self, hike1):
@@ -204,6 +204,7 @@ class RecordPointTest(TestCase):
         hike = hike1,
         counter = 1,
         point = p1,
+        datetime = datetime.now(),
         end = True)
 
         User.objects.create_user(email='test2@user.com',
@@ -234,6 +235,8 @@ class RecordPointTest(TestCase):
         hike = hike2,
         counter = 2,
         point = p2,
+        datetime = datetime.now(),
+
         end = False)
 
         return super().setUp()

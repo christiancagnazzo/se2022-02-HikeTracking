@@ -23,8 +23,7 @@ class Weather(APIView):
     
     def post(self, request, format=None):
         try:
-            print(".----")
-            print(request.data)
+            
             
             data = request.data
             condition = data["condition"]
@@ -36,7 +35,6 @@ class Weather(APIView):
                 weather_lat=weather_lat,
                 weather_lon=weather_lon, 
                 radius=radius)
-            print("--")
             return Response( status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response( status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=e )

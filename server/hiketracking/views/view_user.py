@@ -32,7 +32,6 @@ class RegisterAPI( generics.GenericAPIView ):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         working_hut = request.data.pop('working_hut',None)
         serializer = self.get_serializer( data=request.data )
         serializer.is_valid( raise_exception=True )
@@ -177,7 +176,6 @@ class Profile( generics.RetrieveUpdateAPIView ):
                 serializer.save()
                 return Response( data=serializer.data, status=status.HTTP_200_OK )
             else:
-                print(serializer.errors)
                 return Response( data=serializer.errors, status=status.HTTP_400_BAD_REQUEST )
         except Exception as e:
             print(e)
