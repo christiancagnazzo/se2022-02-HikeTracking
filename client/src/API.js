@@ -274,7 +274,8 @@ async function getHikeFile(hike_id, token) {
     },
   });
   if (response.status === 200) {
-    const text = new TextDecoder().decode((await response.body.getReader().read()).value);
+    const readable = await response.arrayBuffer()
+    const text = new TextDecoder().decode(readable);
     return text
   }
   else {
