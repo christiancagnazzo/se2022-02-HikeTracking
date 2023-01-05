@@ -1,6 +1,7 @@
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Hiking, BarChartIcon, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
+import { Hiking, HolidayVillage, LocalParking, ManageAccounts, Cloud } from '@mui/icons-material'
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
