@@ -1,3 +1,4 @@
+/*
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
@@ -152,3 +153,4 @@ function Click(props){
     return null
 }
 export default MRecord
+*/

@@ -1,3 +1,4 @@
+/*
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
@@ -154,4 +155,4 @@ console.log(props.hike.hike)
 
 
 export default RecordCard
-  
+*/
