@@ -197,7 +197,6 @@ function WeatherAlert(props){
 function MapFunction(props) {
     const map = useMapEvents({
       click: (e) => {
-        console.log(e.latlng)
         props.setPosition(e.latlng)
       }
       

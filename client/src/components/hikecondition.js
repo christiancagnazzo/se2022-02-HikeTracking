@@ -25,12 +25,10 @@ function HikeCondition(props){
         }
     
         let req = await API.updateCondition(cond, token)
-        //console.log("aaaa") 
         if (req.error) {
           setErrorMessage(req.msg)
         } else {
             props.updateDirty()
-           // window.location.reload(false)
           navigate('/hutworker')
         }
     

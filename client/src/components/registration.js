@@ -30,7 +30,6 @@ function RegistrationForm(props) {
     }
 
     const handleSubmit = async (event) => {
-        console.log("okkk")
         event.preventDefault();
         setErrorMessage('');
         setMessage('');

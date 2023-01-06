@@ -137,11 +137,9 @@ function OnGoingHike(props){
         if(!currentHike.error) {
           setNo("loaded")
           const res =  UTILS.adjustRecord(currentHike.msg)
-          console.log(res)
           const h = res[0]
           const rp = res[1]
           const lastDt = res[2]
-          console.log(h, rp, lastDt)
 
           setHike(h)
           setTitle(h.title)

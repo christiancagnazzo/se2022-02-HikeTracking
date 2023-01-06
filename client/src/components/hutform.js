@@ -43,7 +43,6 @@ function HikeForm(props) {
       'web_site': webSite,
       'picture': image
     }
-    console.log(hutDescription)
     let req = await API.createHut(hutDescription, token)
     if (req.error) {
       setErrorMessage(req.msg)

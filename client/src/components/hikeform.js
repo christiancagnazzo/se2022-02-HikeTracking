@@ -100,7 +100,6 @@ function HikeForm(props) {
         const filename = hike.track_file.split('/')[1]
         let file = await API.getHikeFile(hike.id, token)
         if(file.err){
-          console.log("okkk")
           setMapErr("Please upload a new GPX file, the old one seems lost")
         }
         else{
@@ -140,7 +139,6 @@ function HikeForm(props) {
   }
 
   const addRPoint = () => {
-    console.log("okk")
 
     if (rp['lat'] === '' || rp['lng'] === '') return
     const point = {
@@ -244,7 +242,7 @@ function HikeForm(props) {
         <Form.Group className="mb-2" controlId="length">
           <Form.Label>Length (kms)</Form.Label>
           <Form.Control type="text" placeholder="Length" value={length}
-            onChange={(e) => { if (checkNum(e.target.value)) { console.log(e.target.value); setLength(e.target.value) } }} />
+            onChange={(e) => { if (checkNum(e.target.value)) { setLength(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="time">
           <Form.Label>Expected time</Form.Label>
