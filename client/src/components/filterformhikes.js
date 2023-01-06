@@ -37,7 +37,7 @@ function FilterForm(props) {
         province: province,
         village: village,
         position: position,
-        radius: radius
+        radius: radius*5000
     }
     props.applyFilter(filter)
     props.setFiltered(true)
