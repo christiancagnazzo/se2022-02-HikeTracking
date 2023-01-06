@@ -83,9 +83,7 @@ function HikerMenu(props){
          <SubMenu icon={weatherIcon} label='Weather'>
          <MenuItem onClick={() => updateActive(6,"weatherhikealert") }active={"weatherhikealert"===route}>Alerts</MenuItem>
        </SubMenu>
-          <SubMenu icon={barchartIcon} label ='Statistics'>
-          <MenuItem onClick={() => updateActive(7,"performancestats")}active={"performancestats"===route}>Statistics</MenuItem>
-        </SubMenu>
+    
        </>:""
         }
       </Menu>
