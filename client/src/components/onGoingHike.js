@@ -189,7 +189,7 @@ function OnGoingHike(props){
     return (
       <>
       {!no ? <h2>There isn't an ongoing hike</h2>
-      :
+      : ( no === "loading" ? <TheSpinner/> : 
       <><h1>Current Hike</h1>
       <Card>
       <Card.Body>
@@ -244,7 +244,7 @@ function OnGoingHike(props){
 
           </Form>
       </Card.Body>
-    </Card></>}
+    </Card></>)}
     </>
     )
 }

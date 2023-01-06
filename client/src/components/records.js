@@ -1,10 +1,32 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card,ListGroup, Button,Modal, Col } from "react-bootstrap";
+import { Card,ListGroup, Button,Modal, Col, Row, Container } from "react-bootstrap";
 
 import API from "../API";
 import TheSpinner from "./spinner";
 import MapRecord from './MapRecord';
+import UTILS from "../utils/utils";
+
+function displayRecommendedHikesUtil(records, userPower) {
+  let recordCard = records.map((r, idx) =>
+    <Col className="pb-4 px-0" key={idx}>
+      <Record userPower={userPower} record={r} />
+    </Col>)
+  let rows = UTILS.createRows(records, recordCard)
+  return (
+    <Container>
+    <Row>
+      <Col xs={10}>
+        <h1>Records</h1>
+      </Col>
+      <Col>
+        {rows}
+      </Col>
+    </Row>
+  </Container>
+  )
+}
+
+
 function Records(props) {
 
   const hikes= props.records
@@ -13,19 +35,13 @@ function Records(props) {
   if (hikes.length == 0)
     return <h1>No completed hikes</h1> 
    else {
-    return (
-      hikes.map( (hike, idx) => {
-        console.log(hike)
-        return <Record hike = {hike} key={idx}/>
-      })
-
-    );
+    return displayRecommendedHikesUtil(hikes);
     }
   } 
   
   
   function Record(props){
-    const hike = props.hike
+    const hike = props.record
     
     const [modalMapShow, setModalMapShow] = useState(false);
       return (<>

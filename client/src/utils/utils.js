@@ -9,11 +9,11 @@ function createRows(objects, cards){
     for (j = 0; j < nCol && cards.length; j++) {
       cols.push(cards.pop())
     }
-    for (; j < nCol; j++) {
-      cols.push(<Col className="pb-4 " key={j}></Col>)
-    }
-    rows.push(<Row xl={3} sm={2} xs={1} cols className='px-0' key={i}>{cols}</Row>)
+    
+    if(cols.length)
+      rows.push(<Row xl={3} sm={2} xs={1}  className='px-0' key={i}>{cols}</Row>)
   }
+  
   return rows
 }
 
