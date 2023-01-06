@@ -37,8 +37,8 @@ function Records(props) {
 
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Starting Time: {hike.hike.start_point_datetime.format("HH:mm:ss")} min</ListGroup.Item>
-        <ListGroup.Item>Ending Time: {hike.hike.end_point_datetime.format("HH:mm:ss")} min</ListGroup.Item>
+        <ListGroup.Item>Starting Time: {hike.hike.start_point_datetime.format("HH:mm")}</ListGroup.Item>
+        <ListGroup.Item>Ending Time: {hike.hike.end_point_datetime.format("HH:mm")}</ListGroup.Item>
         <ListGroup.Item>Length: {hike.hike.length}km</ListGroup.Item>
         <ListGroup.Item>Ascent: {hike.hike.ascent}m</ListGroup.Item>
         <ListGroup.Item>Difficulty: {hike.hike.difficulty}</ListGroup.Item>
