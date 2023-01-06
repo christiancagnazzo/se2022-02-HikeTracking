@@ -62,7 +62,7 @@ function HikeCard(props) {
             <Button onClick={() => setModalDescriptionShow(true)}>Description</Button>
             {' '}
             {(isHiker && props.hike.file !== "NTF") ? <Button onClick={() => setModalMapShow(true)}>Display track</Button> : (isHiker) ? <Badge bg="secondary">No Track Available</Badge> : ''}
-            {isLocalGuide && canModify ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
+            {isLocalGuide ? <Button variant='warning' onClick={() => navigate('/localguide/edithike/' + props.hike.title)}>Edit</Button> : ''}
             {isHutWoker? <Button variant='warning' onClick={() => navigate('/hutworker/condition/' + props.hike.title)}>Update condition</Button>: ''}
             {' '}
             {isHiker? <Button variant="success" id={"start-"+props.hike.title.replaceAll(' ','') }
