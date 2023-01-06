@@ -61,7 +61,10 @@ function OnGoingHike(props){
         setErrorMessageModal("Please select a reference point")
         return false
       }
-      
+      if(!dayjs(time).isValid()){
+        setErrorMessageModal("Please insert a valid datetime")
+        return false
+      }
       if(time.isBefore(last) || time.isSame(last)){
         setErrorMessageModal("The last point was reached at " + last.format("HH:mm on DD/MM/YYYY") + ". Please insert a valid datetime")
         return false
@@ -100,7 +103,10 @@ function OnGoingHike(props){
 
   const handleTerminate = async (e) => {
     e.preventDefault()
-    
+    if(!dayjs(time).isValid()){
+      setErrorMessageEndModal("Please select a valid datetime")
+      return false
+    }
     if(time.isBefore(last) || time.isSame(last)){
       setErrorMessageEndModal("The last point was reached at " + last.format("HH:mm on DD/MM/YYYY") + ". Please insert a valid datetime")
       return false
@@ -149,14 +155,12 @@ function OnGoingHike(props){
             datetime: h.start_point_datetime
           })
 
-
           setEp({
             lat: h.end_point_lat,
             lng: h.end_point_lng,
             addr: h.end_point_address,
             datetime: h.end_point_datetime
           })
-
           setRpList(rp)
           setReacheadPoints(h.reached)
           let file = await API.getHikeFile(h.id, token)
@@ -176,6 +180,7 @@ function OnGoingHike(props){
 
     
     const updateTime = (curr) => {
+      
       if(!(curr instanceof String))
         setTime(curr)
       else{

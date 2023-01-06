@@ -529,7 +529,9 @@ class WeatherAlertModelTest(TestCase):
     def test_get_alert(self):
         u_all = CustomUser.objects.all()
         if u_all[0].role == "Hiker":
-            cond = WeatherAlert.objects.get(id=1['condition'])
+            #cond = WeatherAlert.objects.get(id=1['condition'])
+
+            cond = WeatherAlert.objects.get(id=1)
 
             self.assertEqual(cond, "Snow")
 

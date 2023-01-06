@@ -44,8 +44,7 @@ def insert_point(pointSerializer, pointType="none"):
     return point
 
 def findcoordinateInGpx(lat, long, address):
-    return
-    """
+    was = """
     try:
         gpx_file = open("./"+str(address), 'r')
         gpx = gpxpy.parse(gpx_file)
@@ -59,6 +58,8 @@ def findcoordinateInGpx(lat, long, address):
         print(e)
         return False
     """
+    return
+    
 def link_hike_to_hut(hike, hut):
     if hike:
         hike_hut = {'hike': hike, 'hut': hut.id}
