@@ -30,7 +30,7 @@ function VisitorPage(props) {
   const [dirty, setDirty] = useState(false)
   const [show, setShow] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
-  const [records, setRecords] = useState([])
+ 
   const [stat, setStat] = useState([])
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
@@ -41,7 +41,7 @@ function VisitorPage(props) {
   }
 
   useEffect(() => {
-    if(userPower==="Hiker"){
+    if(props.userPower==="Hiker"){
       const getProf = async () => {
         try {
           const hikes = await API.getProfile(token);

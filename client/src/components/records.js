@@ -5,7 +5,7 @@ import TimeModal from "./timeModal";
 import dayjs from "dayjs";
 import API from "../API";
 import TheSpinner from "./spinner";
-import MapRecord from "./MapRecord";
+import MapRecord from "./MapRecords";
 import UTILS from "../utils/utils";
 /// tramite props passo il file
 function Record(props) {
