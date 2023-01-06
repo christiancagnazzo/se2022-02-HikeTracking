@@ -30,7 +30,7 @@ function VisitorPage(props) {
   const [show, setShow] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
   const [records, setRecords] = useState([])
-  const [stat, setStat] = useState([])
+  const [stat, setStat] = useState({})
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
 

@@ -9,7 +9,7 @@ function Stats(props){
 }
 
 function showStats(Stats){
-    if (Stats.length === 0) {
+    if (Object.keys(Stats).length === 0 ) {
         return<h1>No available Stats</h1>
       }
       else {
@@ -23,8 +23,10 @@ function displayObj(obj){
     return obj.title + ", " + obj.time
   else if (obj.length)
     return obj.title + ", " + obj.length
-  else 
+  else if (obj.altitude)
     return obj.title + ", " + obj.altitude
+  else 
+    return obj.title + ", " + obj.ascent
 }
 
 
