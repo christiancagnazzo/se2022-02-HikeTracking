@@ -2359,7 +2359,7 @@
             "altitude": 1000,
             "difficulty": "Pro Hiker",
             "description": "Percorso circolare che va a toccare il cuore del Gruppo Sorapiss. Tutto il settore sud est rimane purtroppo sconosciuto, poichè coperto dalle muraglie possenti del Fopo di Mattia e della Punta di Sorapiss, ma si ha modo di memorizzare tutta la fetta di territorio che va dal Passo Tre Croci alle pendici della Punta Nera. Nel complesso lungo e faticoso, consigliato a chi ha le gambe buone e sa trovare gli stimoli necessari. Sarà compensato da un ambiente sempre vario e comunque attraente. Dolce quando si rimontano le gobbe prative che avvicinano Forcella Faloria, severo lo scavalcamento della Sella di Punta Nera, impressionante la discesa sotto gli strapiombi (nel vero senso della parola) della Torre Pupa, lunare tra le pietraie che accompagnano al delizioso Lago di Sorapiss e sereno il rientro al Passo, sopra la Val Ansiei. L'ascesa alla Punta Nera, facoltativa, è la ciliegina sulla torta. Si domina la conca di Cortina, si ammirano le sue montagne tranne i tormentati e continui smantellamenti sul Faloria.",
-            "track_file": "tracks/Punta Nera e Colle della Rho.gpx",
+            "track_file": "tracks/Punta_Nera_e_Colle_della_Rho.gpx",
             "start_point": 7,
             "end_point": 8,
             "local_guide": 1,
@@ -2379,7 +2379,7 @@
             "altitude": 1000,
             "difficulty": "Tourist",
             "description": "La passeggiata proposta è semplice. Il percorso è caratterizzato da un primo tratto in salita e successivamente da saliscendi che si distendono su ampi tratti prativi. Risulta comunque indicato a famiglie con bambini in età scolare. La partenza dal rifugio Capanna Mautino consente di avere un punto di ristoro e l'arrivo al Lago è indicato per pic-nic.",
-            "track_file": "tracks/Lago dei 7 colori (lago gignoux).gpx",
+            "track_file": "tracks/Lago_dei_7_colori.gpx",
             "start_point": 7,
             "end_point": 8,
             "local_guide": 1,
@@ -2399,7 +2399,7 @@
             "altitude": 1000,
             "difficulty": "Tourist",
             "description": "Il sentiero è molto facile e frequentato, ma occorre una sufficiente capacità di orientamento, in quanto presenta diverse diramazioni.",
-            "track_file": "tracks/pietraborga da piossasco.gpx",
+            "track_file": "tracks/pietraborga_da_piossasco.gpx",
             "start_point": 11,
             "end_point": 12,
             "local_guide": 1,
@@ -2768,66 +2768,6 @@
             "condition_description": "Open"
         }
     },
-    {
-        "model": "hiketracking.hike",
-        "pk": 128,
-        "fields": {
-            "title": "HPB Coreggia: Putigano to Alb",
-            "length": 19,
-            "expected_time": 286,
-            "ascent": 195,
-            "altitude": 1000,
-            "difficulty": "moderate",
-            "description": "A long (approx 18.5km) linear walk which can be achieved with the help of the railway",
-            "track_file": "tracks/t47994530_hpb_coreggia-.gpx",
-            "start_point": 131,
-            "end_point": 132,
-            "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
-            "condition": "Open",
-            "condition_description": "Open"
-        }
-    },
-    {
-        "model": "hiketracking.hike",
-        "pk": 129,
-        "fields": {
-            "title": "Appian Way Stage 04: Grottagli",
-            "length": 25,
-            "expected_time": 359,
-            "ascent": 20,
-            "altitude": 1000,
-            "difficulty": "moderate",
-            "description": "cami caminho cammino chemin chemins compostela itineraire jacob jacobeo jacobi jacobs jacobsweg jacques james james jaume sant st ste saint san path route ruta via voie way of weg ]",
-            "track_file": "tracks/t128823133_appian_way_stage_04-.gpx",
-            "start_point": 133,
-            "end_point": 134,
-            "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
-            "condition": "Open",
-            "condition_description": "Open"
-        }
-    },
-    {
-        "model": "hiketracking.hike",
-        "pk": 130,
-        "fields": {
-            "title": "Appian Way Stage 05: Taranto-M",
-            "length": 22,
-            "expected_time": 319,
-            "ascent": 89,
-            "altitude": 1000,
-            "difficulty": "moderate",
-            "description": "cami caminho cammino chemin chemins compostela itineraire jacob jacobeo jacobi jacobs jacobsweg jacques james james jaume sant st ste saint san path route ruta via voie way of weg ]",
-            "track_file": "tracks/t128823134_appian_way_stage_05-.gpx",
-            "start_point": 135,
-            "end_point": 136,
-            "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
-            "condition": "Open",
-            "condition_description": "Open"
-        }
-    },
     
     {
         "model": "hiketracking.hike",
@@ -2900,7 +2840,7 @@
             "altitude": 1000,
             "difficulty": "Hiker",
             "description": "Stage of a pilgrimage along ancient Roman roads the entire length of Italy",
-            "track_file": "tracks/Mongelia-Levanto.gpx",
+            "track_file": "tracks/Mongelia_Levanto.gpx",
             "start_point": 151,
             "end_point": 152,
             "local_guide": 17,
@@ -2940,7 +2880,7 @@
             "altitude": 1000,
             "difficulty": "Easy",
             "description": "Dal museo MuMab di San Nicomede a Salsominore, rientro da Costa Marenga, passando per l'ultimo esempio di salina del territorio",
-            "track_file": "tracks/saline-farnesiane-e.gpx",
+            "track_file": "tracks/saline_farnesiane.gpx",
             "start_point": 155,
             "end_point": 156,
             "local_guide": 17,
@@ -3080,7 +3020,7 @@
             "altitude": 1000,
             "difficulty": "Tourist",
             "description": "Dirigiti su questo sentiero ad anello di 10,3-km vicino a Pietrapertosa, Basilicata. Un percorso generalmente considerato moderatamente impegnativo che richiede una media di 4 o 30 min per essere completato",
-            "track_file": "tracks/Pietrapertosa_-_Castelmezzano.gpx",
+            "track_file": "tracks/Pietrapertosa.gpx",
             "start_point": 167,
             "end_point": 167,
             "local_guide": 1,
@@ -3164,7 +3104,7 @@
             "start_point": 171,
             "end_point": 171,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/bosco_favino.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3204,7 +3144,7 @@
             "start_point": 173,
             "end_point": 173,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/parco_delle_murgie.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3224,7 +3164,7 @@
             "start_point": 174,
             "end_point": 175,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/picciano.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3244,7 +3184,7 @@
             "start_point": 1,
             "end_point": 2,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/rocciamelone.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3264,7 +3204,7 @@
             "start_point": 177,
             "end_point": 178,
             "local_guide": 1,
-            "picture": "hikePictures/terre_di_matilda_WNraXXO.jpg",
+            "picture": "hikePictures/terre_di_matilda.jpg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3280,7 +3220,7 @@
             "altitude": 1206,
             "difficulty": "Hiker",
             "description": "Il percorso è la terza tappa che compone la Trasversale Francigena, l'itineriario muove dalla località Pessola, frazione di Varsi, per giungere a Borgo Val di Taro.",
-            "track_file": "tracks/trasversale_Francigena_zZfRcHG.gpx",
+            "track_file": "tracks/trasversale_Francigena.gpx",
             "start_point": 179,
             "end_point": 180,
             "local_guide": 1,
@@ -3454,7 +3394,7 @@
             "web_site": "",
             "desc": "Lo Yeti Village è un nuovo complesso sciistico circondato dalla splendida natura del Colle del Lys",
             "point": 108,
-            "picture": "hutsPicture/defultImage.jpg"
+            "picture": "hutsPicture/colle_impiso.jpeg"
         }
     },
     {
