@@ -16,3 +16,7 @@ function loginPM(){
     cy.get("#loginSubmit").click()
     cy.url().should('include','/platformmanager')
 }
+
+
+const UTILS = {loginHiker, loginPM}
+export default UTILS

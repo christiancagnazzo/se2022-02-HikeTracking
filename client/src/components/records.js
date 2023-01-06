@@ -8,17 +8,7 @@ import MapRecord from './MapRecord';
 function Records(props) {
 
   const hikes= props.records
-  const isHiker = props.userPower === 'hiker'
-  const navigate = useNavigate()
-  useEffect(() => {
-    async function hiker(){
   
-    if(!isHiker){
-      navigate("/")
-    }
-  }
-  hiker()
-  },[isHiker])
 
   if (hikes.length == 0)
     return <h1>No completed hikes</h1> 

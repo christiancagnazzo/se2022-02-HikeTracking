@@ -1,7 +1,8 @@
 import dayjs from "dayjs"
-
+import UTILS from "./utils.cy"
 describe('TESTS ABOUT WEATHER ALERTS', () => {
-
+    const loginHiker = UTILS.loginHiker
+    const loginPM = UTILS.loginPM
     
 
     

@@ -1,9 +1,10 @@
 import dayjs from "dayjs"
+import UTILS from './utils.cy'
 describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     
     const now = dayjs()
      
-    
+    const loginHiker = UTILS.loginHiker
 
 
     it('T1: Successfull starting', () => {
