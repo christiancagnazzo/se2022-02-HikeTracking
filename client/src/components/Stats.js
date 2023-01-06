@@ -1,6 +1,4 @@
-import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal, Toast} from 'react-bootstrap';
-import UTILS from '../utils/utils';
+import {  Col, Toast} from 'react-bootstrap';
 import dayjs from 'dayjs';
 function Stats(props){
     return (

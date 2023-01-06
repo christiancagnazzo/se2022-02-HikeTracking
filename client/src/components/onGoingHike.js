@@ -1,9 +1,7 @@
 import { useEffect,useState } from "react"
 import { Card, Button, Form, Alert, Row, Col } from "react-bootstrap"
-import { MapContainer, Polyline, TileLayer, useMapEvents,Marker, Popup } from "react-leaflet"
-import { Icon } from 'leaflet'
 import MapRecord from "./MapRecord"
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import API from "../API"
 import { useNavigate } from "react-router-dom";
 

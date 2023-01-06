@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import API from '../API';
 import Map from './map'
 import { useParams } from "react-router-dom";
-import { map } from "leaflet";
 
 function HikeForm(props) {
   const { hiketitle } = useParams()

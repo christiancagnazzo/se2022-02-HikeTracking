@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card,ListGroup, Button,Modal, Badge, Spinner, Col } from "react-bootstrap";
-import TimeModal from "./timeModal";
-import dayjs from "dayjs";
+import { Card,ListGroup, Button,Modal, Col } from "react-bootstrap";
+
 import API from "../API";
 import TheSpinner from "./spinner";
 import MapRecord from './MapRecord';
-import UTILS from "../utils/utils";
-/// tramite props passo il file
 function Records(props) {
 
   const hikes= props.records

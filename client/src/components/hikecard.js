@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card,ListGroup, Button,Modal, Badge, Spinner } from "react-bootstrap";
+import { Card,ListGroup, Button,Modal, Badge } from "react-bootstrap";
 import Map from "./map";
-import hike1 from '../img/hike1.jpg'
 import TimeModal from "./timeModal";
 import dayjs from "dayjs";
 import API from "../API";

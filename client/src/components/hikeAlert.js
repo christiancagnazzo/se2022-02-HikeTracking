@@ -1,6 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import { Container, ListGroup, Row, Col, Modal } from 'react-bootstrap';
-import { useState } from 'react';
+import { Container, ListGroup, Row, Col } from 'react-bootstrap';
 import UTILS from '../utils/utils';
 
 function displayAlertUtil(alert) {
