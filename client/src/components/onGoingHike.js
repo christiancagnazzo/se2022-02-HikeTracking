@@ -176,7 +176,7 @@ function OnGoingHike(props){
 
     
     const updateTime = (curr) => {
-      if(!curr instanceof String)
+      if(!(curr instanceof String))
         setTime(curr)
       else{
         setTime(dayjs(curr,"MM/DD/YYYY hh:mm A"))

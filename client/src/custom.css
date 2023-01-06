@@ -140,3 +140,21 @@ body{
     background-color: #4D754D;
 }
 
+.text-card {
+    justify-self: center;
+    align-self: center;
+    padding-top: 5px;
+    
+}
+
+.stat-class {
+    margin-bottom: 10px;
+}
+
+.stat-classs {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    padding-top: 19px;
+    padding-bottom: 20px;
+    padding-right: 25px;
+}

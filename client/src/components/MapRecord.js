@@ -168,10 +168,13 @@ function Click(props){
     const map = useMapEvents({
         
     })
-    if(props.sp.lat && props.sp.lng && sp[0] !== props.sp.lat && sp[1] !== props.sp.lng){
-      setSp([props.sp.lat, props.sp.lng])
-      map.flyTo([props.sp.lat, props.sp.lng], undefined, {animate: false})
-    }
+    useEffect(() => {
+      if(props.sp.lat && props.sp.lng && sp[0] !== props.sp.lat && sp[1] !== props.sp.lng){
+        setSp([props.sp.lat, props.sp.lng])
+        map.flyTo([props.sp.lat, props.sp.lng], undefined, {animate: false})
+      }
+    },[props.sp])
+    
     return null
 }
 

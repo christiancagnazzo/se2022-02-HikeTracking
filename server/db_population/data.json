@@ -59,7 +59,6 @@
     "pk": 17,
     "fields": {
       "password": "pbkdf2_sha256$390000$ifjGdP7ueT3cwTeELvt4o2$/Nbc27DWB9RHQ26phdc4E2KmZe7lzv4WfpdiAyU4woQ=",
-      "last_login": "2022-11-27T21:12:37.471Z",
       "is_superuser": true,
       "first_name": "",
       "last_name": "",
@@ -68,7 +67,6 @@
       "is_staff": true,
       "is_active": true,
       "is_confirmed": 1,
-      "date_joined": "2022-11-27T21:12:26.669Z",
       "groups": [],
       "user_permissions": []
     }

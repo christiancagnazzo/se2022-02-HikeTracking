@@ -9,7 +9,7 @@ function Stats(props){
 }
 
 function showStats(Stats){
-    if (Stats.length === 0) {
+    if (Object.keys(Stats).length === 0 ) {
         return<h1>No available Stats</h1>
       }
       else {
