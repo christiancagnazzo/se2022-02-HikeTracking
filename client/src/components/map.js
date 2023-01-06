@@ -144,10 +144,13 @@ function Click(props){
             
         
       })
-    if(props.sp[0] && props.sp[1] && sp[0] != props.sp[0] && sp[1] != props.sp[1]){
-        setSp(props.sp)
-        map.flyTo(props.sp, undefined, {animate: false})
-    }
+    useEffect(() => {
+        if(props.sp[0] && props.sp[1] && sp[0] != props.sp[0] && sp[1] != props.sp[1]){
+            setSp(props.sp)
+            map.flyTo(props.sp, undefined, {animate: false})
+        }
+    },[props.sp])
+    
     return null
 }
 export default Map
