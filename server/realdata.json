@@ -2343,7 +2343,7 @@
             "start_point": 3,
             "end_point": 4,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/roc_del_boucher.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2363,7 +2363,7 @@
             "start_point": 7,
             "end_point": 8,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/punta_nera.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2403,7 +2403,7 @@
             "start_point": 11,
             "end_point": 12,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/monte_pietraborga.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2423,7 +2423,7 @@
             "start_point": 13,
             "end_point": 14,
             "local_guide": 1,
-            "picture": "hikePictures/Monviso_laghi.jpeg",
+            "picture": "hikePictures/testa_di_garitta_rua.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2503,7 +2503,7 @@
             "start_point": 20,
             "end_point": 21,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/Monviso_laghi.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2703,7 +2703,7 @@
             "start_point": 119,
             "end_point": 120,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/lago_poma.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
