@@ -4,6 +4,8 @@ from django.test import TestCase
 from unittest import mock
 from datetime import datetime
 from hiketracking.models import Hike, Point,CustomerProfile,CustomUser,WeatherAlert,UserHikeLog
+from unittest import mock
+
 
 def util_assertion(self, hike1):
     self.assertEqual(hike1[1].title, "Trekking")
@@ -158,19 +160,28 @@ class CustomerProfileTest(TestCase):
         p2 = CustomerProfile.objects.all()
         self.assertFalse(p2.exists())
 
-
+class Mockstats:
+    def __init__(self):
+        self.hikesFinished = 2
+        self.kilometerWork = 18
+        self.averagePase = 0.111
+        self.gvertical = 135000
+        self.most = 1
+        self.quickest = 1
+        self.max = 1
+        self.fastest = 1
+        self.longest = 1
+        self.shortest = 1
+    
 class PerformanceStatsTest(TestCase):
     def setUp(self) -> None:
+        c1 = CustomUser(email="test@test.com", role="Testrole")
+        c1.save()
+         
+    @mock.patch("django.test.Client.get",return_value=Mockstats())
+    def test_PerformanceStats(self,mocked):
         pass
-
-    def test_PerformanceStats(self):
-        pass
-
-    def test_modifyPerformanceStates(self):
-        pass
-
-    def test_deletePerformanceStates(self):
-        pass
+        
 
 
 class RecordPointTest(TestCase):
