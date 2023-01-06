@@ -244,7 +244,7 @@ function HikeForm(props) {
         <Form.Group className="mb-2" controlId="length">
           <Form.Label>Length (kms)</Form.Label>
           <Form.Control type="text" placeholder="Length" value={length}
-            onChange={(e) => { if (checkNum(e.target.value)) { setLength(e.target.value) } }} />
+            onChange={(e) => { if (checkNum(e.target.value)) { console.log(e.target.value); setLength(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="time">
           <Form.Label>Expected time</Form.Label>

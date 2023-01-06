@@ -82,10 +82,12 @@ function Map(props){
                 if(props.setLength){
                     const lowestElevation = gpx.tracks[0].elevation.min
                     const elevation = gpx.tracks[0].elevation.max
-                    const distance = parseFloat(gpx.tracks[0].distance.total/1000).toFixed(1)
+                    const distance = (parseFloat(gpx.tracks[0].distance.total)/parseFloat(1.0 * 1000)).toFixed(1)
+                    
+
                     props.setSp(pos[0])
                     props.setEp(pos[pos.length-1])
-                    props.setLength(parseInt(distance))
+                    props.setLength(parseFloat(distance))
                     props.setAscent(parseInt(elevation - lowestElevation))
                     props.setAltitude(parseInt(elevation))
                     let rp = [];
@@ -97,7 +99,6 @@ function Map(props){
                 }
             }
         }
-        console.log(gpxFile.length)
         parseTrack()
     },[gpxFile])
     return (
