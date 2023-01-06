@@ -1202,7 +1202,7 @@
       "ascent": 3285,
       "difficulty": "Pro Hiker",
       "description": "Questa escursione non è consigliata per i neofiti della montagna, per i principianti e per chi non ha un buon livello di allenamento: infatti oltre ad un dislivello abbastanza marcato anche la mancanza di una traccia ben segnalata ed evidente complica non di poco la progressione. È inoltre richiesta una certa abitudine e tranquillità a percorrere tratti esposti.",
-      "track_file": "tracks/Roc del Boucher.gpx",
+      "track_file": "tracks/Roc_del_Boucher.gpx",
       "start_point": 3,
       "end_point": 4,
       "local_guide": 1
@@ -2122,6 +2122,46 @@
     "fields": {
       "hike": 300,
       "point": 176
+    }
+  },
+  {
+    "model": "hiketracking.hike",
+    "pk": 1000,
+    "fields": {
+      "title": "Terre di Matilda",
+      "length": 6.9,
+      "expected_time": 128,
+      "ascent": 252,
+      "difficulty": "Hiker",
+      "description": "Un viaggio nella storia e nella natura di un territorio immerso nel verde delle colline pisane nel cuore della Toscana, attraverso un paesaggio incontaminato.",
+      "track_file": "tracks/Pian della Regina - Laghi del Monviso.gpx",
+      "start_point": 20,
+      "end_point": 21,
+      "local_guide": 1
+    }
+  },{
+    "model": "hiketracking.point",
+    "pk" : 176,
+    "fields": {
+      
+      "latitude": 45.188244,
+      "longitude": 7.0768,
+      "province": "Torino",
+      "village": "Mompantero",
+      "address": "Nice view",
+      "type": "none"
+    }
+  },{
+    "model": "hiketracking.point",
+    "pk" : 176,
+    "fields": {
+      
+      "latitude": 45.188244,
+      "longitude": 7.0768,
+      "province": "Torino",
+      "village": "Mompantero",
+      "address": "Nice view",
+      "type": "none"
     }
   }
 ]
