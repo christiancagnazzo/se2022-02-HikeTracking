@@ -3,14 +3,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     
     const now = dayjs()
      
-    function loginHiker() {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click()
-        cy.url().should('include','/hiker')
-    }
+    
 
 
     it('T1: Successfull starting', () => {

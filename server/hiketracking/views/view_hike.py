@@ -9,8 +9,33 @@ from hiketracking.utility import get_province_and_village
 from datetime import datetime
 import geopy.geocoders 
 
+
+def get_reference_point(h):
+        result = HikeReferencePoint.objects.filter(
+                hike_id=h['id'] ).values()
+        reference_list = []
+        for r in result:
+            refer_p = Point.objects.get( id=r['point_id'] )
+            reference_list.append( {
+                'reference_point_lat': refer_p.latitude,
+                'reference_point_lng': refer_p.longitude,
+                'reference_point_address': refer_p.address} )
+
+        h['rp'] = reference_list
+
+        startP = Point.objects.get( id=h['start_point_id'] )
+        endP = Point.objects.get( id=h['end_point_id'] )
+
+        h['start_point_lat'] = startP.latitude
+        h['start_point_lng'] = startP.longitude
+        h['start_point_address'] = startP.address
+        h['end_point_lat'] = endP.latitude
+        h['end_point_lng'] = endP.longitude
+        h['end_point_address'] = endP.address
+
 class HikeFile( APIView ):
     permission_classes = (permissions.AllowAny,)
+
 
     def get(self, request, hike_id):
         try:
@@ -69,27 +94,7 @@ class Hikes( APIView ):
 
         result = {}
         for h in hikes:
-            result = HikeReferencePoint.objects.filter(
-                hike_id=h['id'] ).values()
-            reference_list = []
-            for r in result:
-                refer_p = Point.objects.get( id=r['point_id'] )
-                reference_list.append( {
-                    'reference_point_lat': refer_p.latitude,
-                    'reference_point_lng': refer_p.longitude,
-                    'reference_point_address': refer_p.address} )
-
-            h['rp'] = reference_list
-
-            startP = Point.objects.get( id=h['start_point_id'] )
-            endP = Point.objects.get( id=h['end_point_id'] )
-
-            h['start_point_lat'] = startP.latitude
-            h['start_point_lng'] = startP.longitude
-            h['start_point_address'] = startP.address
-            h['end_point_lat'] = endP.latitude
-            h['end_point_lng'] = endP.longitude
-            h['end_point_address'] = endP.address
+            get_reference_point(h)
 
         return Response( hikes, status=status.HTTP_200_OK )
 
@@ -358,26 +363,7 @@ class Recommended( APIView ):
 
             result = {}
             for h in hikes:
-                result = HikeReferencePoint.objects.filter( hike_id=h['id'] ).values()
-                reference_list = []
-                for r in result:
-                    refer_p = Point.objects.get( id=r['point_id'] )
-                    reference_list.append( {
-                        'reference_point_lat': refer_p.latitude,
-                        'reference_point_lng': refer_p.longitude,
-                        'reference_point_address': refer_p.address} )
-
-                h['rp'] = reference_list
-
-                startP = Point.objects.get( id=h['start_point_id'] )
-                endP = Point.objects.get( id=h['end_point_id'] )
-
-                h['start_point_lat'] = startP.latitude
-                h['start_point_lng'] = startP.longitude
-                h['start_point_address'] = startP.address
-                h['end_point_lat'] = endP.latitude
-                h['end_point_lng'] = endP.longitude
-                h['end_point_address'] = endP.address
+                get_reference_point(h)
 
             return Response( hikes, status=status.HTTP_200_OK )
 
