@@ -2423,7 +2423,7 @@
             "start_point": 13,
             "end_point": 14,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/Monviso_laghi.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2443,7 +2443,7 @@
             "start_point": 15,
             "end_point": 16,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/cima_crosa.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2463,7 +2463,7 @@
             "start_point": 17,
             "end_point": 18,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/monte_riba.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2483,7 +2483,7 @@
             "start_point": 19,
             "end_point": 20,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/rifugio_meira.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2523,7 +2523,7 @@
             "start_point": 22,
             "end_point": 23,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/greenway_como.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2543,7 +2543,7 @@
             "start_point": 24,
             "end_point": 25,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/sentiero_degli_dei.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2563,7 +2563,7 @@
             "start_point": 26,
             "end_point": 27,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/monterosso.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2583,7 +2583,7 @@
             "start_point": 101,
             "end_point": 102,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/zingaro.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2603,7 +2603,7 @@
             "start_point": 104,
             "end_point": 105,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/scorace.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2623,7 +2623,7 @@
             "start_point": 107,
             "end_point": 108,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/sparagio.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2643,7 +2643,7 @@
             "start_point": 110,
             "end_point": 111,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/erice.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2663,7 +2663,7 @@
             "start_point": 113,
             "end_point": 114,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/cofano.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2683,7 +2683,7 @@
             "start_point": 116,
             "end_point": 117,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/lago_di_garda.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2723,7 +2723,7 @@
             "start_point": 122,
             "end_point": 123,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/favignana.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2743,7 +2743,7 @@
             "start_point": 125,
             "end_point": 126,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/etna.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2763,7 +2763,7 @@
             "start_point": 128,
             "end_point": 129,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/Sicani.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2784,7 +2784,7 @@
             "start_point": 145,
             "end_point": 146,
             "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/tresino.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2798,13 +2798,13 @@
             "expected_time": 270,
             "ascent": 60,
             "altitude": 1000,
-            "difficulty": "moderate",
+            "difficulty": "Hiker",
             "description": "Out and back walk along the Path of the Sirens, from Santa Maria di Castellabate to its sister village of San Marco di Castellabate and beyond to Punta Licosa.",
             "track_file": "tracks/t800393858_path_of_the_sirens.gpx",
             "start_point": 147,
             "end_point": 148,
             "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/sirens.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2818,13 +2818,13 @@
             "expected_time": 354,
             "ascent": 99,
             "altitude": 1000,
-            "difficulty": "moderate",
+            "difficulty": "Hiker",
             "description": "Out and back walk along the Path of the Sirens, from Santa Maria di Castellabate to its sister village of San Marco di Castellabate and beyond to Punta Licosa.",
             "track_file": "tracks/t800231648_path_of_the_sirens_-.gpx",
             "start_point": 149,
             "end_point": 150,
             "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/sirens_extend.jpg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2844,7 +2844,7 @@
             "start_point": 151,
             "end_point": 152,
             "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/MongeliaLevanto.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -2858,13 +2858,13 @@
             "expected_time": 390,
             "ascent": 296,
             "altitude": 1000,
-            "difficulty": "Moderate",
+            "difficulty": "Hiker",
             "description": "walk is along a peaceful stretch of the Via Francigena, where you can contemplate your experiences of the previous days",
             "track_file": "tracks/castel-arquato-to-fidenza.gpx",
             "start_point": 153,
             "end_point": 154,
             "local_guide": 17,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/castellarquato.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
@@ -3124,7 +3124,7 @@
             "start_point": 172,
             "end_point": 172,
             "local_guide": 1,
-            "picture": "hikePictures/defultImage.jpg",
+            "picture": "hikePictures/colle_impiso.jpeg",
             "condition": "Open",
             "condition_description": "Open"
         }
