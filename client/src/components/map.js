@@ -89,7 +89,7 @@ function Map(props){
                     props.setAscent(parseInt(elevation - lowestElevation))
                     props.setAltitude(parseInt(elevation))
                     let rp = [];
-                    for (var i = 1; i < gpx.tracks[0].points.length - 1; i++) {
+                    for (let i = 1; i < gpx.tracks[0].points.length - 1; i++) {
                         rp[i - 1] = gpx.tracks[0].points[i];
                     }
                     props.setTrackPoints(rp)
