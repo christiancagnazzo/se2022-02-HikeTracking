@@ -3,35 +3,31 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     
     const now = dayjs()
      
-    it('T1: Successfull starting', () => {
+    function loginHiker() {
         cy.visit("http://localhost:3000/")
         cy.get("#login").click()
         cy.get("#username").clear().type("h@mail.com")
         cy.get("#password").clear().type("1234")
         cy.get("#loginSubmit").click()
         cy.url().should('include','/hiker')
+    }
+
+
+    it('T1: Successfull starting', () => {
+        loginHiker()
         cy.get("#start-SentieroperilROCCIAMELONE").click()
         cy.get("#confirmStart").click()
         cy.url().should('include','/hiker/ongoinghike')
     })
     it('T2: Failure on starting an hike while exists an ongoiong one', () => {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click()
-        cy.url().should('include','/hiker')
+        loginHiker()
         cy.get("#start-PiccianoTappa77").click()
         cy.get("#confirmStart").click()
         cy.get("#error")
     })
 
     it('T3: Failure on updating position back in time', () => {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         
         cy.visit("http://localhost:3000/hiker/ongoinghike")
         cy.get("#referencePoints").select(1)
@@ -43,11 +39,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     })
 
     it('T4: Successfull reference point reached', () => {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         
         cy.visit("http://localhost:3000/hiker/ongoinghike")
         cy.get("#referencePoints").select(1)
@@ -60,11 +52,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
 
     it('T5: Failure on ending back in time', () => {
     
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         
         cy.visit("http://localhost:3000/hiker/ongoinghike")
         cy.get("#endHike").click()
@@ -75,11 +63,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
 
     it('T6: Successfull ending', () => {
         
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         
         cy.visit("http://localhost:3000/hiker/ongoinghike")
         cy.get("#endHike").click()
@@ -90,11 +74,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
     })
 
     it('T7: Completed hikes', () => {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         cy.visit("http://localhost:3000/hiker/records").wait(1000)
         cy.contains("Sentiero per il ROCCIAMELONE")
         cy.contains(dayjs().format("DD/MM/YYYY"))
@@ -102,11 +82,7 @@ describe('Tests about hiking [REQUIRES DEFAULT DATABASE POPULATION]',() => {
 
 
     it('T8: Visit statistics', () => {
-        cy.visit("http://localhost:3000/")
-        cy.get("#login").click()
-        cy.get("#username").clear().type("h@mail.com")
-        cy.get("#password").clear().type("1234")
-        cy.get("#loginSubmit").click().wait(1000)
+        loginHiker()
         cy.visit("http://localhost:3000/hiker/performancestats").wait(1000)
         cy.contains("Total nr of hikes finished")
         cy.contains("Total nr of kms walked")
