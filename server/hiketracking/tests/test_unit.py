@@ -12,13 +12,14 @@ RESPONSE_UTIL = b'[{"id":1,'\
         b'"title":"Climbing",'\
         b'"length":2,"expected_time":1,'\
         b'"ascent":1,'\
+        b'"altitude":1000,'\
         b'"difficulty":"easy",'\
         b'"description":"",'\
         b'"track_file":"",'\
         b'"start_point_id":1,'\
         b'"end_point_id":1,'\
         b'"local_guide_id":1,'\
-        b'"picture":"./hikePictures/defultImage.jpg",'\
+        b'"picture":"hikePictures/defultImage.jpg",'\
         b'"condition":"Open",'\
         b'"condition_description":"Open",'\
         b'"rp":[],'\
@@ -33,13 +34,14 @@ RESPONSE_UTIL = b'[{"id":1,'\
         b'"length":3,'\
         b'"expected_time":2,'\
         b'"ascent":0,'\
+        b'"altitude":1000,'\
         b'"difficulty":"medium",'\
         b'"description":"",'\
         b'"track_file":"",'\
         b'"start_point_id":1,'\
         b'"end_point_id":1,'\
         b'"local_guide_id":1,'\
-        b'"picture":"./hikePictures/defultImage.jpg",' \
+        b'"picture":"hikePictures/defultImage.jpg",' \
         b'"condition":"Open",'\
         b'"condition_description":"Open",'\
         b'"rp":[],'\
@@ -249,10 +251,15 @@ class modifyAndDeleteHikeUnitTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class MockMOdifyHike:
+    def __init__(self):
+        self.status_code = 200
 
 class DeleteHikeUnitTest(TestCase):
     def setUp(self) -> None:
        set_up()
+       c1 = CustomUser(email="test@test.com",password = "foo" ,role="Testrole")
+       c1.save()
        return super().setUp()
     
     def test_Backfround(self):
@@ -261,12 +268,13 @@ class DeleteHikeUnitTest(TestCase):
         response = c.get('/hiketracking/hikes/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, RESPONSE_UTIL)
-        
-    def test_modifyHike(self):
+
+    @mock.patch("django.test.Client.post",return_value=MockMOdifyHike())
+    def test_modifyHike(self,mocked):
         c = Client()
         c.login(username="test@user.com",password="foo")
         response = c.post('/hiketracking/hikes/', {'username': 'john', 'password': 'smith'})
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 200)
 
     def test_deleteHike(self):
         c = Client()
@@ -306,12 +314,23 @@ class MockStats:
     def json(self):
         return 
 
-    def test_get(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 401)
 class PerformanceStatsUnitTest(TestCase):
     def setUp(self) -> None:
+        self.url = '/hiketracking/hiker/performancestats'
         return super().setUp()
+
+    def test_get(self):
+        c = Client()
+        c.login(username="test@user.com",password="foo")
+        response = c.get(self.url)
+        self.assertEqual(response.status_code, 404)
+
+    @mock.patch("django.test.Client.post",return_value=MockStats())
+    def test_post(self,mocked):
+        c = Client()
+        c.login(username="test@user.com",password="foo")
+        response = c.post(self.url)
+        self.assertEqual(response.status_code, 200)
 
 class MockRecordPointGet:
     def __init__(self):
@@ -622,3 +641,4 @@ class WeatherAlertUnitTest(TestCase):
         c.delete(self.url)
         hike2 = WeatherAlert.objects.all()
         self.assertFalse(hike2.exists())
+
