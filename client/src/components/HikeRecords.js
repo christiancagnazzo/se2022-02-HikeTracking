@@ -1,4 +1,4 @@
-
+/*
 import {  Row, Col, Container } from 'react-bootstrap';
 
 import UTILS from '../utils/utils';
@@ -25,3 +25,4 @@ function HikeRecords(props) {
 export default HikeRecords
 
 
+*/
