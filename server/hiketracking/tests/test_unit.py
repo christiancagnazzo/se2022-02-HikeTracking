@@ -316,7 +316,7 @@ class MockStats:
 
 class PerformanceStatsUnitTest(TestCase):
     def setUp(self) -> None:
-        self.url = '/hiketracking/hiker/performancestats'
+        self.url = '/hiketracking/hike/performanceStats/'
         return super().setUp()
 
     def test_get(self):
