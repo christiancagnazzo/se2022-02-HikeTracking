@@ -97,6 +97,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "j0vpie0kwikhw5h0uk2mwl25ryn3ft8m",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Cz:OE_ixhmWDXEgMhnMFjpaeEcC4U_N9rT-LuG4LWa64lc",
+    "expire_date": "2023-01-21T11:17:53.556"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "j3qzl8e7hu7fckbgp5jv5gtq2n7hjjr8",
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu941DiBbipMq4u4QKQW0b2beJhKsS03r4DlNJC7CidPvhpCf3HZAD2j3LnNvyzyh3BV50CFvnfh1Pdy_gwqjfmsshoPTxaMzxtngIhcsOoYcMVOO1msA8GBJMfqgdbalkImK4xmCUeL9AfowOGI:1pE6ID:cSUZ-af1AwYtv2KZuUFAXdg2mb5JZRx7UsUBvjXdFyo",
@@ -125,6 +133,14 @@
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE5Zg:8SOvxnnaVKiwBUYkYQnIVf8XCTwAFotIClx0f5UEwpc",
     "expire_date": "2023-01-21T09:33:12.670"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nq5cajasuswg5fcc87vmz91f4ky4kzv5",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Km:rb-d_XHnIqn6mPmOUpBF_yxauNC710xXA6eUI5KXe_o",
+    "expire_date": "2023-01-21T11:25:56.199"
   }
 },
 {
@@ -168,6 +184,14 @@
   }
 },
 {
+  "model": "sessions.session",
+  "pk": "zxi2a1sjnozda3jv7klvu1ztlitu6i78",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Ug:Cucvuwh-JhkeaU0MvDlra-bSlWP4k4-sbR9qvjEt94g",
+    "expire_date": "2023-01-21T11:36:10.210"
+  }
+},
+{
   "model": "hiketracking.customuser",
   "pk": 1,
   "fields": {
@@ -191,7 +215,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$390000$tp5Q3aUxKCKdBoDQyTl1uE$hc+05eIs5g7Bgzwl+xSm9NTcBiVq7fI6+45tjYpeeqo=",
-    "last_login": "2023-01-07T10:19:44.641",
+    "last_login": "2023-01-07T11:36:10.210",
     "is_superuser": false,
     "first_name": "",
     "last_name": "",
@@ -3693,6 +3717,30 @@
   }
 },
 {
+  "model": "hiketracking.userhikelog",
+  "pk": 20,
+  "fields": {
+    "user": 2,
+    "hike": 410,
+    "counter": 2,
+    "point": 1,
+    "datetime": "2023-01-07T12:36:10",
+    "end": false
+  }
+},
+{
+  "model": "hiketracking.userhikelog",
+  "pk": 21,
+  "fields": {
+    "user": 2,
+    "hike": 410,
+    "counter": 2,
+    "point": 194,
+    "datetime": "2023-01-07T12:36:13",
+    "end": false
+  }
+},
+{
   "model": "hiketracking.weatheralert",
   "pk": 1,
   "fields": {
@@ -3710,16 +3758,6 @@
     "weather_lat": 44.93977223368873,
     "weather_lon": 11.326904296875,
     "radius": 55000
-  }
-},
-{
-  "model": "knox.authtoken",
-  "pk": "6aa746e02320bd03b9ab11bbe34e227f89396be9ae2e2d521ea24a2821bcba158978ea7473271099d081e81445d63600290b6a7a96db698c700184159e22f5a2",
-  "fields": {
-    "token_key": "8cfcba99",
-    "user": 1,
-    "created": "2023-01-07T10:34:51.183",
-    "expiry": "2023-01-07T20:34:51.183"
   }
 },
 {
