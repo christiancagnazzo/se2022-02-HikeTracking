@@ -169,10 +169,12 @@ async function login(credentials) {
     let msg = "Email and/or password are not correct, please try again"
     const err = await response.json()
     if (err.error) {
-      if (err.error === 0)
+      if (err.error === 2){
         msg = "Please confirm your email"
-      if (err.error === 1)
+      }
+      if (err.error === 1){
         msg = "Your account has not been confirmed by the platform manager yet, please try again"
+      }
     }
     return { error: 'Error', msg: msg }
   }
