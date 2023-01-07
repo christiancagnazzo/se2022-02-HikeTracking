@@ -144,7 +144,7 @@ class FullListHikeTest(TestCase):
         val_list_1 = list(h_list[1].values())
         final_test_list = [val_list, val_list_1]
         self.assertEqual(final_test_list[0][1], 'Climbing')
-        self.assertEqual(final_test_list[1][8], 1)
+        self.assertEqual(final_test_list[1][9], 1)
 
 
 class AddHikeDescriptionTest(TestCase):

@@ -374,7 +374,6 @@ class Recommended( APIView ):
 
 
 class Hiking( APIView ):
-    permission_classes = (permissions.AllowAny,)
     serializer_class = HikeCounterIncludeSerializer
 
     def get(self, request, state):
