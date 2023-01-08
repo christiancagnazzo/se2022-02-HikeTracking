@@ -28,6 +28,7 @@ function VisitorPage(props) {
   const [alertCount, setAlertCount] = useState(0);
   const [records, setRecords] = useState([])
   const [stat, setStat] = useState({})
+  const [loadingHikes, setLoadingHikes] = useState(true)
   let navigate = useNavigate();
   let token = localStorage.getItem("token");
 
@@ -40,10 +41,14 @@ function VisitorPage(props) {
     const getHikes = async () => {
       try {
         const hikes = await API.getAllHikes(token, null, props.userPower);
-        if (hikes.error)
+        if (hikes.error){
+          setLoadingHikes(false)
           setErrorMessage(hikes.msg)
-        else
+        }
+        else{
+          setLoadingHikes(false)
           setHikes(hikes.msg);
+        }
       } catch (err) {
         console.log(err)
       }
@@ -56,10 +61,14 @@ function VisitorPage(props) {
     async function getFilteredHikes() {
       try {
         const filteredHikes = await API.getAllHikes(token, filter, props.userPower)
-        if (hikes.error)
+        if (hikes.error){
+          setLoadingHikes(false)
           setErrorMessage(filteredHikes.msg)
-        else
+        }
+        else{
+          setLoadingHikes(false)
           setHikes(filteredHikes.msg);
+        }
       } catch (err) {
         console.log(err)
       }
@@ -218,7 +227,7 @@ function VisitorPage(props) {
       <Col sm={10} className="py-1">
         <Row className="p-4">
           <Routes>
-            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} updateDirty={updateDirty}/>}/>
+            <Route path="*" element={<Hikes setFiltered={setFiltered} filtered={filtered} userPower={props.userPower} userId={props.userId} hikes={hikes} updateDirty={updateDirty} loading={loadingHikes}/>}/>
             <Route path="filterhikes" element={<FilterFormHikes  setFiltered={setFiltered} applyFilter={applyFilterHikes} setErrorMessage={setErrorMessage}/>}/>
             <Route path= "recommendedhikes" element ={<RecommendedHikes userPower={props.userPower} recommendedhikes={recommendedhikes}/>}/>
             <Route path="huts" element={<Huts huts={huts}/>}/>

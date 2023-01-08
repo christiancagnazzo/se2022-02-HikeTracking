@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import {  Row, Col,  Container } from 'react-bootstrap';
 import HikeCard from './hikecard';
 import UTILS from '../utils/utils';
+import TheSpinner from './spinner';
 
 function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId, updateDirty) {
   let hikescard = hikes.map((h, idx) =>
@@ -36,6 +37,7 @@ function displayHikesUtil(hikes, userPower, filtered, setFiltered, userId, updat
 function Hikes(props) {
   if (props.hikes.length === 0) {
     return (
+      !props.loading?
       <Container>
       <Row>
         <Col xs={10}>
@@ -48,7 +50,11 @@ function Hikes(props) {
           }}>Reset Filters</Button> : ''}
         </Col>
       </Row>
-    </Container>
+    </Container>:
+    
+    <>{ props.filtered ? <h1>Filtered Hikes</h1> : <h1>All Hikes</h1> }
+    <TheSpinner/>
+    </>  
     )
   }
   else {

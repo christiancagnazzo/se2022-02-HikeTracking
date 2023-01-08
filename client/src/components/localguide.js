@@ -12,6 +12,7 @@ import ParkingLots from './parkinglots';
 
 function LocalGuide(props){
   const [hikes, setHikes] = useState([]);
+  const [loadingHikes, setLoadingHikes] = useState(true)
   const [huts, setHuts] = useState([]);
   const [parkinglots, setParkingLots] = useState([])
   const [_, setErrorMessage] = useState('')
@@ -27,10 +28,14 @@ function LocalGuide(props){
     const getHikes = async () => {
       try {
         const hikes = await API.getAllHikes(token);
-        if (hikes.error)
+        if (hikes.error){
+          setLoadingHikes(false)
           setErrorMessage(hikes.msg)
-        else
+        }
+        else{
+          setLoadingHikes(false)
           setHikes(hikes.msg);
+        }
       } catch (err) {
         console.log(err)
       }
@@ -86,7 +91,7 @@ function LocalGuide(props){
         <Route path="addhike" element={<HikeForm updateDirty={updateDirty}/>}/>
         <Route path="addhut" element={<HutForm updateDirty={updateDirty}/>}/>
         <Route path="addparkinglot" element={<ParkingLotForm updateDirty={updateDirty}/>}/>
-        <Route path="*" element={<Hikes userId={props.userId} userPower={props.userPower} hikes={hikes} />}/>
+        <Route path="*" element={<Hikes loading={loadingHikes} userId={props.userId} userPower={props.userPower} hikes={hikes} />}/>
         <Route path="huts" element={<Huts huts={huts}/>}/>
         <Route path="parkinglots" element={<ParkingLots parkinglots={parkinglots} applyFilter={() => {}}/>}/>
     </Routes>

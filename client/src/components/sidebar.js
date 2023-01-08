@@ -63,7 +63,7 @@ function HikerMenu(props){
         <SubMenu label="Hikes" icon={hikingIcon}>
           <MenuItem onClick={() => updateActive(0,"hikes")} active={"hikes"===route}>Browse</MenuItem>
           <MenuItem onClick={() => updateActive(1,"filterhikes")} active={"filterhikes"===route}>Filter</MenuItem> 
-          <MenuItem onClick={() => updateActive(1,"ongoinghike")} active={"ongoinghike"===route}>Current Hike </MenuItem>   
+          {props.hiker?<MenuItem onClick={() => updateActive(1,"ongoinghike")} active={"ongoinghike"===route}>Current Hike </MenuItem>:''}
         {props.hiker ? <MenuItem onClick = {() => updateActive(6, "recommendedhikes")} active = {"recommendedhikes"===route}>Recommended Hikes</MenuItem> : ''}
         </SubMenu>
         <SubMenu icon ={hutIcon} label='Hut'>
