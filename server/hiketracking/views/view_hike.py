@@ -215,7 +215,7 @@ class Hikes( APIView ):
             return Response( status=status.HTTP_200_OK, data={"hike_id": hike.id} )
         except Exception as e:
             print( e )
-            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": str( e )} )
+            return Response( status=status.HTTP_400_BAD_REQUEST, data={"Error": "Another hike with the same title exists! Try a new one"} )
 
     def put(self, request, format=None):
         user_id = CustomUser.objects.get( email=request.user )

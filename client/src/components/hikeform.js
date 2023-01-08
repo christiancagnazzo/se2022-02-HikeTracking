@@ -7,10 +7,10 @@ import { useParams } from "react-router-dom";
 
 function HikeForm(props) {
   const { hiketitle } = useParams()
-  const [title, setTitle] = useState('Sentiero per il ROCCIAMELONE')
-  const [length, setLength] = useState(9)
-  const [time, setTime] = useState(240)
-  const [ascent, setAscent] = useState(3538)
+  const [title, setTitle] = useState('')
+  const [length, setLength] = useState()
+  const [time, setTime] = useState()
+  const [ascent, setAscent] = useState()
   const [difficulty, setDifficulty] = useState("Tourist")
   const [sp, setSp] = useState(["", ""])
   const [addressSp, setAddressSp] = useState('')
@@ -20,7 +20,7 @@ function HikeForm(props) {
   const [addressRp, setAddressRp] = useState('')
   const [rpList, setRpList] = useState([])
   const [trackPoints, setTrackPoints] = useState([])
-  const [desc, setDesc] = useState('First hike to be uploaded')
+  const [desc, setDesc] = useState('')
   const [file, setFile] = useState('')
   const [image, setImage] = useState('')
   const [readFile, setReadFile] = useState('')
@@ -35,6 +35,20 @@ function HikeForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    if(title===""){
+      setErrorMessage("Please insert a title")
+      return 
+    }
+
+
+    if(file===""){
+      setErrorMessage("Please insert a file")
+      return 
+    }
+    if(image===""){
+      setErrorMessage("Please insert an image")
+      return
+    }
     let formData = new FormData()
     formData.append('File', file)
     let hikeDescription = {
@@ -241,7 +255,7 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-2" controlId="length">
           <Form.Label>Length (kms)</Form.Label>
-          <Form.Control type="text" placeholder="Length" value={length}
+          <Form.Control disabled type="text" placeholder="Extracted from the gpx file" value={length}
             onChange={(e) => { if (checkNum(e.target.value)) { setLength(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="time">
@@ -250,7 +264,7 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-2" controlId="ascent">
           <Form.Label>Ascent (meters)</Form.Label>
-          <Form.Control type="text" placeholder="Ascent" value={ascent} onChange={(e) => { if (checkNum(e.target.value)) { setAscent(e.target.value) } }} />
+          <Form.Control disabled type="text" placeholder="Extracted from the gpx file" value={ascent} onChange={(e) => { if (checkNum(e.target.value)) { setAscent(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="ascent">
           <Form.Label>Difficulty</Form.Label>
@@ -288,7 +302,7 @@ function HikeForm(props) {
         </Form.Group>
         {action}
       </Form>
-      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
+      {errorMessage ? <Alert className="mt-3" variant='danger' onClose={() => setErrorMessage('')} dismissible >{errorMessage}</Alert> : false}
     </Card>
 
   )

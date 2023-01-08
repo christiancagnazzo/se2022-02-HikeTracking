@@ -4,7 +4,6 @@ const URL = "http://localhost:8000/hiketracking/"
 
 async function createHike(hike_description, hike_file, token, method) {
   const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
-  console.log(JSON.stringify(hike_description))
   try {
     let response = await fetch(URL + 'hikes/', {
       method: method,
@@ -44,7 +43,7 @@ async function createHike(hike_description, hike_file, token, method) {
       return { error: true, msg: "Something went wrong. Please check all fields and try again" };
     }
 
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    return { error: true, msg: "Something went wrong. An hike with this title already exists, please try a new one" };
   }
 
   catch (e) {
