@@ -1,197 +1,5 @@
 [
 {
-  "model": "sessions.session",
-  "pk": "0q6pe2a7kpcj6k9kteui1i80twuy32d1",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE5aV:I4qk67pUVbYdKBCrmQFathgyC0RvTueUOWcrrPAEYAY",
-    "expire_date": "2023-01-21T09:34:03.946"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "2417edmahv48ccc0u5qz9h1v5s7brali",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE5ql:8GZahXNzOiZAaA4hggjkyWYK_d5wSkMJUXv75oEHmK8",
-    "expire_date": "2023-01-21T09:50:51.454"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "2apm2ravg0ou2zhdhrkfbgfyh80fobyf",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu941DiBbipMq4u4QKQW0b2beJhKsS03r4DlNJC7CitPvhpCf3HZAD2j3LnNvyzyh3BV50CFvnfh1Pdy_gwqjfmsshoPTxaMzxtngIhcsOoYcMVOO1msA8GBJMfqgdbalkImK4xmCUeL9AfmXOGE:1pE5Sj:LAiFWozEd9_HB59uOe5yHsyIApcXEWsMM01h1ER27N8",
-    "expire_date": "2023-01-21T09:26:01.593"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "4mg4fvymc0ek9usi568rd8ld1lpz525r",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE69x:sWVm2N0_F198JBmiJdPFDccVxpVXoTH2xvDzwBIj6YM",
-    "expire_date": "2023-01-21T10:10:41.259"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "75xz6wmc2vn06jzdknftnzmwwd64c66s",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pDoPB:nrQAEG2Mw19XTk3_Xfgv2SeVUaiaERn9NYX-uitHFj0",
-    "expire_date": "2023-01-20T16:13:13.702"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "9uau65ymfo9ls4d9me867w7ktuectp4u",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE6IS:fQxzdK0PFRPv0ipZH7bEuzuRcL5p8WDqxeOGhcvrZR4",
-    "expire_date": "2023-01-21T10:19:28.414"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "a40z6bvv28rd2wo3f3rff5tl0l76duph",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu941DiBbipMq4u4QKQW0b2beJhKsS03r4DlNJC7CitPvhpCf3HZAD2j3LnNvyzyh3BV50CFvnfh1Pdy_gwqjfmsshoPTxaMzxtngIhcsOoYcMVOO1msA8GBJMfqgdbalkImK4xmCUeL9AfmXOGE:1pE6IJ:FwCrAClFy4F_vcKYVOzsBBkKJgwl5XCm5Df1fatbNc0",
-    "expire_date": "2023-01-21T10:19:19.201"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "aiwi89ogvquml0sen5wehefzq7pqhvy9",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE6XL:ooevN4Fe4eOSvBsC9CKJwNsKdm-7Q-sHs4b2bxU2asU",
-    "expire_date": "2023-01-21T10:34:51.185"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "bbab7c3duddfeqsfak7gh5c6st0ubd05",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pDoN8:60UpsHcWyGhfX3VKKMi8blf6oPFrRHQxTv2zSTqNTLg",
-    "expire_date": "2023-01-20T16:11:06.389"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "fidec8tu1mzi1govlohek8zaiy4tr4zl",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE5TG:OOLR6RoY_4mEj2Sx4svMoSRGBvw7yax_p10OwuLAOcU",
-    "expire_date": "2023-01-21T09:26:34.415"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "fvwh8nv6tia88112ou5gl7gcgo9s75sn",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pDomF:lXceJ8mm3MkSkwHOUMTHkWyAZ6i_u7xvdBbsR2Qiluw",
-    "expire_date": "2023-01-20T16:37:03.172"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "iaws1e42pbu73p5ovuzw5w6dtathndvn",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE6Ii:xPwky5O8Sgsr-2Ryakdq-lVu9aIQzANwJ1fBwqdQruM",
-    "expire_date": "2023-01-21T10:19:44.642"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "j0vpie0kwikhw5h0uk2mwl25ryn3ft8m",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Cz:OE_ixhmWDXEgMhnMFjpaeEcC4U_N9rT-LuG4LWa64lc",
-    "expire_date": "2023-01-21T11:17:53.556"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "j3qzl8e7hu7fckbgp5jv5gtq2n7hjjr8",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu941DiBbipMq4u4QKQW0b2beJhKsS03r4DlNJC7CidPvhpCf3HZAD2j3LnNvyzyh3BV50CFvnfh1Pdy_gwqjfmsshoPTxaMzxtngIhcsOoYcMVOO1msA8GBJMfqgdbalkImK4xmCUeL9AfowOGI:1pE6ID:cSUZ-af1AwYtv2KZuUFAXdg2mb5JZRx7UsUBvjXdFyo",
-    "expire_date": "2023-01-21T10:19:13.382"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "kah3glaty554vwooz4o70n2xzuai9aoi",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE6I7:JwL8fioLgiNR3rT9SiSmIxswQBVGq-Lqd5wv-ZEsZvg",
-    "expire_date": "2023-01-21T10:19:07.911"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "mrtgdrx5mkwshk4fm3luonynxyd3cxij",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE6A3:T5yn3MVDRXjIAm2w82Wl1G8Xvq1D1Mt430LYVulGyZc",
-    "expire_date": "2023-01-21T10:10:47.420"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "n6xarwkd5klh4je7ofhcbhrobccl1i7x",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE5Zg:8SOvxnnaVKiwBUYkYQnIVf8XCTwAFotIClx0f5UEwpc",
-    "expire_date": "2023-01-21T09:33:12.670"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "nq5cajasuswg5fcc87vmz91f4ky4kzv5",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Km:rb-d_XHnIqn6mPmOUpBF_yxauNC710xXA6eUI5KXe_o",
-    "expire_date": "2023-01-21T11:25:56.199"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "tpnkkz8eq3tdksklyrzfrx07qu82tkj0",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEFqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9AfhlOF8:1pE5p8:Hb1_WvxwHrh_5cRkHyfiWVOu8DENxaBy82eMKvH3RPw",
-    "expire_date": "2023-01-21T09:49:10.436"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "u3ynb0io3e3gssmgdq5numpztzw7fp0p",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2pAy2MG6dN8zkGEGpGogKe3KeHfbpAvd_vfefytP65L92uLsJ1FXZS7q9DsG4mcsO5EHlXvVXMsyT0Hvij5o02OV-Lod7t9Bppa3OqEVDmI6C8CEgBIoEViHhgaI4M4SBFk6h0TIqecNcUJB0_NARn2-KWY45A:1pDoWK:JaQ4txpgljEyGt8E_AlRGUP9UyfJfXTGriasbokeEMQ",
-    "expire_date": "2023-01-20T16:20:36.858"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ubxc8iujls7wv8f973813k4jzs86x3mq",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE5JY:Z-7iWRODE9jI8s40tPvN2w9eXKMv8ufiYvoi8jIMXng",
-    "expire_date": "2023-01-21T09:16:32.449"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "vj3f2rxol00v5c5haby8o679uimg9mum",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2pAy2MG6dN8zkGEGpGogKe3KeHfbpAvd_vfefytP65L92uLsJ1FXZS7q9DsG4mcsO5EHlXvVXMsyT0Hvij5o02OV-Lod7t9Bppa3OqEVDmI6C8CEgBIoEViHhgaI4M4SBFk6h0TIqecNcUJB0_NARn2-KWY45A:1pDoWu:u3frqLaCLZ6Zsk3WBsmEy8mCMSnUiaehOh0wZhxANEg",
-    "expire_date": "2023-01-20T16:21:12.551"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ymhkog1z0epy1y7l5f0r3ratc47liq76",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu941DiBbipMq4u4QKQW0b2beJhKsS03r4DlNJC7CidPvhpCf3HZAD2j3LnNvyzyh3BV50CFvnfh1Pdy_gwqjfmsshoPTxaMzxtngIhcsOoYcMVOO1msA8GBJMfqgdbalkImK4xmCUeL9AfowOGI:1pE5SY:s0HdpZxWjcPNjfF_2zIn-nvYqTdw-eVKv8ldObzUe-I",
-    "expire_date": "2023-01-21T09:25:50.411"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "zxi2a1sjnozda3jv7klvu1ztlitu6i78",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-IpuSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEaffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZYDAeni0dnjLPBRS5YdAwUkTJF6zUAeLBZMfqgNdlSsomK4xmCUeL9Afj-OGA:1pE7Ug:Cucvuwh-JhkeaU0MvDlra-bSlWP4k4-sbR9qvjEt94g",
-    "expire_date": "2023-01-21T11:36:10.210"
-  }
-},
-{
   "model": "hiketracking.customuser",
   "pk": 1,
   "fields": {
@@ -201,7 +9,7 @@
     "first_name": "",
     "last_name": "",
     "email": "g@mail.com",
-    "role": "localguide",
+    "role": "Local Guide",
     "is_staff": false,
     "is_confirmed": true,
     "is_active": true,
@@ -220,7 +28,7 @@
     "first_name": "",
     "last_name": "",
     "email": "h@mail.com",
-    "role": "hiker",
+    "role": "Hiker",
     "is_staff": false,
     "is_confirmed": true,
     "is_active": true,
@@ -239,7 +47,7 @@
     "first_name": "",
     "last_name": "",
     "email": "pm@mail.com",
-    "role": "platformmanager",
+    "role": "Platform Manager",
     "is_staff": false,
     "is_confirmed": true,
     "is_active": true,
@@ -258,7 +66,7 @@
     "first_name": "",
     "last_name": "",
     "email": "hw@mail.com",
-    "role": "hutworker",
+    "role": "Hut Worker",
     "is_staff": false,
     "is_confirmed": true,
     "is_active": true,
@@ -277,7 +85,7 @@
     "first_name": "",
     "last_name": "",
     "email": "hw2@mail.com",
-    "role": "hutworker",
+    "role": "Hut Worker",
     "is_staff": false,
     "is_confirmed": false,
     "is_active": true,
@@ -301,25 +109,6 @@
     "is_confirmed": true,
     "is_active": true,
     "date_joined": "2023-01-06T16:10:16.756",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "hiketracking.customuser",
-  "pk": 18,
-  "fields": {
-    "password": "pbkdf2_sha256$390000$IHpUy0snAX1YDJb8ZmspKh$7U22QYJ9SqwQ5clGWg7fIWYl184b/+u+V9lGEaFHyMo=",
-    "last_login": "2023-01-06T16:21:12.544",
-    "is_superuser": false,
-    "first_name": "",
-    "last_name": "",
-    "email": "giorgiopoma37@gmail.com",
-    "role": "Hiker",
-    "is_staff": false,
-    "is_confirmed": false,
-    "is_active": true,
-    "date_joined": "2023-01-06T16:20:11.387",
     "groups": [],
     "user_permissions": []
   }
@@ -3758,26 +3547,6 @@
     "weather_lat": 44.93977223368873,
     "weather_lon": 11.326904296875,
     "radius": 55000
-  }
-},
-{
-  "model": "knox.authtoken",
-  "pk": "e57501143d1653a29fe468d9f7e29f00c2eb76466de190459275ba47e9ac207126db72163fb236d50299e5eadabbc36e50cc0de743d928f8b317ff26bb992fea",
-  "fields": {
-    "token_key": "c770afd8",
-    "user": 18,
-    "created": "2023-01-06T16:20:36.826",
-    "expiry": "2023-01-07T02:20:36.825"
-  }
-},
-{
-  "model": "knox.authtoken",
-  "pk": "fc2548b696658bb315acb049c513bd75908ed9208782c252844873c530af0c43079f7594cea9d3e19c1fdedb847f0cf679dc7c2d4880d636bd9c50c34548d0fb",
-  "fields": {
-    "token_key": "ba6dc5e8",
-    "user": 18,
-    "created": "2023-01-06T16:21:12.535",
-    "expiry": "2023-01-07T02:21:12.534"
   }
 }
 ]

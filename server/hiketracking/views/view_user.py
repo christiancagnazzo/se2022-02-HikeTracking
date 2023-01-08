@@ -94,7 +94,7 @@ class LoginAPI( KnoxLoginView ):
             if not u.is_active:
                 return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 2} )
             user_role = u.role.lower().replace( " ", "" )
-            if (user_role == 'localguide' or user_role == 'hutworker') and not u.is_confirmed:
+            if (u.role == 'Local Guide' or u.role == 'Hut Worker') and not u.is_confirmed:
                 return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 1} )
 
         except:
@@ -122,7 +122,11 @@ class AccountConfirmation( APIView ):
 
     def get(self, request):
         users = CustomUser.objects.filter( is_confirmed=False ).filter( is_active=True ).values()
-        return Response( status=status.HTTP_200_OK, data={"users": users} )
+        filtered = []
+        for u in users:
+            if (u['role'] == 'Local Guide' or u['role'] == 'Hut Worker'):
+                filtered.append(u)
+        return Response( status=status.HTTP_200_OK, data={"users": filtered} )
 
     def post(self, request):
         try:
