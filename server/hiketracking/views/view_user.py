@@ -89,15 +89,20 @@ class LoginAPI( KnoxLoginView ):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
+        try:
+            u = CustomUser.objects.get(email=request.data['email'])
+            if not u.is_active:
+                return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 2} )
+            user_role = u.role.lower().replace( " ", "" )
+            if (u.role == 'Local Guide' or u.role == 'Hut Worker') and not u.is_confirmed:
+                return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 1} )
+
+        except:
+            return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 0} )
+
         serializer = AuthTokenCustomSerializer( data=request.data )
         serializer.is_valid( raise_exception=True )
         user = serializer.validated_data['user']
-        user_role = user.role.lower().replace( " ", "" )
-        if not user.is_active:
-            return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error": 0} )
-        if (user_role == 'localguide' or user_role == 'hutworker') and not user.is_confirmed:
-            return Response( status=status.HTTP_401_UNAUTHORIZED, data={"error" : 1} )
-
         login( request, user )
         result = super( LoginAPI, self ).post( request, format=None )
         return Response( status=status.HTTP_200_OK,
@@ -117,7 +122,11 @@ class AccountConfirmation( APIView ):
 
     def get(self, request):
         users = CustomUser.objects.filter( is_confirmed=False ).filter( is_active=True ).values()
-        return Response( status=status.HTTP_200_OK, data={"users": users} )
+        filtered = []
+        for u in users:
+            if (u['role'] == 'Local Guide' or u['role'] == 'Hut Worker'):
+                filtered.append(u)
+        return Response( status=status.HTTP_200_OK, data={"users": filtered} )
 
     def post(self, request):
         try:

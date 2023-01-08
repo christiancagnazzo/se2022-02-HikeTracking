@@ -87,7 +87,8 @@ class Hikes( APIView ):
                 distance = geopy.distance.geodesic(
                     input_coordinates, hike_coordinates ).km
 
-                if distance <= float( radius ):
+                print( (distance, radius) )
+                if distance <= ( float( radius ) / 1000 ):
                     filtered_hikes.append( h )
 
             hikes = filtered_hikes
@@ -373,7 +374,6 @@ class Recommended( APIView ):
 
 
 class Hiking( APIView ):
-    permission_classes = (permissions.AllowAny,)
     serializer_class = HikeCounterIncludeSerializer
 
     def get(self, request, state):

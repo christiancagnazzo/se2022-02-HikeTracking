@@ -3,7 +3,20 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from unittest import mock
 from datetime import datetime
-from hiketracking.models import Hike, Point,CustomerProfile,CustomUser,WeatherAlert,UserHikeLog
+from hiketracking.models import Hike, Point, CustomerProfile, CustomUser, WeatherAlert, UserHikeLog
+from unittest import mock
+
+TEST_PROVINCE = "test province"
+TEST_VILLAGE = "test village"
+TEST_ADDRESS = "test address"
+TEST_USER = "test@user.com"
+TEST_EMAIL = "test@test.com"
+PASSWORD = "foo"
+TEST_USER2 = "test2@user.com"
+TEST_PROVINCE2 = "test province 2"
+TEST_VILLAGE2 = "test village 2"
+TEST_ADDRESS2 = "test address 2"
+
 
 def util_assertion(self, hike1):
     self.assertEqual(hike1[1].title, "Trekking")
@@ -13,29 +26,29 @@ def util_assertion(self, hike1):
     self.assertEqual(hike1[1].difficulty, 'medium')
     self.assertEqual(hike1[1].start_point.latitude, 0.01)
     self.assertEqual(hike1[1].start_point.longitude, 0.01)
-    self.assertEqual(hike1[1].start_point.province, "test province")
-    self.assertEqual(hike1[1].start_point.village, "test village")
-    self.assertEqual(hike1[1].start_point.address, "test address")
+    self.assertEqual(hike1[1].start_point.province, TEST_PROVINCE)
+    self.assertEqual(hike1[1].start_point.village, TEST_VILLAGE)
+    self.assertEqual(hike1[1].start_point.address, TEST_ADDRESS)
     self.assertEqual(hike1[0].end_point.latitude, 0.01)
     self.assertEqual(hike1[0].end_point.longitude, 0.01)
-    self.assertEqual(hike1[0].end_point.province, "test province")
-    self.assertEqual(hike1[0].end_point.village, "test village")
-    self.assertEqual(hike1[0].end_point.address, "test address")
+    self.assertEqual(hike1[0].end_point.province, TEST_PROVINCE)
+    self.assertEqual(hike1[0].end_point.village, TEST_VILLAGE)
+    self.assertEqual(hike1[0].end_point.address, TEST_ADDRESS)
 
 
 def set_up():
     User = get_user_model()
 
-    User.objects.create_user(email='test@user.com',
+    User.objects.create_user(email=TEST_USER,
                              password='foo',
                              role='smth')
 
-    user_id = User.objects.get(email='test@user.com')
+    user_id = User.objects.get(email=TEST_USER)
     p1 = Point(latitude=0.01,
                longitude=0.01,
-               province="test province",
-               village="test village",
-               address="test address")
+               province=TEST_PROVINCE,
+               village=TEST_VILLAGE,
+               address=TEST_ADDRESS)
 
     p1.save()
 
@@ -113,7 +126,7 @@ class deleteHikeTest(TestCase):
 
 class CustomerProfileTest(TestCase):
     def setUp(self) -> None:
-        c1 = CustomUser(email="test@test.com", role="Testrole")
+        c1 = CustomUser(email=TEST_EMAIL, role="Testrole")
         c1.save()
         CustomerProfile.objects.create(user=c1,
                                        min_length=0.01,
@@ -127,7 +140,7 @@ class CustomerProfileTest(TestCase):
 
     def test_CustomerProfile(self):
         cp1 = CustomerProfile.objects.all()
-        self.assertEqual(cp1[0].user.email, "test@test.com")
+        self.assertEqual(cp1[0].user.email, TEST_EMAIL)
         self.assertEqual(cp1[0].user.role, "Testrole")
         self.assertEqual(cp1[0].min_length, 0.01)
         self.assertEqual(cp1[0].max_length, 0.01)
@@ -159,17 +172,27 @@ class CustomerProfileTest(TestCase):
         self.assertFalse(p2.exists())
 
 
+class Mockstats:
+    def __init__(self):
+        self.hikesFinished = 2
+        self.kilometerWork = 18
+        self.averagePase = 0.111
+        self.gvertical = 135000
+        self.most = 1
+        self.quickest = 1
+        self.max = 1
+        self.fastest = 1
+        self.longest = 1
+        self.shortest = 1
+
+
 class PerformanceStatsTest(TestCase):
     def setUp(self) -> None:
-        pass
+        c1 = CustomUser(email=TEST_EMAIL, role="Testrole")
+        c1.save()
 
-    def test_PerformanceStats(self):
-        pass
-
-    def test_modifyPerformanceStates(self):
-        pass
-
-    def test_deletePerformanceStates(self):
+    @mock.patch("django.test.Client.get", return_value=Mockstats())
+    def test_PerformanceStats(self, mocked):
         pass
 
 
@@ -177,47 +200,47 @@ class RecordPointTest(TestCase):
     def setUp(self) -> None:
         User = get_user_model()
 
-        User.objects.create_user(email='test@user.com',
+        User.objects.create_user(email=TEST_USER,
                                  password='foo',
                                  role='smth')
 
-        user_id = User.objects.get(email='test@user.com')
+        user_id = User.objects.get(email=TEST_USER)
         p1 = Point(latitude=0.01,
                    longitude=0.01,
-                   province="test province",
-                   village="test village",
-                   address="test address")
+                   province=TEST_PROVINCE,
+                   village=TEST_VILLAGE,
+                   address=TEST_ADDRESS)
 
         p1.save()
 
-        Hike.objects.create(title='Climbing', 
-        length=1, 
-        expected_time=1, 
-        ascent=1,
-        difficulty='easy',
-        start_point=p1,
-        end_point=p1,
-        local_guide=user_id)
+        Hike.objects.create(title='Climbing',
+                            length=1,
+                            expected_time=1,
+                            ascent=1,
+                            difficulty='easy',
+                            start_point=p1,
+                            end_point=p1,
+                            local_guide=user_id)
 
-        hike1 = Hike.objects.get(title = "Climbing")
+        hike1 = Hike.objects.get(title="Climbing")
 
-        UserHikeLog.objects.create( user = user_id,
-        hike = hike1,
-        counter = 1,
-        point = p1,
-        datetime = datetime.now(),
-        end = True)
+        UserHikeLog.objects.create(user=user_id,
+                                   hike=hike1,
+                                   counter=1,
+                                   point=p1,
+                                   datetime=datetime.now(),
+                                   end=True)
 
-        User.objects.create_user(email='test2@user.com',
+        User.objects.create_user(email=TEST_USER2,
                                  password='foo2',
                                  role='smth2')
 
-        user_id_2 = User.objects.get(email='test2@user.com')
+        user_id_2 = User.objects.get(email=TEST_USER2)
         p2 = Point(latitude=0.02,
                    longitude=0.02,
-                   province="test province 2",
-                   village="test village 2",
-                   address="test address 2")
+                   province=TEST_PROVINCE2,
+                   village=TEST_VILLAGE2,
+                   address=TEST_ADDRESS2)
 
         p2.save()
 
@@ -232,46 +255,46 @@ class RecordPointTest(TestCase):
 
         hike2 = Hike.objects.get(title="Trekking")
 
-        UserHikeLog.objects.create( user = user_id_2,
-            hike = hike2,
-            counter = 2,
-            point = p2,
-            datetime = datetime.now(),
+        UserHikeLog.objects.create(user=user_id_2,
+                                   hike=hike2,
+                                   counter=2,
+                                   point=p2,
+                                   datetime=datetime.now(),
 
-            end = False)
+                                   end=False)
 
         return super().setUp()
 
     def test_PerformanceStats(self):
         u1 = UserHikeLog.objects.all()
-        self.assertEqual(u1[0].user.email, 'test@user.com')
-        self.assertEqual(u1[0].user.check_password("foo"), True)
+        self.assertEqual(u1[0].user.email, TEST_USER)
+        self.assertEqual(u1[0].user.check_password(PASSWORD), True)
         self.assertEqual(u1[0].user.role, "smth")
         self.assertEqual(u1[0].hike.title, "Climbing")
         self.assertEqual(u1[0].hike.length, 1)
         self.assertEqual(u1[0].hike.expected_time, 1)
         self.assertEqual(u1[0].hike.start_point.latitude, 0.01)
         self.assertEqual(u1[0].hike.start_point.longitude, 0.01)
-        self.assertEqual(u1[0].hike.start_point.province, "test province")
-        self.assertEqual(u1[0].hike.start_point.village, "test village")
-        self.assertEqual(u1[0].hike.start_point.address, "test address")
+        self.assertEqual(u1[0].hike.start_point.province, TEST_PROVINCE)
+        self.assertEqual(u1[0].hike.start_point.village, TEST_VILLAGE)
+        self.assertEqual(u1[0].hike.start_point.address, TEST_ADDRESS)
         self.assertEqual(u1[0].hike.end_point.latitude, 0.01)
         self.assertEqual(u1[0].hike.end_point.longitude, 0.01)
-        self.assertEqual(u1[0].hike.end_point.province, "test province")
-        self.assertEqual(u1[0].hike.end_point.village, "test village")
-        self.assertEqual(u1[0].hike.end_point.address, "test address")
-        self.assertEqual(u1[0].hike.local_guide.email, 'test@user.com')
-        self.assertEqual(u1[0].user.check_password("foo"), True)
+        self.assertEqual(u1[0].hike.end_point.province, TEST_PROVINCE)
+        self.assertEqual(u1[0].hike.end_point.village, TEST_VILLAGE)
+        self.assertEqual(u1[0].hike.end_point.address, TEST_ADDRESS)
+        self.assertEqual(u1[0].hike.local_guide.email, TEST_USER)
+        self.assertEqual(u1[0].user.check_password(PASSWORD), True)
         self.assertEqual(u1[0].hike.local_guide.role, "smth")
         self.assertEqual(u1[0].counter, 1)
         self.assertEqual(u1[0].point.latitude, 0.01)
         self.assertEqual(u1[0].point.longitude, 0.01)
-        self.assertEqual(u1[0].point.province, "test province")
-        self.assertEqual(u1[0].point.village, "test village")
-        self.assertEqual(u1[0].point.address, "test address")
+        self.assertEqual(u1[0].point.province, TEST_PROVINCE)
+        self.assertEqual(u1[0].point.village, TEST_VILLAGE)
+        self.assertEqual(u1[0].point.address, TEST_ADDRESS)
         self.assertEqual(u1[0].end, True)
 
-        self.assertEqual(u1[1].user.email, 'test2@user.com')
+        self.assertEqual(u1[1].user.email, TEST_USER2)
         self.assertEqual(u1[1].user.check_password("foo2"), True)
         self.assertEqual(u1[1].user.role, "smth2")
         self.assertEqual(u1[1].hike.title, "Trekking")
@@ -279,23 +302,23 @@ class RecordPointTest(TestCase):
         self.assertEqual(u1[1].hike.expected_time, 2)
         self.assertEqual(u1[1].hike.start_point.latitude, 0.02)
         self.assertEqual(u1[1].hike.start_point.longitude, 0.02)
-        self.assertEqual(u1[1].hike.start_point.province, "test province 2")
-        self.assertEqual(u1[1].hike.start_point.village, "test village 2")
-        self.assertEqual(u1[1].hike.start_point.address, "test address 2")
+        self.assertEqual(u1[1].hike.start_point.province, TEST_PROVINCE2)
+        self.assertEqual(u1[1].hike.start_point.village, TEST_VILLAGE2)
+        self.assertEqual(u1[1].hike.start_point.address, TEST_ADDRESS2)
         self.assertEqual(u1[1].hike.end_point.latitude, 0.02)
         self.assertEqual(u1[1].hike.end_point.longitude, 0.02)
-        self.assertEqual(u1[1].hike.end_point.province, "test province 2")
-        self.assertEqual(u1[1].hike.end_point.village, "test village 2")
-        self.assertEqual(u1[1].hike.end_point.address, "test address 2")
-        self.assertEqual(u1[1].hike.local_guide.email, 'test2@user.com')
+        self.assertEqual(u1[1].hike.end_point.province, TEST_PROVINCE2)
+        self.assertEqual(u1[1].hike.end_point.village, TEST_VILLAGE2)
+        self.assertEqual(u1[1].hike.end_point.address, TEST_ADDRESS2)
+        self.assertEqual(u1[1].hike.local_guide.email, TEST_USER2)
         self.assertEqual(u1[1].user.check_password("foo2"), True)
         self.assertEqual(u1[1].hike.local_guide.role, "smth2")
         self.assertEqual(u1[1].counter, 2)
         self.assertEqual(u1[1].point.latitude, 0.02)
         self.assertEqual(u1[1].point.longitude, 0.02)
-        self.assertEqual(u1[1].point.province, "test province 2")
-        self.assertEqual(u1[1].point.village, "test village 2")
-        self.assertEqual(u1[1].point.address, "test address 2")
+        self.assertEqual(u1[1].point.province, TEST_PROVINCE2)
+        self.assertEqual(u1[1].point.village, TEST_VILLAGE2)
+        self.assertEqual(u1[1].point.address, TEST_ADDRESS2)
         self.assertEqual(u1[1].end, False)
 
     def test_modifyPerformanceStates(self):

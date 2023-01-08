@@ -51,15 +51,16 @@ function RegistrationForm(props) {
             setErrorMessage('Invalid e-mail, please type a correct e-mail.')
         } else if(role === "Hut Worker" && workingHut==="-"){
             setErrorMessage("Please select the hut where you are working.")
-        }
+        } else if (phone.length != 10)
+            setErrorMessage("Insert a valid phone number")
         else {
             try {
                 let result = await API.signin(credentials)
                 if (result.error) {
                     setErrorMessage(result.msg)
                 } else {
-                    setUsername('')
-                    setPassword('')
+                    //setUsername('')
+                    //setPassword('')
                     //This meesage does not mean error,just used this function to transfer message
                     setMessage("Please confirm your email address to complete the registration")
                 }
@@ -97,11 +98,11 @@ function RegistrationForm(props) {
                     </Form.Group>
                     <Form.Group className="mb-2" controlId="email">
                         <Form.Label>Email Address</Form.Label>
-                        <Form.Control required type="text" placeholder="Email" value={username} onChange={(e) => setUsername(e.target.value)} isInvalid={validateEmail(username) && validated}/>
+                        <Form.Control required type="text" placeholder="Email" value={username} onChange={(e) => setUsername(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-2" controlId="phone">
                         <Form.Label>Phone number</Form.Label>
-                        <Form.Control required type="text" placeholder="Phone number" value={phone} onChange={(e) => updatePhone(e.target.value)} isInvalid={phone.length!==10 && validated}/>
+                        <Form.Control required type="text" placeholder="Phone number" value={phone} onChange={(e) => updatePhone(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-2" controlId="password">
                         <Form.Label>Password</Form.Label>

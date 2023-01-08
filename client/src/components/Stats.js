@@ -17,18 +17,19 @@ function showStats(Stats){
 }
 
 function displayObj(obj){
-  if (obj.time){
-    
-    return dayjs(obj.time, "HH:mm:ss").format("HH:mm")  + ", " +  obj.title 
-  }
-  else if (obj.length)
-    return  obj.length + ", " +  obj.title 
-  else 
-    return obj.altitude  + ", " +  obj.title 
+  if (obj.time)
+     return obj.title + ", " + obj.time
+   else if (obj.length)
+     return obj.title + ", " + obj.length
+   else if (obj.altitude)
+     return obj.title + ", " + obj.altitude
+   else 
+     return obj.title + ", " + obj.ascent
 }
 
 
 function displayStats(stats){
+  console.log(stats)
   return (
     Object.entries(stats).map( (entry, idx) => {
       return (
