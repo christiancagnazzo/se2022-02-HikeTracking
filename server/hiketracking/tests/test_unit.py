@@ -8,6 +8,20 @@ import json
 from http import HTTPStatus
 from django.db import models
 
+TEST_PROVINCE="test province"
+TEST_VILLAGE="test village"
+TEST_ADDRESS="test address"
+TEST_USER="test@user.com"
+TEST_EMAIL="test@test.com"
+PASSWORD="foo"
+TEST_PROVINCE2="test province 2"
+TEST_VILLAGE2="test village 2"
+TEST_ADDRESS2="test address 2"
+TEST_PROVINCE3="test province 3"
+TEST_VILLAGE3="test village 3"
+TEST_ADDRESS3="test address 3"
+
+
 RESPONSE_UTIL = b'[{"id":1,'\
         b'"title":"Climbing",'\
         b'"length":2,"expected_time":1,'\
@@ -84,7 +98,7 @@ class UserProfileUnitTest(TestCase):
         password='hiwa_asdf',
         role='local guide'
     )
-        c1 = CustomUser(email = "test@test.com",role = "Testrole")
+        c1 = CustomUser(email = TEST_USER,role = "Testrole")
         c1.save()
         CustomerProfile.objects.create(user =c1,
         min_length = 0.01,
@@ -151,7 +165,7 @@ class recommandHikeUnitTest(TestCase):
     @mock.patch("django.test.Client.get",return_value=MockHike())
     def test_get(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get('/hiketracking/hikes/recommended')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["length"],1)
@@ -167,9 +181,9 @@ def set_up():
     User.objects.create_user(email='test@user.com', password='foo', role='smth')
     user_id = User.objects.get(email='test@user.com')
 
-    p1 = Point(latitude=0.01, longitude=0.01, province="test province", 
-    village="test village",
-    address="test address")
+    p1 = Point(latitude=0.01, longitude=0.01, province=TEST_PROVINCE, 
+    village=TEST_VILLAGE,
+    address=TEST_ADDRESS)
 
     p1.save()
 
@@ -208,12 +222,12 @@ class modifyAHikeUnitTest(TestCase):
 class modifyAndDeleteHikeUnitTest(TestCase):
     def setUp(self) -> None:
         User = get_user_model()
-        User.objects.create_user(email='test@user.com', password='foo', role='smth')
-        user_id = User.objects.get(email='test@user.com')
+        User.objects.create_user(email=TEST_USER, password='foo', role='smth')
+        user_id = User.objects.get(email=TEST_USER)
         p1 = Point(latitude=0.01, longitude=0.01, 
-        province="test province", 
-        village="test village",
-        address="test address")
+        province=TEST_PROVINCE, 
+        village=TEST_VILLAGE,
+        address=TEST_ADDRESS)
 
         p1.save()
         Hike.objects.create(title='Climbing', 
@@ -238,7 +252,7 @@ class modifyAndDeleteHikeUnitTest(TestCase):
     
     def test_Backfround(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get('/hiketracking/hikes/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, RESPONSE_UTIL)
@@ -246,7 +260,7 @@ class modifyAndDeleteHikeUnitTest(TestCase):
     @mock.patch("django.test.Client.post",return_value=MockHike())
     def test_modifyHike(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.post('/hiketracking/hikes/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
@@ -258,13 +272,13 @@ class MockMOdifyHike:
 class DeleteHikeUnitTest(TestCase):
     def setUp(self) -> None:
        set_up()
-       c1 = CustomUser(email="test@test.com",password = "foo" ,role="Testrole")
+       c1 = CustomUser(email=TEST_EMAIL,password = PASSWORD ,role="Testrole")
        c1.save()
        return super().setUp()
     
     def test_Backfround(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get('/hiketracking/hikes/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, RESPONSE_UTIL)
@@ -272,13 +286,13 @@ class DeleteHikeUnitTest(TestCase):
     @mock.patch("django.test.Client.post",return_value=MockMOdifyHike())
     def test_modifyHike(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.post('/hiketracking/hikes/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
     def test_deleteHike(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         c.delete('/hiketracking/hikes/')
         hike2 = Hike.objects.all()
         self.assertTrue(hike2.exists())
@@ -321,14 +335,14 @@ class PerformanceStatsUnitTest(TestCase):
 
     def test_get(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get(self.url)
         self.assertEqual(response.status_code, 404)
 
     @mock.patch("django.test.Client.post",return_value=MockStats())
     def test_post(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.post(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -457,9 +471,9 @@ class RecordPointUnitTest(TestCase):
         user_id = User.objects.get(email='test@user.com')
         p1 = Point(latitude=0.01,
         longitude=0.01,
-        province="test province",
-        village="test village",
-        address="test address")
+        province=TEST_PROVINCE,
+        village=TEST_VILLAGE,
+        address=TEST_ADDRESS)
 
         p1.save()
 
@@ -487,9 +501,9 @@ class RecordPointUnitTest(TestCase):
         user_id_2 = User.objects.get(email='test2@user.com')
         p2 = Point(latitude=0.02,
         longitude=0.02,
-        province="test province 2",
-        village="test village 2",
-        address="test address 2")
+        province=TEST_PROVINCE2,
+        village=TEST_VILLAGE2,
+        address=TEST_ADDRESS2)
 
         p2.save()
 
@@ -516,72 +530,72 @@ class RecordPointUnitTest(TestCase):
     @mock.patch("django.test.Client.get",return_value=MockRecordPointGet()) 
     def test_get(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get(self.url)
         self.assertEqual(response.json()[0]['hike']['title'], "Climbing")
         self.assertEqual(response.json()[0]['hike']['length'], 1)
         self.assertEqual(response.json()[0]['hike']['expected_time'], 1)
         self.assertEqual(response.json()[0]['hike']['start_point']['position'], [0.01,0.01])
-        self.assertEqual(response.json()[0]['hike']['start_point']['province'], "test province")
-        self.assertEqual(response.json()[0]['hike']['start_point']['village'], "test village")
-        self.assertEqual(response.json()[0]['hike']['start_point']['address'], "test address")
+        self.assertEqual(response.json()[0]['hike']['start_point']['province'], TEST_PROVINCE)
+        self.assertEqual(response.json()[0]['hike']['start_point']['village'], TEST_VILLAGE)
+        self.assertEqual(response.json()[0]['hike']['start_point']['address'], TEST_ADDRESS)
         self.assertEqual(response.json()[0]['hike']['end_point']['position'], [0.01,0.01])
-        self.assertEqual(response.json()[0]['hike']['end_point']['province'], "test province")
-        self.assertEqual(response.json()[0]['hike']['end_point']['village'], "test village")
-        self.assertEqual(response.json()[0]['hike']['end_point']['address'], "test address")
+        self.assertEqual(response.json()[0]['hike']['end_point']['province'], TEST_PROVINCE)
+        self.assertEqual(response.json()[0]['hike']['end_point']['village'], TEST_VILLAGE)
+        self.assertEqual(response.json()[0]['hike']['end_point']['address'], TEST_ADDRESS)
         self.assertEqual(response.json()[0]['counter'], 1)
         self.assertEqual(response.json()[0]['point']['position'], [0.01,0.01])
-        self.assertEqual(response.json()[0]['point']['province'], "test province")
-        self.assertEqual(response.json()[0]['point']['village'], "test village")
-        self.assertEqual(response.json()[0]['point']['address'], "test address")
+        self.assertEqual(response.json()[0]['point']['province'], TEST_PROVINCE)
+        self.assertEqual(response.json()[0]['point']['village'], TEST_VILLAGE)
+        self.assertEqual(response.json()[0]['point']['address'], TEST_ADDRESS)
         self.assertEqual(response.json()[0]['end'], True)
 
         self.assertEqual(response.json()[1]['hike']['title'], "Trekking")
         self.assertEqual(response.json()[1]['hike']['length'], 2)
         self.assertEqual(response.json()[1]['hike']['expected_time'], 2)
         self.assertEqual(response.json()[1]['hike']['start_point']['position'], [0.02,0.02])
-        self.assertEqual(response.json()[1]['hike']['start_point']['province'], "test province 2")
-        self.assertEqual(response.json()[1]['hike']['start_point']['village'], "test village 2")
-        self.assertEqual(response.json()[1]['hike']['start_point']['address'], "test address 2")
+        self.assertEqual(response.json()[1]['hike']['start_point']['province'], TEST_PROVINCE2)
+        self.assertEqual(response.json()[1]['hike']['start_point']['village'], TEST_VILLAGE2)
+        self.assertEqual(response.json()[1]['hike']['start_point']['address'], TEST_ADDRESS2)
         self.assertEqual(response.json()[1]['hike']['end_point']['position'], [0.02,0.02])
-        self.assertEqual(response.json()[1]['hike']['end_point']['province'], "test province 2")
-        self.assertEqual(response.json()[1]['hike']['end_point']['village'], "test village 2")
-        self.assertEqual(response.json()[1]['hike']['end_point']['address'], "test address 2")
+        self.assertEqual(response.json()[1]['hike']['end_point']['province'], TEST_PROVINCE2)
+        self.assertEqual(response.json()[1]['hike']['end_point']['village'], TEST_VILLAGE2)
+        self.assertEqual(response.json()[1]['hike']['end_point']['address'], TEST_ADDRESS2)
         self.assertEqual(response.json()[1]['counter'], 2)
         self.assertEqual(response.json()[1]['point']['position'], [0.02,0.02])
-        self.assertEqual(response.json()[1]['point']['province'], "test province 2")
-        self.assertEqual(response.json()[1]['point']['village'], "test village 2")
-        self.assertEqual(response.json()[1]['point']['address'], "test address 2")
+        self.assertEqual(response.json()[1]['point']['province'], TEST_PROVINCE2)
+        self.assertEqual(response.json()[1]['point']['village'], TEST_VILLAGE2)
+        self.assertEqual(response.json()[1]['point']['address'], TEST_ADDRESS2)
         self.assertEqual(response.json()[1]['end'], False)
     
     @mock.patch("django.test.Client.post",return_value=MockRecordPointPost())
     def test_post(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.post(self.url)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json()['hike']['title'], "Climbing")
         self.assertEqual(response.json()['hike']['length'], 3)
         self.assertEqual(response.json()['hike']['expected_time'], 3)
         self.assertEqual(response.json()['hike']['start_point']['position'], [0.03,0.03])
-        self.assertEqual(response.json()['hike']['start_point']['province'], "test province 3")
-        self.assertEqual(response.json()['hike']['start_point']['village'], "test village 3")
-        self.assertEqual(response.json()['hike']['start_point']['address'], "test address 3")
+        self.assertEqual(response.json()['hike']['start_point']['province'], TEST_PROVINCE3)
+        self.assertEqual(response.json()['hike']['start_point']['village'], TEST_VILLAGE3)
+        self.assertEqual(response.json()['hike']['start_point']['address'], TEST_ADDRESS3)
         self.assertEqual(response.json()['hike']['end_point']['position'], [0.03,0.03])
-        self.assertEqual(response.json()['hike']['end_point']['province'], "test province 3")
-        self.assertEqual(response.json()['hike']['end_point']['village'], "test village 3")
-        self.assertEqual(response.json()['hike']['end_point']['address'], "test address 3")
+        self.assertEqual(response.json()['hike']['end_point']['province'], TEST_PROVINCE3)
+        self.assertEqual(response.json()['hike']['end_point']['village'], TEST_VILLAGE3)
+        self.assertEqual(response.json()['hike']['end_point']['address'], TEST_ADDRESS3)
         self.assertEqual(response.json()['counter'], 3)
         self.assertEqual(response.json()['point']['position'], [0.03,0.03])
-        self.assertEqual(response.json()['point']['province'], "test province 3")
-        self.assertEqual(response.json()['point']['village'], "test village 3")
-        self.assertEqual(response.json()['point']['address'], "test address 3")
+        self.assertEqual(response.json()['point']['province'], TEST_PROVINCE3)
+        self.assertEqual(response.json()['point']['village'], TEST_VILLAGE3)
+        self.assertEqual(response.json()['point']['address'], TEST_ADDRESS3)
         self.assertEqual(response.json()['end'], True)
    
     @mock.patch("django.test.Client.delete",return_value=MockRecordPointDelete())
     def test_delete(self,mocked):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.delete(self.url)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.json.__sizeof__,0)
@@ -612,7 +626,7 @@ class WeatherAlertUnitTest(TestCase):
     
     def test_get(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         response = c.get(self.url)
         self.assertEqual(response.status_code, 200)
         RESPONSE_WEATHER = b'[{"condition":"Snow",'\
@@ -637,7 +651,7 @@ class WeatherAlertUnitTest(TestCase):
 
     def test_delete(self):
         c = Client()
-        c.login(username="test@user.com",password="foo")
+        c.login(username=TEST_USER,password=PASSWORD)
         c.delete(self.url)
         hike2 = WeatherAlert.objects.all()
         self.assertFalse(hike2.exists())
