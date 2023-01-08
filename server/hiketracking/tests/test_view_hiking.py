@@ -33,10 +33,43 @@ class HikingAPItest(TestCase):
             "datetime": "01/07/2023 14:54:57"
         }
         response = c.post('/hiketracking/hiking/', json.dumps(data), content_type=self.context_type, **head)
+
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    def test_terminate_hike(self):
+        c = Client()
+        data = {"email": "test@user.com", "password": "foo"}
+        response = c.post('/hiketracking/login/', json.dumps(data), content_type=self.context_type)
+        token = response.data['token']
+        head = {"HTTP_AUTHORIZATION": "Token " + token}
+        dataa = {
+            "state": 'end',
+            "hike_id": 1,
+            "counter": 1,
+            "datetime": "01/07/2023 14:54:57"
+        }
+        log2 = UserHikeLog.objects.create(user=CustomUser.objects.get(id=2), hike=Hike.objects.get(id=1), counter=1,
+                                          datetime='2023-01-07 10:34:04', point=Point.objects.get(id=1),
+                                          end=False)
+        response = c.put('/hiketracking/hiking/', json.dumps(dataa), content_type=self.context_type, **head)
 
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    def test_get_completed_hikes(self):
+        c = Client()
+        data = {"email": "test@user.com", "password": "foo"}
+        response = c.post('/hiketracking/login/', json.dumps(data), content_type=self.context_type)
+        token = response.data['token']
+        head = {"HTTP_AUTHORIZATION": "Token " + token}
+        log2 = UserHikeLog.objects.create(user=CustomUser.objects.get(id=2), hike=Hike.objects.get(id=1), counter=1,
+                                          datetime='2023-01-07 10:34:04', point=Point.objects.get(id=1),
+                                          end=False)
+        log3 = UserHikeLog.objects.create(user=CustomUser.objects.get(id=2), hike=Hike.objects.get(id=1), counter=1,
+                                          datetime='2023-01-07 10:34:04', point=Point.objects.get(id=1),
+                                          end=True)
+        HikeReferencePoint.objects.create(hike = Hike.objects.get(id=1), point=Point.objects.get(id=1) )
+        response = c.get('/hiketracking/hiking/done', content_type=self.context_type, **head)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 class GetWeatherAlertAPI(TestCase):
 
     def setUp(self):
