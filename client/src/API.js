@@ -122,7 +122,7 @@ async function createHut(hut_description, token) {
     if (response.status === 200)
       return { msg: "Hut created" };
 
-    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+    return { error: true, msg: "Something went wrong. Please check that all fields are filled and try again" };
   }
 
   catch (e) {

@@ -6,17 +6,17 @@ import Multiselect from 'multiselect-react-dropdown';
 
 
 function HikeForm(props) {
-  const [name, setName] = useState('Rifugio La Riposa')
-  const [position, setPosition] = useState([45.078562524475275, 7.181797367594325])
-  const [address, setAddress] = useState('Frazione La Riposa 10059 Mompantero, Susa TO')
-  const [desc, setDesc] = useState('First Hut to be uploaded')
-  const [fee, setFee] = useState(10)
+  const [name, setName] = useState('')
+  const [position, setPosition] = useState(['', ''])
+  const [address, setAddress] = useState('')
+  const [desc, setDesc] = useState('')
+  const [fee, setFee] = useState()
   const [services, setServices] = useState([])
-  const [n_beds, setNBeds] = useState(10)
-  const [ascent, setAscent] = useState(200)
-  const [phone, setPhone] = useState("3333333331")
-  const [email, setEmail] = useState("hut@mail.com")
-  const [webSite, setWebSite] = useState("www.hut.com")
+  const [n_beds, setNBeds] = useState()
+  const [ascent, setAscent] = useState()
+  const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState("")
+  const [webSite, setWebSite] = useState("")
   const [image, setImage] = useState("")
   let [errorMessage, setErrorMessage] = useState('')
   let navigate = useNavigate();
@@ -29,6 +29,8 @@ function HikeForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+
     let hutDescription = {
       'name': name,
       'fee': fee,

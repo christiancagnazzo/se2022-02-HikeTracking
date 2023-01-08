@@ -8,12 +8,12 @@ import API from '../API';
 
 
 function ParkingLotForm(props) {
-  const [name, setName] = useState('Parcheggio bello')
-  const [position, setPosition] = useState([45.178522524475275, 7.081797367594325])
-  const [address, setAddress] = useState('Frazione Il Parcheggio 10059 Mompantero, Susa TO')
-  const [desc, setDesc] = useState('First Parking lot to be uploaded')
-  const [fee, setFee] = useState(10)
-  const [n_cars,setNCars] = useState(10)
+  const [name, setName] = useState('')
+  const [position, setPosition] = useState(['', ''])
+  const [address, setAddress] = useState('')
+  const [desc, setDesc] = useState('')
+  const [fee, setFee] = useState()
+  const [n_cars,setNCars] = useState()
   let [errorMessage, setErrorMessage] = useState('')
   let navigate = useNavigate();
   
