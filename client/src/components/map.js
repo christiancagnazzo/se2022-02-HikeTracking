@@ -102,7 +102,7 @@ function Map(props){
         parseTrack()
     },[gpxFile])
     return (
-        <MapContainer center={!props.sp === ["",""] ? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
+        <MapContainer center={!(props.sp === ["",""]) ? props.sp : [45.07104275068942, 7.677664908245942]} zoom={13} scrollWheelZoom={false} style={{height: '400px'}} >
             <Click sp={props.sp} setRPoint={props.setRPoint} trackPoints={props.trackPoints} currPoint={currPoint} 
             setCurrPoint={setCurrPoint}></Click>
             <TileLayer
