@@ -12,23 +12,16 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done - 10 - 9
-- Total points committed vs done - 67 - 59 
-- Nr of hours planned vs spent (as a team) -  71h:30m - 73h 30min
-
-**Remember**  a story is done ONLY if it fits the Definition of Done:
- 
-- Unit Tests passing
-- Code review completed
-- Code present on VCS
-- End-to-End tests performed
+- Number of stories committed vs done: 10 - 9
+- Total points committed vs done: 67 - 59 
+- Nr of hours planned vs spent (as a team): 71h:30m - 75h 30min
 
 ### Detailed statistics
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_              |  7       |    -   |      19h 30m      |       19h 15m       |
-| _#8_Link start/arrival   | 1         |   8    |    1h 30m        |    1h 30m          |
+| _#0_Uncategorized              |  7       |    -   |      19h 30m      |       19h 15m       |
+| _#8_Link start/arrival   | 1         |   prev. sprint    |    1h 30m        |    1h 30m          |
 | _#9_Link hut      |   5      |  13      |  7h 30m          |   1d 30m           |
 | _#33_Define Reference Points    |     1    |   5     |   4h         |  2h            |
 | _#10_Set Profile      |  5       |    5    |  1d 30m          | 1d 1h             |
@@ -43,7 +36,8 @@ sections:
 Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is not possible to insert an issue as a subtask of several stories, They can only be linked.
 
 
-- Hours per task (average): estimate 71.5/41=1.74  spent 73.5/41= 1.79
+- Hours per task average (estimate and actual): 1.74, 1.79
+- Standard Deviation (estimate and actual):  1.0599237847629641, 1.0028958664671022
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = 0.02
 
   

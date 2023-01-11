@@ -14,7 +14,7 @@ sections:
 
 - Number of stories committed vs. done 4 - 4
 - Total points committed vs. done 26-26
-- Nr of hours planned vs. spent (as a team) 72 - 71.45
+- Nr of hours planned vs. spent (as a team) 74 - 72
 
 **Remember** a story is done ONLY if it fits the Definition of Done:
  
@@ -27,16 +27,19 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
+| _#0_Uncategorized   |   5     |  -    |  16h          |     12h45m         |
+| _#1_Browse_Hikes   |   4     |  prev. sprint     |  8h          |     7h15m         |
+| _#2_Describes_Hikes   |   1     |  prev. sprint     |  8h          |     10h15m         |
+| _#3_Register   |   1     |  prev. sprint     |  5h          |     4h30m         |
 | _#5_Describe_hut   |   4      |  5     |  8h          |     8h30m         |
 | _#6_Describe_parking      |     4    |   5     |       8h     |   9h           |
 | _#7_Search_hut      |  4       |   8     |        13h    |    14h15m          |
 | _#8_Link_start/arrival      |   3      |  8      |     8h       |     5h30m         |
    
 
-- Hours per task average (estimate and actual): 
-37/15= 2.47; 37.25/15= 2.48 
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1: 
-- 37/37.25 -> 1 - 0.99 = 0.01
+- Hours per task average (estimate and actual): 2.95, 3
+- Standard Deviation (estimate and actual): 1.5673535728170023, 1.9409411645298955
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1: 0.024
 
   
 ## QUALITY MEASURES 

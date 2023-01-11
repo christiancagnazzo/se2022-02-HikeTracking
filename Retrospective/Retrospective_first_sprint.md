@@ -25,15 +25,17 @@ RETROSPECTIVE (Team 2)
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_Browse hikes   |    3     |  13     |      10      |          11:30    |
-| _#1_Describe hikes      |   4      |    5    |      14      |       11:30       |
-_#2_Register      |    7     |    13    |     19       |      18:15        |
-_#3_See hike's details     |    3     |     34   |     10       |         10:30     |
+| _#0_Uncategorized  |    3     |  -    |     21      |        24   |
+| _#1_Browse hikes   |    3     |  13     |      10      |          11h30m    |
+| _#2_Describe hikes      |   3      |    5    |      10      |       11h30m       |
+_#3_Register      |    7     |    13    |     19       |      18h15m        |
+_#4_See hike's details     |    3     |     34   |     10       |         10h30m     |
    
 
 
-- Hours per task average, standard deviation (estimate and actual): 3.10 - 3.09 
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent 1 - 0.96 
+- Hours per task average (estimate and actual): 4.02, 4.66
+- Standard Deviation (estimate and actual): 2.5232483046502607, 3.1070853285280604
+- Total task estimation error ratio: 1 - (sum of total hours estimation / sum of total hours spent) = 0.13 
 
   
 ## QUALITY MEASURES 
