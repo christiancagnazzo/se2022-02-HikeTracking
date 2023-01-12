@@ -34,7 +34,7 @@ _#4_See hike's details     |    3     |     34   |     10       |         10h30m
 
 
 - Hours per task average (estimate and actual): 4.02, 4.66
-- Standard Deviation (estimate and actual): 2.5232483046502607, 3.1070853285280604
+- Standard Deviation (estimate and actual): 2.52, 3.10
 - Total task estimation error ratio: 1 - (sum of total hours estimation / sum of total hours spent) = 0.13 
 
   

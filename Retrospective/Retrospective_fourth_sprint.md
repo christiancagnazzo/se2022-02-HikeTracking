@@ -14,7 +14,7 @@ sections:
 
 - Number of stories committed vs done: 8 - 8
 - Total points committed vs done: 71 - 71  
-- Nr of hours planned vs spent (as a team): 72h30m - 78h20min
+- Nr of hours planned vs spent (as a team): 72h30m - 75h35min
 
 
 
@@ -36,8 +36,8 @@ sections:
 
 
 - Hours per task (average): estimate: 1.51, 1.62
-- Standard Deviation (estimate and actual):  1.1410411151176318, 0.9962903196567087
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = 0.07
+- Standard Deviation (estimate and actual):  1.14, 0.99
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = 0.04
 
   
 ## QUALITY MEASURES 
@@ -76,7 +76,7 @@ Additionally, we have passed the sonar cloud quality gate with grade A.
 - What lessons did you learn (both positive and negative) in this sprint?
 
 Positive: automated Front End testing is extremely useful, even if it could be boring to write tests, it helps in saving a lot of time in verifying if all the components are working properly at every update of the application
-Negative: every team member should read the FAQ and the interactions with the PO before and after doing his tasks, in order to check if all the requirements are met
+  Negative: every team member should read the FAQ and the interactions with the PO before and after doing his tasks, in order to check if all the requirements are met
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
@@ -88,7 +88,7 @@ We achieved the set objectives and conducted an excellent sprint
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-We can plan to do less story and improve the design of the application, since we implemented a lot of them. We have to write more comments to improve code readability
+We can plan to do less story and improve the design of the application, since we implemented a lot of them. We have to write meaningful git comments and also improve the file structure of the project
   
 
 - One thing you are proud of as a Team!!

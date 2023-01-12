@@ -37,7 +37,7 @@ Stories number 12-31 and 13-32 have tasks in common. However, on YouTrack it is 
 
 
 - Hours per task average (estimate and actual): 1.74, 1.79
-- Standard Deviation (estimate and actual):  1.0599237847629641, 1.0028958664671022
+- Standard Deviation (estimate and actual):  1.05, 1.00
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = 0.02
 
   

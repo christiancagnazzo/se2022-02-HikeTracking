@@ -38,7 +38,7 @@ sections:
    
 
 - Hours per task average (estimate and actual): 2.95, 3
-- Standard Deviation (estimate and actual): 1.5673535728170023, 1.9409411645298955
+- Standard Deviation (estimate and actual): 1.56, 1.94
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1: 0.024
 
   
