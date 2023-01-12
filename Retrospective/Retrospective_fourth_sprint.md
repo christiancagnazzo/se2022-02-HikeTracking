@@ -75,7 +75,8 @@ Additionally, we have passed the sonar cloud quality gate with grade A.
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-
+Positive: automated Front End testing is extremely useful, even if it could be boring to write tests, it helps in saving a lot of time in verifying if all the components are working properly at every update of the application
+Negative: every team member should read the FAQ and the interactions with the PO before and after doing his tasks, in order to check if all the requirements are met
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
@@ -83,10 +84,11 @@ We assigned in a more precisely way tasks about technical debt and we paid more 
 
 - Which ones you were not able to achieve? Why?
 
-
+We achieved the set objectives and conducted an excellent sprint
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
+Give more time to testing and technical debt
   
 
 - One thing you are proud of as a Team!!
