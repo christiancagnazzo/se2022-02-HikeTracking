@@ -88,7 +88,7 @@ We achieved the set objectives and conducted an excellent sprint
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-Give more time to testing and technical debt
+We can plan to do less story and improve the design of the application, since we implemented a lot of them. We have to write more comments to improve code readability
   
 
 - One thing you are proud of as a Team!!
