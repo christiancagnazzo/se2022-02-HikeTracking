@@ -200,3 +200,17 @@ class Facilities( ListAPIView ):
     serializer_class = FacilitySerializer
 
 
+class HikeHut( ListAPIView ):
+    
+    def post(self, request):
+        hikes = request.data['hikes']
+        hut = request.data['hut']
+        
+        try:
+            for h in hikes:
+                hh = HutHike.objects.create(hike_id=h, hut_id=hut)
+                hh.save()
+        except Exception as e:
+            print(e)
+            
+        return Response(status=status.HTTP_200_OK)

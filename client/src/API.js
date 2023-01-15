@@ -732,6 +732,27 @@ async function getStatistics(token) {
   }
 }
 
-const API = { getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike, getCompletedHikes, getStatistics };
+async function linkHiketoHut(token, hut, hikes) {
+  console.log("ciao")
+  const valid_token = ('Token ' + token).replace('"', '').slice(0, -1)
+  try {
+    let response = await fetch(URL + 'hut/hike/', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': valid_token
+      },
+      body: JSON.stringify({"hut": hut, "hikes": hikes.map( (h) => h.id)})
+    })
+
+    if (response.ok)
+      return { msg: "Linked" }
+    return { error: true, msg: "Something went wrong. Please check all fields and try again" };
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const API = { linkHiketoHut, getHikeAlerts, activateAccount, getAccountsToValidate, getProfile, setProfile, login, logout, createParkingLot, getFacilities, createHike, signin, getAllHikes, checkAuth, getAllHuts, getAllParkingLots, createHut, getHike, deleteHike, getHikeFile, getRecommendedHikes, getHutWorkerHikes, updateCondition, getAlerts, postAlert, deleteAlerts, postReachedReferencePoint, getHikePicture, getHutPicture, postStartHike, postTerminatedHike, getCurrentHike, getCompletedHikes, getStatistics };
 
 export default API;
