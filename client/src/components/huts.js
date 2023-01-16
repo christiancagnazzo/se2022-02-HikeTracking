@@ -68,7 +68,7 @@ function HutCard(props) {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Address: {props.hut.address}</ListGroup.Item>
-        <ListGroup.Item>Ascent: {props.hut.ascent}€</ListGroup.Item>
+        <ListGroup.Item>Ascent: {props.hut.ascent}m</ListGroup.Item>
         <ListGroup.Item>#Beds: {props.hut.n_beds}</ListGroup.Item>
         <ListGroup.Item>Services: {services}</ListGroup.Item>
         <ListGroup.Item>Fee per night: {props.hut.fee}€</ListGroup.Item>

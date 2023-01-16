@@ -105,11 +105,11 @@ function HikeForm(props) {
         </Form.Group>
         <Form.Group className="mb-2" controlId="fee">
           <Form.Label>Fee per night (in €)</Form.Label>
-          <Form.Control type="text" placeholder="Expected time" value={fee} onChange={(e) => { if (checkNum(e.target.value)) { setFee(e.target.value) } }} />
+          <Form.Control type="text" placeholder="Fee" value={fee} onChange={(e) => { if (checkNum(e.target.value)) { setFee(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="n_beds">
           <Form.Label>Number of beds</Form.Label>
-          <Form.Control type="text" placeholder="Ascent" value={n_beds} onChange={(e) => { if (checkNum(e.target.value)) { setNBeds(e.target.value) } }} />
+          <Form.Control type="text" placeholder="Beds" value={n_beds} onChange={(e) => { if (checkNum(e.target.value)) { setNBeds(e.target.value) } }} />
         </Form.Group>
         <Form.Group className="mb-2" controlId="acent">
           <Form.Label>Ascent</Form.Label>
